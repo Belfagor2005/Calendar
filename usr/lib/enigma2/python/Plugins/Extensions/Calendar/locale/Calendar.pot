@@ -1,0 +1,316 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Calendar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-19 22:03+0100\n"
+"PO-Revision-Date: 2014-08-24 16:21+0400\n"
+"Last-Translator: \n"
+"Language-Team: <ekekaz@gmail.com>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: event_dialog.py:271
+msgid "Title:"
+msgstr ""
+
+#: event_dialog.py:273
+msgid "Date:"
+msgstr ""
+
+#: event_dialog.py:275
+msgid "Time:"
+msgstr ""
+
+#: event_dialog.py:277
+msgid "Repeat:"
+msgstr ""
+
+#: event_dialog.py:279
+msgid "Notify:"
+msgstr ""
+
+#: event_dialog.py:281
+msgid "Active:"
+msgstr ""
+
+#: event_dialog.py:283
+msgid "Description:"
+msgstr ""
+
+#: event_dialog.py:286
+msgid "Cancel"
+msgstr ""
+
+#: event_dialog.py:287
+msgid "Save"
+msgstr ""
+
+#: event_dialog.py:288
+msgid "Delete"
+msgstr ""
+
+#: event_dialog.py:291
+msgid "Title"
+msgstr ""
+
+#: event_dialog.py:292
+msgid "Date"
+msgstr ""
+
+#: event_dialog.py:293
+msgid "Time"
+msgstr ""
+
+#: event_dialog.py:294
+msgid "Repeat"
+msgstr ""
+
+#: event_dialog.py:295
+msgid "Notify"
+msgstr ""
+
+#: event_dialog.py:296
+msgid "Active"
+msgstr ""
+
+#: event_dialog.py:297
+msgid "Description"
+msgstr ""
+
+#: event_dialog.py:382 plugin.py:631
+msgid "Enter "
+msgstr ""
+
+#: event_dialog.py:499
+msgid "Title and date are required!"
+msgstr ""
+
+#: events_view.py:200
+msgid "Add"
+msgstr ""
+
+#: events_view.py:201
+msgid "Edit"
+msgstr ""
+
+#: events_view.py:202
+msgid "Remove"
+msgstr ""
+
+#: events_view.py:203
+msgid "Back"
+msgstr ""
+
+#: plugin.py:178
+msgid "no"
+msgstr ""
+
+#: plugin.py:179
+msgid "yes"
+msgstr ""
+
+#: plugin.py:194
+msgid "Short beep"
+msgstr ""
+
+#: plugin.py:195
+msgid "Notification tone"
+msgstr ""
+
+#: plugin.py:196
+msgid "Alert sound"
+msgstr ""
+
+#: plugin.py:197
+msgid "No sound"
+msgstr ""
+
+#: plugin.py:427
+msgid "Calendar Planner"
+msgstr ""
+
+#: plugin.py:452
+msgid "..."
+msgstr ""
+
+#: plugin.py:453
+msgid "Mon"
+msgstr ""
+
+#: plugin.py:454
+msgid "Tue"
+msgstr ""
+
+#: plugin.py:455
+msgid "Wed"
+msgstr ""
+
+#: plugin.py:456
+msgid "Thu"
+msgstr ""
+
+#: plugin.py:457
+msgid "Fri"
+msgstr ""
+
+#: plugin.py:458
+msgid "Sat"
+msgstr ""
+
+#: plugin.py:459
+msgid "Sun"
+msgstr ""
+
+#: plugin.py:463
+#, python-format
+msgid "Calendar Planner v.%s"
+msgstr ""
+
+#: plugin.py:464
+msgid "Month -"
+msgstr ""
+
+#: plugin.py:465
+msgid "Month +"
+msgstr ""
+
+#: plugin.py:466
+msgid "Day -"
+msgstr ""
+
+#: plugin.py:467
+msgid "Day +"
+msgstr ""
+
+#: plugin.py:469
+msgid "Files is Empty..."
+msgstr ""
+
+#: plugin.py:470 plugin.py:471 plugin.py:472 plugin.py:473 plugin.py:474
+#: plugin.py:475
+msgid ".............."
+msgstr ""
+
+#: plugin.py:520
+msgid "New Date"
+msgstr ""
+
+#: plugin.py:521 plugin.py:716
+msgid "Edit Date"
+msgstr ""
+
+#: plugin.py:522
+msgid "Remove Date"
+msgstr ""
+
+#: plugin.py:523
+msgid "Delete File"
+msgstr ""
+
+#: plugin.py:528
+msgid "Manage Events"
+msgstr ""
+
+#: plugin.py:529
+msgid "Add Event"
+msgstr ""
+
+#: plugin.py:532
+msgid "Exit"
+msgstr ""
+
+#: plugin.py:542
+msgid "Event system is disabled. Enable it in settings."
+msgstr ""
+
+#: plugin.py:717
+msgid "Edit Date People"
+msgstr ""
+
+#: plugin.py:718
+msgid "Edit Sign"
+msgstr ""
+
+#: plugin.py:719
+msgid "Edit Holiday"
+msgstr ""
+
+#: plugin.py:720
+msgid "Edit Description"
+msgstr ""
+
+#: plugin.py:721
+msgid "Edit Month People"
+msgstr ""
+
+#: plugin.py:769 plugin.py:794 plugin.py:851 plugin.py:893
+msgid "No file in database..."
+msgstr ""
+
+#: plugin.py:779 plugin.py:799
+msgid "File not found!"
+msgstr ""
+
+#: plugin.py:865
+msgid "TODAY'S EVENTS:"
+msgstr ""
+
+#: plugin.py:902
+msgid "January"
+msgstr ""
+
+#: plugin.py:903
+msgid "February"
+msgstr ""
+
+#: plugin.py:904
+msgid "March"
+msgstr ""
+
+#: plugin.py:905
+msgid "April"
+msgstr ""
+
+#: plugin.py:906
+msgid "May"
+msgstr ""
+
+#: plugin.py:907
+msgid "June"
+msgstr ""
+
+#: plugin.py:908
+msgid "July"
+msgstr ""
+
+#: plugin.py:909
+msgid "August"
+msgstr ""
+
+#: plugin.py:910
+msgid "September"
+msgstr ""
+
+#: plugin.py:911
+msgid "October"
+msgstr ""
+
+#: plugin.py:912
+msgid "November"
+msgstr ""
+
+#: plugin.py:913
+msgid "December"
+msgstr ""
+
+#: plugin.py:1086 plugin.py:1101 plugin.py:1106 plugin.py:1107 plugin.py:1116
+#: plugin.py:1117
+msgid "Calendar"
+msgstr ""

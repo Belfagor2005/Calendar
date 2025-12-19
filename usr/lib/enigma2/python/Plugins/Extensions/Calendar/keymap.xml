@@ -1,0 +1,53 @@
+<!--
+	Flag meanings in <key /> elements:
+	"m": Action active on key "Make".
+	"b": Action active on key "Break".
+	"r": Action active on key repeats.
+	"l": Action on long keypress.
+-->
+<keymap>
+	<map context="CalendarActions">
+
+		<key id="KEY_PAGEUP" mapto="pageUp" flags="b" />
+		<key id="KEY_PAGEUP" mapto="pageUp_long" flags="l" />
+		<key id="KEY_PAGEDOWN" mapto="pageDown" flags="b" />
+		<key id="KEY_PAGEDOWN" mapto="pageDown_long" flags="l" />
+
+		<key id="KEY_UP" mapto="up" flags="m" />
+		<key id="KEY_UP" mapto="upRepeated" flags="r" />
+		<key id="KEY_UP" mapto="upUp" flags="b" />
+		
+		<key id="KEY_DOWN" mapto="down" flags="m" />
+		<key id="KEY_DOWN" mapto="downRepeated" flags="r" />
+		<key id="KEY_DOWN" mapto="downUp" flags="b" />		
+		
+		<key id="KEY_LEFT" mapto="left" flags="m" />
+		<key id="KEY_LEFT" mapto="leftRepeated" flags="r" />
+		<key id="KEY_LEFT" mapto="leftUp" flags="b" />
+		
+		<key id="KEY_RIGHT" mapto="right" flags="m" />
+		<key id="KEY_RIGHT" mapto="rightRepeated" flags="r" />
+		<key id="KEY_RIGHT" mapto="rightUp" flags="b" />
+		
+		<key id="KEY_PREVIOUS" mapto="moveUp" flags="m" />
+		<key id="KEY_NEXT" mapto="moveDown" flags="m" />
+
+		<key id="KEY_OK" mapto="ok" flags="m" />
+		<key id="KEY_RED" mapto="red" flags="b" />
+		<key id="KEY_RED" mapto="redRepeated" flags="l" />
+		<key id="KEY_GREEN" mapto="green" flags="b" />
+		<key id="KEY_GREEN" mapto="greenRepeated" flags="l" />
+		<key id="KEY_YELLOW" mapto="yellow" flags="b" />
+		<key id="KEY_YELLOW" mapto="yellowRepeated" flags="l" />
+		<key id="KEY_BLUE" mapto="blue" flags="b" />
+		<key id="KEY_BLUE" mapto="blueRepeated" flags="l" />
+		
+		<key id="KEY_MENU" mapto="config" flags="m" />
+		<key id="KEY_INFO" mapto="about" flags="m" />
+		<key id="KEY_EPG" mapto="about" flags="m" />
+		<key id="KEY_HELP" mapto="about" flags="m" />		
+		<key id="KEY_EXIT" mapto="cancel" flags="m" />
+		<key id="KEY_ESC" mapto="cancel" flags="m" />
+	</map>
+
+</keymap>

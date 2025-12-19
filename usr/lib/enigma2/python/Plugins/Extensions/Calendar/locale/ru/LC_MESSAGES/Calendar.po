@@ -1,0 +1,346 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Calendar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-18 20:10+0100\n"
+"PO-Revision-Date: 2025-12-18 20:10+0100\n"
+"Last-Translator: \n"
+"Language-Team: <sirius.al@rambler.ru>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: event_dialog.py:102
+msgid "Title:"
+msgstr ""
+
+#: event_dialog.py:104
+msgid "Date:"
+msgstr ""
+
+#: event_dialog.py:106
+msgid "Time:"
+msgstr ""
+
+#: event_dialog.py:108
+msgid "Repeat:"
+msgstr ""
+
+#: event_dialog.py:110
+msgid "Notify:"
+msgstr ""
+
+#: event_dialog.py:112
+msgid "Active:"
+msgstr ""
+
+#: event_dialog.py:114
+msgid "Description:"
+msgstr ""
+
+#: event_dialog.py:117
+msgid "Cancel"
+msgstr ""
+
+#: event_dialog.py:118
+msgid "Save"
+msgstr ""
+
+#: event_dialog.py:119
+msgid "Delete"
+msgstr ""
+
+#: event_dialog.py:122
+msgid "Title"
+msgstr ""
+
+#: event_dialog.py:123
+msgid "Date"
+msgstr ""
+
+#: event_dialog.py:124
+msgid "Time"
+msgstr ""
+
+#: event_dialog.py:125
+msgid "Repeat"
+msgstr ""
+
+#: event_dialog.py:126
+msgid "Notify"
+msgstr ""
+
+#: event_dialog.py:127
+msgid "Active"
+msgstr ""
+
+#: event_dialog.py:128
+msgid "Description"
+msgstr ""
+
+#: event_dialog.py:198 plugin.py:446
+msgid "Enter "
+msgstr ""
+
+#: event_dialog.py:306
+msgid "Title and date are required!"
+msgstr ""
+
+#: events_view.py:52
+msgid "Add"
+msgstr ""
+
+#: events_view.py:53
+msgid "Edit"
+msgstr ""
+
+#: events_view.py:54
+msgid "Remove"
+msgstr ""
+
+#: events_view.py:55
+msgid "Back"
+msgstr ""
+
+#: plugin.py:35
+msgid "no"
+msgstr ""
+
+#: plugin.py:36
+msgid "yes"
+msgstr ""
+
+#: plugin.py:283
+msgid "Calendar Planner"
+msgstr ""
+
+#: plugin.py:308
+msgid "..."
+msgstr ""
+
+#: plugin.py:309
+msgid "Mon"
+msgstr ""
+
+#: plugin.py:310
+msgid "Tue"
+msgstr ""
+
+#: plugin.py:311
+msgid "Wed"
+msgstr ""
+
+#: plugin.py:312
+msgid "Thu"
+msgstr ""
+
+#: plugin.py:313
+msgid "Fri"
+msgstr ""
+
+#: plugin.py:314
+msgid "Sat"
+msgstr ""
+
+#: plugin.py:315
+msgid "Sun"
+msgstr ""
+
+#: plugin.py:319
+#, python-format
+msgid "Calendar Planner v.%s"
+msgstr ""
+
+#: plugin.py:320
+msgid "Month -"
+msgstr "Месяц -"
+
+#: plugin.py:321
+msgid "Month +"
+msgstr "Месяц +"
+
+#: plugin.py:322
+msgid "Day -"
+msgstr "День -"
+
+#: plugin.py:323
+msgid "Day +"
+msgstr "День +"
+
+#: plugin.py:325
+msgid "Files is Empty..."
+msgstr ""
+
+#: plugin.py:326 plugin.py:327 plugin.py:328 plugin.py:329 plugin.py:330
+#: plugin.py:331
+msgid ".............."
+msgstr ""
+
+#: plugin.py:380
+msgid "New Date"
+msgstr ""
+
+#: plugin.py:381 plugin.py:517
+msgid "Edit Date"
+msgstr ""
+
+#: plugin.py:382
+msgid "Remove Date"
+msgstr ""
+
+#: plugin.py:383
+msgid "Delete File"
+msgstr ""
+
+#: plugin.py:388
+msgid "Manage Events"
+msgstr ""
+
+#: plugin.py:389
+msgid "Add Event"
+msgstr ""
+
+#: plugin.py:391
+msgid "Exit"
+msgstr ""
+
+#: plugin.py:518
+msgid "Edit Date People"
+msgstr ""
+
+#: plugin.py:519
+msgid "Edit Sign"
+msgstr ""
+
+#: plugin.py:520
+msgid "Edit Holiday"
+msgstr ""
+
+#: plugin.py:521
+msgid "Edit Description"
+msgstr ""
+
+#: plugin.py:522
+msgid "Edit Month People"
+msgstr ""
+
+#: plugin.py:563 plugin.py:581 plugin.py:632 plugin.py:669
+msgid "No file in database..."
+msgstr "Нет файла в базе данных..."
+
+#: plugin.py:573 plugin.py:586
+msgid "File not found!"
+msgstr ""
+
+#: plugin.py:646
+msgid "TODAY'S EVENTS:"
+msgstr ""
+
+#: plugin.py:678
+msgid "January"
+msgstr ""
+
+#: plugin.py:679
+msgid "February"
+msgstr ""
+
+#: plugin.py:680
+msgid "March"
+msgstr ""
+
+#: plugin.py:681
+msgid "April"
+msgstr ""
+
+#: plugin.py:682
+msgid "May"
+msgstr ""
+
+#: plugin.py:683
+msgid "June"
+msgstr ""
+
+#: plugin.py:684
+msgid "July"
+msgstr ""
+
+#: plugin.py:685
+msgid "August"
+msgstr ""
+
+#: plugin.py:686
+msgid "September"
+msgstr ""
+
+#: plugin.py:687
+msgid "October"
+msgstr ""
+
+#: plugin.py:688
+msgid "November"
+msgstr ""
+
+#: plugin.py:689
+msgid "December"
+msgstr ""
+
+#: plugin.py:856 plugin.py:871 plugin.py:876 plugin.py:877 plugin.py:886
+#: plugin.py:887
+msgid "Calendar"
+msgstr "Календарь"
+
+#, fuzzy
+#~| msgid "Calendar"
+#~ msgid "Setup Calendar"
+#~ msgstr "Календарь"
+
+#, fuzzy
+#~| msgid ""
+#~| "Calendar\n"
+#~| "Developer: Sirius0103 \n"
+#~| "Homepage: www.gisclub.tv \n"
+#~| "\n"
+#~| "Donate:\n"
+#~| "WMZ  Z395874509364\n"
+#~| "WMR  R213063691482"
+#~ msgid ""
+#~ "Calendar\n"
+#~ "Developer: Sirius0103 \n"
+#~ "Homepage: www.gisclub.tv \n"
+#~ "\n"
+#~ "Donate:\n"
+#~ "WMZ  Z395874509364\n"
+#~ "WME  E284580190260\n"
+#~ "WMR  R213063691482\n"
+#~ "WMU  U658742613505"
+#~ msgstr ""
+#~ "Календарь\n"
+#~ "Разработчик: Sirius0103 \n"
+#~ "Домашний сайт: www.gisclub.tv \n"
+#~ "\n"
+#~ "Поблагодарить:\n"
+#~ "WMZ  Z395874509364\n"
+#~ "WMR  R213063691482"
+
+#~ msgid "Russia"
+#~ msgstr "Россия"
+
+#~ msgid "Ukraine"
+#~ msgstr "Украина"
+
+#~ msgid "Latvia"
+#~ msgstr "Латвия"
+
+#~ msgid "Location:"
+#~ msgstr "Местоположение:"
+
+#~ msgid "Configuration is saved"
+#~ msgstr "Конфигурация сохранена"
+
+#~ msgid "Mo Tu We Th Fr Sa Su"
+#~ msgstr "Пн Вт Ср Чт Пт Сб Вс"

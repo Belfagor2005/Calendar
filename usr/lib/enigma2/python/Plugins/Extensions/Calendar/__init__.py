@@ -1,0 +1,183 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""
+###########################################################
+#                                                         #
+#  Calendar Plugin for Enigma2                            #
+#  Created by: Lululla                                    #
+#  Based on original work by: Sirius0103                  #
+#                                                         #
+#  FEATURES:                                              #
+#  • Monthly calendar display with color-coded days       #
+#  • Date information management with text files          #
+#  • Event system with smart notifications                #
+#  • Recurring events: daily, weekly, monthly, yearly     #
+#  • Event browser and management interface               #
+#  • Configurable notification settings                   #
+#  • Multi-language support for date data                 #
+#                                                         #
+#  EVENT SYSTEM:                                          #
+#  • Smart notifications (0-60 minutes before event)      #
+#  • Background monitoring every 30 seconds               #
+#  • Visual indicators on calendar for days with events   #
+#  • Event persistence in JSON format                     #
+#  • Configurable notification duration (3-15 seconds)    #
+#  • Automatic cleanup of past event notifications        #
+#                                                         #
+#  DATE MANAGEMENT:                                       #
+#  • Create, edit, remove date information                #
+#  • Virtual keyboard for field editing                   #
+#  • Automatic field navigation during editing            #
+#  • File structure: base/[language]/day/YYYYMMDD.txt     #
+#  • Sections: [day] for date info, [month] for people    #
+#                                                         #
+#  CALENDAR DISPLAY:                                      #
+#  • Color coding: Today=green, Saturday=yellow, Sunday=red #
+#  • Event days highlighted in blue/cyan (configurable)   #
+#  • Asterisk (*) indicator for days with events          #
+#  • Week numbers display                                 #
+#  • Smooth month navigation                              #
+#                                                         #
+#  CONFIGURATION:                                         #
+#  • Event system enable/disable                          #
+#  • Notification settings (duration, advance time)       #
+#  • Event color selection                                #
+#  • Show event indicators toggle                         #
+#  • Menu integration option                              #
+#                                                         #
+#  KEY CONTROLS - MAIN CALENDAR:                          #
+#    OK          - Open main menu (New/Edit/Remove/Events)#
+    RED         - Previous month                          #
+    GREEN       - Next month                              #
+    YELLOW      - Previous day                            #
+    BLUE        - Next day                                #
+    0 (ZERO)    - Open event management                   #
+    LEFT/RIGHT  - Previous/Next day                       #
+    UP/DOWN     - Previous/Next month                     #
+    MENU        - Configuration                           #
+    INFO/EPG    - About dialog                            #
+#                                                         #
+#  KEY CONTROLS - EVENT DIALOG:                           #
+#    OK          - Edit current field                     #
+    RED         - Cancel                                  #
+    GREEN       - Save event                              #
+    YELLOW      - Delete event (edit mode only)           #
+    UP/DOWN     - Navigate between fields                 #
+    LEFT/RIGHT  - Change selection options                #
+#                                                         #
+#  KEY CONTROLS - EVENTS VIEW:                            #
+#    OK          - Edit selected event                    #
+    RED         - Add new event                           #
+    GREEN       - Edit selected event                     #
+    YELLOW      - Delete selected event                   #
+    BLUE        - Back to calendar                        #
+    UP/DOWN     - Navigate event list                     #
+#                                                         #
+#  FILE STRUCTURE:                                        #
+#  • plugin.py - Main plugin entry point                  #
+#  • event_manager.py - Event management core             #
+#  • event_dialog.py - Event add/edit interface           #
+#  • events_view.py - Events browser                      #
+#  • notification_system.py - Notification display        #
+#  • events.json - Event database (JSON format)           #
+#  • base/ - Date information storage                     #
+#  • buttons/ - Button images for UI                      #
+#                                                         #
+#  EVENT STORAGE FORMAT (events.json):                    #
+#  [{                                                     #
+#    "id": 1766153767369,                                 #
+#    "title": "Meeting",                                  #
+#    "description": "Team meeting",                       #
+#    "date": "2025-12-19",                                #
+#    "time": "14:30",                                     #
+#    "repeat": "none",                                    #
+#    "notify_before": 15,                                 #
+#    "enabled": true,                                     #
+#    "created": "2024-12-19 14:25:47"                     #
+#  }]                                                     #
+#                                                         #
+#  DATE FILE FORMAT (YYYYMMDD.txt):                       #
+#  [day]                                                  #
+#  date: 2025-06-10                                       #
+#  datepeople: John Doe                                   #
+#  sign: Gemini                                           #
+#  holiday: None                                          #
+#  description: Special day description.                  #
+#                                                         #
+#  [month]                                                #
+#  monthpeople: Important people of the month             #
+#                                                         #
+#  TECHNICAL DETAILS:                                     #
+#  • Python 2.7+ compatible                               #
+#  • Uses eTimer for background monitoring                #
+#  • JSON storage for events                              #
+#  • Virtual keyboard integration                         #
+#  • Auto-skin detection (HD/FHD)                         #
+#  • Configurable via setup.xml                           #
+#                                                         #
+#  PERFORMANCE:                                           #
+#  • Efficient event checking algorithm                   #
+#  • Skipped checks for past non-recurring events         #
+#  • Minimal memory usage                                 #
+#  • Fast loading of date information                     #
+#                                                         #
+#  DEBUGGING:                                             #
+#  • Enable debug logs: check enigma2.log                 #
+#  • Filter: grep EventManager /tmp/enigma2.log           #
+#  • Event check interval: 30 seconds                     #
+#  • Notification window: event time ± 5 minutes          #
+#                                                         #
+#  CREDITS:                                               #
+#  • Original Calendar plugin: Sirius0103                 #
+#  • Event system & modifications: Lululla                #
+#  • Notification system: Custom implementation           #
+#  • Testing & feedback: Enigma2 community                #
+#                                                         #
+#  VERSION HISTORY:                                       #
+#  • v1.0 - Basic calendar functionality                  #
+#  • v1.1 - Complete event system added                   #
+#           (Current version)                             #
+#                                                         #
+#  Last Updated: 2025-12-19                               #
+#  Status: Stable with event system                       #
+###########################################################
+"""
+
+from __future__ import absolute_import
+from Components.Language import language
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+import gettext
+import os
+
+
+PluginLanguageDomain = 'Calendar'
+PluginLanguagePath = 'Extensions/Calendar/locale'
+
+
+isDreambox = False
+if os.path.exists("/usr/bin/apt-get"):
+    isDreambox = True
+
+
+def localeInit():
+    if isDreambox:
+        lang = language.getLanguage()[:2]
+        os.environ["LANGUAGE"] = lang
+    gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
+
+
+if isDreambox:
+    def _(txt):
+        return gettext.dgettext(PluginLanguageDomain, txt) if txt else ""
+else:
+    def _(txt):
+        translated = gettext.dgettext(PluginLanguageDomain, txt)
+        if translated:
+            return translated
+        else:
+            print(("[%s] fallback to default translation for %s" % (PluginLanguageDomain, txt)))
+            return gettext.gettext(txt)
+
+localeInit()
+language.addCallback(localeInit)

@@ -1,0 +1,327 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-18 20:10+0100\n"
+"PO-Revision-Date: 2025-12-18 20:11+0100\n"
+"Last-Translator: 沙鸥_lexlong2007 <lexlong2007@gmail.com>\n"
+"Language-Team: \n"
+"Language: zh\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: event_dialog.py:102
+msgid "Title:"
+msgstr ""
+
+#: event_dialog.py:104
+msgid "Date:"
+msgstr ""
+
+#: event_dialog.py:106
+msgid "Time:"
+msgstr ""
+
+#: event_dialog.py:108
+msgid "Repeat:"
+msgstr ""
+
+#: event_dialog.py:110
+msgid "Notify:"
+msgstr ""
+
+#: event_dialog.py:112
+msgid "Active:"
+msgstr ""
+
+#: event_dialog.py:114
+msgid "Description:"
+msgstr ""
+
+#: event_dialog.py:117
+msgid "Cancel"
+msgstr ""
+
+#: event_dialog.py:118
+msgid "Save"
+msgstr "保存"
+
+#: event_dialog.py:119
+msgid "Delete"
+msgstr ""
+
+#: event_dialog.py:122
+msgid "Title"
+msgstr ""
+
+#: event_dialog.py:123
+msgid "Date"
+msgstr ""
+
+#: event_dialog.py:124
+msgid "Time"
+msgstr ""
+
+#: event_dialog.py:125
+msgid "Repeat"
+msgstr ""
+
+#: event_dialog.py:126
+msgid "Notify"
+msgstr ""
+
+#: event_dialog.py:127
+msgid "Active"
+msgstr ""
+
+#: event_dialog.py:128
+msgid "Description"
+msgstr ""
+
+#: event_dialog.py:198 plugin.py:446
+msgid "Enter "
+msgstr ""
+
+#: event_dialog.py:306
+msgid "Title and date are required!"
+msgstr ""
+
+#: events_view.py:52
+msgid "Add"
+msgstr ""
+
+#: events_view.py:53
+msgid "Edit"
+msgstr ""
+
+#: events_view.py:54
+msgid "Remove"
+msgstr ""
+
+#: events_view.py:55
+msgid "Back"
+msgstr ""
+
+#: plugin.py:35
+msgid "no"
+msgstr "否"
+
+#: plugin.py:36
+msgid "yes"
+msgstr "是"
+
+#: plugin.py:283
+msgid "Calendar Planner"
+msgstr ""
+
+#: plugin.py:308
+msgid "..."
+msgstr "..."
+
+#: plugin.py:309
+msgid "Mon"
+msgstr "周一"
+
+#: plugin.py:310
+msgid "Tue"
+msgstr "星期二"
+
+#: plugin.py:311
+msgid "Wed"
+msgstr "星期三"
+
+#: plugin.py:312
+msgid "Thu"
+msgstr "星期四"
+
+#: plugin.py:313
+msgid "Fri"
+msgstr "星期五"
+
+#: plugin.py:314
+msgid "Sat"
+msgstr "星期六"
+
+#: plugin.py:315
+msgid "Sun"
+msgstr "星期天"
+
+#: plugin.py:319
+#, python-format
+msgid "Calendar Planner v.%s"
+msgstr ""
+
+#: plugin.py:320
+msgid "Month -"
+msgstr "月份 -"
+
+#: plugin.py:321
+msgid "Month +"
+msgstr "月份 + "
+
+#: plugin.py:322
+msgid "Day -"
+msgstr "天 -"
+
+#: plugin.py:323
+msgid "Day +"
+msgstr "天 +"
+
+#: plugin.py:325
+msgid "Files is Empty..."
+msgstr ""
+
+#: plugin.py:326 plugin.py:327 plugin.py:328 plugin.py:329 plugin.py:330
+#: plugin.py:331
+msgid ".............."
+msgstr ""
+
+#: plugin.py:380
+msgid "New Date"
+msgstr ""
+
+#: plugin.py:381 plugin.py:517
+msgid "Edit Date"
+msgstr ""
+
+#: plugin.py:382
+msgid "Remove Date"
+msgstr ""
+
+#: plugin.py:383
+msgid "Delete File"
+msgstr ""
+
+#: plugin.py:388
+msgid "Manage Events"
+msgstr ""
+
+#: plugin.py:389
+msgid "Add Event"
+msgstr ""
+
+#: plugin.py:391
+msgid "Exit"
+msgstr ""
+
+#: plugin.py:518
+msgid "Edit Date People"
+msgstr ""
+
+#: plugin.py:519
+msgid "Edit Sign"
+msgstr ""
+
+#: plugin.py:520
+msgid "Edit Holiday"
+msgstr ""
+
+#: plugin.py:521
+msgid "Edit Description"
+msgstr ""
+
+#: plugin.py:522
+msgid "Edit Month People"
+msgstr ""
+
+#: plugin.py:563 plugin.py:581 plugin.py:632 plugin.py:669
+msgid "No file in database..."
+msgstr "数据库中没有文件..."
+
+#: plugin.py:573 plugin.py:586
+msgid "File not found!"
+msgstr ""
+
+#: plugin.py:646
+msgid "TODAY'S EVENTS:"
+msgstr ""
+
+#: plugin.py:678
+msgid "January"
+msgstr "一月"
+
+#: plugin.py:679
+msgid "February"
+msgstr "二月"
+
+#: plugin.py:680
+msgid "March"
+msgstr "三月"
+
+#: plugin.py:681
+msgid "April"
+msgstr "四月"
+
+#: plugin.py:682
+msgid "May"
+msgstr "五月"
+
+#: plugin.py:683
+msgid "June"
+msgstr "六月"
+
+#: plugin.py:684
+msgid "July"
+msgstr "七月"
+
+#: plugin.py:685
+msgid "August"
+msgstr "八月"
+
+#: plugin.py:686
+msgid "September"
+msgstr "九月"
+
+#: plugin.py:687
+msgid "October"
+msgstr "十月"
+
+#: plugin.py:688
+msgid "November"
+msgstr "十一月"
+
+#: plugin.py:689
+msgid "December"
+msgstr "十二月"
+
+#: plugin.py:856 plugin.py:871 plugin.py:876 plugin.py:877 plugin.py:886
+#: plugin.py:887
+msgid "Calendar"
+msgstr "日历"
+
+#~ msgid ""
+#~ "Calendar\n"
+#~ "Developer: Sirius0103 \n"
+#~ "Homepage: www.gisclub.tv \n"
+#~ "\n"
+#~ "Donate:\n"
+#~ "WMZ  Z395874509364\n"
+#~ "WME  E284580190260\n"
+#~ "WMR  R213063691482\n"
+#~ "WMU  U658742613505"
+#~ msgstr ""
+#~ "日历\n"
+#~ "开发商： Sirius0103 \n"
+#~ "主页： www.gisclub.tv \n"
+#~ "\n"
+#~ "捐款：\n"
+#~ "WMZ Z395874509364\n"
+#~ "WME E284580190260\n"
+#~ "WMR R213063691482\n"
+#~ "WMU U658742613505"
+
+#~ msgid "Close"
+#~ msgstr "关闭"
+
+#~ msgid "Config Calendar"
+#~ msgstr "配置日历"
+
+#~ msgid "Configuration is saved"
+#~ msgstr "配置已保存"
+
+#~ msgid "Show Calendar in menu information:"
+#~ msgstr "在菜单信息中显示日历："
