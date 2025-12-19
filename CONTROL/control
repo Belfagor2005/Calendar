@@ -1,0 +1,11 @@
+Package: enigma2-plugin-extensions-calendar
+Version: 1.1
+Section: enigma2
+Priority: optional
+Architecture: all
+Maintainer: Lululla
+Description: Calendar
+Source: enigma2-plugin-extensions-calendar
+Homepage: https://github.com/Belfagor2005
+License: GPL-3.0
+OE: OE-Alliance
