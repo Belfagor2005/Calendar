@@ -1,5 +1,5 @@
 ![](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)
-[![Version](https://img.shields.io/badge/Version-1.2-blue.svg)](https://github.com/Belfagor2005/Calendar)
+[![Version](https://img.shields.io/badge/Version-1.1-blue.svg)](https://github.com/Belfagor2005/Calendar)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-2.7%2B%203.X%2B-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -28,7 +28,7 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Automatic Monitoring**: Background event checking every 30 seconds
 - **Past Event Cleanup**: Automatic skipping of old non-recurring events to improve performance
 
-### Audio Notification System (New in v1.2!)
+### Audio Notification System
 - **Built-in Sound Alerts**: Three distinct sound types for different priorities
 - **Priority-based Selection**:
   - **Alert Sound**: For events currently in progress (`notify_before=0`)
@@ -257,8 +257,6 @@ tail -f /tmp/enigma2.log | grep Calendar
 - **Added**: Configuration options for event system
 - **Improved**: Navigation and user interface
 - **Fixed**: Various bug fixes and performance improvements
-
-### v1.2 (Current)
 - **Added**: Complete audio notification system with priority-based sounds
 - **Added**: Support for WAV and MP3 audio formats
 - **Added**: Automatic audio playback for event notifications
