@@ -111,7 +111,7 @@
 #    "date": "2025-12-19",                                #
 #    "time": "14:30",                                     #
 #    "repeat": "none",                                    #
-#    "notify_before": 15,                                 #
+#    "notify_before": 5,                                  #
 #    "enabled": true,                                     #
 #    "created": "2024-12-19 14:25:47"                     #
 #  }]                                                     #

@@ -25,6 +25,16 @@
 #  • Configurable notification duration (3-15 seconds)    #
 #  • Automatic cleanup of past event notifications        #
 #                                                         #
+#  AUDIO NOTIFICATION SYSTEM:                             #
+#  • Built-in sound alerts (alert/notify/short tones)     #
+#  • Support for WAV and MP3 formats                      #
+#  • Priority-based sound selection                       #
+#    - Alert: events in progress (notify_before=0)        #
+#    - Notify: imminent events (≤5 min before)            #
+#    - Short: regular notifications                       #
+#  • Sound files location: /sounds/ directory             #
+#  • Auto-stop after playback completion                  #
+#                                                         #
 #  DATE MANAGEMENT:                                       #
 #  • Create, edit, remove date information                #
 #  • Virtual keyboard for field editing                   #
@@ -33,7 +43,7 @@
 #  • Sections: [day] for date info, [month] for people    #
 #                                                         #
 #  CALENDAR DISPLAY:                                      #
-#  • Color coding: Today=green, Saturday=yellow, Sunday=red #
+#  • Color code: Today=green, Saturday=yellow, Sunday=red #
 #  • Event days highlighted in blue/cyan (configurable)   #
 #  • Asterisk (*) indicator for days with events          #
 #  • Week numbers display                                 #
@@ -42,12 +52,14 @@
 #  CONFIGURATION:                                         #
 #  • Event system enable/disable                          #
 #  • Notification settings (duration, advance time)       #
+#  • Audio notification type (short/notify/alert/none)    #
+#  • Enable/disable sound playback                        #
 #  • Event color selection                                #
 #  • Show event indicators toggle                         #
 #  • Menu integration option                              #
 #                                                         #
 #  KEY CONTROLS - MAIN CALENDAR:                          #
-#    OK          - Open main menu (New/Edit/Remove/Events)#
+#   OK          - Open main menu (New/Edit/Remove/Events) #
     RED         - Previous month                          #
     GREEN       - Next month                              #
     YELLOW      - Previous day                            #
@@ -59,7 +71,7 @@
     INFO/EPG    - About dialog                            #
 #                                                         #
 #  KEY CONTROLS - EVENT DIALOG:                           #
-#    OK          - Edit current field                     #
+#   OK          - Edit current field                      #
     RED         - Cancel                                  #
     GREEN       - Save event                              #
     YELLOW      - Delete event (edit mode only)           #
@@ -67,7 +79,7 @@
     LEFT/RIGHT  - Change selection options                #
 #                                                         #
 #  KEY CONTROLS - EVENTS VIEW:                            #
-#    OK          - Edit selected event                    #
+#   OK          - Edit selected event                     #
     RED         - Add new event                           #
     GREEN       - Edit selected event                     #
     YELLOW      - Delete selected event                   #
@@ -82,7 +94,14 @@
 #  • notification_system.py - Notification display        #
 #  • events.json - Event database (JSON format)           #
 #  • base/ - Date information storage                     #
+#  • sounds/ - Audio files for notifications              #
 #  • buttons/ - Button images for UI                      #
+#                                                         #
+#  AUDIO FILE REQUIREMENTS:                               #
+#  • alert.wav / alert.mp3 - High priority events         #
+#  • notify.wav / notify.mp3 - Normal notifications       #
+#  • beep.wav / beep.mp3 - Short beeps                    #
+#  • Location: /Calendar/sounds/                          #
 #                                                         #
 #  EVENT STORAGE FORMAT (events.json):                    #
 #  [{                                                     #
@@ -115,6 +134,7 @@
 #  • Virtual keyboard integration                         #
 #  • Auto-skin detection (HD/FHD)                         #
 #  • Configurable via setup.xml                           #
+#  • Uses eServiceReference for audio playback            #
 #                                                         #
 #  PERFORMANCE:                                           #
 #  • Efficient event checking algorithm                   #
@@ -127,20 +147,21 @@
 #  • Filter: grep EventManager /tmp/enigma2.log           #
 #  • Event check interval: 30 seconds                     #
 #  • Notification window: event time ± 5 minutes          #
+#  • Audio debug: check play_notification_sound() calls   #
 #                                                         #
 #  CREDITS:                                               #
 #  • Original Calendar plugin: Sirius0103                 #
 #  • Event system & modifications: Lululla                #
 #  • Notification system: Custom implementation           #
+#  • Audio system: Enigma2 eServiceReference integration  #
 #  • Testing & feedback: Enigma2 community                #
 #                                                         #
 #  VERSION HISTORY:                                       #
 #  • v1.0 - Basic calendar functionality                  #
 #  • v1.1 - Complete event system added                   #
-#           (Current version)                             #
 #                                                         #
-#  Last Updated: 2025-12-19                               #
-#  Status: Stable with event system                       #
+#  Last Updated: 2025-12-20                               #
+#  Status: Stable with event & audio system               #
 ###########################################################
 """
 
@@ -153,6 +174,7 @@ import os
 
 PluginLanguageDomain = 'Calendar'
 PluginLanguagePath = 'Extensions/Calendar/locale'
+plugin_path = "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/"
 
 
 isDreambox = False

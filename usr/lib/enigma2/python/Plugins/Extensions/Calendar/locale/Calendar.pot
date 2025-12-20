@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-20 12:56+0100\n"
+"POT-Creation-Date: 2025-12-20 14:34+0100\n"
 "PO-Revision-Date: 2014-08-24 16:21+0400\n"
 "Last-Translator: \n"
 "Language-Team: <ekekaz@gmail.com>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: event_dialog.py:313 plugin.py:723
+#: event_dialog.py:313 plugin.py:722
 msgid "Date"
 msgstr ""
 
@@ -80,7 +80,7 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: event_dialog.py:318 plugin.py:709
+#: event_dialog.py:318 plugin.py:708
 msgid "Description"
 msgstr ""
 
@@ -92,20 +92,20 @@ msgstr ""
 msgid "Title and date are required!"
 msgstr ""
 
-#: event_manager.py:620 plugin.py:567 plugin.py:676
+#: event_manager.py:638 plugin.py:566 plugin.py:675
 msgid "Event system is disabled. Enable it in settings."
 msgstr ""
 
-#: event_manager.py:629
+#: event_manager.py:647
 msgid "Do you want to remove all past non-recurring events?"
 msgstr ""
 
-#: event_manager.py:639 plugin.py:686
+#: event_manager.py:657 plugin.py:685
 #, python-brace-format
 msgid "Removed {0} past events"
 msgstr ""
 
-#: event_manager.py:642 plugin.py:690
+#: event_manager.py:660 plugin.py:689
 msgid "No past events to remove"
 msgstr ""
 
@@ -219,7 +219,7 @@ msgstr ""
 msgid "New Date"
 msgstr ""
 
-#: plugin.py:544 plugin.py:775
+#: plugin.py:544 plugin.py:774
 msgid "Edit Date"
 msgstr ""
 
@@ -247,110 +247,110 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: plugin.py:591
+#: plugin.py:590
 msgid "Error opening event dialog"
 msgstr ""
 
-#: plugin.py:700
+#: plugin.py:699
 msgid "Date People"
 msgstr ""
 
-#: plugin.py:703
+#: plugin.py:702
 msgid "Sign"
 msgstr ""
 
-#: plugin.py:706
+#: plugin.py:705
 msgid "Holiday"
 msgstr ""
 
-#: plugin.py:712
+#: plugin.py:711
 msgid "Month People"
 msgstr ""
 
-#: plugin.py:776
+#: plugin.py:775
 msgid "Edit Date People"
 msgstr ""
 
-#: plugin.py:777
+#: plugin.py:776
 msgid "Edit Sign"
 msgstr ""
 
-#: plugin.py:778
+#: plugin.py:777
 msgid "Edit Holiday"
 msgstr ""
 
-#: plugin.py:779
+#: plugin.py:778
 msgid "Edit Description"
 msgstr ""
 
-#: plugin.py:780
+#: plugin.py:779
 msgid "Edit Month People"
 msgstr ""
 
-#: plugin.py:829 plugin.py:854 plugin.py:911 plugin.py:953
+#: plugin.py:828 plugin.py:853 plugin.py:910 plugin.py:952
 msgid "No file in database..."
 msgstr ""
 
-#: plugin.py:839 plugin.py:859
+#: plugin.py:838 plugin.py:858
 msgid "File not found!"
 msgstr ""
 
-#: plugin.py:925
+#: plugin.py:924
 msgid "TODAY'S EVENTS:"
 msgstr ""
 
-#: plugin.py:962
+#: plugin.py:961
 msgid "January"
 msgstr ""
 
-#: plugin.py:963
+#: plugin.py:962
 msgid "February"
 msgstr ""
 
-#: plugin.py:964
+#: plugin.py:963
 msgid "March"
 msgstr ""
 
-#: plugin.py:965
+#: plugin.py:964
 msgid "April"
 msgstr ""
 
-#: plugin.py:966
+#: plugin.py:965
 msgid "May"
 msgstr ""
 
-#: plugin.py:967
+#: plugin.py:966
 msgid "June"
 msgstr ""
 
-#: plugin.py:968
+#: plugin.py:967
 msgid "July"
 msgstr ""
 
-#: plugin.py:969
+#: plugin.py:968
 msgid "August"
 msgstr ""
 
-#: plugin.py:970
+#: plugin.py:969
 msgid "September"
 msgstr ""
 
-#: plugin.py:971
+#: plugin.py:970
 msgid "October"
 msgstr ""
 
-#: plugin.py:972
+#: plugin.py:971
 msgid "November"
 msgstr ""
 
-#: plugin.py:973
+#: plugin.py:972
 msgid "December"
 msgstr ""
 
-#: plugin.py:1148 plugin.py:1163 plugin.py:1172
+#: plugin.py:1147 plugin.py:1162 plugin.py:1171
 msgid "Calendar"
 msgstr ""
 
-#: plugin.py:1164
+#: plugin.py:1163
 msgid "Calendar with events and notifications"
 msgstr ""

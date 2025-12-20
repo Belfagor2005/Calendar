@@ -111,7 +111,7 @@
 #    "date": "2025-12-19",                                #
 #    "time": "14:30",                                     #
 #    "repeat": "none",                                    #
-#    "notify_before": 15,                                 #
+#    "notify_before": 5,                                  #
 #    "enabled": true,                                     #
 #    "created": "2024-12-19 14:25:47"                     #
 #  }]                                                     #
@@ -298,7 +298,7 @@ class EventDialog(Screen):
         self["repeat_label"] = Label(_("Repeat:"))
         self["repeat_value"] = Label("Do not repeat")
         self["notify_label"] = Label(_("Notify:"))
-        self["notify_value"] = Label("15 minutes before")
+        self["notify_value"] = Label("5 minutes before")
         self["enabled_label"] = Label(_("Active:"))
         self["enabled_value"] = Label("Yes")
         self["description_label"] = Label(_("Description:"))
@@ -508,7 +508,7 @@ class EventDialog(Screen):
         try:
             return int(text.split()[0])
         except:
-            return 15
+            return 5
 
     def save(self):
         """Save event"""

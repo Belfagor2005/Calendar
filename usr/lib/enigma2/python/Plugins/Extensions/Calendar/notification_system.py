@@ -31,7 +31,7 @@ from enigma import eTimer
 
 class SimpleNotifyWidget(Screen):
     """Simple notification widget for Enigma2 plugins"""
-    
+
     skin = """
     <screen name="SimpleNotifyWidget" position="10,30" zPosition="10" size="1280,150" title=" " backgroundColor="#201F1F1F" flags="wfNoBorder">
         <widget name="notification_text" font="Regular;28" position="5,5" zPosition="2" valign="center" halign="center" size="1270,140" foregroundColor="#00FF00" backgroundColor="#201F1F1F" transparent="1" />
@@ -54,7 +54,7 @@ class SimpleNotifyWidget(Screen):
 
 class NotificationManager:
     """Central notification manager for plugins"""
-    
+
     def __init__(self):
         self.notification_window = None
         self.hide_timer = eTimer()
@@ -72,10 +72,10 @@ class NotificationManager:
         if self.notification_window:
             self.notification_window.hide()
 
-    def showMessage(self, message, duration=3000):
+    def showMessage(self, message, duration=10000):
         """
         Show temporary notification
-        
+
         Args:
             message (str): Text to display
             duration (int): Duration in milliseconds (default: 3000 = 3 seconds)
@@ -87,15 +87,15 @@ class NotificationManager:
         if self.notification_window:
             # Stop any previous timer
             self.hide_timer.stop()
-            
+
             # Update and show message
             self.notification_window.updateMessage(message)
             self.notification_window.show()
-            
+
             # Start auto-hide timer
             self.hide_timer.start(duration, True)
 
-    def show(self, message, seconds=3):
+    def show(self, message, seconds=5):
         """Simplified version with duration in seconds"""
         self.showMessage(message, seconds * 1000)
 
@@ -113,21 +113,21 @@ _notification_manager = NotificationManager()
 def init_notification_system(session):
     """
     Initialize notification system (call this once in your plugin)
-    
+
     Args:
         session: Enigma2 session object
     """
     _notification_manager.initialize(session)
 
 
-def show_notification(message, duration=15000):
+def show_notification(message, duration=10000):
     """
     Show a notification message
-    
+
     Args:
         message (str): Text to display
         duration (int): Display duration in milliseconds (default: 3000)
-    
+
     Example:
         show_notification("Processing completed!")
         show_notification("Download finished", 5000)
@@ -135,14 +135,14 @@ def show_notification(message, duration=15000):
     _notification_manager.showMessage(message, duration)
 
 
-def quick_notify(message, seconds=5):
+def quick_notify(message, seconds=10):
     """
     Quick notification with duration in seconds
-    
+
     Args:
         message (str): Text to display
         seconds (int): Display duration in seconds (default: 3)
-    
+
     Example:
         quick_notify("Task completed")
         quick_notify("Operation failed", 5)

@@ -111,7 +111,7 @@
 #    "date": "2025-12-19",                                #
 #    "time": "14:30",                                     #
 #    "repeat": "none",                                    #
-#    "notify_before": 15,                                 #
+#    "notify_before": 5,                                  #
 #    "enabled": true,                                     #
 #    "created": "2024-12-19 14:25:47"                     #
 #  }]                                                     #
@@ -184,7 +184,7 @@ from skin import parseColor
 from Components.config import config, ConfigSubsection, ConfigSelection, ConfigYesNo
 
 
-from . import _
+from . import _, plugin_path
 from .events_view import EventsView
 
 currversion = '1.1'
@@ -460,7 +460,7 @@ class Calendar(Screen):
             self.event_manager = None
 
         self.language = config.osd.language.value.split("_")[0].strip()
-        self.path = "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/"
+        self.path = plugin_path
 
         self.selected_day = self.day
         self.nowday = False
@@ -561,7 +561,6 @@ class Calendar(Screen):
     def add_event(self):
         """Add new event - with safety check"""
         if not config.plugins.calendar.events_enabled.value or not self.event_manager:
-            from Screens.MessageBox import MessageBox
             self.session.open(
                 MessageBox,
                 _("Event system is disabled. Enable it in settings."),

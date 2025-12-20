@@ -111,7 +111,7 @@
 #    "date": "2025-12-19",                                #
 #    "time": "14:30",                                     #
 #    "repeat": "none",                                    #
-#    "notify_before": 15,                                 #
+#    "notify_before": 5,                                  #
 #    "enabled": true,                                     #
 #    "created": "2024-12-19 14:25:47"                     #
 #  }]                                                     #
@@ -170,13 +170,18 @@ import time
 import subprocess
 import shutil
 from datetime import datetime, timedelta
-from os import makedirs, listdir
-from os.path import exists, dirname, join, isfile, getsize
+from os import makedirs  # , listdir
+from os.path import exists, dirname, join  # , isfile, getsize
 from enigma import eTimer, eServiceReference, eServiceCenter
 from Components.config import config
 from Screens.MessageBox import MessageBox
 
-from . import _
+from . import _, plugin_path
+
+events_json = join(plugin_path, "events.json")
+sounds_dir = join(plugin_path, "sounds")
+DEBUG = True
+
 
 try:
     from .notification_system import init_notification_system, quick_notify
@@ -189,8 +194,8 @@ except ImportError:
 class Event:
     """Class to represent a single event"""
 
-    def __init__(self, title="", description="", date="", event_time="",  # event_time qui
-                 repeat="none", notify_before=15, enabled=True):
+    def __init__(self, title="Event", description="Description", date="", event_time="",
+                 repeat="none", notify_before=5, enabled=True):
         self.title = title
         self.description = description
         self.date = date  # Format: YYYY-MM-DD
@@ -353,8 +358,8 @@ class EventManager:
 
     def __init__(self, session, events_file=None):
         self.session = session
-        self.events_file = events_file or "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/events.json"
-        self.sound_dir = "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/sounds/"
+        self.events_file = events_file or events_json
+        self.sound_dir = sounds_dir
         self.events = []
         self.notified_events = set()  # Events already notified in this session
 
@@ -524,8 +529,9 @@ class EventManager:
         """Check events and show notifications if needed"""
         try:
             now = datetime.now()
-            print("[EventManager DEBUG] Checking events at {0}".format(now.strftime('%H:%M:%S')))
-            print("[EventManager DEBUG] Total events: {0}".format(len(self.events)))
+            if DEBUG:
+                print("[EventManager DEBUG] Checking events at {0}".format(now.strftime('%H:%M:%S')))
+                print("[EventManager DEBUG] Total events: {0}".format(len(self.events)))
 
             events_checked = 0
             events_skipped = 0
@@ -533,7 +539,8 @@ class EventManager:
             for event in self.events:
                 # 1. If the event is disabled, skip it
                 if not event.enabled:
-                    print("[EventManager DEBUG] Event '{0}' is disabled - SKIP".format(event.title))
+                    if DEBUG:
+                        print("[EventManager DEBUG] Event '{0}' is disabled - SKIP".format(event.title))
                     events_skipped += 1
                     continue
 
@@ -542,72 +549,83 @@ class EventManager:
                     event_dt = event.get_datetime()
                     if event_dt:
                         time_passed = now - event_dt
-                        
+
                         # Event passed more than 5 minutes ago AND already notified? SKIP
                         if time_passed > timedelta(minutes=5) and event.id in self.notified_events:
-                            print("[EventManager DEBUG] Event '{0}' passed {1} min ago and already notified - SKIP CHECKING".format(
-                                event.title, time_passed.seconds // 60))
+                            if DEBUG:
+                                print("[EventManager DEBUG] Event '{0}' passed {1} min ago and already notified - SKIP CHECKING".format(
+                                    event.title, time_passed.seconds // 60))
                             events_skipped += 1
                             continue
-                        
+
                         # Event passed more than 30 minutes ago (even if not notified)? SKIP
                         elif time_passed > timedelta(minutes=30):
-                            print("[EventManager DEBUG] Event '{0}' passed {1} min ago - SKIP CHECKING".format(
-                                event.title, time_passed.seconds // 60))
+                            if DEBUG:
+                                print("[EventManager DEBUG] Event '{0}' passed {1} min ago - SKIP CHECKING".format(
+                                    event.title, time_passed.seconds // 60))
                             events_skipped += 1
                             continue
-                        
+
                         # Event passed 2-30 minutes ago but not notified? Still check
                         elif time_passed > timedelta(minutes=2):
                             # Event passed but we might still be in notification window
                             pass
 
                 events_checked += 1
-                print("[EventManager DEBUG] Checking event: {0}".format(event.title))
-                print("[EventManager DEBUG]   Date/Time: {0} {1}".format(event.date, event.time))
-                print("[EventManager DEBUG]   Notify before: {0} min".format(event.notify_before))
-                print("[EventManager DEBUG]   Repeat: {0}".format(event.repeat))
+                if DEBUG:
+                    print("[EventManager DEBUG] Checking event: {0}".format(event.title))
+                    print("[EventManager DEBUG]   Date/Time: {0} {1}".format(event.date, event.time))
+                    print("[EventManager DEBUG]   Notify before: {0} min".format(event.notify_before))
+                    print("[EventManager DEBUG]   Repeat: {0}".format(event.repeat))
 
                 next_occurrence = event.get_next_occurrence(now)
                 if next_occurrence:
-                    print("[EventManager DEBUG]   Next occurrence: {0}".format(next_occurrence))
+                    if DEBUG:
+                        print("[EventManager DEBUG]   Next occurrence: {0}".format(next_occurrence))
 
                     # Check if it's time to notify
                     notify_time = next_occurrence - timedelta(minutes=event.notify_before)
-                    print("[EventManager DEBUG]   Notify time: {0}".format(notify_time))
-                    print("[EventManager DEBUG]   Now: {0}".format(now))
-                    print("[EventManager DEBUG]   Should notify window: {0} to {1}".format(
-                        notify_time, next_occurrence + timedelta(minutes=5)))
+                    if DEBUG:
+                        print("[EventManager DEBUG]   Notify time: {0}".format(notify_time))
+                        print("[EventManager DEBUG]   Now: {0}".format(now))
+                        print("[EventManager DEBUG]   Should notify window: {0} to {1}".format(
+                            notify_time, next_occurrence + timedelta(minutes=5)))
 
                     should_notify = event.should_notify(now)
-                    print("[EventManager DEBUG]   Should notify: {0}".format(should_notify))
-                    print("[EventManager DEBUG]   Already notified: {0}".format(
-                        event.id in self.notified_events))
+                    if DEBUG:
+                        print("[EventManager DEBUG]   Should notify: {0}".format(should_notify))
+                        print("[EventManager DEBUG]   Already notified: {0}".format(
+                            event.id in self.notified_events))
 
                     if should_notify and event.id not in self.notified_events:
-                        print("[EventManager DEBUG]   >>> SHOWING NOTIFICATION for {0}".format(event.title))
+                        if DEBUG:
+                            print("[EventManager DEBUG]   >>> SHOWING NOTIFICATION for {0}".format(event.title))
                         self.show_notification(event)
                         self.notified_events.add(event.id)
-                        print("[EventManager DEBUG]   Added to notified events: {0}".format(event.id))
+                        if DEBUG:
+                            print("[EventManager DEBUG]   Added to notified events: {0}".format(event.id))
                     elif event.id in self.notified_events:
-                        print("[EventManager DEBUG]   Already notified, checking if past...")
+                        if DEBUG:
+                            print("[EventManager DEBUG]   Already notified, checking if past...")
                         if (next_occurrence and
                                 (next_occurrence - timedelta(minutes=event.notify_before)) >
                                 now + timedelta(minutes=5)):
                             self.notified_events.remove(event.id)
-                            print("[EventManager DEBUG]   Removed from notified events: {0}".format(event.id))
+                            if DEBUG:
+                                print("[EventManager DEBUG]   Removed from notified events: {0}".format(event.id))
                 else:
                     print("[EventManager DEBUG]   No next occurrence found")
 
                 print("[EventManager DEBUG]   ---")
-
-            print("[EventManager DEBUG] Summary: {0} events checked, {1} skipped".format(
-                events_checked, events_skipped))
-            print("[EventManager DEBUG] Notified events count: {0}".format(len(self.notified_events)))
+            if DEBUG:
+                print("[EventManager DEBUG] Summary: {0} events checked, {1} skipped".format(
+                    events_checked, events_skipped))
+                print("[EventManager DEBUG] Notified events count: {0}".format(len(self.notified_events)))
 
             # Reschedule next check
             self.check_timer.start(30000, True)
-            print("[EventManager DEBUG] Next check in 30 seconds")
+            if DEBUG:
+                print("[EventManager DEBUG] Next check in 30 seconds")
 
         except Exception as e:
             print("[EventManager] Error checking events: {0}".format(e))
@@ -621,7 +639,7 @@ class EventManager:
                 MessageBox.TYPE_INFO
             )
             return
-        
+
         # Ask for confirmation
         self.session.openWithCallback(
             self._execute_cleanup,
@@ -634,13 +652,13 @@ class EventManager:
         """Execute cleanup after confirmation"""
         if result:
             removed = self.event_manager.cleanup_past_events()
-            
+
             if removed > 0:
                 message = _("Removed {0} past events").format(removed)
                 self._paint_calendar()  # Reload calendar
             else:
                 message = _("No past events to remove")
-            
+
             self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
     def show_notification(self, event):
@@ -650,17 +668,39 @@ class EventManager:
                 return
 
             # PLAY SOUND if configured
-            sound_type = config.plugins.calendar.events_sound_type.value
-            if sound_type != "none" and config.plugins.calendar.events_play_sound.value:
-                # Choose sound based on priority
-                if event.notify_before == 0:
-                    sound_to_play = "alert"   # Event in progress
-                elif event.notify_before <= 5:
-                    sound_to_play = "notify"  # Event imminent
-                else:
-                    sound_to_play = sound_type  # User setting
+            if config.plugins.calendar.events_play_sound.value:
+                sound_type = config.plugins.calendar.events_sound_type.value
+                # PLAY SOUND if configured
+                """
+                sound_type = config.plugins.calendar.events_sound_type.value
+                # if sound_type != "none" and config.plugins.calendar.events_play_sound.value:
+                    # # Choose sound based on priority
+                    # if event.notify_before == 0:
+                        # sound_to_play = "alert"   # Event in progress
+                    # elif event.notify_before <= 5:
+                        # sound_to_play = "notify"  # Event imminent
+                    # else:
+                        # sound_to_play = sound_type  # User setting
+                """
+                if sound_type != "none":
+                    # Store current service BEFORE playing sound
+                    self.previous_service = self.session.nav.getCurrentlyPlayingServiceReference()
 
-                self.play_notification_sound(sound_to_play)
+                    if DEBUG:
+                        if self.previous_service:
+                            print("[EventManager] Saved previous service before playing sound")
+                        else:
+                            print("[EventManager] No service currently playing")
+
+                    # Use only the user's selected sound type
+                    sound_to_play = sound_type
+
+                    # Play sound and get the stop timer
+                    sound_stop_timer = self.play_notification_sound(sound_to_play)
+
+                    # Store the timer reference
+                    if sound_stop_timer:
+                        self.sound_stop_timer = sound_stop_timer
 
             # Build message
             time_str = event.time[:5] if event.time else "00:00"
@@ -674,7 +714,26 @@ class EventManager:
 
             # Show notification
             if NOTIFICATION_AVAILABLE:
-                quick_notify(message, seconds=5)
+                # Show notification for 5 seconds
+                quick_notify(message, seconds=10)
+
+                # Set up a timer to stop sound when notification ends
+                def stop_sound_when_notification_ends():
+                    if hasattr(self, 'sound_stop_timer') and self.sound_stop_timer:
+                        # Stop the sound timer
+                        if self.sound_stop_timer.isActive():
+                            self.sound_stop_timer.stop()
+                        # Stop audio playback and restore previous service
+                        self.stop_notification_sound()
+
+                # Create a timer that matches notification duration
+                notification_timer = eTimer()
+                notification_timer.callback.append(stop_sound_when_notification_ends)
+                notification_timer.start(10000, True)  # 5 seconds
+                if DEBUG:
+                    print("[EventManager] Auto-stop timer set for 5000 ms")
+                self.notification_timer = notification_timer
+
             else:
                 print("[EventManager] NOTIFICATION: {0}".format(message))
 
@@ -682,206 +741,318 @@ class EventManager:
             print("[EventManager] Error in show_notification: {0}".format(e))
 
     def play_notification_sound(self, sound_type="notify"):
-        """Play notification sound - ULTIMATE VERSION with debug"""
+        """Play notification sound WITHOUT stopping current TV/radio stream"""
         try:
-            print("[EventManager] === START play_notification_sound ===")
-            print("[EventManager] Requested sound type: " + sound_type)
-            
-            # 1. Find the correct base path
-            plugin_base = "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/"
-            
-            # Try different possible sound directories
-            possible_sound_dirs = [
-                plugin_base + "sounds/",
-                plugin_base + "sound/",
-                "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/sounds/",
-            ]
-            
+            if DEBUG:
+                print("[EventManager] === START play_notification_sound (NO STOP) ===")
+                print("[EventManager] Requested sound type: " + sound_type)
+
+            # We're NOT saving previous service and NOT stopping current stream
+            if DEBUG:
+                current_service = self.session.nav.getCurrentlyPlayingServiceReference()
+                if current_service:
+                    print("[EventManager] Current service (NOT stopping): " + current_service.toString())
+
+            # Find sound file (same as before)
             sound_dir = None
+            possible_sound_dirs = [
+                plugin_path + "sounds/",
+                plugin_path + "sound/",
+                sounds_dir,
+            ]
+
             for test_dir in possible_sound_dirs:
                 if exists(test_dir):
                     sound_dir = test_dir
                     break
-            
+
             if not sound_dir:
-                print("[EventManager] ERROR: No sound directory found!")
-                for test_dir in possible_sound_dirs:
-                    print("[EventManager]   Checked: " + test_dir + " -> Exists: " + str(exists(test_dir)))
-                return False
-            
-            print("[EventManager] Using sound directory: " + sound_dir)
-            
-            # 2. Audio file mapping
+                if DEBUG:
+                    print("[EventManager] ERROR: No sound directory found!")
+                return None
+
+            # Audio file mapping
             sound_map = {
                 "short": "beep",
                 "notify": "notify",
                 "alert": "alert"
             }
-            
-            filename_base = sound_map.get(sound_type)
-            if not filename_base:
-                print("[EventManager] ERROR: Unknown sound type: " + sound_type)
-                return False
-            
-            print("[EventManager] Looking for base filename: " + filename_base)
-            
-            # 3. Look for the file (WAV first, then MP3)
+
+            filename_base = sound_map.get(sound_type, "notify")
+
+            # Look for the file
             sound_path = None
-            # sound_ext = None
-            
             for ext in ['.wav', '.mp3']:
-                test_path = sound_dir + filename_base + ext
+                test_path = join(sound_dir, filename_base + ext)
                 if exists(test_path):
                     sound_path = test_path
-                    # sound_ext = ext
                     break
-            
+
             if not sound_path:
-                print("[EventManager] ERROR: Sound file not found!")
-                print("[EventManager] Looked for: " + filename_base + ".wav and " + filename_base + ".mp3")
-                
-                # List all files in the directory for debugging
-                print("[EventManager] Files in " + sound_dir + ":")
-                try:
-                    for f in sorted(listdir(sound_dir)):
-                        full_path = join(sound_dir, f)
-                        if isfile(full_path):
-                            size = getsize(full_path)
-                            print("[EventManager]   " + f + " (" + str(size) + " bytes)")
-                except Exception as e:
-                    print("[EventManager] Error listing directory: " + str(e))
-                
-                return False
-            
-            print("[EventManager] Found sound file: " + sound_path)
-            print("[EventManager] File size: " + str(getsize(sound_path)) + " bytes")
-            
-            # 4. Play using Enigma2 native playback
-            print("[EventManager] Creating eServiceReference...")
-            
+                if DEBUG:
+                    print("[EventManager] ERROR: Sound file not found!")
+                return None
+
+            if DEBUG:
+                print("[EventManager] Found sound file: " + sound_path)
+
+            # Create eServiceReference for audio file
             # 4097 = isFile (1) + isAudio (4096)
             service_ref = eServiceReference(4097, 0, sound_path)
             service_ref.setName("Calendar Notification")
-            
-            print("[EventManager] Service ref created: " + service_ref.toString())
-            
-            # Save currently playing service
-            current_service = self.session.nav.getCurrentlyPlayingServiceReference()
-            if current_service:
-                print("[EventManager] Current service: " + current_service.toString())
-            else:
-                print("[EventManager] No current service playing")
-            
-            # Start playback
-            print("[EventManager] Calling self.session.nav.playService()...")
+
+            if DEBUG:
+                print("[EventManager] Service ref created: " + service_ref.toString())
+
+            # Try to play WITHOUT stopping current service
+            # This is the key difference: we don't call self.session.nav.stopService()
+
+            # Start playing the audio
+            # Note: This will likely NOT work because Enigma2 doesn't support audio mixing
+            # But we try anyway using the same system
             self.session.nav.playService(service_ref)
-            print("[EventManager] playService() called successfully")
-            
-            # Check if playback started
-            new_service = self.session.nav.getCurrentlyPlayingServiceReference()
-            if new_service:
-                print("[EventManager] Now playing: " + new_service.toString())
-            else:
-                print("[EventManager] Warning: No service playing after playService()")
-            
-            # 5. Auto-stop after 3 seconds
+
+            if DEBUG:
+                print("[EventManager] playService() called (TV NOT stopped)")
+                current = self.session.nav.getCurrentlyPlayingServiceReference()
+                if current:
+                    print("[EventManager] Now playing: " + current.toString())
+
+            # Create auto-stop timer for 10 seconds (same as before)
+            def stop_audio():
+                try:
+                    if DEBUG:
+                        print("[EventManager] Auto-stop timer triggered (NO STOP mode)")
+
+                    # Stop the audio playback
+                    self.session.nav.stopService()
+
+                    # In NO-STOP mode, we don't need to restore anything
+                    # because we never saved/stopped the original service
+
+                except Exception as e:
+                    print("[EventManager] Error in stop_audio: " + str(e))
+
+            # Create and start the timer
+            stop_timer = eTimer()
+            stop_timer.callback.append(stop_audio)
+            stop_timer.start(10000, True)  # 10 seconds
+
+            if DEBUG:
+                print("[EventManager] Auto-stop timer set for 5000 ms")
+                print("[EventManager] === END play_notification_sound (NO STOP) ===")
+
+            # Return the timer so it can be stopped if needed
+            return stop_timer
+
+        except Exception as e:
+            print("[EventManager] CRITICAL ERROR in play_notification_sound (NO STOP): " + str(e))
+            import traceback
+            traceback.print_exc()
+            return None
+
+    def stop_notification_sound(self):
+        """Stop notification sound (minimal version for NO-STOP mode)"""
+        try:
+            if DEBUG:
+                print("[EventManager] stop_notification_sound called (NO-STOP mode)")
+
+            # In NO-STOP mode, we don't need to restore anything
+            # because we never stopped the TV
+
+            return True
+
+        except Exception as e:
+            print("[EventManager] Error in stop_notification_sound: " + str(e))
+            return False
+
+    """
+    def play_notification_sound(self, sound_type="notify"):
+        try:
+            if DEBUG:
+                print("[EventManager] === START play_notification_sound ===")
+                print("[EventManager] Requested sound type: " + sound_type)
+
+            # 1. Get CURRENT service BEFORE anything else
+            current_service = self.session.nav.getCurrentlyPlayingServiceReference()
+
+            # Save the ORIGINAL service (TV/radio), not audio file
+            self.original_service = current_service
+
+            if DEBUG:
+                if self.original_service:
+                    print("[EventManager] Original service saved: " + self.original_service.toString())
+                else:
+                    print("[EventManager] No original service (TV might be off)")
+
+            # Try different possible sound directories
+            possible_sound_dirs = [
+                plugin_path + "sounds/",
+                plugin_path + "sound/",
+                sounds_dir,
+            ]
+
+            sound_dir = None
+            for test_dir in possible_sound_dirs:
+                if exists(test_dir):
+                    sound_dir = test_dir
+                    break
+
+            if not sound_dir:
+                if DEBUG:
+                    print("[EventManager] ERROR: No sound directory found!")
+                return None
+
+            if DEBUG:
+                print("[EventManager] Using sound directory: " + sound_dir)
+
+            # Audio file mapping
+            sound_map = {
+                "short": "beep",
+                "notify": "notify",
+                "alert": "alert"
+            }
+
+            filename_base = sound_map.get(sound_type)
+            if not filename_base:
+                if DEBUG:
+                    print("[EventManager] ERROR: Unknown sound type: " + sound_type)
+                return None
+
+            if DEBUG:
+                print("[EventManager] Looking for base filename: " + filename_base)
+
+            # Look for the file (WAV first, then MP3)
+            sound_path = None
+            for ext in ['.wav', '.mp3']:
+                test_path = join(sound_dir, filename_base + ext)
+                if exists(test_path):
+                    sound_path = test_path
+                    break
+
+            if not sound_path:
+                if DEBUG:
+                    print("[EventManager] ERROR: Sound file not found!")
+                return None
+
+            if DEBUG:
+                print("[EventManager] Found sound file: " + sound_path)
+
+            # Create eServiceReference for audio file
+            # 4097 = isFile (1) + isAudio (4096)
+            service_ref = eServiceReference(4097, 0, sound_path)
+            service_ref.setName("Calendar Notification")
+
+            if DEBUG:
+                print("[EventManager] Service ref created: " + service_ref.toString())
+
+            # Stop current service and play audio
+            self.session.nav.stopService()
+            self.session.nav.playService(service_ref)
+
+            if DEBUG:
+                print("[EventManager] playService() called successfully")
+
+            # Create auto-stop timer for 3 seconds
             def stop_and_restore():
                 try:
-                    print("[EventManager] Auto-stop timer triggered")
+                    if DEBUG:
+                        print("[EventManager] Auto-stop timer triggered")
+
+                    # Stop audio playback
                     self.session.nav.stopService()
-                    
-                    if current_service:
-                        print("[EventManager] Restoring previous service...")
-                        self.session.nav.playService(current_service)
+
+                    # Wait a bit
+                    time.sleep(0.1)
+
+                    # Restore ORIGINAL service (TV/radio) if it exists
+                    if hasattr(self, 'original_service') and self.original_service:
+                        if DEBUG:
+                            print("[EventManager] Restoring original service: " +
+                                  self.original_service.toString())
+
+                        # Check it's not our audio file
+                        if self.original_service.toString().find("Calendar Notification") == -1:
+                            self.session.nav.playService(self.original_service)
+                        else:
+                            if DEBUG:
+                                print("[EventManager] Skipping - original service is audio file")
                     else:
-                        print("[EventManager] No previous service to restore")
-                        
+                        if DEBUG:
+                            print("[EventManager] No original service to restore")
+
+                    # Clean up
+                    if hasattr(self, 'original_service'):
+                        self.original_service = None
+
                 except Exception as e:
                     print("[EventManager] Error in stop_and_restore: " + str(e))
-            
-            restore_timer = eTimer()
-            restore_timer.callback.append(stop_and_restore)
-            restore_timer.start(2000, True)  # 2 seconds
-            
-            print("[EventManager] Auto-stop timer set for 3000 ms")
-            print("[EventManager] === END play_notification_sound ===")
-            
-            return True
-            
+
+            # Create and start the timer
+            stop_timer = eTimer()
+            stop_timer.callback.append(stop_and_restore)
+            stop_timer.start(5000, True)  # 5 seconds
+
+            if DEBUG:
+                print("[EventManager] Auto-stop timer set for 3000 ms")
+                print("[EventManager] === END play_notification_sound ===")
+
+            # Return the timer so it can be stopped if needed
+            return stop_timer
+
         except Exception as e:
             print("[EventManager] CRITICAL ERROR in play_notification_sound: " + str(e))
             import traceback
             traceback.print_exc()
-            return False
+            return None
 
-    def play_notification_sound_simple(self, sound_type="notify"):
-        """Play notification sound - supports WAV and MP3"""
+    def stop_notification_sound(self):
         try:
-            # Audio file paths inside the plugin
-            sound_files = {
-                "short": {
-                    "wav": "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/sounds/beep.wav",
-                    "mp3": "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/sounds/beep.mp3"
-                },
-                "notify": {
-                    "wav": "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/sounds/notify.wav",
-                    "mp3": "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/sounds/notify.mp3"
-                },
-                "alert": {
-                    "wav": "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/sounds/alert.wav",
-                    "mp3": "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/sounds/alert.mp3"
-                }
-            }
+            # DEBUG log
+            if DEBUG:
+                print("[EventManager] stop_notification_sound called")
+                if hasattr(self, 'previous_service'):
+                    print("[EventManager] Previous service exists: {0}".format(
+                        self.previous_service.toString() if self.previous_service else "None"))
 
-            sound_info = sound_files.get(sound_type, sound_files["notify"])
+            # 1. Stop current audio playback
+            self.session.nav.stopService()
 
-            # Look first for WAV, then MP3
-            sound_path = None
-            sound_format = None
+            # 2. Wait a bit for stop to complete
+            time.sleep(0.1)  # 100ms delay
 
-            # Check WAV
-            if exists(sound_info["wav"]):
-                sound_path = sound_info["wav"]
-                sound_format = "wav"
-            # Check MP3
-            elif exists(sound_info["mp3"]):
-                sound_path = sound_info["mp3"]
-                sound_format = "mp3"
+            # 3. Restore previous service if it exists AND is NOT the audio file
+            if hasattr(self, 'previous_service') and self.previous_service:
+                # Check if previous service is NOT our notification sound
+                current_service_ref = self.session.nav.getCurrentlyPlayingServiceReference()
+
+                if DEBUG:
+                    print("[EventManager] Current service before restore: {0}".format(
+                        current_service_ref.toString() if current_service_ref else "None"))
+                    print("[EventManager] Attempting to restore: {0}".format(
+                        self.previous_service.toString()))
+
+                # Only restore if it's a TV/radio service, not audio file
+                if self.previous_service.toString().find("Calendar Notification") == -1:
+                    self.session.nav.playService(self.previous_service)
+                    if DEBUG:
+                        print("[EventManager] Previous service restored successfully")
+                else:
+                    if DEBUG:
+                        print("[EventManager] Skipping restore - previous service is notification sound")
+
+                # Clear the reference
+                self.previous_service = None
             else:
-                print("[EventManager] No sound file found for {0}".format(sound_type))
-                return False
+                if DEBUG:
+                    print("[EventManager] No previous service to restore")
 
-            print(
-                "[EventManager] Playing {0}: {1}".format(
-                    sound_format.upper(),
-                    sound_path
-                )
-            )
-
-            # METHOD 1: eServiceReference (works on many receivers)
-            try:
-                return self._play_via_eservicereference(sound_path, sound_format)
-            except Exception as e1:
-                print("[EventManager] eServiceReference failed: {0}".format(e1))
-
-            # METHOD 2: System audio player
-            try:
-                return self._play_via_system_player(sound_path, sound_format)
-            except Exception as e2:
-                print("[EventManager] System player failed: {0}".format(e2))
-
-            # METHOD 3: GStreamer (if available)
-            try:
-                return self._play_via_gstreamer(sound_path, sound_format)
-            except Exception as e3:
-                print("[EventManager] GStreamer failed: {0}".format(e3))
-
-            print("[EventManager] All playback methods failed")
-            return False
+            return True
 
         except Exception as e:
-            print("[EventManager] Error in play_notification_sound: {0}".format(e))
+            print("[EventManager] Error in stop_notification_sound: " + str(e))
             return False
+    """
 
     def _monitor_playback(self, nav, sound_path):
         """Monitor audio playback to clean up when done"""
@@ -1034,7 +1205,7 @@ class EventManager:
 
 # Helper functions for Calendar integration
 def create_event_from_data(title, date, event_time="00:00", description="",
-                           repeat="none", notify_before=15, enabled=True):
+                           repeat="none", notify_before=5, enabled=True):
     """Create new event from provided data"""
     return Event(
         title=title,
@@ -1074,7 +1245,7 @@ if __name__ == "__main__":
         repeat="none",
         notify_before=5
     )
-
-    print("Event created: {0}".format(test_event.title))
-    print("Next occurrence: {0}".format(test_event.get_next_occurrence()))
-    print("Should notify? {0}".format(test_event.should_notify()))
+    if DEBUG:
+        print("Event created: {0}".format(test_event.title))
+        print("Next occurrence: {0}".format(test_event.get_next_occurrence()))
+        print("Should notify? {0}".format(test_event.should_notify()))
