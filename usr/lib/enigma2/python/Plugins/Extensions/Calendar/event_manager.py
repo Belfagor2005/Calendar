@@ -180,7 +180,7 @@ from . import _, plugin_path
 
 events_json = join(plugin_path, "events.json")
 sounds_dir = join(plugin_path, "sounds")
-DEBUG = True
+DEBUG = False
 
 
 try:
@@ -729,7 +729,7 @@ class EventManager:
                 # Create a timer that matches notification duration
                 notification_timer = eTimer()
                 notification_timer.callback.append(stop_sound_when_notification_ends)
-                notification_timer.start(10000, True)  # 5 seconds
+                notification_timer.start(10000, True)  # 10 seconds
                 if DEBUG:
                     print("[EventManager] Auto-stop timer set for 5000 ms")
                 self.notification_timer = notification_timer
@@ -740,133 +740,6 @@ class EventManager:
         except Exception as e:
             print("[EventManager] Error in show_notification: {0}".format(e))
 
-    def play_notification_sound(self, sound_type="notify"):
-        """Play notification sound WITHOUT stopping current TV/radio stream"""
-        try:
-            if DEBUG:
-                print("[EventManager] === START play_notification_sound (NO STOP) ===")
-                print("[EventManager] Requested sound type: " + sound_type)
-
-            # We're NOT saving previous service and NOT stopping current stream
-            if DEBUG:
-                current_service = self.session.nav.getCurrentlyPlayingServiceReference()
-                if current_service:
-                    print("[EventManager] Current service (NOT stopping): " + current_service.toString())
-
-            # Find sound file (same as before)
-            sound_dir = None
-            possible_sound_dirs = [
-                plugin_path + "sounds/",
-                plugin_path + "sound/",
-                sounds_dir,
-            ]
-
-            for test_dir in possible_sound_dirs:
-                if exists(test_dir):
-                    sound_dir = test_dir
-                    break
-
-            if not sound_dir:
-                if DEBUG:
-                    print("[EventManager] ERROR: No sound directory found!")
-                return None
-
-            # Audio file mapping
-            sound_map = {
-                "short": "beep",
-                "notify": "notify",
-                "alert": "alert"
-            }
-
-            filename_base = sound_map.get(sound_type, "notify")
-
-            # Look for the file
-            sound_path = None
-            for ext in ['.wav', '.mp3']:
-                test_path = join(sound_dir, filename_base + ext)
-                if exists(test_path):
-                    sound_path = test_path
-                    break
-
-            if not sound_path:
-                if DEBUG:
-                    print("[EventManager] ERROR: Sound file not found!")
-                return None
-
-            if DEBUG:
-                print("[EventManager] Found sound file: " + sound_path)
-
-            # Create eServiceReference for audio file
-            # 4097 = isFile (1) + isAudio (4096)
-            service_ref = eServiceReference(4097, 0, sound_path)
-            service_ref.setName("Calendar Notification")
-
-            if DEBUG:
-                print("[EventManager] Service ref created: " + service_ref.toString())
-
-            # Try to play WITHOUT stopping current service
-            # This is the key difference: we don't call self.session.nav.stopService()
-
-            # Start playing the audio
-            # Note: This will likely NOT work because Enigma2 doesn't support audio mixing
-            # But we try anyway using the same system
-            self.session.nav.playService(service_ref)
-
-            if DEBUG:
-                print("[EventManager] playService() called (TV NOT stopped)")
-                current = self.session.nav.getCurrentlyPlayingServiceReference()
-                if current:
-                    print("[EventManager] Now playing: " + current.toString())
-
-            # Create auto-stop timer for 10 seconds (same as before)
-            def stop_audio():
-                try:
-                    if DEBUG:
-                        print("[EventManager] Auto-stop timer triggered (NO STOP mode)")
-
-                    # Stop the audio playback
-                    self.session.nav.stopService()
-
-                    # In NO-STOP mode, we don't need to restore anything
-                    # because we never saved/stopped the original service
-
-                except Exception as e:
-                    print("[EventManager] Error in stop_audio: " + str(e))
-
-            # Create and start the timer
-            stop_timer = eTimer()
-            stop_timer.callback.append(stop_audio)
-            stop_timer.start(10000, True)  # 10 seconds
-
-            if DEBUG:
-                print("[EventManager] Auto-stop timer set for 5000 ms")
-                print("[EventManager] === END play_notification_sound (NO STOP) ===")
-
-            # Return the timer so it can be stopped if needed
-            return stop_timer
-
-        except Exception as e:
-            print("[EventManager] CRITICAL ERROR in play_notification_sound (NO STOP): " + str(e))
-            import traceback
-            traceback.print_exc()
-            return None
-
-    def stop_notification_sound(self):
-        """Stop notification sound (minimal version for NO-STOP mode)"""
-        try:
-            if DEBUG:
-                print("[EventManager] stop_notification_sound called (NO-STOP mode)")
-
-            # In NO-STOP mode, we don't need to restore anything
-            # because we never stopped the TV
-
-            return True
-
-        except Exception as e:
-            print("[EventManager] Error in stop_notification_sound: " + str(e))
-            return False
-
-    """
     def play_notification_sound(self, sound_type="notify"):
         try:
             if DEBUG:
@@ -953,7 +826,7 @@ class EventManager:
             if DEBUG:
                 print("[EventManager] playService() called successfully")
 
-            # Create auto-stop timer for 3 seconds
+            # Create auto-stop timer for 10 seconds
             def stop_and_restore():
                 try:
                     if DEBUG:
@@ -991,7 +864,7 @@ class EventManager:
             # Create and start the timer
             stop_timer = eTimer()
             stop_timer.callback.append(stop_and_restore)
-            stop_timer.start(5000, True)  # 5 seconds
+            stop_timer.start(10000, True)  # 10 seconds
 
             if DEBUG:
                 print("[EventManager] Auto-stop timer set for 3000 ms")
@@ -1052,7 +925,6 @@ class EventManager:
         except Exception as e:
             print("[EventManager] Error in stop_notification_sound: " + str(e))
             return False
-    """
 
     def _monitor_playback(self, nav, sound_path):
         """Monitor audio playback to clean up when done"""
