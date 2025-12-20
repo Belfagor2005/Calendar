@@ -25,6 +25,16 @@
 #  • Configurable notification duration (3-15 seconds)    #
 #  • Automatic cleanup of past event notifications        #
 #                                                         #
+#  AUDIO NOTIFICATION SYSTEM:                             #
+#  • Built-in sound alerts (alert/notify/short tones)     #
+#  • Support for WAV and MP3 formats                      #
+#  • Priority-based sound selection                       #
+#    - Alert: events in progress (notify_before=0)        #
+#    - Notify: imminent events (≤5 min before)            #
+#    - Short: regular notifications                       #
+#  • Sound files location: /sounds/ directory             #
+#  • Auto-stop after playback completion                  #
+#                                                         #
 #  DATE MANAGEMENT:                                       #
 #  • Create, edit, remove date information                #
 #  • Virtual keyboard for field editing                   #
@@ -33,7 +43,7 @@
 #  • Sections: [day] for date info, [month] for people    #
 #                                                         #
 #  CALENDAR DISPLAY:                                      #
-#  • Color coding: Today=green, Saturday=yellow, Sunday=red #
+#  • Color code: Today=green, Saturday=yellow, Sunday=red #
 #  • Event days highlighted in blue/cyan (configurable)   #
 #  • Asterisk (*) indicator for days with events          #
 #  • Week numbers display                                 #
@@ -42,12 +52,14 @@
 #  CONFIGURATION:                                         #
 #  • Event system enable/disable                          #
 #  • Notification settings (duration, advance time)       #
+#  • Audio notification type (short/notify/alert/none)    #
+#  • Enable/disable sound playback                        #
 #  • Event color selection                                #
 #  • Show event indicators toggle                         #
 #  • Menu integration option                              #
 #                                                         #
 #  KEY CONTROLS - MAIN CALENDAR:                          #
-#    OK          - Open main menu (New/Edit/Remove/Events)#
+#   OK          - Open main menu (New/Edit/Remove/Events) #
     RED         - Previous month                          #
     GREEN       - Next month                              #
     YELLOW      - Previous day                            #
@@ -59,7 +71,7 @@
     INFO/EPG    - About dialog                            #
 #                                                         #
 #  KEY CONTROLS - EVENT DIALOG:                           #
-#    OK          - Edit current field                     #
+#   OK          - Edit current field                      #
     RED         - Cancel                                  #
     GREEN       - Save event                              #
     YELLOW      - Delete event (edit mode only)           #
@@ -67,7 +79,7 @@
     LEFT/RIGHT  - Change selection options                #
 #                                                         #
 #  KEY CONTROLS - EVENTS VIEW:                            #
-#    OK          - Edit selected event                    #
+#   OK          - Edit selected event                     #
     RED         - Add new event                           #
     GREEN       - Edit selected event                     #
     YELLOW      - Delete selected event                   #
@@ -82,7 +94,14 @@
 #  • notification_system.py - Notification display        #
 #  • events.json - Event database (JSON format)           #
 #  • base/ - Date information storage                     #
+#  • sounds/ - Audio files for notifications              #
 #  • buttons/ - Button images for UI                      #
+#                                                         #
+#  AUDIO FILE REQUIREMENTS:                               #
+#  • alert.wav / alert.mp3 - High priority events         #
+#  • notify.wav / notify.mp3 - Normal notifications       #
+#  • beep.wav / beep.mp3 - Short beeps                    #
+#  • Location: /Calendar/sounds/                          #
 #                                                         #
 #  EVENT STORAGE FORMAT (events.json):                    #
 #  [{                                                     #
@@ -115,6 +134,7 @@
 #  • Virtual keyboard integration                         #
 #  • Auto-skin detection (HD/FHD)                         #
 #  • Configurable via setup.xml                           #
+#  • Uses eServiceReference for audio playback            #
 #                                                         #
 #  PERFORMANCE:                                           #
 #  • Efficient event checking algorithm                   #
@@ -127,20 +147,21 @@
 #  • Filter: grep EventManager /tmp/enigma2.log           #
 #  • Event check interval: 30 seconds                     #
 #  • Notification window: event time ± 5 minutes          #
+#  • Audio debug: check play_notification_sound() calls   #
 #                                                         #
 #  CREDITS:                                               #
 #  • Original Calendar plugin: Sirius0103                 #
 #  • Event system & modifications: Lululla                #
 #  • Notification system: Custom implementation           #
+#  • Audio system: Enigma2 eServiceReference integration  #
 #  • Testing & feedback: Enigma2 community                #
 #                                                         #
 #  VERSION HISTORY:                                       #
 #  • v1.0 - Basic calendar functionality                  #
 #  • v1.1 - Complete event system added                   #
-#           (Current version)                             #
 #                                                         #
-#  Last Updated: 2025-12-19                               #
-#  Status: Stable with event system                       #
+#  Last Updated: 2025-12-20                               #
+#  Status: Stable with event & audio system               #
 ###########################################################
 """
 
@@ -243,14 +264,14 @@ class Calendar(Screen):
         <screen name="Calendar" position="60,52" size="1800,975" title=" " flags="wfNoBorder">
             <eLabel position="30,915" size="1740,5" backgroundColor="#00555555" zPosition="1" />
 
-            <widget name="w0" position="15,60" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w1" position="83,60" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w2" position="150,60" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w3" position="218,60" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w4" position="285,60" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w5" position="353,60" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w6" position="420,60" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w7" position="488,60" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w0" position="15,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w1" position="81,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w2" position="148,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w3" position="216,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w4" position="283,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w5" position="351,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w6" position="418,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w7" position="486,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
 
             <widget name="wn0" position="15,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="wn1" position="15,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
@@ -308,26 +329,24 @@ class Calendar(Screen):
             <widget name="d41" position="488,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
 
             <widget name="monthname" position="15,8" size="533,45" font="Regular; 36" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="date" position="555,15" size="1230,38" font="Regular; 30" foregroundColor="#00ffcc33" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="date" position="555,10" size="1230,40" font="Regular; 30" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
             <widget name="datepeople" position="555,60" size="1230,38" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="monthpeople" position="15,540" size="533,368" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
             <widget name="sign" position="555,105" size="1230,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="holiday" position="555,188" size="1230,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="description" position="555,270" size="1230,638" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
 
-            <widget name="key_red" position="113,928" size="200,30" font="Regular;30" halign="left" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_green" position="443,928" size="200,30" font="Regular;30" halign="left" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_yellow" position="773,928" size="200,30" font="Regular;30" halign="left" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_blue" position="1103,928" size="200,30" font="Regular;30" halign="left" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_red" position="113,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_green" position="443,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_yellow" position="773,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_blue" position="1103,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
 
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="110,960" size="230,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="440,960" size="230,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="771,960" size="230,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="1099,960" size="230,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="1323,930" size="75,36" alphatest="blend" />
-
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="1417,930" size="75,36" alphatest="blend" />
-
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1505,930" size="74,40" alphatest="on" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1598,930" size="77,36" alphatest="on" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_epg.png" position="1695,930" size="76,37" alphatest="on" />
@@ -335,17 +354,17 @@ class Calendar(Screen):
     else:
         skin = """
         <!-- Calendar -->
-        <screen name="Calendar" position="360,215" size="1200,650" title=" " flags="wfNoBorder">
+       <screen name="Calendar" position="360,215" size="1200,650" title=" " flags="wfNoBorder">
             <eLabel position="20,605" size="1160,3" backgroundColor="#00555555" zPosition="1" />
 
-            <widget name="w0" position="10,40" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w1" position="55,40" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w2" position="100,40" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w3" position="145,40" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w4" position="190,40" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w5" position="235,40" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w6" position="280,40" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w7" position="325,40" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w0" position="10,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w1" position="55,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w2" position="100,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w3" position="145,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w4" position="190,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w5" position="235,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w6" position="280,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w7" position="325,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
 
             <widget name="wn0" position="10,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="wn1" position="10,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
@@ -403,28 +422,26 @@ class Calendar(Screen):
             <widget name="d41" position="325,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
 
             <widget name="monthname" position="10,5" size="355,30" font="Regular; 24" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="date" position="370,10" size="820,25" font="Regular; 20" foregroundColor="#00ffcc33" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="date" position="370,5" size="820,30" font="Regular; 20" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
             <widget name="datepeople" position="370,40" size="820,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="monthpeople" position="10,360" size="355,245" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
             <widget name="sign" position="370,70" size="820,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="holiday" position="370,125" size="820,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="description" position="370,180" size="820,425" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
 
-            <widget name="key_red" position="37,615" size="150,25" font="Regular;30" halign="left" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_green" position="231,615" size="180,25" font="Regular;30" halign="left" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_yellow" position="451,616" size="150,25" font="Regular;30" halign="left" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_blue" position="661,615" size="150,25" font="Regular;30" halign="left" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_red" position="37,615" size="150,25" font="Regular;24" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_green" position="231,615" size="180,25" font="Regular;24" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_yellow" position="451,616" size="150,25" font="Regular;24" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_blue" position="661,615" size="150,25" font="Regular;24" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="37,640" size="150,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="230,640" size="180,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="452,640" size="150,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="660,640" size="150,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="823,612" size="75,36" alphatest="blend" />
-
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="899,612" size="75,36" alphatest="blend" />
-
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="974,612" size="71,38" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1050,612" size="74,35" alphatest="on" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_epg.png" position="1125,612" size="74,35" alphatest="on" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1048,612" size="74,35" alphatest="on" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_epg.png" position="1124,612" size="74,35" alphatest="on" />
         </screen>"""
 
     def __init__(self, session):
@@ -535,7 +552,6 @@ class Calendar(Screen):
                 (_("Manage Events"), self.show_events),
                 (_("Add Event"), self.add_event),
                 (_("Cleanup past events"), self.cleanup_past_events),
-                # (_("Event Settings"), self.event_settings),  # If settings exist
             ])
 
         menu.append((_("Exit"), self.close))
@@ -648,7 +664,7 @@ class Calendar(Screen):
         self.session.openWithCallback(
             calendar_callback,
             VirtualKeyBoard,
-            title=_("Enter " + field_name),
+            title=field_name,
             text=current_text
         )
 
@@ -681,19 +697,19 @@ class Calendar(Screen):
         Once all fields have been updated, save the data.
         """
         if self.current_field == self["date"]:
-            self.open_virtual_keyboard_for_field(self["datepeople"], "datepeople")
+            self.open_virtual_keyboard_for_field(self["datepeople"], _("Date People"))
             self.current_field = self["datepeople"]
         elif self.current_field == self["datepeople"]:
-            self.open_virtual_keyboard_for_field(self["sign"], "sign")
+            self.open_virtual_keyboard_for_field(self["sign"], _("Sign"))
             self.current_field = self["sign"]
         elif self.current_field == self["sign"]:
-            self.open_virtual_keyboard_for_field(self["holiday"], "holiday")
+            self.open_virtual_keyboard_for_field(self["holiday"], _("Holiday"))
             self.current_field = self["holiday"]
         elif self.current_field == self["holiday"]:
-            self.open_virtual_keyboard_for_field(self["description"], "description")
+            self.open_virtual_keyboard_for_field(self["description"], _("Description"))
             self.current_field = self["description"]
         elif self.current_field == self["description"]:
-            self.open_virtual_keyboard_for_field(self["monthpeople"], "monthpeople")
+            self.open_virtual_keyboard_for_field(self["monthpeople"], _("Month People"))
             self.current_field = self["monthpeople"]
         else:
             print("All fields have been updated.")
@@ -704,7 +720,7 @@ class Calendar(Screen):
         Open the virtual keyboard to input a new date, focusing on the 'date' field.
         """
         self.current_field = self["date"]
-        self.open_virtual_keyboard_for_field(self["date"], "date")
+        self.open_virtual_keyboard_for_field(self["date"], _("Date"))
 
     def save_data(self):
         """Save data in the unified file"""
@@ -753,7 +769,7 @@ class Calendar(Screen):
         Start the process to edit all fields one by one by loading existing data first,
         then sequentially opening the virtual keyboard for each field.
         """
-        self.load_data()  # Load current data from file
+        self.load_data()
 
         self.edit_fields_sequence = [
             ("date", _("Edit Date")),
@@ -808,6 +824,7 @@ class Calendar(Screen):
             try:
                 with open(file_path, "w") as f:
                     f.write("")
+
                 # Clear all relevant UI fields
                 self["date"].setText(_("No file in database..."))
                 self["datepeople"].setText("")
@@ -908,22 +925,22 @@ class Calendar(Screen):
                 events_text = "\n\n" + _("TODAY'S EVENTS:") + "\n"
                 for event in day_events:
                     time_str = event.time[:5] if event.time else "00:00"
-                    repeat_icon = ""
+                    repeat_symbol = ""
                     if event.repeat == "daily":
-                        repeat_icon = " 🔄"
+                        repeat_symbol = " [D]"
                     elif event.repeat == "weekly":
-                        repeat_icon = " 📅"
+                        repeat_symbol = " [W]"
                     elif event.repeat == "monthly":
-                        repeat_icon = " 📆"
+                        repeat_symbol = " [M]"
                     elif event.repeat == "yearly":
-                        repeat_icon = " 🎉"
+                        repeat_symbol = " [Y]"
 
-                    status_icon = " ✓" if event.enabled else " ✗"
+                    status_symbol = " *" if event.enabled else " [X]"
                     events_text += "• {0} - {1}{2}{3}\n".format(
                         time_str,
                         event.title,
-                        repeat_icon,
-                        status_icon
+                        repeat_symbol,
+                        status_symbol
                     )
 
                     if event.description:
@@ -1074,6 +1091,7 @@ class Calendar(Screen):
                 # Get last day of previous month
                 last_day = (datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(days=1)).day
                 self.day = last_day
+
         # self._highlight_selected_day(self.selected_day)
         self.selected_day = self.day
         self._paint_calendar()
@@ -1139,29 +1157,21 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
+    result = []
+
+    result.append(PluginDescriptor(
+        name=_("Calendar"),
+        description=_("Calendar with events and notifications"),
+        where=[PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU],
+        icon="plugin.png",
+        fnc=main
+    ))
+
     if config.plugins.calendar.menu.value == 'yes':
-        result = [
-            PluginDescriptor(
-                name=_("Calendar"),
-                where=PluginDescriptor.WHERE_MENU,
-                fnc=mainMenu
-            ),
-            PluginDescriptor(
-                name=_("Calendar"),
-                description=_("Calendar"),
-                where=[PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU],
-                icon="plugin.png",
-                fnc=main
-            )
-        ]
-    else:
-        result = [
-            PluginDescriptor(
-                name=_("Calendar"),
-                description=_("Calendar"),
-                where=[PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU],
-                icon="plugin.png",
-                fnc=main
-            )
-        ]
+        result.append(PluginDescriptor(
+            name=_("Calendar"),
+            where=PluginDescriptor.WHERE_MENU,
+            fnc=mainMenu
+        ))
+
     return result
