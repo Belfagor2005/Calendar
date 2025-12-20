@@ -135,7 +135,7 @@ def show_notification(message, duration=15000):
     _notification_manager.showMessage(message, duration)
 
 
-def quick_notify(message, seconds=15):
+def quick_notify(message, seconds=5):
     """
     Quick notification with duration in seconds
     

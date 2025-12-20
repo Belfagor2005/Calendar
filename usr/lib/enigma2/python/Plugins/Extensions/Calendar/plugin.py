@@ -171,23 +171,29 @@ currversion = '1.1'
 
 def init_calendar_config():
     """Initialize all calendar configurations"""
-    # Crea subsection se non esiste
     if not hasattr(config.plugins, 'calendar'):
         config.plugins.calendar = ConfigSubsection()
+
     config.plugins.calendar.menu = ConfigSelection(default="no", choices=[
         ("no", _("no")),
         ("yes", _("yes"))])
-
     config.plugins.calendar.events_enabled = ConfigYesNo(default=True)
     config.plugins.calendar.events_notifications = ConfigYesNo(default=True)
     config.plugins.calendar.highlight = ConfigYesNo(default=True)
     config.plugins.calendar.events_show_indicators = ConfigYesNo(default=True)
     config.plugins.calendar.events_color = ConfigSelection(
-        choices=[("blue", "Blue"), ("cyan", "Cyan"), ("magenta", "Magenta"),
-                 ("orange", "Orange"), ("purple", "Purple")],
-        default="cyan"
+        choices=[
+            ("#FF0000FF", "Blue"),      # Opaque blue
+            ("#FF00FFFF", "Cyan"),      # Opaque cyan
+            ("#FF800080", "Purple"),    # Opaque purple
+            ("#FFFF0000", "Red"),       # Opaque red
+            ("#FFFF00FF", "Magenta"),   # Opaque magenta
+            ("#FFFFA500", "Orange"),    # Opaque orange
+            ("#FFFFFF00", "Yellow"),    # Opaque yellow
+            ("#FFFFFFFF", "White"),     # Opaque white
+        ],
+        default="#FF00FFFF"  # Opaque cyan as default
     )
-
     config.plugins.calendar.events_play_sound = ConfigYesNo(default=True)
     config.plugins.calendar.events_sound_type = ConfigSelection(
         choices=[
@@ -442,12 +448,12 @@ class Calendar(Screen):
         self.selected_day = self.day
         self.nowday = False
         self.current_field = None
-        # Create all UI elements
 
-        for x in range(7):
+        # Create all UI elements
+        for x in range(6):
             self['wn' + str(x)] = Label()
 
-        for x in range(48):
+        for x in range(42):
             if x < 8:
                 weekname = (_('...'),
                             _('Mon'),
@@ -525,9 +531,12 @@ class Calendar(Screen):
 
         # ⬇️ ADD EVENT OPTIONS ONLY IF ENABLED
         if config.plugins.calendar.events_enabled.value and self.event_manager:
-            menu.insert(4, (_("Manage Events"), self.show_events))
-            menu.insert(5, (_("Add Event"), self.add_event))
-            # menu.insert(6, (_("Event Settings"), self.event_settings))  # If settings exist
+            menu.extend([
+                (_("Manage Events"), self.show_events),
+                (_("Add Event"), self.add_event),
+                (_("Cleanup past events"), self.cleanup_past_events),
+                # (_("Event Settings"), self.event_settings),  # If settings exist
+            ])
 
         menu.append((_("Exit"), self.close))
 
@@ -544,18 +553,28 @@ class Calendar(Screen):
             )
             return
 
-        from .event_dialog import EventDialog
-        date_str = "{0}-{1:02d}-{2:02d}".format(
-            self.year,
-            self.month,
-            self.day
-        )
-        self.session.openWithCallback(
-            self.event_added_callback,
-            EventDialog,
-            self.event_manager,
-            date=date_str
-        )
+        try:
+            from .event_dialog import EventDialog
+            date_str = "{0}-{1:02d}-{2:02d}".format(
+                self.year,
+                self.month,
+                self.day
+            )
+            self.session.openWithCallback(
+                self.event_added_callback,
+                EventDialog,
+                self.event_manager,
+                date=date_str
+            )
+        except Exception as e:
+            print("[Calendar] Error opening EventDialog: {0}".format(e))
+            import traceback
+            traceback.print_exc()
+            self.session.open(
+                MessageBox,
+                _("Error opening event dialog"),
+                MessageBox.TYPE_ERROR
+            )
 
     def event_added_callback(self, result):
         """Callback after adding event"""
@@ -597,12 +616,13 @@ class Calendar(Screen):
         # 3. Proceed normally
         current_date = datetime.date(self.year, self.month, self.day)
 
-        def refresh_calendar(result):
+        def refresh_calendar(result=None):
             """Refresh calendar after event changes"""
-            if result is not None:
-                self._paint_calendar()
-                self.load_data()
-                print("[Calendar] Calendar refreshed after event changes")
+            if result:
+                print("[Calendar] Event changes detected, refreshing...")
+            self._paint_calendar()
+            self.load_data()
+            print("[Calendar] Calendar refreshed after event changes")
 
         self.session.openWithCallback(
             refresh_calendar,
@@ -631,6 +651,29 @@ class Calendar(Screen):
             title=_("Enter " + field_name),
             text=current_text
         )
+
+    def cleanup_past_events(self):
+        """Clean up past non-recurring events"""
+        if not config.plugins.calendar.events_enabled.value or not self.event_manager:
+            self.session.open(
+                MessageBox,
+                _("Event system is disabled. Enable it in settings."),
+                MessageBox.TYPE_INFO
+            )
+            return
+
+        # Call EventManager cleanup method directly
+        removed = self.event_manager.cleanup_past_events()
+
+        # Show result
+        if removed > 0:
+            message = _("Removed {0} past events").format(removed)
+            # Reload calendar
+            self._paint_calendar()
+        else:
+            message = _("No past events to remove")
+
+        self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
     def navigate_to_next_field(self):
         """
@@ -933,17 +976,18 @@ class Calendar(Screen):
 
             if (x + 7) % 7 == 0:
                 ir += 1
-                self['wn' + str(ir)].setText('')
+                if ir < 5:
+                    self['wn' + str(ir)].setText('')
 
             if x >= d2 and i <= self.monthday:
                 r = datetime.datetime(self.year, self.month, i)
                 wn1 = r.isocalendar()[1]
-                self['wn' + str(ir - 1)].setText('%0.2d' % wn1)
-                self['d' + str(x)].setText(str(i))
-                self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
+                if ir <= 5:
+                    self['wn' + str(ir - 1)].setText('%0.2d' % wn1)
+                    self['d' + str(x)].setText(str(i))
+                    self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
 
                 # Check if there are events (only if enabled in config)
-
                 if self.event_manager and config.plugins.calendar.events_show_indicators.value:
                     date_str = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, i)
                     day_events = self.event_manager.get_events_for_date(date_str)

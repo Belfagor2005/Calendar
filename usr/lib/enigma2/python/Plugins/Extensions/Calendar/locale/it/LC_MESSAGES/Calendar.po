@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-19 18:17+0100\n"
-"PO-Revision-Date: 2025-12-19 18:18+0100\n"
+"POT-Creation-Date: 2025-12-20 12:07+0100\n"
+"PO-Revision-Date: 2025-12-20 12:09+0100\n"
 "Last-Translator: \n"
 "Language-Team: <sirius.al@rambler.ru>\n"
 "Language: it\n"
@@ -83,13 +83,30 @@ msgstr "Attivo"
 msgid "Description"
 msgstr "Descrizione"
 
-#: event_dialog.py:382 plugin.py:635
+#: event_dialog.py:382 plugin.py:651
 msgid "Enter "
 msgstr "Invio "
 
 #: event_dialog.py:499
 msgid "Title and date are required!"
 msgstr "Titolo e data sono obbligatori!"
+
+#: event_manager.py:599 plugin.py:551 plugin.py:660
+msgid "Event system is disabled. Enable it in settings."
+msgstr "Il sistema degli eventi è disabilitato. Abilitalo nelle impostazioni."
+
+#: event_manager.py:608
+msgid "Do you want to remove all past non-recurring events?"
+msgstr "Vuoi rimuovere tutti gli eventi passati non ricorrenti?"
+
+#: event_manager.py:618 plugin.py:670
+#, python-brace-format
+msgid "Removed {0} past events"
+msgstr "Rimossi {0} eventi passati"
+
+#: event_manager.py:621 plugin.py:674
+msgid "No past events to remove"
+msgstr "Nessun evento passato da rimuovere"
 
 #: events_view.py:200
 msgid "Add"
@@ -107,210 +124,214 @@ msgstr "Rimuovi"
 msgid "Back"
 msgstr "Torna"
 
-#: plugin.py:173
+#: plugin.py:178
 msgid "no"
 msgstr "no"
 
-#: plugin.py:174
+#: plugin.py:179
 msgid "yes"
 msgstr "si"
 
-#: plugin.py:197
+#: plugin.py:200
 msgid "Short beep"
 msgstr "Beep breve"
 
-#: plugin.py:198
+#: plugin.py:201
 msgid "Notification tone"
 msgstr "Tono di Notifica"
 
-#: plugin.py:199
+#: plugin.py:202
 msgid "Alert sound"
 msgstr "Suono Allerta"
 
-#: plugin.py:200
+#: plugin.py:203
 msgid "No sound"
 msgstr "Nessun Suono"
 
-#: plugin.py:431
+#: plugin.py:433
 msgid "Calendar Planner"
 msgstr "Calendario Planner"
 
-#: plugin.py:456
+#: plugin.py:458
 msgid "..."
 msgstr ""
 
-#: plugin.py:457
+#: plugin.py:459
 msgid "Mon"
 msgstr "Lun"
 
-#: plugin.py:458
+#: plugin.py:460
 msgid "Tue"
 msgstr "Mar"
 
-#: plugin.py:459
+#: plugin.py:461
 msgid "Wed"
 msgstr "Mer"
 
-#: plugin.py:460
+#: plugin.py:462
 msgid "Thu"
 msgstr "Gio"
 
-#: plugin.py:461
+#: plugin.py:463
 msgid "Fri"
 msgstr "Ven"
 
-#: plugin.py:462
+#: plugin.py:464
 msgid "Sat"
 msgstr "Sab"
 
-#: plugin.py:463
+#: plugin.py:465
 msgid "Sun"
 msgstr "Dom"
 
-#: plugin.py:467
+#: plugin.py:469
 #, python-format
 msgid "Calendar Planner v.%s"
-msgstr ""
+msgstr "Calendario Planner v.%s"
 
-#: plugin.py:468
+#: plugin.py:470
 msgid "Month -"
 msgstr "Mese-"
 
-#: plugin.py:469
+#: plugin.py:471
 msgid "Month +"
 msgstr "Mese+"
 
-#: plugin.py:470
+#: plugin.py:472
 msgid "Day -"
 msgstr "Giorno-"
 
-#: plugin.py:471
+#: plugin.py:473
 msgid "Day +"
 msgstr "Giorno+"
 
-#: plugin.py:473
+#: plugin.py:475
 msgid "Files is Empty..."
 msgstr "File vuoto..."
 
-#: plugin.py:474 plugin.py:475 plugin.py:476 plugin.py:477 plugin.py:478
-#: plugin.py:479
+#: plugin.py:476 plugin.py:477 plugin.py:478 plugin.py:479 plugin.py:480
+#: plugin.py:481
 msgid ".............."
 msgstr ""
 
-#: plugin.py:524
+#: plugin.py:526
 msgid "New Date"
 msgstr "Nuovi Dati"
 
-#: plugin.py:525 plugin.py:720
+#: plugin.py:527 plugin.py:759
 msgid "Edit Date"
 msgstr "Modifica Dati"
 
-#: plugin.py:526
+#: plugin.py:528
 msgid "Remove Date"
 msgstr "Rimuovi Dati"
 
-#: plugin.py:527
+#: plugin.py:529
 msgid "Delete File"
 msgstr "Elimina File"
 
-#: plugin.py:532
+#: plugin.py:535
 msgid "Manage Events"
 msgstr "Gestisci eventi"
 
-#: plugin.py:533
+#: plugin.py:536
 msgid "Add Event"
 msgstr "Aggiungi Evento"
 
-#: plugin.py:536
+#: plugin.py:537
+msgid "Cleanup past events"
+msgstr "Pulisci eventi passati"
+
+#: plugin.py:541
 msgid "Exit"
 msgstr "Esci"
 
-#: plugin.py:546
-msgid "Event system is disabled. Enable it in settings."
-msgstr "Il sistema degli eventi è disabilitato. Abilitalo nelle impostazioni."
+#: plugin.py:575
+msgid "Error opening event dialog"
+msgstr "Errore durante l'apertura della finestra di dialogo dell'evento"
 
-#: plugin.py:721
+#: plugin.py:760
 msgid "Edit Date People"
 msgstr "Modifica Dati Persone"
 
-#: plugin.py:722
+#: plugin.py:761
 msgid "Edit Sign"
 msgstr "Modifica Segno"
 
-#: plugin.py:723
+#: plugin.py:762
 msgid "Edit Holiday"
 msgstr "Modifica Compleanno"
 
-#: plugin.py:724
+#: plugin.py:763
 msgid "Edit Description"
 msgstr "Modifica Descrizione"
 
-#: plugin.py:725
+#: plugin.py:764
 msgid "Edit Month People"
 msgstr "Modifica Mese Persone"
 
-#: plugin.py:773 plugin.py:798 plugin.py:855 plugin.py:897
+#: plugin.py:812 plugin.py:837 plugin.py:894 plugin.py:936
 msgid "No file in database..."
 msgstr "Nessun file nel database..."
 
-#: plugin.py:783 plugin.py:803
+#: plugin.py:822 plugin.py:842
 msgid "File not found!"
 msgstr "File non trovato!"
 
-#: plugin.py:869
+#: plugin.py:908
 msgid "TODAY'S EVENTS:"
 msgstr "EVENTI DI OGGI:"
 
-#: plugin.py:906
+#: plugin.py:945
 msgid "January"
 msgstr "Gennaio"
 
-#: plugin.py:907
+#: plugin.py:946
 msgid "February"
 msgstr "Febbraio"
 
-#: plugin.py:908
+#: plugin.py:947
 msgid "March"
 msgstr "Marzo"
 
-#: plugin.py:909
+#: plugin.py:948
 msgid "April"
 msgstr "Aprile"
 
-#: plugin.py:910
+#: plugin.py:949
 msgid "May"
 msgstr "Maggio"
 
-#: plugin.py:911
+#: plugin.py:950
 msgid "June"
 msgstr "Giugno"
 
-#: plugin.py:912
+#: plugin.py:951
 msgid "July"
 msgstr "Luglio"
 
-#: plugin.py:913
+#: plugin.py:952
 msgid "August"
 msgstr "Agosto"
 
-#: plugin.py:914
+#: plugin.py:953
 msgid "September"
 msgstr "Settembre"
 
-#: plugin.py:915
+#: plugin.py:954
 msgid "October"
 msgstr "Ottobre"
 
-#: plugin.py:916
+#: plugin.py:955
 msgid "November"
 msgstr "Novembre"
 
-#: plugin.py:917
+#: plugin.py:956
 msgid "December"
 msgstr "Dicembre"
 
-#: plugin.py:1091 plugin.py:1106 plugin.py:1111 plugin.py:1112 plugin.py:1121
-#: plugin.py:1122
+#: plugin.py:1130 plugin.py:1145 plugin.py:1150 plugin.py:1151 plugin.py:1160
+#: plugin.py:1161
 msgid "Calendar"
 msgstr "Calendario"
 

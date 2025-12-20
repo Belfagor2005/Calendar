@@ -348,3 +348,7 @@ class EventsView(Screen):
         if result:
             self.load_events()
             self.close(True)
+
+    def close(self, result=None):
+        """Close the screen"""
+        Screen.close(self, result)
