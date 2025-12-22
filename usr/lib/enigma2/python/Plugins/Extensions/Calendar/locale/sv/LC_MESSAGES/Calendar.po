@@ -1,0 +1,1253 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Celndar\n"
+"POT-Creation-Date: 2025-12-22 15:15+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Warder <ciksa@seznam.cz>\n"
+"Language-Team: lululla [ekekaz@gmail.com]\n"
+"Language: sv_FI\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: event_dialog.py:327
+msgid "Title:"
+msgstr ""
+
+#: event_dialog.py:328 event_dialog.py:399 event_dialog.py:429
+#: event_dialog.py:447 event_dialog.py:455 event_dialog.py:494
+#: event_dialog.py:602
+msgid "Event"
+msgstr ""
+
+#: event_dialog.py:329
+msgid "Date:"
+msgstr ""
+
+#: event_dialog.py:331
+msgid "Time:"
+msgstr ""
+
+#: event_dialog.py:333
+msgid "Repeat:"
+msgstr ""
+
+#: event_dialog.py:335
+msgid "Notify:"
+msgstr ""
+
+#: event_dialog.py:337
+msgid "Active:"
+msgstr ""
+
+#: event_dialog.py:339
+msgid "Description:"
+msgstr ""
+
+#: event_dialog.py:340 event_dialog.py:353 event_dialog.py:420
+#: event_dialog.py:431 event_dialog.py:447 event_dialog.py:457
+#: event_dialog.py:494 event_dialog.py:615 plugin.py:1393
+msgid "Description"
+msgstr ""
+
+#: event_dialog.py:342
+msgid "Cancel"
+msgstr ""
+
+#: event_dialog.py:343
+msgid "Save"
+msgstr "Uložiť"
+
+#: event_dialog.py:344
+msgid "Delete"
+msgstr ""
+
+#: event_dialog.py:347
+msgid "Title"
+msgstr ""
+
+#: event_dialog.py:348 plugin.py:905
+msgid "Date"
+msgstr ""
+
+#: event_dialog.py:349
+msgid "Time"
+msgstr ""
+
+#: event_dialog.py:350
+msgid "Repeat"
+msgstr ""
+
+#: event_dialog.py:351
+msgid "Notify"
+msgstr ""
+
+#: event_dialog.py:352
+msgid "Active"
+msgstr ""
+
+#: event_dialog.py:466
+msgid "Enter "
+msgstr ""
+
+#: event_dialog.py:608
+msgid "Title and date are required!"
+msgstr ""
+
+#: event_manager.py:790 plugin.py:1273
+#, python-brace-format
+msgid "Removed {0} past events"
+msgstr ""
+
+#: event_manager.py:793 plugin.py:1278
+msgid "No past events to remove"
+msgstr ""
+
+#: events_view.py:255
+msgid "Add"
+msgstr ""
+
+#: events_view.py:256
+msgid "Edit"
+msgstr ""
+
+#: events_view.py:257
+msgid "Remove"
+msgstr ""
+
+#: events_view.py:258
+msgid "Back"
+msgstr "Späť"
+
+#: holidays.py:671
+msgid "Close"
+msgstr "Zatvoriť"
+
+#: holidays.py:672
+msgid "Import"
+msgstr ""
+
+#: holidays.py:673
+msgid "Import All"
+msgstr ""
+
+#: holidays.py:801
+msgid "Clear ALL holiday entries from all date files?"
+msgstr ""
+
+#: plugin.py:258
+msgid "no"
+msgstr ""
+
+#: plugin.py:259
+msgid "yes"
+msgstr ""
+
+#: plugin.py:266 plugin.py:289
+msgid "Blue"
+msgstr ""
+
+#: plugin.py:267 plugin.py:290
+msgid "Red"
+msgstr ""
+
+#: plugin.py:268 plugin.py:291
+msgid "Green"
+msgstr ""
+
+#: plugin.py:269 plugin.py:292
+msgid "Orange"
+msgstr ""
+
+#: plugin.py:270 plugin.py:293
+msgid "Yellow"
+msgstr ""
+
+#: plugin.py:271 plugin.py:294
+msgid "White"
+msgstr ""
+
+#: plugin.py:278
+msgid "Short beep"
+msgstr ""
+
+#: plugin.py:279
+msgid "Notification tone"
+msgstr ""
+
+#: plugin.py:280
+msgid "Alert sound"
+msgstr ""
+
+#: plugin.py:281
+msgid "No sound"
+msgstr ""
+
+#: plugin.py:544
+msgid "Calendar Planner"
+msgstr ""
+
+#: plugin.py:572
+msgid "..."
+msgstr ""
+
+#: plugin.py:573
+msgid "Mon"
+msgstr ""
+
+#: plugin.py:574
+msgid "Tue"
+msgstr ""
+
+#: plugin.py:575
+msgid "Wed"
+msgstr ""
+
+#: plugin.py:576
+msgid "Thu"
+msgstr ""
+
+#: plugin.py:577
+msgid "Fri"
+msgstr ""
+
+#: plugin.py:578
+msgid "Sat"
+msgstr ""
+
+#: plugin.py:579
+msgid "Sun"
+msgstr ""
+
+#: plugin.py:583
+#, python-format
+msgid "Calendar Planner v.%s"
+msgstr ""
+
+#: plugin.py:584
+msgid "Month -"
+msgstr ""
+
+#: plugin.py:585
+msgid "Month +"
+msgstr ""
+
+#: plugin.py:586
+msgid "Day -"
+msgstr ""
+
+#: plugin.py:587
+msgid "Day +"
+msgstr ""
+
+#: plugin.py:589
+msgid "Files is Empty..."
+msgstr ""
+
+#: plugin.py:590 plugin.py:591 plugin.py:592 plugin.py:593 plugin.py:594
+#: plugin.py:595
+msgid ".............."
+msgstr ""
+
+#: plugin.py:596
+msgid "Calendar Planner | Ready"
+msgstr ""
+
+#: plugin.py:640
+msgid "New Date"
+msgstr ""
+
+#: plugin.py:641 plugin.py:923
+msgid "Edit Date"
+msgstr ""
+
+#: plugin.py:642
+msgid "Remove Date"
+msgstr ""
+
+#: plugin.py:643
+msgid "Delete File"
+msgstr ""
+
+#: plugin.py:649
+msgid "Manage Events"
+msgstr ""
+
+#: plugin.py:650
+msgid "Add Event"
+msgstr ""
+
+#: plugin.py:651
+msgid "Cleanup past events"
+msgstr ""
+
+#: plugin.py:656
+msgid "Import Holidays"
+msgstr ""
+
+#: plugin.py:657
+msgid "Show Today's Holidays"
+msgstr ""
+
+#: plugin.py:658
+msgid "Show Upcoming Holidays"
+msgstr ""
+
+#: plugin.py:659
+msgid "Clear Holiday Database"
+msgstr ""
+
+#: plugin.py:663
+msgid "Check for Updates"
+msgstr "Skontrolovať aktualizácie"
+
+#: plugin.py:666
+msgid "Exit"
+msgstr "Ukončiť"
+
+#: plugin.py:688 update_manager.py:58
+msgid "Update check error"
+msgstr "Chyba kontroly aktualizácií"
+
+#: plugin.py:690
+#, python-format
+msgid "Error: %s"
+msgstr "Chyba: %s"
+
+#: plugin.py:744
+msgid "Date People: "
+msgstr ""
+
+#: plugin.py:751
+msgid "Sign: "
+msgstr ""
+
+#: plugin.py:758
+msgid "Holiday: "
+msgstr ""
+
+#: plugin.py:769
+msgid "Month People: "
+msgstr ""
+
+#: plugin.py:815 plugin.py:817
+msgid "TODAY'S EVENTS:"
+msgstr ""
+
+#: plugin.py:862
+msgid "Error saving data"
+msgstr ""
+
+#: plugin.py:915 plugin.py:916 plugin.py:1412 plugin.py:1455 plugin.py:1456
+msgid "SCHEDULED EVENTS:"
+msgstr ""
+
+#: plugin.py:924
+msgid "Edit Date People"
+msgstr ""
+
+#: plugin.py:925
+msgid "Edit Sign"
+msgstr ""
+
+#: plugin.py:926
+msgid "Edit Holiday"
+msgstr ""
+
+#: plugin.py:927
+msgid "Edit Description"
+msgstr ""
+
+#: plugin.py:928
+msgid "Edit Month People"
+msgstr ""
+
+#: plugin.py:1009 plugin.py:1035
+msgid "No file in database..."
+msgstr ""
+
+#: plugin.py:1020 plugin.py:1041
+msgid "File not found!"
+msgstr ""
+
+#: plugin.py:1050
+msgid "January"
+msgstr ""
+
+#: plugin.py:1051
+msgid "February"
+msgstr ""
+
+#: plugin.py:1052
+msgid "March"
+msgstr ""
+
+#: plugin.py:1053
+msgid "April"
+msgstr ""
+
+#: plugin.py:1054
+msgid "May"
+msgstr ""
+
+#: plugin.py:1055
+msgid "June"
+msgstr ""
+
+#: plugin.py:1056
+msgid "July"
+msgstr ""
+
+#: plugin.py:1057
+msgid "August"
+msgstr ""
+
+#: plugin.py:1058
+msgid "September"
+msgstr ""
+
+#: plugin.py:1059
+msgid "October"
+msgstr ""
+
+#: plugin.py:1060
+msgid "November"
+msgstr ""
+
+#: plugin.py:1061
+msgid "December"
+msgstr ""
+
+#: plugin.py:1230 plugin.py:1263
+msgid "Event system is disabled. Enable it in settings."
+msgstr ""
+
+#: plugin.py:1254
+msgid "Error opening event dialog"
+msgstr ""
+
+#: plugin.py:1384
+msgid "Date People"
+msgstr ""
+
+#: plugin.py:1387
+msgid "Sign"
+msgstr ""
+
+#: plugin.py:1390
+msgid "Holiday"
+msgstr ""
+
+#: plugin.py:1396
+msgid "Month People"
+msgstr ""
+
+#: plugin.py:1909 plugin.py:1924 plugin.py:1933
+msgid "Calendar"
+msgstr ""
+
+#: plugin.py:1925
+msgid "Calendar with events and notifications"
+msgstr ""
+
+#: update_manager.py:24
+msgid "Checking for updates..."
+msgstr "Kontrola aktualizácií..."
+
+#: update_manager.py:35
+msgid "Update check failed"
+msgstr "Kontrola aktualizácií zlyhala"
+
+#: update_manager.py:37
+msgid "Could not check for updates. Check internet connection."
+msgstr "Nepodarilo sa skontrolovať aktualizácie. Skontrolujte internetové pripojenie."
+
+#: update_manager.py:42
+msgid "Update available!"
+msgstr "Aktualizácia k dispozícii!"
+
+#: update_manager.py:47
+msgid "Plugin is up to date"
+msgstr "Plugin je aktuálny"
+
+#: update_manager.py:49
+msgid "You have the latest version of Calendar."
+msgstr ""
+
+#: update_manager.py:60
+#, python-format
+msgid "Could not check for updates: %s"
+msgstr "Nepodarilo sa skontrolovať aktualizácie: %s"
+
+#: update_manager.py:74
+msgid "Update cancelled"
+msgstr "Aktualizácia zrušená"
+
+#: update_manager.py:76
+msgid ""
+"A new version is available!\n"
+"\n"
+"Update now?\n"
+"\n"
+"(Recommended to backup first)"
+msgstr ""
+"Je k dispozícii nová verzia!\n"
+"\n"
+"Aktualizovať teraz?\n"
+"\n"
+"(Odporúča sa najskôr zálohovať)"
+
+#: update_manager.py:92
+msgid "Update successful!"
+msgstr "Aktualizácia úspešná!"
+
+#: update_manager.py:94
+#, python-format
+msgid ""
+"%s\n"
+"\n"
+"Restart Enigma2 now for changes to take effect."
+msgstr ""
+"%s\n"
+"\n"
+"Reštartujte Enigmu2, aby sa zmeny prejavili."
+
+#: update_manager.py:103
+msgid "Update failed"
+msgstr "Aktualizácia zlyhala"
+
+#: update_manager.py:109
+msgid "Updating plugin... Please wait"
+msgstr "Aktualizácia pluginu... Čakajte prosím"
+
+#: update_manager.py:126
+msgid "Please restart Enigma2 manually."
+msgstr "Prosím, reštartujte Enigmu2 manuálne."
+
+#: updater.py:158
+msgid "Failed to create backup. Update cancelled."
+msgstr "Vytvorenie zálohy zlyhalo. Aktualizácia zrušená."
+
+#: updater.py:166
+msgid "Update completed successfully!"
+msgstr "Aktualizácia bola úspešne dokončená!"
+
+#: updater.py:170
+msgid "Update failed. Restored from backup."
+msgstr "Aktualizácia zlyhala. Obnovené zo zálohy."
+
+#: updater.py:172
+msgid "Update failed and backup restore also failed!"
+msgstr "Aktualizácia zlyhala a obnovenie zálohy tiež zlyhalo!"
+
+#: updater.py:181
+#, python-format
+msgid "Update error: %s"
+msgstr "Chyba aktualizácie: %s"
+
+#~ msgid "TV Garden Plugin"
+#~ msgstr "Plugin TV Garden"
+
+#~ msgid "About TV Garden"
+#~ msgstr "O doplnku TV Garden"
+
+#~ msgid "Error loading information"
+#~ msgstr "Chyba pri načítavaní informácií"
+
+#~ msgid "Animation"
+#~ msgstr "Animácia"
+
+#~ msgid "Auto"
+#~ msgstr "Auto"
+
+#~ msgid "Business"
+#~ msgstr "Živnostník / Firma"
+
+#~ msgid "Classic"
+#~ msgstr "Klasický"
+
+#~ msgid "Comedy"
+#~ msgstr "Komédia"
+
+#~ msgid "Cooking"
+#~ msgstr "Varenie"
+
+#~ msgid "Culture"
+#~ msgstr "Kultúra"
+
+#~ msgid "Documentary"
+#~ msgstr "Dokumentárny film"
+
+#~ msgid "Education"
+#~ msgstr "Vzdelanie"
+
+#~ msgid "Entertainment"
+#~ msgstr "Zábava"
+
+#~ msgid "Family"
+#~ msgstr "Rodina"
+
+#~ msgid "General"
+#~ msgstr "Všeobecné"
+
+#~ msgid "History"
+#~ msgstr "História"
+
+#~ msgid "Hobby"
+#~ msgstr "Koníček"
+
+#~ msgid "Kids"
+#~ msgstr "Deti"
+
+#~ msgid "Legislative"
+#~ msgstr "Legislatíva"
+
+#~ msgid "Lifestyle"
+#~ msgstr "Lifestyle"
+
+#~ msgid "Local"
+#~ msgstr "Lokálne"
+
+#~ msgid "Movies"
+#~ msgstr "Filmy"
+
+#~ msgid "Music"
+#~ msgstr "Hudba"
+
+#~ msgid "News"
+#~ msgstr "Aktuality"
+
+#~ msgid "Politics"
+#~ msgstr "Politika"
+
+#~ msgid "Religious"
+#~ msgstr "Náboženské"
+
+#~ msgid "Series"
+#~ msgstr "Séria"
+
+#~ msgid "Science"
+#~ msgstr "Veda"
+
+#~ msgid "Shop"
+#~ msgstr "Obchod"
+
+#~ msgid "Travel"
+#~ msgstr "Cestovanie"
+
+#~ msgid "Weather"
+#~ msgstr "Počasie"
+
+#~ msgid "Loading categories..."
+#~ msgstr "Načítavajú sa kategórie..."
+
+#~ msgid "Select"
+#~ msgstr "Vybrať"
+
+#~ msgid "Select a category"
+#~ msgstr "Vyberte kategóriu"
+
+#~ msgid "No channels in this category"
+#~ msgstr "Žiadne kanály v tejto kategórii"
+
+#~ msgid "Error loading category"
+#~ msgstr "Chyba pri načítaní kategórie"
+
+#~ msgid "Refreshing..."
+#~ msgstr "Osviežujúce..."
+
+#~ msgid "Cache cleared"
+#~ msgstr "Vyrovnávacia pamäť bola vymazaná"
+
+#~ msgid "Refresh failed"
+#~ msgstr "Obnovenie zlyhalo"
+
+#~ msgid "Loading channels..."
+#~ msgstr "Načítavajú sa kanály..."
+
+#~ msgid "Play"
+#~ msgstr "Prehrať"
+
+#~ msgid "Favorite"
+#~ msgstr "Obľúbené"
+
+#~ msgid "Play Channel"
+#~ msgstr "Prehrať kanál"
+
+#~ msgid "Add to Favorites"
+#~ msgstr "Pridať k obľúbeným"
+
+#~ msgid "Channel Information"
+#~ msgstr "Informácie o kanáli"
+
+#~ msgid "Export Current View"
+#~ msgstr "Exportovať aktuálne zobrazenie"
+
+#~ msgid "Channel Menu"
+#~ msgstr "Ponuka kanálov"
+
+#~ msgid "Export"
+#~ msgstr "Exportovať"
+
+#, python-brace-format
+#~ msgid "Showing {shown} of {total} channels"
+#~ msgstr "Zobrazuje sa {shown} z {total} kanálov"
+
+#, python-format
+#~ msgid "Found %d playable channels"
+#~ msgstr "Nájdených %d prehrávateľných kanálov"
+
+#, python-format
+#~ msgid "(skipped %d YouTube)"
+#~ msgstr "(preskočené %d YouTube)"
+
+#, python-format
+#~ msgid "(filtered %d problematic)"
+#~ msgstr "(filtrované %d problematické)"
+
+#, python-format
+#~ msgid "(limited to first %d)"
+#~ msgstr "(obmedzené na prvých %d)"
+
+#~ msgid "Error loading channels"
+#~ msgstr "Chyba pri načítavaní kanálov"
+
+#~ msgid "No channels to export"
+#~ msgstr "Žiadne kanály na export"
+
+#~ msgid "Channels"
+#~ msgstr "Kanály"
+
+#, python-brace-format
+#~ msgid "Export {count} channels to bouquet '{name}'?"
+#~ msgstr "Exportovať {count} kanálov do skupiny '{name}'?"
+
+#, python-format
+#~ msgid "Export failed: %s"
+#~ msgstr "Export zlyhal: %s"
+
+#~ msgid "No stream URL"
+#~ msgstr "Žiadna URL adresa streamu"
+
+#~ msgid "Unknown"
+#~ msgstr "Neznáme"
+
+#, python-format
+#~ msgid "Remove '%s' from favorites?"
+#~ msgstr "Odstrániť „%s“ z obľúbených?"
+
+#, python-format
+#~ msgid "Stream: %s..."
+#~ msgstr "Stream: %s..."
+
+#, python-format
+#~ msgid "Stream: %s"
+#~ msgstr "Stream: %s"
+
+#~ msgid "Loading countries..."
+#~ msgstr "Načítavajú sa krajiny..."
+
+#~ msgid "Refresh"
+#~ msgstr "Aktualizovať"
+
+#~ msgid "Select a country"
+#~ msgstr "Vyberte krajinu"
+
+#~ msgid "No countries with channels found"
+#~ msgstr "Nenašli sa žiadne krajiny s kanálmi"
+
+#~ msgid "Error loading countries"
+#~ msgstr "Chyba pri načítavaní krajín"
+
+#~ msgid "No country selected"
+#~ msgstr "Nie je vybratá žiadna krajina"
+
+#~ msgid "Loading favorites..."
+#~ msgstr "Načítavajú sa obľúbené položky..."
+
+#~ msgid "Options"
+#~ msgstr "Nastavenia"
+
+#, python-format
+#~ msgid "%d favorite channels"
+#~ msgstr "%d obľúbených kanálov"
+
+#~ msgid "No favorite channels"
+#~ msgstr "Žiadne obľúbené kanály"
+
+#~ msgid "Error loading favorites"
+#~ msgstr "Chyba pri načítavaní obľúbených položiek"
+
+#~ msgid "No channel selected"
+#~ msgstr "Nie je vybraný žiadny kanál"
+
+#~ msgid "View Channel Info"
+#~ msgstr "Zobraziť informácie o kanáli"
+
+#~ msgid "Remove from Favorites"
+#~ msgstr "Odstránenie z obľúbených"
+
+#~ msgid "Clear All Favorites"
+#~ msgstr "Vymazať všetky obľúbené"
+
+#~ msgid "Export to Enigma2 Bouquet"
+#~ msgstr "Exportovať do Enigma2 Bouquet"
+
+#~ msgid "Remove Bouquet from Enigma2"
+#~ msgstr "Odstrániť Kyticu z Enigmy2"
+
+#, python-format
+#~ msgid "Options for: %s"
+#~ msgstr "Možnosti pre: %s"
+
+#, python-format
+#~ msgid "Export '%s' to Enigma2 bouquet?"
+#~ msgstr "Exportovať '%s' do kytice Enigma2?"
+
+#~ msgid "Remove TV Garden bouquet from Enigma2?"
+#~ msgstr "Odstrániť kyticu TV Garden z Enigmy2?"
+
+#~ msgid "Clear ALL favorites?"
+#~ msgstr "Vymazať VŠETKY obľúbené?"
+
+#~ msgid ""
+#~ "Export ALL channels from TV Garden database?\n"
+#~ "This may take some time."
+#~ msgstr ""
+#~ "Exportovať VŠETKY kanály z databázy TV Garden?\n"
+#~ "Môže to chvíľu trvať."
+
+#, python-format
+#~ msgid "%d favorites"
+#~ msgstr "%d obľúbených"
+
+#~ msgid "Loading all channels..."
+#~ msgstr "Načítavajú sa všetky kanály..."
+
+#~ msgid "Database exported successfully"
+#~ msgstr "Databáza bola úspešne exportovaná"
+
+#~ msgid "Export failed"
+#~ msgstr "Export zlyhal"
+
+#~ msgid "No stream URL available"
+#~ msgstr "Nie je k dispozícii žiadna URL adresa streamu"
+
+#~ msgid "No favorites to export"
+#~ msgstr "Žiadne obľúbené položky na export"
+
+#, python-format
+#~ msgid "Export ALL %d favorites to Enigma2 bouquet?"
+#~ msgstr "Exportovať VŠETKY obľúbené položky (%d) do kytice Enigma2?"
+
+#~ msgid "Search:"
+#~ msgstr "Vyhľadať:"
+
+#~ msgid "Press GREEN for keyboard..."
+#~ msgstr "Stlačte ZELENÉ tlačidlo pre klávesnicu..."
+
+#~ msgid "Keyboard"
+#~ msgstr "Klávesnica"
+
+#~ msgid "Clear"
+#~ msgstr "Vyčistiť"
+
+#, python-format
+#~ msgid "Press GREEN for keyboard... Ready - %d channels"
+#~ msgstr "Stlačte ZELENÉ tlačidlo pre klávesnicu... Pripravené - %d kanálov"
+
+#~ msgid "No channels loaded"
+#~ msgstr "Žiadne načítané kanály"
+
+#~ msgid "Search Channels"
+#~ msgstr "Vyhľadávanie kanálov"
+
+#~ msgid "Searching..."
+#~ msgstr "Vyhľadávanie…"
+
+#, python-brace-format
+#~ msgid "Showing {shown} of {total} results"
+#~ msgstr "Zobrazuje sa {shown} z {total} výsledkov"
+
+#, python-format
+#~ msgid "Found %d channels"
+#~ msgstr "Nájdených kanálov: %d"
+
+#, python-format
+#~ msgid "No channels found for: %s"
+#~ msgstr "Nenašli sa žiadne kanály pre: %s"
+
+#~ msgid "Removed from favorites"
+#~ msgstr "Odstránené z obľúbených"
+
+#~ msgid "Browse by Country"
+#~ msgstr "Prehľadávať podľa krajiny"
+
+#~ msgid "Browse channels by country"
+#~ msgstr "Prehliadať kanály podľa krajiny"
+
+#~ msgid "Browse by Category"
+#~ msgstr "Prehľadávať podľa kategórie"
+
+#~ msgid "Browse channels by category"
+#~ msgstr "Prehliadanie kanálov podľa kategórie"
+
+#~ msgid "Favorites"
+#~ msgstr "Moje obľúbené"
+
+#~ msgid "Your favorite channels"
+#~ msgstr "Vaše obľúbené kanály"
+
+#~ msgid "Search channels by name"
+#~ msgstr "Vyhľadávanie kanálov podľa názvu"
+
+#~ msgid "Check for plugin updates"
+#~ msgstr "Skontrolujte aktualizácie pluginov"
+
+#~ msgid "Settings"
+#~ msgstr "Nastavenia"
+
+#~ msgid "Plugin settings and configuration"
+#~ msgstr "Nastavenia a konfigurácia pluginu"
+
+#~ msgid "About"
+#~ msgstr "O nás"
+
+#~ msgid "About TV Garden plugin"
+#~ msgstr "O doplnku TV Garden"
+
+#, python-format
+#~ msgid ""
+#~ "Refresh completed!\n"
+#~ "Loaded %d countries"
+#~ msgstr ""
+#~ "Obnovenie dokončené!\n"
+#~ "Načítaných %d krajín"
+
+#, python-format
+#~ msgid "Refresh failed: %s"
+#~ msgstr "Obnovenie zlyhalo: %s"
+
+#~ msgid "TV Garden"
+#~ msgstr "TV záhrada"
+
+#~ msgid "Access free IPTV channels from around the world"
+#~ msgstr "Získajte prístup k bezplatným IPTV kanálom z celého sveta"
+
+#~ msgid "Already in favorites"
+#~ msgstr "Už v obľúbených"
+
+#, python-format
+#~ msgid "Added to favorites: %s"
+#~ msgstr "Pridané k obľúbeným: %s"
+
+#, python-format
+#~ msgid "Removed from favorites: %s"
+#~ msgstr "Odstránené z obľúbených: %s"
+
+#~ msgid "Channel not found in favorites"
+#~ msgstr "Kanál sa nenašiel v obľúbených"
+
+#~ msgid "No valid stream URLs found"
+#~ msgstr "Nenašli sa žiadne platné adresy URL streamu"
+
+#, python-format
+#~ msgid "Exported %d channels to bouquet"
+#~ msgstr "Exportovaných %d kanálov do bouquetu"
+
+#~ msgid "Empty database"
+#~ msgstr "Prázdna databáza"
+
+#~ msgid "No valid channels found in database"
+#~ msgstr "V databáze sa nenašli žiadne platné kanály"
+
+#~ msgid "Error"
+#~ msgstr "Chyba"
+
+#~ msgid "files and"
+#~ msgstr "súbory a"
+
+#~ msgid "bouquet references"
+#~ msgstr "odkazy na kytice"
+
+#~ msgid "Channel added to bouquet"
+#~ msgstr "Kanál pridaný do kytice"
+
+#, python-format
+#~ msgid "Cleared %d favorites"
+#~ msgstr "Vymazané obľúbené položky (%d)"
+
+#~ msgid "Error clearing favorites"
+#~ msgstr "Chyba pri vymazávaní obľúbených položiek"
+
+#~ msgid "Log file is empty or not found"
+#~ msgstr "Súbor denníka je prázdny alebo sa nenašiel"
+
+#~ msgid "TV Garden Logs"
+#~ msgstr "TV Záhradné polená"
+
+#~ msgid "TV Garden Settings"
+#~ msgstr "Nastavenia TV záhrady"
+
+#~ msgid "Set options"
+#~ msgstr "Nastavenie možností"
+
+#~ msgid "View Log File"
+#~ msgstr "Zobraziť súbor denníka"
+
+#~ msgid "Clear Log Files Now"
+#~ msgstr "Vymazať súbory denníka teraz"
+
+#~ msgid "Are you sure you want to clear all log files?"
+#~ msgstr "Naozaj chcete vymazať všetky súbory denníka?"
+
+#~ msgid "Logs cleared"
+#~ msgstr "Denníky boli vymazané"
+
+#~ msgid "Log files cleared successfully"
+#~ msgstr "Súbory denníka boli úspešne vymazané"
+
+#, python-format
+#~ msgid "Error clearing logs: %s"
+#~ msgstr "Chyba pri vymazaní protokolov: %s"
+
+#~ msgid "ExtePlayer3"
+#~ msgstr "ExtePlayer3"
+
+#~ msgid "GStreamer"
+#~ msgstr "GStreamer"
+
+#~ msgid "100 channels"
+#~ msgstr "100 kanálov"
+
+#~ msgid "250 channels"
+#~ msgstr "250 kanálov"
+
+#~ msgid "500 channels"
+#~ msgstr "500 kanálov"
+
+#~ msgid "1000 channels"
+#~ msgstr "1000 kanálov"
+
+#~ msgid "All channels"
+#~ msgstr "Všetky kanály"
+
+#, fuzzy
+#~| msgid "1000 channels"
+#~ msgid "2000 channels"
+#~ msgstr "1000 kanálov"
+
+#, fuzzy
+#~| msgid "500 channels"
+#~ msgid "5000 channels"
+#~ msgstr "500 kanálov"
+
+#~ msgid "Countries"
+#~ msgstr "Krajiny"
+
+#~ msgid "Categories"
+#~ msgstr "Kategórie"
+
+#~ msgid "50 channels"
+#~ msgstr "50 kanálov"
+
+#~ msgid "512 KB"
+#~ msgstr "512 kB"
+
+#~ msgid "1 MB"
+#~ msgstr "1 MB"
+
+#~ msgid "2 MB"
+#~ msgstr "2 MB"
+
+#~ msgid "4 MB"
+#~ msgstr "4 MB"
+
+#~ msgid "8 MB"
+#~ msgstr "8 MB"
+
+#~ msgid "Debug"
+#~ msgstr "Debug"
+
+#~ msgid "Warning"
+#~ msgstr "Upozornenie"
+
+#~ msgid "Critical"
+#~ msgstr "Kritická"
+
+#~ msgid "Press OK to check for updates"
+#~ msgstr "Stlačte OK pre kontrolu aktualizácií"
+
+#~ msgid "Press OK to view logs"
+#~ msgstr "Stlačte OK pre zobrazenie protokolov"
+
+#~ msgid "Press OK to clear logs"
+#~ msgstr "Stlačením tlačidla OK vymažete protokoly"
+
+#~ msgid "=== Browser Settings ==="
+#~ msgstr "=== Nastavenia prehliadača ==="
+
+#~ msgid "Default View"
+#~ msgstr "Predvolené"
+
+#, fuzzy
+#~| msgid "Max channels per country"
+#~ msgid "Max channels for country"
+#~ msgstr "Maximálny počet kanálov na krajinu"
+
+#~ msgid "Show Flags"
+#~ msgstr "Zobraziť vlajky"
+
+#~ msgid "Show Logos"
+#~ msgstr "Zobraziť logá"
+
+#~ msgid "=== Player Settings ==="
+#~ msgstr "=== Nastavenia prehrávača ==="
+
+#~ msgid "Player"
+#~ msgstr "Prehrávač"
+
+#~ msgid "=== Export Settings ==="
+#~ msgstr "=== Nastavenia exportu ==="
+
+#~ msgid "Enable Export"
+#~ msgstr "Povoliť export"
+
+#~ msgid "Bouquet Name Prefix"
+#~ msgstr "Predpona názvu kytice"
+
+#, fuzzy
+#~| msgid "Max Channels per Bouquet"
+#~ msgid "Max Channels for Bouquet"
+#~ msgstr "Maximálny počet kanálov na kyticu"
+
+#, fuzzy
+#~| msgid "Max Channels per Bouquet"
+#~ msgid "Max Channels for Sub-Bouquet"
+#~ msgstr "Maximálny počet kanálov na kyticu"
+
+#~ msgid "=== Performance Settings ==="
+#~ msgstr "=== Nastavenia výkonu ==="
+
+#~ msgid "Use Hardware Acceleration"
+#~ msgstr "Používajte hardvérovú akceleráciu"
+
+#~ msgid "Buffer Size"
+#~ msgstr "Veľkosť zásobníka"
+
+#~ msgid "=== Network Settings ==="
+#~ msgstr "=== Nastavenia siete ==="
+
+#~ msgid "User Agent"
+#~ msgstr "Agent používateľa"
+
+#~ msgid "=== Cache Settings ==="
+#~ msgstr "=== Nastavenia vyrovnávacej pamäte ==="
+
+#~ msgid "Cache Size"
+#~ msgstr "Veľkosť vyrovnávacej pamäte"
+
+#~ msgid "=== Logging Settings ==="
+#~ msgstr "=== Nastavenia protokolovania ==="
+
+#~ msgid "Log Level"
+#~ msgstr "Úroveň záznamu"
+
+#~ msgid "Log to File"
+#~ msgstr "Zaznamenať do súboru"
+
+#~ msgid "=== Log Maintenance ==="
+#~ msgstr "--- Údržba protokolov ---"
+
+#~ msgid "=== Update Settings ==="
+#~ msgstr "=== Aktualizovať nastavenia ==="
+
+#~ msgid "Export Settings"
+#~ msgstr "Export - nastavenia"
+
+#~ msgid "ENABLED"
+#~ msgstr "Ukladanie do vyrovnávacej pamäte povolené(1)"
+
+#~ msgid "DISABLED"
+#~ msgstr "Súkromné pre tento sledovač -- DHT a PEX vypnuté"
+
+#~ msgid "ON"
+#~ msgstr "ZAPNUTÉ"
+
+#~ msgid "OFF"
+#~ msgstr "Vypnúť"
+
+#, python-format
+#~ msgid "Export: %s"
+#~ msgstr "Exportovať: %s"
+
+#, python-format
+#~ msgid "Auto-refresh: %s"
+#~ msgstr "Automatické obnovenie: %s"
+
+#, python-format
+#~ msgid "Confirm before export: %s"
+#~ msgstr "Potvrdiť pred exportom: %s"
+
+#~ msgid "Test Export (1 channel)"
+#~ msgstr "Testovací export (1 kanál)"
+
+#~ msgid "HD"
+#~ msgstr "HD"
+
+#~ msgid "FHD"
+#~ msgstr "Full HD"
+
+#~ msgid "WQHD"
+#~ msgstr "WQHD"
+
+#~ msgid "Volume"
+#~ msgstr "Objem"
+
+#~ msgid "Timeout (seconds)"
+#~ msgstr "Časový limit (sekundy)"
+
+#~ msgid "Retries"
+#~ msgstr "Opakované pokusy"
+
+#~ msgid "=== Display Settings ==="
+#~ msgstr "=== Nastavenia zobrazenia ==="
+
+#~ msgid "Skin"
+#~ msgstr "Vzhľad"
+
+#~ msgid "Items per page"
+#~ msgstr "Počet položiek na stránku"
+
+#~ msgid "=== Favorites Settings ==="
+#~ msgstr "=== Nastavenia obľúbených položiek ==="
+
+#~ msgid "Max Favorites"
+#~ msgstr "Max Obľúbené"
+
+#~ msgid "Auto-Refresh Bouquet"
+#~ msgstr "Automaticky obnovovacia kytica"
+
+#~ msgid "Confirm Before Export"
+#~ msgstr "Potvrdiť pred exportom"
+
+#~ msgid "Cache TTL (hours)"
+#~ msgstr "TTL vyrovnávacej pamäte (hodiny)"
+
+#~ msgid "Max Log Size (MB)"
+#~ msgstr "Maximálna veľkosť protokolu (MB)"
+
+#~ msgid "Log Backup Files"
+#~ msgstr "Záložné súbory protokolov"
+
+#~ msgid "Refreshing cache..."
+#~ msgstr "Obnovuje sa vyrovnávacia pamäť..."
+
+#, python-brace-format
+#~ msgid "Exported {count} channels from {countries} countries"
+#~ msgstr "Exportované kanály ({count}) z {countries} krajín"

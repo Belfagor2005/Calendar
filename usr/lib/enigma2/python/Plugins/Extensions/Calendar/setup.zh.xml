@@ -1,0 +1,30 @@
+<setupxml>
+	<setup key="settingCalendar" title="日历设置">
+		<!-- Event System -->
+		<item level="1" text="事件设置" description="事件管理系统"/>
+		<!-- Display Settings -->
+		<item level="0" text="在菜单中显示日历:" description="在主信息菜单中显示日历。">config.plugins.calendar.menu</item>
+		<!-- Event Settings -->
+		<item level="0" text="启用事件系统" description="启用带日期/时间的事件管理。">config.plugins.calendar.events_enabled</item>
+		<if conditional="config.plugins.calendar.events_enabled.value">
+			<item level="0" text="启用通知" description="显示即将发生事件的通知。">config.plugins.calendar.events_notifications</item>
+			<if conditional="config.plugins.calendar.events_notifications.value">
+				<item level="0" text="通知时播放声音" description="事件通知出现时播放声音。">config.plugins.calendar.events_play_sound</item>
+				<item level="0" text="通知声音类型" description="通知时播放的声音类型。">config.plugins.calendar.events_sound_type</item>
+			</if>
+			<item level="0" text="显示事件指示器" description="在有事件的日期上显示标记。">config.plugins.calendar.events_show_indicators</item>
+			<if conditional="config.plugins.calendar.events_show_indicators.value">
+				<item level="0" text="事件颜色" description="有事件日期的颜色。">config.plugins.calendar.events_color</item>
+			</if>
+		</if>
+		<!-- Holiday Settings -->
+		<item level="1" text="节假日设置" description="节假日显示和着色"/>
+		<item level="0" text="启用节假日着色" description="为有节假日的日期着色。">config.plugins.calendar.holidays_enabled</item>
+		<if conditional="config.plugins.calendar.holidays_enabled.value">
+			<item level="0" text="显示节假日指示器" description="在节假日显示'H'标记。">config.plugins.calendar.holidays_show_indicators</item>
+			<item level="0" text="节假日颜色" description="节假日的颜色。">config.plugins.calendar.holidays_color</item>
+		</if>
+		<item level="1" text="调试设置" description="调试和日志记录选项"/>
+		<item level="0" text="启用调试模式" description="在控制台/日志中显示调试消息。">config.plugins.calendar.debug_enabled</item>
+	</setup>
+</setupxml>

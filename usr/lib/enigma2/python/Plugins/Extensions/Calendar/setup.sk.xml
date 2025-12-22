@@ -1,0 +1,30 @@
+<setupxml>
+	<setup key="settingCalendar" title="Nastavenia Kalendára">
+		<!-- Event System -->
+		<item level="1" text="Nastavenia Udalostí" description="Systém správy udalostí"/>
+		<!-- Display Settings -->
+		<item level="0" text="Zobraziť Kalendár v menu:" description="Zobraziť Kalendár v hlavnom informačnom menu.">config.plugins.calendar.menu</item>
+		<!-- Event Settings -->
+		<item level="0" text="Povoliť systém udalostí" description="Povoliť správu udalostí s dátumom/časom.">config.plugins.calendar.events_enabled</item>
+		<if conditional="config.plugins.calendar.events_enabled.value">
+			<item level="0" text="Povoliť upozornenia" description="Zobrazovať upozornenia na nadchádzajúce udalosti.">config.plugins.calendar.events_notifications</item>
+			<if conditional="config.plugins.calendar.events_notifications.value">
+				<item level="0" text="Prehrať zvuk s upozorneniami" description="Prehrať zvuk pri zobrazení upozornenia na udalosť.">config.plugins.calendar.events_play_sound</item>
+				<item level="0" text="Typ zvuku upozornení" description="Typ zvuku pre prehrávanie s upozorneniami.">config.plugins.calendar.events_sound_type</item>
+			</if>
+			<item level="0" text="Zobraziť indikátory udalostí" description="Zobraziť značky na dňoch s udalosťami.">config.plugins.calendar.events_show_indicators</item>
+			<if conditional="config.plugins.calendar.events_show_indicators.value">
+				<item level="0" text="Farba udalostí" description="Farba pre dni s udalosťami.">config.plugins.calendar.events_color</item>
+			</if>
+		</if>
+		<!-- Holiday Settings -->
+		<item level="1" text="Nastavenia Sviatkov" description="Zobrazenie a farebné označenie sviatkov"/>
+		<item level="0" text="Povoliť farebné označenie sviatkov" description="Farebne označiť dni so sviatkami.">config.plugins.calendar.holidays_enabled</item>
+		<if conditional="config.plugins.calendar.holidays_enabled.value">
+			<item level="0" text="Zobraziť indikátory sviatkov" description="Zobraziť značku 'H' na dňoch so sviatkami.">config.plugins.calendar.holidays_show_indicators</item>
+			<item level="0" text="Farba sviatkov" description="Farba pre sviatkové dni.">config.plugins.calendar.holidays_color</item>
+		</if>
+		<item level="1" text="Nastavenia Ladenia" description="Možnosti ladenia a logovania"/>
+		<item level="0" text="Povoliť režim ladenia" description="Zobraziť ladiace správy v konzole/logu.">config.plugins.calendar.debug_enabled</item>
+	</setup>
+</setupxml>

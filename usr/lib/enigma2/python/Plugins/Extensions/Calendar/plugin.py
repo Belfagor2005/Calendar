@@ -543,6 +543,7 @@ class Calendar(Screen):
         self.year = localtime()[0]
         self.month = localtime()[1]
         self.day = localtime()[2]
+        self.selected_day = self.day
 
         if config.plugins.calendar.events_enabled.value:
             from .event_manager import EventManager
@@ -553,12 +554,12 @@ class Calendar(Screen):
         self.language = config.osd.language.value.split("_")[0].strip()
         self.path = plugin_path
 
-        self.selected_day = self.day
         self.selected_bg_color = None
         self.nowday = False
         self.current_field = None
 
         self.holiday_cache = {}
+        self.cells_by_day = {}
 
         # Create all UI elements
         for x in range(6):
@@ -688,19 +689,23 @@ class Calendar(Screen):
                               MessageBox.TYPE_ERROR)
 
     def clear_fields(self):
-        """Clear all fields for new date"""
+        """Clear all fields for new date (but keep date)"""
         if DEBUG:
-            print("[Calendar] Clearing all fields")
-        self["date"].setText("")
+            print("[Calendar] Clearing all fields (except date)")
+
+        # Keep the current date
+        default_date = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
+        self["date"].setText(default_date)
+
+        # Clear other fields
         self["datepeople"].setText("")
         self["sign"].setText("")
         self["holiday"].setText("")
         self["description"].setText("")
         self["monthpeople"].setText("")
-        # self["status"].setText("")
 
     def load_data(self):
-        """Load data from file and show labels with data"""
+        """Load data from file and display labels with data"""
         file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
             self.path,
             self.language,
@@ -708,6 +713,9 @@ class Calendar(Screen):
             self.month,
             self.day
         )
+
+        # ALWAYS show the current date as default
+        default_date = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
 
         if exists(file_path):
             try:
@@ -731,9 +739,9 @@ class Calendar(Screen):
                         key, value = line.split(":", 1)
                         month_data[key.strip()] = value.strip()
 
-                # Date - special case (already has label in skin)
-                date_val = day_data.get("date", "")
-                self["date"].setText(date_val if date_val else "")
+                # Date - use value from file if present, otherwise default date
+                date_val = day_data.get("date", default_date)
+                self["date"].setText(date_val)
 
                 # Date People - add label
                 datepeople_val = day_data.get("datepeople", "")
@@ -769,15 +777,27 @@ class Calendar(Screen):
 
             except Exception as e:
                 print("[Calendar] Error loading data: {0}".format(str(e)))
-                self.clear_fields()
+                # In case of error, show at least the default date
+                self["date"].setText(default_date)
+                self.clear_other_fields()
         else:
             if DEBUG:
                 print("[Calendar] File not found: {0}".format(file_path))
-            self.clear_fields()
+            # If the file does not exist, show the default date
+            self["date"].setText(default_date)
+            self.clear_other_fields()
 
         # Add events if enabled
         if self.event_manager:
             self.add_events_to_description()
+
+    def clear_other_fields(self):
+        """Clear all fields except date"""
+        self["datepeople"].setText("")
+        self["sign"].setText("")
+        self["holiday"].setText("")
+        self["description"].setText("")
+        self["monthpeople"].setText("")
 
     def save_data(self):
         """Save data to unified file"""
@@ -1038,7 +1058,7 @@ class Calendar(Screen):
             self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO)
 
     def _paint_calendar(self):
-        # Clear the original states when month changes
+        # Clear original states when the month changes
         if hasattr(self, 'original_cell_states'):
             self.original_cell_states = {}
         if hasattr(self, 'previous_selected_day'):
@@ -1071,19 +1091,13 @@ class Calendar(Screen):
         self.monthname = monthname[self.month - 1]
         self["monthname"].setText(str(self.year) + ' ' + str(self.monthname))
 
-        # === 1. COMPLETE RESET: ALL WHITE ON BLACK ===
-        """
-        for x in range(42):
-            self['d' + str(x)].instance.setBackgroundColor(parseColor('black'))
-            self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
-        """
         for x in range(8):
             if x < 8:
-                self['w' + str(x)].instance.setBackgroundColor(parseColor('#333333'))  # Dark gray
+                self['w' + str(x)].instance.setBackgroundColor(parseColor('#333333'))
                 self['w' + str(x)].instance.setForegroundColor(parseColor('white'))
 
         for x in range(6):
-            self['wn' + str(x)].instance.setBackgroundColor(parseColor('#333333'))  # Dark gray
+            self['wn' + str(x)].instance.setBackgroundColor(parseColor('#333333'))
             self['wn' + str(x)].instance.setForegroundColor(parseColor('white'))
 
         # Informational texts
@@ -1102,7 +1116,7 @@ class Calendar(Screen):
         self["key_yellow"].instance.setForegroundColor(parseColor('white'))
         self["key_blue"].instance.setForegroundColor(parseColor('white'))
 
-        # Load holidays for current month into cache
+        # Load holidays for the current month into cache
         if config.plugins.calendar.holidays_enabled.value:
             current_month_holidays = self._load_month_holidays(self.year, self.month)
         else:
@@ -1123,25 +1137,24 @@ class Calendar(Screen):
                 wn1 = r.isocalendar()[1]
                 if ir <= 5:
                     self['wn' + str(ir - 1)].setText('%0.2d' % wn1)
-                    self['d' + str(x)].setText(str(i))
 
-                    # RESET to default white first
-                    self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
+                    # IMPORTANT: save the cell reference for this day
+                    self.cells_by_day[i] = 'd' + str(x)
+
+                    self['d' + str(x)].setText(str(i))
 
                     # Check for holidays FIRST (priority 1)
                     is_holiday = False
-                    # holiday_text = ""
                     if config.plugins.calendar.holidays_enabled.value:
                         if i in current_month_holidays:
                             is_holiday = True
-                            # holiday_text = current_month_holidays[i]
                             holiday_color = config.plugins.calendar.holidays_color.value
                             self['d' + str(x)].instance.setForegroundColor(parseColor(holiday_color))
                             if config.plugins.calendar.holidays_show_indicators.value:
                                 current_text = self['d' + str(x)].getText()
                                 self['d' + str(x)].setText(current_text + " H")
 
-                    # Check for events (priority 2 - only if not holiday)
+                    # Check for events (priority 2 - only if not a holiday)
                     has_events = False
                     if not is_holiday and self.event_manager and config.plugins.calendar.events_show_indicators.value:
                         date_str = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, i)
@@ -1158,10 +1171,12 @@ class Calendar(Screen):
                     if not is_holiday and not has_events:
                         if datetime.date(self.year, self.month, i).weekday() == 5:
                             self['d' + str(x)].instance.setForegroundColor(parseColor('yellow'))
-                        if datetime.date(self.year, self.month, i).weekday() == 6:
+                        elif datetime.date(self.year, self.month, i).weekday() == 6:
                             self['d' + str(x)].instance.setForegroundColor(parseColor('red'))
+                        else:
+                            self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
 
-                    # TODAY background (highest priority - always applies)
+                    # TODAY background (highest priority - always applied)
                     if datetime.date(self.year, self.month, i) == datetime.date.today():
                         self.nowday = True
                         self['d' + str(x)].instance.setBackgroundColor(parseColor('green'))
@@ -1170,6 +1185,8 @@ class Calendar(Screen):
 
         # Load content for the current date
         self.load_data()
+
+        # IMPORTANT: apply selection AFTER drawing everything
         self._highlight_selected_day(self.selected_day)
 
     def show_events(self):
@@ -1504,11 +1521,20 @@ class Calendar(Screen):
 
     def _highlight_selected_day(self, day):
         """Highlight selected day with blue background and white text"""
-        today = localtime()[2]
+        # controlla se questo giorno è OGGI (stesso anno, mese e giorno)
+        current_time = localtime()
+        is_today = (day == current_time[2] and
+                    self.year == current_time[0] and
+                    self.month == current_time[1])
 
         # First, restore the original color of the previously selected day (if any and not today)
-        if hasattr(self, 'previous_selected_day') and self.previous_selected_day and self.previous_selected_day != today:
-            if hasattr(self, 'original_cell_states') and self.previous_selected_day in self.original_cell_states:
+        if hasattr(self, 'previous_selected_day') and self.previous_selected_day:
+            # MODIFICA: controlla se il previous_selected_day era oggi
+            was_today = (self.previous_selected_day == current_time[2] and
+                         self.year == current_time[0] and
+                         self.month == current_time[1])
+
+            if not was_today and hasattr(self, 'original_cell_states') and self.previous_selected_day in self.original_cell_states:
                 state = self.original_cell_states[self.previous_selected_day]
                 for x in range(42):
                     cell_text = self['d' + str(x)].getText()
@@ -1540,7 +1566,12 @@ class Calendar(Screen):
                 cell_day = int(cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip())
 
                 # Skip today - it keeps green background
-                if cell_day != today:
+                # usa is_today invece di day != today
+                cell_is_today = (cell_day == current_time[2] and
+                               self.year == current_time[0] and
+                               self.month == current_time[1])
+
+                if not cell_is_today:
                     # Clear any selection background (blue)
                     self['d' + str(x)].instance.clearBackgroundColor()
 
@@ -1582,7 +1613,7 @@ class Calendar(Screen):
         self.previous_selected_day = day
 
         # Apply blue background and white text to selected day
-        if day != today:
+        if not is_today:  # usa is_today invece di day != today
             for x in range(42):
                 cell_text = self['d' + str(x)].getText()
                 if cell_text:
@@ -1671,7 +1702,6 @@ class Calendar(Screen):
                 self.selected_day = 1
 
         self._paint_calendar()
-        self._highlight_selected_day(self.selected_day)
 
     def _prevday(self):
         try:
@@ -1694,7 +1724,6 @@ class Calendar(Screen):
                 self.selected_day = last_day
 
         self._paint_calendar()
-        self._highlight_selected_day(self.selected_day)
 
     def _nextmonth(self):
         if self.month == 12:
@@ -1702,10 +1731,20 @@ class Calendar(Screen):
             self.year = self.year + 1
         else:
             self.month = self.month + 1
-        self.day = 1
-        self.selected_day = 1
+
+        # Check if the selected day exists in the new month
+        try:
+            # Try to create a date with the selected day
+            datetime.date(self.year, self.month, self.selected_day)
+            # If no error is raised, the day exists in the new month
+            self.day = self.selected_day
+        except ValueError:
+            # If the day does not exist (e.g. February 31), use the last day of the month
+            last_day = (datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(days=1)).day
+            self.day = last_day
+            self.selected_day = last_day
+
         self._paint_calendar()
-        self._highlight_selected_day(self.selected_day)
 
     def _prevmonth(self):
         if self.month == 1:
@@ -1713,11 +1752,20 @@ class Calendar(Screen):
             self.year = self.year - 1
         else:
             self.month = self.month - 1
-            self.year = self.year
-        self.day = 1
-        self.selected_day = 1
+
+        # Check if the selected day exists in the new month
+        try:
+            # Try to create a date with the selected day
+            datetime.date(self.year, self.month, self.selected_day)
+            # If no error is raised, the day exists in the new month
+            self.day = self.selected_day
+        except ValueError:
+            # If the day does not exist (e.g. April 31), use the last day of the month
+            last_day = (datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(days=1)).day
+            self.day = last_day
+            self.selected_day = last_day
+
         self._paint_calendar()
-        self._highlight_selected_day(self.selected_day)
 
     def config(self):
         self.session.open(settingCalendar)
@@ -1810,7 +1858,6 @@ class settingCalendar(Setup):
 
     def keySave(self):
         Setup.keySave(self)
-
 
 
 def mainMenu(menuid):

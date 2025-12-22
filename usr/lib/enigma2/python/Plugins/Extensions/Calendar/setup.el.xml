@@ -1,0 +1,30 @@
+<setupxml>
+	<setup key="settingCalendar" title="Ρυθμίσεις ημερολογίου">
+		<!-- Event System -->
+		<item level="1" text="Ρυθμίσεις συμβάντων" description="Σύστημα διαχείρισης συμβάντων"/>
+		<!-- Display Settings -->
+		<item level="0" text="Εμφάνιση ημερολογίου στο μενού:" description="Εμφάνιση του ημερολογίου στο κύριο μενού πληροφοριών.">config.plugins.calendar.menu</item>
+		<!-- Event Settings -->
+		<item level="0" text="Ενεργοποίηση συστήματος συμβάντων" description="Ενεργοποίηση διαχείρισης συμβάντων με ημερομηνία/ώρα.">config.plugins.calendar.events_enabled</item>
+		<if conditional="config.plugins.calendar.events_enabled.value">
+			<item level="0" text="Ενεργοποίηση ειδοποιήσεων" description="Εμφάνιση ειδοποιήσεων για επερχόμενα συμβάντα.">config.plugins.calendar.events_notifications</item>
+			<if conditional="config.plugins.calendar.events_notifications.value">
+				<item level="0" text="Αναπαραγωγή ήχου με τις ειδοποιήσεις" description="Αναπαραγωγή ήχου όταν εμφανίζεται ειδοποίηση συμβάντος.">config.plugins.calendar.events_play_sound</item>
+				<item level="0" text="Τύπος ήχου ειδοποίησης" description="Τύπος ήχου που θα αναπαράγεται με τις ειδοποιήσεις.">config.plugins.calendar.events_sound_type</item>
+			</if>
+			<item level="0" text="Εμφάνιση ενδείξεων συμβάντων" description="Εμφάνιση δεικτών στις ημέρες με συμβάντα.">config.plugins.calendar.events_show_indicators</item>
+			<if conditional="config.plugins.calendar.events_show_indicators.value">
+				<item level="0" text="Χρώμα συμβάντων" description="Χρώμα για τις ημέρες με συμβάντα.">config.plugins.calendar.events_color</item>
+			</if>
+		</if>
+		<!-- Holiday Settings -->
+		<item level="1" text="Ρυθμίσεις αργιών" description="Εμφάνιση και χρωματισμός αργιών"/>
+		<item level="0" text="Ενεργοποίηση χρωματισμού αργιών" description="Χρωματισμός των ημερών με αργίες.">config.plugins.calendar.holidays_enabled</item>
+		<if conditional="config.plugins.calendar.holidays_enabled.value">
+			<item level="0" text="Εμφάνιση ενδείξεων αργιών" description="Εμφάνιση δείκτη 'H' στις ημέρες αργιών.">config.plugins.calendar.holidays_show_indicators</item>
+			<item level="0" text="Χρώμα αργιών" description="Χρώμα για τις ημέρες αργιών.">config.plugins.calendar.holidays_color</item>
+		</if>
+		<item level="1" text="Ρυθμίσεις αποσφαλμάτωσης" description="Επιλογές αποσφαλμάτωσης και καταγραφής"/>
+		<item level="0" text="Ενεργοποίηση λειτουργίας αποσφαλμάτωσης" description="Εμφάνιση μηνυμάτων αποσφαλμάτωσης στην κονσόλα/αρχείο καταγραφής.">config.plugins.calendar.debug_enabled</item>
+	</setup>
+</setupxml>

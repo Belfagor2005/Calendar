@@ -1,0 +1,565 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Calendar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-22 15:12+0100\n"
+"PO-Revision-Date: 2025-12-22 15:12+0100\n"
+"Last-Translator: Warder <ciksa@seznam.cz>\n"
+"Language-Team: <ekekaz@gmail.com>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: event_dialog.py:327
+msgid "Title:"
+msgstr "Cím:"
+
+#: event_dialog.py:328 event_dialog.py:399 event_dialog.py:429
+#: event_dialog.py:447 event_dialog.py:455 event_dialog.py:494
+#: event_dialog.py:602
+msgid "Event"
+msgstr "Esemény"
+
+#: event_dialog.py:329
+msgid "Date:"
+msgstr "Dátum:"
+
+#: event_dialog.py:331
+msgid "Time:"
+msgstr "Idő:"
+
+#: event_dialog.py:333
+msgid "Repeat:"
+msgstr "Ismételje meg:"
+
+#: event_dialog.py:335
+msgid "Notify:"
+msgstr "Értesítés:"
+
+#: event_dialog.py:337
+msgid "Active:"
+msgstr "Aktív:"
+
+#: event_dialog.py:339
+msgid "Description:"
+msgstr "Leírás:"
+
+#: event_dialog.py:340 event_dialog.py:353 event_dialog.py:420
+#: event_dialog.py:431 event_dialog.py:447 event_dialog.py:457
+#: event_dialog.py:494 event_dialog.py:615 plugin.py:1393
+msgid "Description"
+msgstr "Leírás"
+
+#: event_dialog.py:342
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: event_dialog.py:343
+msgid "Save"
+msgstr "Mentés"
+
+#: event_dialog.py:344
+msgid "Delete"
+msgstr "Törlés"
+
+#: event_dialog.py:347
+msgid "Title"
+msgstr "Cím"
+
+#: event_dialog.py:348 plugin.py:905
+msgid "Date"
+msgstr "Dátum"
+
+#: event_dialog.py:349
+msgid "Time"
+msgstr "Idő"
+
+#: event_dialog.py:350
+msgid "Repeat"
+msgstr "Ismétlés"
+
+#: event_dialog.py:351
+msgid "Notify"
+msgstr "Értesítés"
+
+#: event_dialog.py:352
+msgid "Active"
+msgstr "Aktív"
+
+#: event_dialog.py:466
+msgid "Enter "
+msgstr "Bevitel "
+
+#: event_dialog.py:608
+msgid "Title and date are required!"
+msgstr "A cím és a dátum megadása kötelező!"
+
+#: event_manager.py:790 plugin.py:1273
+#, python-brace-format
+msgid "Removed {0} past events"
+msgstr "Eltávolított {0} korábbi eseményt"
+
+#: event_manager.py:793 plugin.py:1278
+msgid "No past events to remove"
+msgstr "Nincsenek eltávolítható múltbeli események"
+
+#: events_view.py:255
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: events_view.py:256
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: events_view.py:257
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: events_view.py:258
+msgid "Back"
+msgstr "Vissza"
+
+#: holidays.py:671
+msgid "Close"
+msgstr "Bezár"
+
+#: holidays.py:672
+msgid "Import"
+msgstr "Importálás"
+
+#: holidays.py:673
+msgid "Import All"
+msgstr "Összes importálása"
+
+#: holidays.py:801
+msgid "Clear ALL holiday entries from all date files?"
+msgstr "Törli az ÖSSZES ünnepnap-bejegyzést az összes dátumfájlból?"
+
+#: plugin.py:258
+msgid "no"
+msgstr "nem"
+
+#: plugin.py:259
+msgid "yes"
+msgstr "igen"
+
+#: plugin.py:266 plugin.py:289
+msgid "Blue"
+msgstr "Kék"
+
+#: plugin.py:267 plugin.py:290
+msgid "Red"
+msgstr "Piros"
+
+#: plugin.py:268 plugin.py:291
+msgid "Green"
+msgstr "Zöld"
+
+#: plugin.py:269 plugin.py:292
+msgid "Orange"
+msgstr "Narancssárga"
+
+#: plugin.py:270 plugin.py:293
+msgid "Yellow"
+msgstr "Sárga"
+
+#: plugin.py:271 plugin.py:294
+msgid "White"
+msgstr "Fehér"
+
+#: plugin.py:278
+msgid "Short beep"
+msgstr "Rövid sípolás"
+
+#: plugin.py:279
+msgid "Notification tone"
+msgstr "Értesítési hang"
+
+#: plugin.py:280
+msgid "Alert sound"
+msgstr "Figyelmeztető hang"
+
+#: plugin.py:281
+msgid "No sound"
+msgstr "Nincs hang"
+
+#: plugin.py:544
+msgid "Calendar Planner"
+msgstr "Naptártervező"
+
+#: plugin.py:572
+msgid "..."
+msgstr "…"
+
+#: plugin.py:573
+msgid "Mon"
+msgstr "Hé"
+
+#: plugin.py:574
+msgid "Tue"
+msgstr "Kedd"
+
+#: plugin.py:575
+msgid "Wed"
+msgstr "Sze"
+
+#: plugin.py:576
+msgid "Thu"
+msgstr "Csü"
+
+#: plugin.py:577
+msgid "Fri"
+msgstr "Pén"
+
+#: plugin.py:578
+msgid "Sat"
+msgstr "Szo"
+
+#: plugin.py:579
+msgid "Sun"
+msgstr "Vas"
+
+#: plugin.py:583
+#, python-format
+msgid "Calendar Planner v.%s"
+msgstr "Naptártervező v.%s"
+
+#: plugin.py:584
+msgid "Month -"
+msgstr "Hónap -"
+
+#: plugin.py:585
+msgid "Month +"
+msgstr "Hónap +"
+
+#: plugin.py:586
+msgid "Day -"
+msgstr "NAPPAL"
+
+#: plugin.py:587
+msgid "Day +"
+msgstr "NAPPAL"
+
+#: plugin.py:589
+msgid "Files is Empty..."
+msgstr "A fájlok üresek..."
+
+#: plugin.py:590 plugin.py:591 plugin.py:592 plugin.py:593 plugin.py:594
+#: plugin.py:595
+msgid ".............."
+msgstr ".............."
+
+#: plugin.py:596
+msgid "Calendar Planner | Ready"
+msgstr "Naptártervező | Készen áll"
+
+#: plugin.py:640
+msgid "New Date"
+msgstr "Új dátum"
+
+#: plugin.py:641 plugin.py:923
+msgid "Edit Date"
+msgstr "Dátum szerkesztése"
+
+#: plugin.py:642
+msgid "Remove Date"
+msgstr "Dátum eltávolítása"
+
+#: plugin.py:643
+msgid "Delete File"
+msgstr "Fájl törlése"
+
+#: plugin.py:649
+msgid "Manage Events"
+msgstr "Események kezelése"
+
+#: plugin.py:650
+msgid "Add Event"
+msgstr "Esemény hozzáadása"
+
+#: plugin.py:651
+msgid "Cleanup past events"
+msgstr "Korábbi események takarítása"
+
+#: plugin.py:656
+msgid "Import Holidays"
+msgstr "Import ünnepek"
+
+#: plugin.py:657
+msgid "Show Today's Holidays"
+msgstr "Mai ünnepek megjelenítése"
+
+#: plugin.py:658
+msgid "Show Upcoming Holidays"
+msgstr "Közelgő ünnepek megjelenítése"
+
+#: plugin.py:659
+msgid "Clear Holiday Database"
+msgstr "Ünnepi adatbázis törlése"
+
+#: plugin.py:663
+msgid "Check for Updates"
+msgstr "Frissítések keresése"
+
+#: plugin.py:666
+msgid "Exit"
+msgstr "Kilépés"
+
+#: plugin.py:688 update_manager.py:58
+msgid "Update check error"
+msgstr "Frissítés-ellenőrzési hiba"
+
+#: plugin.py:690
+#, python-format
+msgid "Error: %s"
+msgstr "Hiba: %s"
+
+#: plugin.py:744
+msgid "Date People: "
+msgstr "Randipartnerek: "
+
+#: plugin.py:751
+msgid "Sign: "
+msgstr "Jel: "
+
+#: plugin.py:758
+msgid "Holiday: "
+msgstr "Ünnep: "
+
+#: plugin.py:769
+msgid "Month People: "
+msgstr "Hónap Emberek: "
+
+#: plugin.py:815 plugin.py:817
+msgid "TODAY'S EVENTS:"
+msgstr "MAI ESEMÉNYEK:"
+
+#: plugin.py:862
+msgid "Error saving data"
+msgstr "Hiba az adatok mentése során"
+
+#: plugin.py:915 plugin.py:916 plugin.py:1412 plugin.py:1455 plugin.py:1456
+msgid "SCHEDULED EVENTS:"
+msgstr "MEGRENDEZETT ESEMÉNYEK:"
+
+#: plugin.py:924
+msgid "Edit Date People"
+msgstr "Dátum szerkesztése Személyek"
+
+#: plugin.py:925
+msgid "Edit Sign"
+msgstr "Szerkesztési jel"
+
+#: plugin.py:926
+msgid "Edit Holiday"
+msgstr "Ünnepnap szerkesztése"
+
+#: plugin.py:927
+msgid "Edit Description"
+msgstr "Leírás szerkesztése"
+
+#: plugin.py:928
+msgid "Edit Month People"
+msgstr "Hónap Személyek Szerkesztése"
+
+#: plugin.py:1009 plugin.py:1035
+msgid "No file in database..."
+msgstr "Nincs fájl az adatbázisban..."
+
+#: plugin.py:1020 plugin.py:1041
+msgid "File not found!"
+msgstr "Fájl nem található!"
+
+#: plugin.py:1050
+msgid "January"
+msgstr "Január"
+
+#: plugin.py:1051
+msgid "February"
+msgstr "Február"
+
+#: plugin.py:1052
+msgid "March"
+msgstr "Március"
+
+#: plugin.py:1053
+msgid "April"
+msgstr "Április"
+
+#: plugin.py:1054
+msgid "May"
+msgstr "Máj"
+
+#: plugin.py:1055
+msgid "June"
+msgstr "Június"
+
+#: plugin.py:1056
+msgid "July"
+msgstr "Július"
+
+#: plugin.py:1057
+msgid "August"
+msgstr "Augusztus"
+
+#: plugin.py:1058
+msgid "September"
+msgstr "Szeptember"
+
+#: plugin.py:1059
+msgid "October"
+msgstr "Október"
+
+#: plugin.py:1060
+msgid "November"
+msgstr "November"
+
+#: plugin.py:1061
+msgid "December"
+msgstr "December"
+
+#: plugin.py:1230 plugin.py:1263
+msgid "Event system is disabled. Enable it in settings."
+msgstr "Az eseményrendszer le van tiltva. Engedélyezze a beállításokban."
+
+#: plugin.py:1254
+msgid "Error opening event dialog"
+msgstr "Hiba az esemény párbeszédpanelének megnyitásakor"
+
+#: plugin.py:1384
+msgid "Date People"
+msgstr "Randevúzz emberekkel"
+
+#: plugin.py:1387
+msgid "Sign"
+msgstr "Aláírás"
+
+#: plugin.py:1390
+msgid "Holiday"
+msgstr "Ünnepnap"
+
+#: plugin.py:1396
+msgid "Month People"
+msgstr "Hónap Emberek"
+
+#: plugin.py:1909 plugin.py:1924 plugin.py:1933
+msgid "Calendar"
+msgstr "Naptár"
+
+#: plugin.py:1925
+msgid "Calendar with events and notifications"
+msgstr "Naptár eseményekkel és értesítésekkel"
+
+#: update_manager.py:24
+msgid "Checking for updates..."
+msgstr "Frissítések keresése..."
+
+#: update_manager.py:35
+msgid "Update check failed"
+msgstr "Frissítésellenőrzés sikertelen"
+
+#: update_manager.py:37
+msgid "Could not check for updates. Check internet connection."
+msgstr "Nem sikerült frissítéseket keresni. Ellenőrizze az internetkapcsolatot."
+
+#: update_manager.py:42
+msgid "Update available!"
+msgstr ""
+"{server_version} {version_server}\n"
+"{installed_version} {version}\n"
+"\n"
+"{update_available}"
+
+#: update_manager.py:47
+msgid "Plugin is up to date"
+msgstr "A bővítmény naprakész"
+
+#: update_manager.py:49
+msgid "You have the latest version of Calendar."
+msgstr "A Naptár legújabb verziójával rendelkezel."
+
+#: update_manager.py:60
+#, python-format
+msgid "Could not check for updates: %s"
+msgstr "Nem sikerült frissítéseket keresni: %s"
+
+#: update_manager.py:74
+msgid "Update cancelled"
+msgstr "Frissítés megszakítva"
+
+#: update_manager.py:76
+msgid ""
+"A new version is available!\n"
+"\n"
+"Update now?\n"
+"\n"
+"(Recommended to backup first)"
+msgstr ""
+"Új verzió érhető el!\n"
+"\n"
+"Frissít most?\n"
+"\n"
+"(Először a biztonsági mentés ajánlott)"
+
+#: update_manager.py:92
+msgid "Update successful!"
+msgstr "Sikeres frissítés!"
+
+#: update_manager.py:94
+#, python-format
+msgid ""
+"%s\n"
+"\n"
+"Restart Enigma2 now for changes to take effect."
+msgstr ""
+"%s\n"
+"\n"
+"Indítsa újra az Enigma2-t, hogy a változtatások érvénybe lépjenek."
+
+#: update_manager.py:103
+msgid "Update failed"
+msgstr "Frissítés sikertelen"
+
+#: update_manager.py:109
+msgid "Updating plugin... Please wait"
+msgstr "Bővítmény frissítése... Kérjük, várjon"
+
+#: update_manager.py:126
+msgid "Please restart Enigma2 manually."
+msgstr "Kérjük, indítsa újra manuálisan az Enigma2-t."
+
+#: updater.py:158
+msgid "Failed to create backup. Update cancelled."
+msgstr "Nem sikerült biztonsági mentést készíteni. Frissítés megszakítva."
+
+#: updater.py:166
+msgid "Update completed successfully!"
+msgstr "A frissítés sikeresen befejeződött!"
+
+#: updater.py:170
+msgid "Update failed. Restored from backup."
+msgstr "Frissítés sikertelen. Visszaállítva a biztonsági mentésből."
+
+#: updater.py:172
+msgid "Update failed and backup restore also failed!"
+msgstr "A frissítés és a biztonsági mentés visszaállítása sem sikerült!"
+
+#: updater.py:181
+#, python-format
+msgid "Update error: %s"
+msgstr "Frissítési hiba: %s"
+
+#~ msgid "Cyan"
+#~ msgstr "Ciánkék"
+
+#~ msgid "Purple"
+#~ msgstr "Lila"
+
+#~ msgid "Magenta"
+#~ msgstr "Magenta"

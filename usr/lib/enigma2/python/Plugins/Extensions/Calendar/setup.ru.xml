@@ -1,0 +1,30 @@
+<setupxml>
+	<setup key="settingCalendar" title="Настройки Календаря">
+		<!-- Event System -->
+		<item level="1" text="Настройки Событий" description="Система управления событиями"/>
+		<!-- Display Settings -->
+		<item level="0" text="Показывать Календарь в меню:" description="Показывать Календарь в главном информационном меню.">config.plugins.calendar.menu</item>
+		<!-- Event Settings -->
+		<item level="0" text="Включить систему событий" description="Включить управление событиями с датой/временем.">config.plugins.calendar.events_enabled</item>
+		<if conditional="config.plugins.calendar.events_enabled.value">
+			<item level="0" text="Включить уведомления" description="Показывать уведомления о предстоящих событиях.">config.plugins.calendar.events_notifications</item>
+			<if conditional="config.plugins.calendar.events_notifications.value">
+				<item level="0" text="Воспроизводить звук с уведомлениями" description="Воспроизводить звук при появлении уведомления о событии.">config.plugins.calendar.events_play_sound</item>
+				<item level="0" text="Тип звука уведомления" description="Тип звука для воспроизведения с уведомлениями.">config.plugins.calendar.events_sound_type</item>
+			</if>
+			<item level="0" text="Показывать индикаторы событий" description="Показывать маркеры на днях с событиями.">config.plugins.calendar.events_show_indicators</item>
+			<if conditional="config.plugins.calendar.events_show_indicators.value">
+				<item level="0" text="Цвет событий" description="Цвет для дней с событиями.">config.plugins.calendar.events_color</item>
+			</if>
+		</if>
+		<!-- Holiday Settings -->
+		<item level="1" text="Настройки Праздников" description="Отображение и окраска праздников"/>
+		<item level="0" text="Включить окраску праздников" description="Окрашивать дни с праздниками.">config.plugins.calendar.holidays_enabled</item>
+		<if conditional="config.plugins.calendar.holidays_enabled.value">
+			<item level="0" text="Показывать индикаторы праздников" description="Показывать маркер 'H' на праздничных днях.">config.plugins.calendar.holidays_show_indicators</item>
+			<item level="0" text="Цвет праздников" description="Цвет для праздничных дней.">config.plugins.calendar.holidays_color</item>
+		</if>
+		<item level="1" text="Настройки Отладки" description="Опции отладки и ведения журнала"/>
+		<item level="0" text="Включить режим отладки" description="Показывать сообщения отладки в консоли/журнале.">config.plugins.calendar.debug_enabled</item>
+	</setup>
+</setupxml>

@@ -1,0 +1,30 @@
+<setupxml>
+	<setup key="settingCalendar" title="Naptár Beállítások">
+		<!-- Eseményrendszer -->
+		<item level="1" text="Eseménybeállítások" description="Eseménykezelő rendszer"/>
+		<!-- Megjelenítési beállítások -->
+		<item level="0" text="Naptár megjelenítése a menüben:" description="Naptár megjelenítése a főinformációs menüben.">config.plugins.calendar.menu</item>
+		<!-- Esemény beállítások -->
+		<item level="0" text="Eseményrendszer engedélyezése" description="Engedélyezze az eseménykezelést dátummal/évvel.">config.plugins.calendar.events_enabled</item>
+		<if conditional="config.plugins.calendar.events_enabled.value">
+			<item level="0" text="Értesítések engedélyezése" description="Értesítések megjelenítése a közelgő eseményekről.">config.plugins.calendar.events_notifications</item>
+			<if conditional="config.plugins.calendar.events_notifications.value">
+				<item level="0" text="Hang lejátszása értesítésekkel" description="Hang lejátszása, amikor eseményértesítés jelenik meg.">config.plugins.calendar.events_play_sound</item>
+				<item level="0" text="Értesítéshang típusa" description="Az értesítésekkel lejátszandó hang típusa.">config.plugins.calendar.events_sound_type</item>
+			</if>
+			<item level="0" text="Eseményjelzők megjelenítése" description="Jelzők megjelenítése az eseményekkel rendelkező napokon.">config.plugins.calendar.events_show_indicators</item>
+			<if conditional="config.plugins.calendar.events_show_indicators.value">
+				<item level="0" text="Eseményszín" description="Szín az eseményekkel rendelkező napokhoz.">config.plugins.calendar.events_color</item>
+			</if>
+		</if>
+		<!-- Ünnep beállítások -->
+		<item level="1" text="Ünnep Beállítások" description="Ünnepek megjelenítése és színezése"/>
+		<item level="0" text="Ünnep színezés engedélyezése" description="Színezze az ünnepekkel rendelkező napokat.">config.plugins.calendar.holidays_enabled</item>
+		<if conditional="config.plugins.calendar.holidays_enabled.value">
+			<item level="0" text="Ünnepjelzők megjelenítése" description="'H' jelző megjelenítése az ünnepnapokon.">config.plugins.calendar.holidays_show_indicators</item>
+			<item level="0" text="Ünnep színe" description="Szín az ünnepek napjaira.">config.plugins.calendar.holidays_color</item>
+		</if>
+		<item level="1" text="Hibakeresési beállítások" description="Hibakeresési és naplózási lehetőségek"/>
+		<item level="0" text="Hibakeresési mód engedélyezése" description="Hibakeresési üzenetek megjelenítése a konzolon/naplóban.">config.plugins.calendar.debug_enabled</item>
+	</setup>
+</setupxml>

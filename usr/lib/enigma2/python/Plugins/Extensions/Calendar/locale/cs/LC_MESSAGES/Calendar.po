@@ -1,0 +1,567 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Calendar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-22 15:10+0100\n"
+"PO-Revision-Date: 2025-12-22 15:11+0100\n"
+"Last-Translator: Warder <ciksa@seznam.cz>\n"
+"Language-Team: <ekekaz@gmail.com>\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ../../..\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: event_dialog.py:327
+msgid "Title:"
+msgstr "Název:"
+
+#: event_dialog.py:328 event_dialog.py:399 event_dialog.py:429
+#: event_dialog.py:447 event_dialog.py:455 event_dialog.py:494
+#: event_dialog.py:602
+msgid "Event"
+msgstr "Událost"
+
+#: event_dialog.py:329
+msgid "Date:"
+msgstr "Datum:"
+
+#: event_dialog.py:331
+msgid "Time:"
+msgstr "Čas:"
+
+#: event_dialog.py:333
+msgid "Repeat:"
+msgstr "Opakovat:"
+
+#: event_dialog.py:335
+msgid "Notify:"
+msgstr "Oznámit:"
+
+#: event_dialog.py:337
+msgid "Active:"
+msgstr "Aktivní:"
+
+#: event_dialog.py:339
+msgid "Description:"
+msgstr "Popis:"
+
+#: event_dialog.py:340 event_dialog.py:353 event_dialog.py:420
+#: event_dialog.py:431 event_dialog.py:447 event_dialog.py:457
+#: event_dialog.py:494 event_dialog.py:615 plugin.py:1393
+msgid "Description"
+msgstr "Popis"
+
+#: event_dialog.py:342
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: event_dialog.py:343
+msgid "Save"
+msgstr "Uložit"
+
+#: event_dialog.py:344
+msgid "Delete"
+msgstr "Smazat"
+
+#: event_dialog.py:347
+msgid "Title"
+msgstr "Nadpis"
+
+#: event_dialog.py:348 plugin.py:905
+msgid "Date"
+msgstr "Datum"
+
+#: event_dialog.py:349
+msgid "Time"
+msgstr "Čas"
+
+#: event_dialog.py:350
+msgid "Repeat"
+msgstr "Opakovat"
+
+#: event_dialog.py:351
+msgid "Notify"
+msgstr "Obavijestiti"
+
+#: event_dialog.py:352
+msgid "Active"
+msgstr "Aktivní"
+
+#: event_dialog.py:466
+msgid "Enter "
+msgstr "Zadejte "
+
+#: event_dialog.py:608
+msgid "Title and date are required!"
+msgstr "Název a datum jsou povinné!"
+
+#: event_manager.py:790 plugin.py:1273
+#, python-brace-format
+msgid "Removed {0} past events"
+msgstr "Odstraněno {0} minulých událostí"
+
+#: event_manager.py:793 plugin.py:1278
+msgid "No past events to remove"
+msgstr "Žádné minulé události k odstranění"
+
+#: events_view.py:255
+msgid "Add"
+msgstr "Přidat"
+
+#: events_view.py:256
+msgid "Edit"
+msgstr "Upravit"
+
+#: events_view.py:257
+msgid "Remove"
+msgstr "Odstranit"
+
+#: events_view.py:258
+msgid "Back"
+msgstr "Zpět"
+
+#: holidays.py:671
+msgid "Close"
+msgstr "Zavřít"
+
+#: holidays.py:672
+msgid "Import"
+msgstr "Import"
+
+#: holidays.py:673
+msgid "Import All"
+msgstr "Importovat vše"
+
+#: holidays.py:801
+msgid "Clear ALL holiday entries from all date files?"
+msgstr "Vymazat VŠECHNY záznamy o svátcích ze všech datových souborů?"
+
+#: plugin.py:258
+msgid "no"
+msgstr "ne"
+
+#: plugin.py:259
+msgid "yes"
+msgstr "ano"
+
+#: plugin.py:266 plugin.py:289
+msgid "Blue"
+msgstr "Modrá"
+
+#: plugin.py:267 plugin.py:290
+msgid "Red"
+msgstr "Červená"
+
+#: plugin.py:268 plugin.py:291
+msgid "Green"
+msgstr "Zelený"
+
+#: plugin.py:269 plugin.py:292
+msgid "Orange"
+msgstr "Oranžová"
+
+#: plugin.py:270 plugin.py:293
+msgid "Yellow"
+msgstr "Žlutá"
+
+#: plugin.py:271 plugin.py:294
+msgid "White"
+msgstr "Bílá"
+
+#: plugin.py:278
+msgid "Short beep"
+msgstr "Krátké pípnutí"
+
+#: plugin.py:279
+msgid "Notification tone"
+msgstr "Tón oznámení"
+
+#: plugin.py:280
+msgid "Alert sound"
+msgstr "Zvuk upozornění"
+
+#: plugin.py:281
+msgid "No sound"
+msgstr "Žádný zvuk"
+
+#: plugin.py:544
+msgid "Calendar Planner"
+msgstr "Plánovač kalendářů"
+
+#: plugin.py:572
+msgid "..."
+msgstr "..."
+
+#: plugin.py:573
+msgid "Mon"
+msgstr "Po"
+
+#: plugin.py:574
+msgid "Tue"
+msgstr "Út"
+
+#: plugin.py:575
+msgid "Wed"
+msgstr "St"
+
+#: plugin.py:576
+msgid "Thu"
+msgstr "Čt"
+
+#: plugin.py:577
+msgid "Fri"
+msgstr "Pá"
+
+#: plugin.py:578
+msgid "Sat"
+msgstr "So"
+
+#: plugin.py:579
+msgid "Sun"
+msgstr "Ne"
+
+#: plugin.py:583
+#, python-format
+msgid "Calendar Planner v.%s"
+msgstr "Plánovač kalendářů verze %s"
+
+#: plugin.py:584
+msgid "Month -"
+msgstr "Měsíc -"
+
+#: plugin.py:585
+msgid "Month +"
+msgstr "Měsíc +"
+
+#: plugin.py:586
+msgid "Day -"
+msgstr "Nejlepší den"
+
+#: plugin.py:587
+msgid "Day +"
+msgstr "Nejlepší den"
+
+#: plugin.py:589
+msgid "Files is Empty..."
+msgstr "Soubory jsou prázdné..."
+
+#: plugin.py:590 plugin.py:591 plugin.py:592 plugin.py:593 plugin.py:594
+#: plugin.py:595
+msgid ".............."
+msgstr ".............."
+
+#: plugin.py:596
+msgid "Calendar Planner | Ready"
+msgstr "Plánovač kalendářů | Připraveno"
+
+#: plugin.py:640
+msgid "New Date"
+msgstr "Nové datum"
+
+#: plugin.py:641 plugin.py:923
+msgid "Edit Date"
+msgstr "Editovat datum"
+
+#: plugin.py:642
+msgid "Remove Date"
+msgstr "Datum odstranění"
+
+#: plugin.py:643
+msgid "Delete File"
+msgstr "Smazat soubor"
+
+#: plugin.py:649
+msgid "Manage Events"
+msgstr "Spravovat události"
+
+#: plugin.py:650
+msgid "Add Event"
+msgstr "Přidat událost"
+
+#: plugin.py:651
+msgid "Cleanup past events"
+msgstr "Úklid minulých událostí"
+
+#: plugin.py:656
+msgid "Import Holidays"
+msgstr "Dovoz svátků"
+
+#: plugin.py:657
+msgid "Show Today's Holidays"
+msgstr "Zobrazit dnešní svátky"
+
+#: plugin.py:658
+msgid "Show Upcoming Holidays"
+msgstr "Zobrazit nadcházející svátky"
+
+#: plugin.py:659
+msgid "Clear Holiday Database"
+msgstr "Vymazat databázi dovolených"
+
+#: plugin.py:663
+msgid "Check for Updates"
+msgstr "Zkontrolovat aktualizace"
+
+#: plugin.py:666
+msgid "Exit"
+msgstr "Odejít"
+
+#: plugin.py:688 update_manager.py:58
+msgid "Update check error"
+msgstr "Chyba kontroly aktualizací"
+
+#: plugin.py:690
+#, python-format
+msgid "Error: %s"
+msgstr "Chyba: %s"
+
+#: plugin.py:744
+msgid "Date People: "
+msgstr "Setkání s lidmi: "
+
+#: plugin.py:751
+msgid "Sign: "
+msgstr "Znamení: "
+
+#: plugin.py:758
+msgid "Holiday: "
+msgstr "Svátek: "
+
+#: plugin.py:769
+msgid "Month People: "
+msgstr "Lidé měsíce: "
+
+#: plugin.py:815 plugin.py:817
+msgid "TODAY'S EVENTS:"
+msgstr "DNEŠNÍ UDÁLOSTI:"
+
+#: plugin.py:862
+msgid "Error saving data"
+msgstr "Chyba při ukládání dat"
+
+#: plugin.py:915 plugin.py:916 plugin.py:1412 plugin.py:1455 plugin.py:1456
+msgid "SCHEDULED EVENTS:"
+msgstr "PLÁNOVANÉ AKCE:"
+
+#: plugin.py:924
+msgid "Edit Date People"
+msgstr "Upravit datum Lidé"
+
+#: plugin.py:925
+msgid "Edit Sign"
+msgstr "Upravit znamení"
+
+#: plugin.py:926
+msgid "Edit Holiday"
+msgstr "Upravit dovolenou"
+
+#: plugin.py:927
+msgid "Edit Description"
+msgstr "Upravit popis"
+
+#: plugin.py:928
+msgid "Edit Month People"
+msgstr "Upravit měsíc Osoby"
+
+#: plugin.py:1009 plugin.py:1035
+msgid "No file in database..."
+msgstr "Žádný soubor v databázi..."
+
+#: plugin.py:1020 plugin.py:1041
+msgid "File not found!"
+msgstr "Soubor nenalezen!"
+
+#: plugin.py:1050
+msgid "January"
+msgstr "Leden"
+
+#: plugin.py:1051
+msgid "February"
+msgstr "Únor"
+
+#: plugin.py:1052
+msgid "March"
+msgstr "Březen"
+
+#: plugin.py:1053
+msgid "April"
+msgstr "Duben"
+
+#: plugin.py:1054
+msgid "May"
+msgstr "Květen"
+
+#: plugin.py:1055
+msgid "June"
+msgstr "Červen"
+
+#: plugin.py:1056
+msgid "July"
+msgstr "Červenec"
+
+#: plugin.py:1057
+msgid "August"
+msgstr "Srpen"
+
+#: plugin.py:1058
+msgid "September"
+msgstr "Září"
+
+#: plugin.py:1059
+msgid "October"
+msgstr "Říjen"
+
+#: plugin.py:1060
+msgid "November"
+msgstr "Listopad"
+
+#: plugin.py:1061
+msgid "December"
+msgstr "Prosinec"
+
+#: plugin.py:1230 plugin.py:1263
+msgid "Event system is disabled. Enable it in settings."
+msgstr "Systém událostí je vypnutý. Povolte ho v nastavení."
+
+#: plugin.py:1254
+msgid "Error opening event dialog"
+msgstr "Chyba při otevírání dialogového okna události"
+
+#: plugin.py:1384
+msgid "Date People"
+msgstr "Rande s lidmi"
+
+#: plugin.py:1387
+msgid "Sign"
+msgstr "Znamení"
+
+#: plugin.py:1390
+msgid "Holiday"
+msgstr "Svátek"
+
+#: plugin.py:1396
+msgid "Month People"
+msgstr "Měsíční lidé"
+
+#: plugin.py:1909 plugin.py:1924 plugin.py:1933
+msgid "Calendar"
+msgstr "Kalendář"
+
+#: plugin.py:1925
+msgid "Calendar with events and notifications"
+msgstr "Kalendář s událostmi a oznámeními"
+
+#: update_manager.py:24
+msgid "Checking for updates..."
+msgstr "Kontrola aktualizací..."
+
+#: update_manager.py:35
+msgid "Update check failed"
+msgstr "Kontrola aktualizací selhala"
+
+#: update_manager.py:37
+msgid "Could not check for updates. Check internet connection."
+msgstr "Nepodařilo se zkontrolovat aktualizace. Zkontrolujte připojení k internetu."
+
+#: update_manager.py:42
+msgid "Update available!"
+msgstr ""
+"{server_version} {version_server}\n"
+"{installed_version} {version}\n"
+"\n"
+"{update_available}"
+
+#: update_manager.py:47
+msgid "Plugin is up to date"
+msgstr "Plugin je aktuální"
+
+#: update_manager.py:49
+msgid "You have the latest version of Calendar."
+msgstr "Máte nejnovější verzi Kalendáře."
+
+#: update_manager.py:60
+#, python-format
+msgid "Could not check for updates: %s"
+msgstr "Nepodařilo se zkontrolovat aktualizace: %s"
+
+#: update_manager.py:74
+msgid "Update cancelled"
+msgstr "Aktualizace zrušena"
+
+#: update_manager.py:76
+msgid ""
+"A new version is available!\n"
+"\n"
+"Update now?\n"
+"\n"
+"(Recommended to backup first)"
+msgstr ""
+"Je k dispozici nová verze!\n"
+"\n"
+"Aktualizovat nyní?\n"
+"\n"
+"(Doporučuje se nejprve zálohovat)"
+
+#: update_manager.py:92
+msgid "Update successful!"
+msgstr "Aktualizace úspěšná!"
+
+#: update_manager.py:94
+#, python-format
+msgid ""
+"%s\n"
+"\n"
+"Restart Enigma2 now for changes to take effect."
+msgstr ""
+"%s\n"
+"\n"
+"Restartujte Enigmu2, aby se změny projevily."
+
+#: update_manager.py:103
+msgid "Update failed"
+msgstr ""
+"Aktualizace selhala:\n"
+"%s"
+
+#: update_manager.py:109
+msgid "Updating plugin... Please wait"
+msgstr "Aktualizace pluginu... Čekejte prosím"
+
+#: update_manager.py:126
+msgid "Please restart Enigma2 manually."
+msgstr "Restartujte prosím Enigmu2 ručně."
+
+#: updater.py:158
+msgid "Failed to create backup. Update cancelled."
+msgstr "Vytvoření zálohy se nezdařilo. Aktualizace zrušena."
+
+#: updater.py:166
+msgid "Update completed successfully!"
+msgstr "Aktualizace byla úspěšně dokončena!"
+
+#: updater.py:170
+msgid "Update failed. Restored from backup."
+msgstr "Aktualizace selhala. Obnoveno ze zálohy."
+
+#: updater.py:172
+msgid "Update failed and backup restore also failed!"
+msgstr "Aktualizace selhala a obnovení zálohy se také nezdařilo!"
+
+#: updater.py:181
+#, python-format
+msgid "Update error: %s"
+msgstr "Chyba aktualizace: %s"
+
+#~ msgid "Cyan"
+#~ msgstr "Azurová"
+
+#~ msgid "Purple"
+#~ msgstr "Fialová"
+
+#~ msgid "Magenta"
+#~ msgstr "Magenta"

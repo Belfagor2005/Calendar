@@ -1,0 +1,30 @@
+<setupxml>
+	<setup key="settingCalendar" title="Paramètres du Calendrier">
+		<!-- Event System -->
+		<item level="1" text="Paramètres des Événements" description="Système de gestion d'événements"/>
+		<!-- Display Settings -->
+		<item level="0" text="Afficher le Calendrier dans le menu:" description="Afficher le Calendrier dans le menu d'information principal.">config.plugins.calendar.menu</item>
+		<!-- Event Settings -->
+		<item level="0" text="Activer le système d'événements" description="Activer la gestion des événements avec date/heure.">config.plugins.calendar.events_enabled</item>
+		<if conditional="config.plugins.calendar.events_enabled.value">
+			<item level="0" text="Activer les notifications" description="Afficher les notifications pour les événements à venir.">config.plugins.calendar.events_notifications</item>
+			<if conditional="config.plugins.calendar.events_notifications.value">
+				<item level="0" text="Jouer un son avec les notifications" description="Jouer un son lorsque la notification d'événement apparaît.">config.plugins.calendar.events_play_sound</item>
+				<item level="0" text="Type de son de notification" description="Type de son à jouer avec les notifications.">config.plugins.calendar.events_sound_type</item>
+			</if>
+			<item level="0" text="Afficher les indicateurs d'événements" description="Afficher les marqueurs sur les jours avec événements.">config.plugins.calendar.events_show_indicators</item>
+			<if conditional="config.plugins.calendar.events_show_indicators.value">
+				<item level="0" text="Couleur des événements" description="Couleur pour les jours avec événements.">config.plugins.calendar.events_color</item>
+			</if>
+		</if>
+		<!-- Holiday Settings -->
+		<item level="1" text="Paramètres des Jours Fériés" description="Affichage et coloration des jours fériés"/>
+		<item level="0" text="Activer la coloration des jours fériés" description="Colorer les jours avec des jours fériés.">config.plugins.calendar.holidays_enabled</item>
+		<if conditional="config.plugins.calendar.holidays_enabled.value">
+			<item level="0" text="Afficher les indicateurs de jours fériés" description="Afficher le marqueur 'H' sur les jours fériés.">config.plugins.calendar.holidays_show_indicators</item>
+			<item level="0" text="Couleur des jours fériés" description="Couleur pour les jours fériés.">config.plugins.calendar.holidays_color</item>
+		</if>
+		<item level="1" text="Paramètres de Débogage" description="Options de débogage et journalisation"/>
+		<item level="0" text="Activer le mode débogage" description="Afficher les messages de débogage dans la console/journal.">config.plugins.calendar.debug_enabled</item>
+	</setup>
+</setupxml>
