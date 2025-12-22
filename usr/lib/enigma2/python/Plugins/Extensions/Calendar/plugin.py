@@ -4,7 +4,7 @@
 """
 ###########################################################
 #                                                         #
-#  Calendar Plugin for Enigma2                            #
+#  Calendar Planner for Enigma2                           #
 #  Created by: Lululla                                    #
 #  Based on original work by: Sirius0103                  #
 #                                                         #
@@ -16,6 +16,7 @@
 #  • Event browser and management interface               #
 #  • Configurable notification settings                   #
 #  • Multi-language support for date data                 #
+#  • Holiday import system with automatic coloring        #
 #                                                         #
 #  EVENT SYSTEM:                                          #
 #  • Smart notifications (0-60 minutes before event)      #
@@ -35,6 +36,15 @@
 #  • Sound files location: /sounds/ directory             #
 #  • Auto-stop after playback completion                  #
 #                                                         #
+#  HOLIDAY SYSTEM:                                        #
+#  • Import holidays from Holidata.net                    #
+#  • Support for 30+ countries and languages              #
+#  • Automatic holiday coloring with configurable colors  #
+#  • "H" indicator for holiday days                       #
+#  • Smart cache system for fast loading                  #
+#  • Today's and upcoming holidays display                #
+#  • Integration with existing date files                 #
+#                                                         #
 #  DATE MANAGEMENT:                                       #
 #  • Create, edit, remove date information                #
 #  • Virtual keyboard for field editing                   #
@@ -45,9 +55,13 @@
 #  CALENDAR DISPLAY:                                      #
 #  • Color code: Today=green, Saturday=yellow, Sunday=red #
 #  • Event days highlighted in blue/cyan (configurable)   #
+#  • Holiday days highlighted in orange (configurable)    #
 #  • Asterisk (*) indicator for days with events          #
+#  • "H" indicator for holiday days                       #
 #  • Week numbers display                                 #
 #  • Smooth month navigation                              #
+#  • Day selection with blue background                   #
+#  • Color priority: Today > Selection > Holiday > Event  #
 #                                                         #
 #  CONFIGURATION:                                         #
 #  • Event system enable/disable                          #
@@ -56,35 +70,39 @@
 #  • Enable/disable sound playback                        #
 #  • Event color selection                                #
 #  • Show event indicators toggle                         #
+#  • Holiday system enable/disable                        #
+#  • Holiday color selection                              #
+#  • Show holiday indicators toggle                       #
 #  • Menu integration option                              #
 #                                                         #
 #  KEY CONTROLS - MAIN CALENDAR:                          #
-#   OK          - Open main menu (New/Edit/Remove/Events) #
-    RED         - Previous month                          #
-    GREEN       - Next month                              #
-    YELLOW      - Previous day                            #
-    BLUE        - Next day                                #
-    0 (ZERO)    - Open event management                   #
-    LEFT/RIGHT  - Previous/Next day                       #
-    UP/DOWN     - Previous/Next month                     #
-    MENU        - Configuration                           #
-    INFO/EPG    - About dialog                            #
+#   OK          - Open main menu                          #
+#                 (New/Edit/Remove/Events/Holidays)       #
+#   RED         - Previous month                          #
+#   GREEN       - Next month                              #
+#   YELLOW      - Previous day                            #
+#   BLUE        - Next day                                #
+#   0 (ZERO)    - Open event management                   #
+#   LEFT/RIGHT  - Previous/Next day                       #
+#   UP/DOWN     - Previous/Next month                     #
+#   MENU        - Configuration                           #
+#   INFO/EPG    - About dialog                            #
 #                                                         #
 #  KEY CONTROLS - EVENT DIALOG:                           #
 #   OK          - Edit current field                      #
-    RED         - Cancel                                  #
-    GREEN       - Save event                              #
-    YELLOW      - Delete event (edit mode only)           #
-    UP/DOWN     - Navigate between fields                 #
-    LEFT/RIGHT  - Change selection options                #
+#   RED         - Cancel                                  #
+#   GREEN       - Save event                              #
+#   YELLOW      - Delete event (edit mode only)           #
+#   UP/DOWN     - Navigate between fields                 #
+#   LEFT/RIGHT  - Change selection options                #
 #                                                         #
 #  KEY CONTROLS - EVENTS VIEW:                            #
 #   OK          - Edit selected event                     #
-    RED         - Add new event                           #
-    GREEN       - Edit selected event                     #
-    YELLOW      - Delete selected event                   #
-    BLUE        - Back to calendar                        #
-    UP/DOWN     - Navigate event list                     #
+#   RED         - Add new event                           #
+#   GREEN       - Edit selected event                     #
+#   YELLOW      - Delete selected event                   #
+#   BLUE        - Back to calendar                        #
+#   UP/DOWN     - Navigate event list                     #
 #                                                         #
 #  FILE STRUCTURE:                                        #
 #  • plugin.py - Main plugin entry point                  #
@@ -92,6 +110,7 @@
 #  • event_dialog.py - Event add/edit interface           #
 #  • events_view.py - Events browser                      #
 #  • notification_system.py - Notification display        #
+#  • holidays.py - Holiday import and management          #
 #  • events.json - Event database (JSON format)           #
 #  • base/ - Date information storage                     #
 #  • sounds/ - Audio files for notifications              #
@@ -121,11 +140,19 @@
 #  date: 2025-06-10                                       #
 #  datepeople: John Doe                                   #
 #  sign: Gemini                                           #
-#  holiday: None                                          #
+#  holiday: Christmas Day, New Year's Day                 #
 #  description: Special day description.                  #
 #                                                         #
 #  [month]                                                #
 #  monthpeople: Important people of the month             #
+#                                                         #
+#  HOLIDAY IMPORT:                                        #
+#  • Source: Holidata.net                                 #
+#  • Format: JSON Lines per country/year                  #
+#  • Countries: Italy, Germany, France, UK, USA, etc.     #
+#  • Languages: it, en, de, fr, es, etc.                  #
+#  • Cache: Memory-based for performance                  #
+#  • Integration: Updates holiday field in date files     #
 #                                                         #
 #  TECHNICAL DETAILS:                                     #
 #  • Python 2.7+ compatible                               #
@@ -135,16 +162,20 @@
 #  • Auto-skin detection (HD/FHD)                         #
 #  • Configurable via setup.xml                           #
 #  • Uses eServiceReference for audio playback            #
+#  • Holiday cache system for fast rendering              #
+#  • File-based holiday storage (no database)             #
 #                                                         #
 #  PERFORMANCE:                                           #
 #  • Efficient event checking algorithm                   #
 #  • Skipped checks for past non-recurring events         #
+#  • Holiday cache: 1 file read per month                 #
 #  • Minimal memory usage                                 #
 #  • Fast loading of date information                     #
 #                                                         #
 #  DEBUGGING:                                             #
 #  • Enable debug logs: check enigma2.log                 #
 #  • Filter: grep EventManager /tmp/enigma2.log           #
+#  • Holiday debug: grep Holidays /tmp/enigma2.log        #
 #  • Event check interval: 30 seconds                     #
 #  • Notification window: event time ± 5 minutes          #
 #  • Audio debug: check play_notification_sound() calls   #
@@ -152,6 +183,7 @@
 #  CREDITS:                                               #
 #  • Original Calendar plugin: Sirius0103                 #
 #  • Event system & modifications: Lululla                #
+#  • Holiday system & enhancements: Custom implementation #
 #  • Notification system: Custom implementation           #
 #  • Audio system: Enigma2 eServiceReference integration  #
 #  • Testing & feedback: Enigma2 community                #
@@ -159,35 +191,62 @@
 #  VERSION HISTORY:                                       #
 #  • v1.0 - Basic calendar functionality                  #
 #  • v1.1 - Complete event system added                   #
+#  • v1.2 - Holiday import and coloring system            #
+#  • v1.3 - Rewrite complete code . screen and source..   #
 #                                                         #
-#  Last Updated: 2025-12-20                               #
-#  Status: Stable with event & audio system               #
+#  Last Updated: 2025-12-21                               #
+#  Status: Stable with event & holiday system             #
 ###########################################################
 """
 
 import datetime
 from time import localtime
+from os import remove, makedirs
+from os.path import exists, dirname, join, getmtime
+# from xml.etree.ElementTree import fromstring
+
 from enigma import getDesktop
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
+
+try:
+    from Screens.Setup import setupDom as original_setupDom
+except ImportError:
+    # Fallback Python 2
+    from Screens.Setup import setupdom as original_setupDom
+
 from Screens.VirtualKeyBoard import VirtualKeyBoard
+
 from Components.ActionMap import ActionMap  # , HelpableActionMap
 from Components.MenuList import MenuList
-from Components.ScrollLabel import ScrollLabel
-from Components.Sources.StaticText import StaticText
 from Components.Label import Label
-from os.path import exists, dirname
-from os import remove, makedirs
+from Components.Sources.StaticText import StaticText
+from Components.config import (
+    config,
+    ConfigSubsection,
+    ConfigSelection,
+    ConfigYesNo,
+)
+
+from Tools.Directories import (
+    fileExists,
+    resolveFilename,
+    SCOPE_PLUGINS,
+    # SCOPE_SKINS,
+    fileReadXML
+)
+from enigma import eTimer
 from skin import parseColor
-from Components.config import config, ConfigSubsection, ConfigSelection, ConfigYesNo
+import Screens.Setup
 
-
-from . import _, plugin_path
+from . import _, plugin_path, PLUGIN_VERSION
 from .events_view import EventsView
 
-currversion = '1.1'
+# Performance Cache
+domSetups = {}
+setupModTimes = {}
 
 
 def init_calendar_config():
@@ -200,20 +259,18 @@ def init_calendar_config():
         ("yes", _("yes"))])
     config.plugins.calendar.events_enabled = ConfigYesNo(default=True)
     config.plugins.calendar.events_notifications = ConfigYesNo(default=True)
-    config.plugins.calendar.highlight = ConfigYesNo(default=True)
+    # config.plugins.calendar.highlight = ConfigYesNo(default=True)
     config.plugins.calendar.events_show_indicators = ConfigYesNo(default=True)
     config.plugins.calendar.events_color = ConfigSelection(
         choices=[
-            ("#FF0000FF", "Blue"),      # Opaque blue
-            ("#FF00FFFF", "Cyan"),      # Opaque cyan
-            ("#FF800080", "Purple"),    # Opaque purple
-            ("#FFFF0000", "Red"),       # Opaque red
-            ("#FFFF00FF", "Magenta"),   # Opaque magenta
-            ("#FFFFA500", "Orange"),    # Opaque orange
-            ("#FFFFFF00", "Yellow"),    # Opaque yellow
-            ("#FFFFFFFF", "White"),     # Opaque white
+            ("blue", _("Blue")),
+            ("red", _("Red")),
+            ("green", _("Green")),
+            ("orange", _("Orange")),
+            ("yellow", _("Yellow")),
+            ("white", _("White")),
         ],
-        default="#FF00FFFF"  # Opaque cyan as default
+        default="cyan"  # cyan as default
     )
     config.plugins.calendar.events_play_sound = ConfigYesNo(default=True)
     config.plugins.calendar.events_sound_type = ConfigSelection(
@@ -225,15 +282,32 @@ def init_calendar_config():
         ],
         default="notify"
     )
+    config.plugins.calendar.holidays_enabled = ConfigYesNo(default=True)
+    config.plugins.calendar.holidays_show_indicators = ConfigYesNo(default=True)
+    config.plugins.calendar.holidays_color = ConfigSelection(
+        choices=[
+            ("blue", _("Blue")),
+            ("red", _("Red")),
+            ("green", _("Green")),
+            ("orange", _("Orange")),
+            ("yellow", _("Yellow")),
+            ("white", _("White")),
+        ],
+        default="orange"  # orange as default
+    )
+    config.plugins.calendar.debug_enabled = ConfigYesNo(default=False)
 
 
+DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
 init_calendar_config()
 
 
 class MenuDialog(Screen):
     skin = """
-    <screen name="MenuDialog" position="center,center" size="600,400" title="Edit Settings">
-        <widget name="menu" position="10,10" size="580,380" itemHeight="40" font="Regular;28" scrollbarMode="showOnDemand" />
+    <screen name="MenuDialog" position="center,center" size="600,600" title="Edit Settings" flags="wfNoBorder">
+        <widget name="menu" position="10,10" size="580,540" itemHeight="40" font="Regular;32" scrollbarMode="showOnDemand" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="135,560" size="75,36" alphatest="blend" zPosition="5" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="400,560" size="74,40" alphatest="on" zPosition="5" />
     </screen>
     """
 
@@ -261,18 +335,25 @@ class Calendar(Screen):
     if (getDesktop(0).size().width() >= 1920):
         skin = """
         <!-- Calendar -->
-        <screen name="Calendar" position="60,52" size="1800,975" title=" " flags="wfNoBorder">
-            <eLabel position="30,915" size="1740,5" backgroundColor="#00555555" zPosition="1" />
+        <screen name="Calendar" position="5,5" size="1900,1060" title=" " flags="wfNoBorder">
+            <eLabel backgroundColor="#001a2336" cornerRadius="30" position="0,910" size="1905,90" zPosition="0" />
+            <eLabel name="" position="-118,-404" size="1920,1080" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
+            <widget source="session.VideoPicture" render="Pig" position="1392,622" zPosition="19" size="475,271" backgroundColor="transparent" transparent="0" cornerRadius="14" />
 
+            <!-- SEPARATORE
+            <eLabel position="30,915" size="1740,5" backgroundColor="#FF555555" zPosition="1" />
+            -->
+            <!-- NOMI GIORNI SETTIMANA -->
             <widget name="w0" position="15,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="w1" position="81,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="w2" position="148,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="w3" position="216,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="w4" position="283,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w5" position="351,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w5" position="350,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="w6" position="418,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w7" position="486,60" size="62,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w7" position="485,60" size="64,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
 
+            <!-- NUMERI SETTIMANA -->
             <widget name="wn0" position="15,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="wn1" position="15,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="wn2" position="15,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
@@ -280,6 +361,7 @@ class Calendar(Screen):
             <widget name="wn4" position="15,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="wn5" position="15,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
 
+            <!-- GIORNI DEL MESE (42 celle) -->
             <widget name="d0" position="83,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
             <widget name="d1" position="150,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
             <widget name="d2" position="218,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
@@ -328,44 +410,51 @@ class Calendar(Screen):
             <widget name="d40" position="420,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
             <widget name="d41" position="488,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
 
+            <!-- TESTI INFORMATIVI -->
             <widget name="monthname" position="15,8" size="533,45" font="Regular; 36" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
             <widget name="date" position="555,10" size="1230,40" font="Regular; 30" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
             <widget name="datepeople" position="555,60" size="1230,38" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="monthpeople" position="15,540" size="533,368" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
             <widget name="sign" position="555,105" size="1230,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="holiday" position="555,188" size="1230,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="description" position="555,270" size="1230,638" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="description" position="555,270" size="1230,638" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" valign="top" transparent="1" />
+            <widget name="status" position="555,858" size="976,50" font="Regular; 32" foregroundColor="#3333ff" zPosition="5" halign="left" transparent="1" />
 
+            <!-- TASTI FUNZIONE -->
             <widget name="key_red" position="113,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
             <widget name="key_green" position="443,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
             <widget name="key_yellow" position="773,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
             <widget name="key_blue" position="1103,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
 
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="110,960" size="230,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="440,960" size="230,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="771,960" size="230,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="1099,960" size="230,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="1323,930" size="75,36" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="1417,930" size="75,36" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1505,930" size="74,40" alphatest="on" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1598,930" size="77,36" alphatest="on" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_epg.png" position="1695,930" size="76,37" alphatest="on" />
+            <!-- ICONE TASTI -->
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="110,960" size="230,10" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="440,960" size="230,10" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="771,960" size="230,10" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="1099,960" size="230,10" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="1353,930" size="75,36" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="1447,930" size="75,36" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1540,930" size="74,40" alphatest="on" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1633,930" size="77,36" alphatest="on" zPosition="5" />
         </screen>"""
     else:
         skin = """
         <!-- Calendar -->
-       <screen name="Calendar" position="360,215" size="1200,650" title=" " flags="wfNoBorder">
-            <eLabel position="20,605" size="1160,3" backgroundColor="#00555555" zPosition="1" />
+        <screen name="Calendar" position="center,center" size="1280,720" title=" " flags="wfNoBorder">
+            <eLabel backgroundColor="#001a2336" cornerRadius="20" position="0,630" size="1280,50" zPosition="0" />
+            <eLabel name="" position="-80,-270" size="1280,720" zPosition="-1" cornerRadius="12" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
+            <widget source="session.VideoPicture" render="Pig" position="933,431" zPosition="19" size="315,180" backgroundColor="transparent" transparent="0" cornerRadius="10" />
 
+            <!-- NOMI GIORNI SETTIMANA -->
             <widget name="w0" position="10,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w1" position="55,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w2" position="100,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w3" position="145,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w4" position="190,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w5" position="235,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w6" position="280,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
-            <widget name="w7" position="325,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w1" position="54,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w2" position="98,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w3" position="143,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w4" position="187,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w5" position="232,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w6" position="276,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
+            <widget name="w7" position="320,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
 
+            <!-- NUMERI SETTIMANA -->
             <widget name="wn0" position="10,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="wn1" position="10,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="wn2" position="10,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
@@ -373,6 +462,7 @@ class Calendar(Screen):
             <widget name="wn4" position="10,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
             <widget name="wn5" position="10,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
 
+            <!-- GIORNI DEL MESE (42 celle) -->
             <widget name="d0" position="55,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
             <widget name="d1" position="100,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
             <widget name="d2" position="145,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
@@ -421,27 +511,31 @@ class Calendar(Screen):
             <widget name="d40" position="280,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
             <widget name="d41" position="325,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
 
+            <!-- TESTI INFORMATIVI -->
             <widget name="monthname" position="10,5" size="355,30" font="Regular; 24" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="date" position="370,5" size="820,30" font="Regular; 20" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
+            <widget name="date" position="370,7" size="820,27" font="Regular; 20" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
             <widget name="datepeople" position="370,40" size="820,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="monthpeople" position="10,360" size="355,245" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
             <widget name="sign" position="370,70" size="820,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="holiday" position="370,125" size="820,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="description" position="370,180" size="820,425" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="description" position="370,180" size="820,410" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" valign="top" transparent="1" />
+            <widget name="status" position="371,588" size="648,40" font="Regular; 22" foregroundColor="#3333ff" halign="left" zPosition="5" transparent="1" />
 
-            <widget name="key_red" position="37,615" size="150,25" font="Regular;24" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_green" position="231,615" size="180,25" font="Regular;24" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_yellow" position="451,616" size="150,25" font="Regular;24" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_blue" position="661,615" size="150,25" font="Regular;24" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="37,640" size="150,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="230,640" size="180,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="452,640" size="150,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="660,640" size="150,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="823,612" size="75,36" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="899,612" size="75,36" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="974,612" size="71,38" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1048,612" size="74,35" alphatest="on" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_epg.png" position="1124,612" size="74,35" alphatest="on" />
+            <!-- TASTI FUNZIONE -->
+            <widget name="key_red" position="70,640" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_green" position="295,640" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_yellow" position="515,640" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_blue" position="730,640" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+
+            <!-- ICONE TASTI -->
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="70,660" size="155,7" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="295,660" size="155,7" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="515,660" size="155,7" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="730,660" size="155,7" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="900,640" size="50,24" alphatest="blend" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="962,640" size="50,24" alphatest="blend" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1024,640" size="49,27" alphatest="on" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1086,640" size="51,24" alphatest="on" zPosition="5" scale="1" />
         </screen>"""
 
     def __init__(self, session):
@@ -463,8 +557,11 @@ class Calendar(Screen):
         self.path = plugin_path
 
         self.selected_day = self.day
+        self.selected_bg_color = None
         self.nowday = False
         self.current_field = None
+
+        self.holiday_cache = {}
 
         # Create all UI elements
         for x in range(6):
@@ -483,7 +580,7 @@ class Calendar(Screen):
                 self['w' + str(x)] = Label(weekname[x])
             self['d' + str(x)] = Label()
 
-        self["Title"] = StaticText(_("Calendar Planner v.%s") % currversion)
+        self["Title"] = StaticText(_("Calendar Planner v.%s") % PLUGIN_VERSION)
         self["key_red"] = Label(_("Month -"))
         self["key_green"] = Label(_("Month +"))
         self["key_yellow"] = Label(_("Day -"))
@@ -495,16 +592,12 @@ class Calendar(Screen):
         self["monthpeople"] = Label(_(".............."))
         self["sign"] = Label(_(".............."))
         self["holiday"] = Label(_(".............."))
-        self["description"] = ScrollLabel(_(".............."))
+        self["description"] = Label(_(".............."))
+        self["status"] = Label(_("Calendar Planner | Ready"))
 
         self["actions"] = ActionMap(
             [
                 "CalendarActions",
-                "OkCancelActions",
-                "ColorActions",
-                "DirectionActions",
-                "MenuActions",
-                "EPGSelectActions"
             ],
             {
                 "cancel": self.exit,
@@ -526,11 +619,15 @@ class Calendar(Screen):
 
                 "menu": self.config,
                 "info": self.about,
-                "epg": self.about,
+                # "epg": self.about,
                 "0": self.show_events,
             }, -1
         )
         self.onLayoutFinish.append(self._paint_calendar)
+
+    def menu_callback(self, result):
+        if result:
+            result[1]()
 
     def ok(self):
         selection = self["menu"].getCurrent()
@@ -546,7 +643,7 @@ class Calendar(Screen):
             (_("Delete File"), self.delete_file),
         ]
 
-        # ⬇️ ADD EVENT OPTIONS ONLY IF ENABLED
+        # ADD EVENT OPTIONS ONLY IF ENABLED
         if config.plugins.calendar.events_enabled.value and self.event_manager:
             menu.extend([
                 (_("Manage Events"), self.show_events),
@@ -554,9 +651,576 @@ class Calendar(Screen):
                 (_("Cleanup past events"), self.cleanup_past_events),
             ])
 
+        # ADD HOLIDAYS
+        menu.extend([
+            (_("Import Holidays"), self.import_holidays),
+            (_("Show Today's Holidays"), self.show_today_holidays),
+            (_("Show Upcoming Holidays"), self.show_upcoming_holidays),
+            (_("Clear Holiday Database"), self.clear_holiday_database),
+        ])
+        # ADD UPDATER
+        menu.extend([
+            (_("Check for Updates"), self.check_for_updates),
+        ])
+
         menu.append((_("Exit"), self.close))
 
         self.session.openWithCallback(self.menu_callback, MenuDialog, menu)
+
+    def check_for_updates(self):
+        """Check for plugin updates"""
+        from .update_manager import UpdateManager
+        from .updater import PluginUpdater
+        print("check_for_updates called from main menu")
+        try:
+            print("Creating UpdateManager instance...")
+            updater = PluginUpdater()
+            print("PluginUpdater created successfully")
+
+            latest = updater.get_latest_version()
+            print("Direct test - Latest version: %s" % latest)
+
+            # UpdateManager
+            UpdateManager.check_for_updates(self.session, self["status"])
+
+        except Exception as e:
+            print("Direct test error: %s" % e)
+            self["status"].setText(_("Update check error"))
+            self.session.open(MessageBox,
+                              _("Error: %s") % str(e),
+                              MessageBox.TYPE_ERROR)
+
+    def clear_fields(self):
+        """Clear all fields for new date"""
+        if DEBUG:
+            print("[Calendar] Clearing all fields")
+        self["date"].setText("")
+        self["datepeople"].setText("")
+        self["sign"].setText("")
+        self["holiday"].setText("")
+        self["description"].setText("")
+        self["monthpeople"].setText("")
+        # self["status"].setText("")
+
+    def load_data(self):
+        """Load data from file and show labels with data"""
+        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+            self.path,
+            self.language,
+            self.year,
+            self.month,
+            self.day
+        )
+
+        if exists(file_path):
+            try:
+                with open(file_path, "r") as f:
+                    lines = f.readlines()
+
+                day_data = {}
+                month_data = {}
+                current_section = None
+
+                for line in lines:
+                    line = line.strip()
+                    if line == "[day]":
+                        current_section = "day"
+                    elif line == "[month]":
+                        current_section = "month"
+                    elif current_section == "day" and ":" in line:
+                        key, value = line.split(":", 1)
+                        day_data[key.strip()] = value.strip()
+                    elif current_section == "month" and ":" in line:
+                        key, value = line.split(":", 1)
+                        month_data[key.strip()] = value.strip()
+
+                # Date - special case (already has label in skin)
+                date_val = day_data.get("date", "")
+                self["date"].setText(date_val if date_val else "")
+
+                # Date People - add label
+                datepeople_val = day_data.get("datepeople", "")
+                if datepeople_val:
+                    self["datepeople"].setText(_("Date People: ") + datepeople_val)
+                else:
+                    self["datepeople"].setText("")
+
+                # Sign - add label
+                sign_val = day_data.get("sign", "")
+                if sign_val:
+                    self["sign"].setText(_("Sign: ") + sign_val)
+                else:
+                    self["sign"].setText("")
+
+                # Holiday - add label
+                holiday_val = day_data.get("holiday", "")
+                if holiday_val and holiday_val != "None":
+                    self["holiday"].setText(_("Holiday: ") + holiday_val)
+                else:
+                    self["holiday"].setText("")
+
+                # Description - no label (already multi-line)
+                description_val = day_data.get("description", "")
+                self["description"].setText(description_val)
+
+                # Month People - add label
+                monthpeople_val = month_data.get("monthpeople", "")
+                if monthpeople_val:
+                    self["monthpeople"].setText(_("Month People: ") + monthpeople_val)
+                else:
+                    self["monthpeople"].setText("")
+
+            except Exception as e:
+                print("[Calendar] Error loading data: {0}".format(str(e)))
+                self.clear_fields()
+        else:
+            if DEBUG:
+                print("[Calendar] File not found: {0}".format(file_path))
+            self.clear_fields()
+
+        # Add events if enabled
+        if self.event_manager:
+            self.add_events_to_description()
+
+    def save_data(self):
+        """Save data to unified file"""
+        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+            self.path,
+            self.language,
+            self.year,
+            self.month,
+            self.day
+        )
+
+        directory = dirname(file_path)
+        if not exists(directory):
+            try:
+                makedirs(directory)
+                if DEBUG:
+                    print("[Calendar] Created directory: {0}".format(directory))
+            except Exception as e:
+                print("[Calendar] Error creating directory: {0}".format(str(e)))
+
+        try:
+            # Get current values
+            date_text = self['date'].getText() or ""
+            datepeople_text = self['datepeople'].getText() or ""
+            sign_text = self['sign'].getText() or ""
+            holiday_text = self['holiday'].getText() or ""
+            description_text = self['description'].getText() or ""
+            monthpeople_text = self['monthpeople'].getText() or ""
+
+            # IMPORTANT: Remove any event display from description before saving
+            # Events should only be in events.json, not in the database file
+            if _("TODAY'S EVENTS:") in description_text:
+                # Split at the events section and keep only the user's description
+                parts = description_text.split(_("TODAY'S EVENTS:"))
+                description_text = parts[0].rstrip()
+                if DEBUG:
+                    print("[Calendar] Cleaned events from description before saving")
+            if DEBUG:
+                print("[Calendar] Saving description: '{0}'".format(description_text[:50] if description_text else "EMPTY"))
+
+            # Format the file content
+            day_data = (
+                "[day]\n"
+                "date: {0}\n"
+                "datepeople: {1}\n"
+                "sign: {2}\n"
+                "holiday: {3}\n"
+                "description: {4}\n\n"
+                "[month]\n"
+                "monthpeople: {5}\n"
+            ).format(
+                date_text,
+                datepeople_text,
+                sign_text,
+                holiday_text,
+                description_text,  # Clean description without events
+                monthpeople_text
+            )
+
+            # Write to file
+            with open(file_path, "w") as f:
+                f.write(day_data)
+
+            if DEBUG:
+                print("[Calendar] Data saved successfully to: {0}".format(file_path))
+
+            # After saving, if there are events for this date, add them to display
+            if self.event_manager:
+                # First load the clean data we just saved
+                self["description"].setText(description_text)
+                # Then add events for display only
+                self.add_events_to_description()
+
+        except Exception as e:
+            print("[Calendar] Error saving data: {0}".format(str(e)))
+            # Optionally show error to user
+            self.session.open(
+                MessageBox,
+                _("Error saving data"),
+                MessageBox.TYPE_ERROR
+            )
+
+    def open_virtual_keyboard_for_field(self, field, field_name):
+        """
+        Open the virtual keyboard for a specific field
+        """
+        current_text = field.getText()
+
+        if DEBUG:
+            print("[Calendar] Editing field '{0}', current text: '{1}'".format(
+                field_name, current_text[:50] if current_text else "EMPTY"))
+
+        def calendar_callback(input_text):
+            if input_text:
+                if DEBUG:
+                    print("[Calendar] Field '{0}' updated to: '{1}'".format(
+                        field_name, input_text[:50]))
+                field.setText(input_text)
+                self.save_data()
+
+            self.navigate_to_next_field()
+
+        self.session.openWithCallback(
+            calendar_callback,
+            VirtualKeyBoard,
+            title=field_name,
+            text=current_text
+        )
+
+    def new_date(self):
+        """
+        Create a NEW date - clear all fields first
+        """
+        if DEBUG:
+            print("[Calendar] Creating NEW date - clearing all fields")
+        self.clear_fields()
+
+        default_date = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
+        self["date"].setText(default_date)
+
+        self.current_field = self["date"]
+        self.open_virtual_keyboard_for_field(self["date"], _("Date"))
+
+    def edit_all_fields(self):
+        if DEBUG:
+            print("[Calendar] === EDIT ALL FIELDS START ===")
+
+        self.load_data()
+
+        # CLEAN the description from events BEFORE editing
+        current_desc = self["description"].getText()
+        if _("SCHEDULED EVENTS:") in current_desc:
+            parts = current_desc.split(_("SCHEDULED EVENTS:"))
+            clean_desc = parts[0].rstrip()
+            self["description"].setText(clean_desc)
+            if DEBUG:
+                print("[Calendar] Cleaned description before editing: '{0}'".format(clean_desc[:50]))
+
+        self.edit_fields_sequence = [
+            ("date", _("Edit Date")),
+            ("datepeople", _("Edit Date People")),
+            ("sign", _("Edit Sign")),
+            ("holiday", _("Edit Holiday")),
+            ("description", _("Edit Description")),
+            ("monthpeople", _("Edit Month People"))
+        ]
+
+        self.current_edit_index = 0
+        self._edit_next_field()
+
+    def _edit_next_field(self):
+        if DEBUG:
+            print("[Calendar] _edit_next_field() - index: {0}".format(self.current_edit_index))
+
+        if self.current_edit_index >= len(self.edit_fields_sequence):
+            if DEBUG:
+                print("[Calendar] ERROR: Index out of range!")
+            return
+
+        field_name, title = self.edit_fields_sequence[self.current_edit_index]
+        current_text = self[field_name].getText()
+        if DEBUG:
+            print("[Calendar] Opening VirtualKeyBoard for: {0}".format(field_name))
+            print("[Calendar] Current text length: {0}".format(len(current_text)))
+
+        if field_name == "description":
+            if DEBUG:
+                print("[Calendar] === THIS IS DESCRIPTION FIELD ===")
+                print("[Calendar] Text preview: '{0}'".format(current_text[:100]))
+
+        self.session.openWithCallback(
+            self._save_edited_field,
+            VirtualKeyBoard,
+            title=title,
+            text=current_text
+        )
+
+    def _save_edited_field(self, input_text):
+        if DEBUG:
+            print("[Calendar] _save_edited_field() - index: {0}".format(self.current_edit_index))
+
+        if self.current_edit_index >= len(self.edit_fields_sequence):
+            return
+
+        field_name, _ = self.edit_fields_sequence[self.current_edit_index]
+
+        # Sand input is None or empty, keep the current value
+        if input_text is None:
+            print("[Calendar] No input received, keeping current value")
+            # Do nothing, move on to the next field
+        else:
+            old_text = self[field_name].getText()
+            # If the text is DIFFERENT, then update
+            if input_text != old_text:
+                if DEBUG:
+                    print("[Calendar] Updating field '{0}'".format(field_name))
+                self[field_name].setText(input_text)
+            else:
+                print("[Calendar] Text unchanged for '{0}', skipping".format(field_name))
+
+        self.current_edit_index += 1
+
+        if self.current_edit_index < len(self.edit_fields_sequence):
+            self._edit_next_field()
+        else:
+            if DEBUG:
+                print("[Calendar] === EDIT SEQUENCE COMPLETE ===")
+            self.save_data()
+
+    def remove_date(self):
+        """Remove the date and clear all fields"""
+        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+            self.path,
+            self.language,
+            self.year,
+            self.month,
+            self.day
+        )
+
+        if exists(file_path):
+            try:
+                with open(file_path, "w") as f:
+                    f.write("")
+
+                # Clear all relevant UI fields
+                self["date"].setText(_("No file in database..."))
+                self["datepeople"].setText("")
+                self["sign"].setText("")
+                self["holiday"].setText("")
+                self["description"].setText("")
+                self["monthpeople"].setText("")
+                if DEBUG:
+                    print("Date removed for m{0}d{1}".format(self.month, self.day))
+            except Exception as e:
+                print("Error removing date: {0}".format(e))
+        else:
+            self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO)
+
+    def delete_file(self):
+        """Delete the data file for the selected date and update the UI accordingly."""
+        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+            self.path,
+            self.language,
+            self.year,
+            self.month,
+            self.day
+        )
+
+        if exists(file_path):
+            try:
+                remove(file_path)
+                self["date"].setText(_("No file in database..."))
+                if DEBUG:
+                    print("File deleted: {0}".format(file_path))
+            except Exception as e:
+                print("Error deleting file: {0}".format(e))
+        else:
+            self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO)
+
+    def _paint_calendar(self):
+        # Clear the original states when month changes
+        if hasattr(self, 'original_cell_states'):
+            self.original_cell_states = {}
+        if hasattr(self, 'previous_selected_day'):
+            self.previous_selected_day = None
+
+        monthname = (_('January'),
+                     _('February'),
+                     _('March'),
+                     _('April'),
+                     _('May'),
+                     _('June'),
+                     _('July'),
+                     _('August'),
+                     _('September'),
+                     _('October'),
+                     _('November'),
+                     _('December'))
+
+        i = 1
+        ir = 0
+        d1 = datetime.date(self.year, self.month, 1)
+        d2 = d1.weekday()
+
+        if self.month == 12:
+            sdt1 = datetime.date(self.year + 1, 1, 1) - datetime.timedelta(1)
+        else:
+            sdt1 = datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(1)
+
+        self.monthday = int(sdt1.day)
+        self.monthname = monthname[self.month - 1]
+        self["monthname"].setText(str(self.year) + ' ' + str(self.monthname))
+
+        # === 1. COMPLETE RESET: ALL WHITE ON BLACK ===
+        """
+        for x in range(42):
+            self['d' + str(x)].instance.setBackgroundColor(parseColor('black'))
+            self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
+        """
+        for x in range(8):
+            if x < 8:
+                self['w' + str(x)].instance.setBackgroundColor(parseColor('#333333'))  # Dark gray
+                self['w' + str(x)].instance.setForegroundColor(parseColor('white'))
+
+        for x in range(6):
+            self['wn' + str(x)].instance.setBackgroundColor(parseColor('#333333'))  # Dark gray
+            self['wn' + str(x)].instance.setForegroundColor(parseColor('white'))
+
+        # Informational texts
+        self["monthname"].instance.setForegroundColor(parseColor('yellow'))
+        self["date"].instance.setForegroundColor(parseColor('yellow'))
+        self["datepeople"].instance.setForegroundColor(parseColor('white'))
+        self["monthpeople"].instance.setForegroundColor(parseColor('#8F8F8F'))
+        self["sign"].instance.setForegroundColor(parseColor('white'))
+        self["holiday"].instance.setForegroundColor(parseColor('white'))
+        self["description"].instance.setForegroundColor(parseColor('#8F8F8F'))
+        self["status"].instance.setForegroundColor(parseColor('yellow'))
+
+        # Keys
+        self["key_red"].instance.setForegroundColor(parseColor('white'))
+        self["key_green"].instance.setForegroundColor(parseColor('white'))
+        self["key_yellow"].instance.setForegroundColor(parseColor('white'))
+        self["key_blue"].instance.setForegroundColor(parseColor('white'))
+
+        # Load holidays for current month into cache
+        if config.plugins.calendar.holidays_enabled.value:
+            current_month_holidays = self._load_month_holidays(self.year, self.month)
+        else:
+            current_month_holidays = {}
+
+        for x in range(42):
+            self['d' + str(x)].setText('')
+            self['d' + str(x)].instance.clearForegroundColor()
+            self['d' + str(x)].instance.clearBackgroundColor()
+
+            if (x + 7) % 7 == 0:
+                ir += 1
+                if ir < 5:
+                    self['wn' + str(ir)].setText('')
+
+            if x >= d2 and i <= self.monthday:
+                r = datetime.datetime(self.year, self.month, i)
+                wn1 = r.isocalendar()[1]
+                if ir <= 5:
+                    self['wn' + str(ir - 1)].setText('%0.2d' % wn1)
+                    self['d' + str(x)].setText(str(i))
+
+                    # RESET to default white first
+                    self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
+
+                    # Check for holidays FIRST (priority 1)
+                    is_holiday = False
+                    # holiday_text = ""
+                    if config.plugins.calendar.holidays_enabled.value:
+                        if i in current_month_holidays:
+                            is_holiday = True
+                            # holiday_text = current_month_holidays[i]
+                            holiday_color = config.plugins.calendar.holidays_color.value
+                            self['d' + str(x)].instance.setForegroundColor(parseColor(holiday_color))
+                            if config.plugins.calendar.holidays_show_indicators.value:
+                                current_text = self['d' + str(x)].getText()
+                                self['d' + str(x)].setText(current_text + " H")
+
+                    # Check for events (priority 2 - only if not holiday)
+                    has_events = False
+                    if not is_holiday and self.event_manager and config.plugins.calendar.events_show_indicators.value:
+                        date_str = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, i)
+                        day_events = self.event_manager.get_events_for_date(date_str)
+
+                        if day_events:
+                            has_events = True
+                            event_color = config.plugins.calendar.events_color.value
+                            self['d' + str(x)].instance.setForegroundColor(parseColor(event_color))
+                            current_text = self['d' + str(x)].getText()
+                            self['d' + str(x)].setText(current_text + " *")
+
+                    # Weekend colors (priority 3 - only if not holiday and not event)
+                    if not is_holiday and not has_events:
+                        if datetime.date(self.year, self.month, i).weekday() == 5:
+                            self['d' + str(x)].instance.setForegroundColor(parseColor('yellow'))
+                        if datetime.date(self.year, self.month, i).weekday() == 6:
+                            self['d' + str(x)].instance.setForegroundColor(parseColor('red'))
+
+                    # TODAY background (highest priority - always applies)
+                    if datetime.date(self.year, self.month, i) == datetime.date.today():
+                        self.nowday = True
+                        self['d' + str(x)].instance.setBackgroundColor(parseColor('green'))
+
+                    i = i + 1
+
+        # Load content for the current date
+        self.load_data()
+        self._highlight_selected_day(self.selected_day)
+
+    def show_events(self):
+        """Show the events view for the current date - with safety checks"""
+
+        # 1. Master switch check
+        if not config.plugins.calendar.events_enabled.value:
+            if DEBUG:
+                print("[Calendar] Event system disabled, skipping show_events")
+            return
+
+        # 2. Check that EventManager exists
+        if self.event_manager is None:
+            # This should never happen if events_enabled = True
+            # But initialize it for safety
+            try:
+                from .event_manager import EventManager
+                self.event_manager = EventManager(self.session)
+                if DEBUG:
+                    print("[Calendar] EventManager initialized on-demand")
+            except Exception as e:
+                print("[Calendar] Error initializing EventManager: {0}".format(e))
+                return
+
+        # 3. Proceed normally
+        current_date = datetime.date(self.year, self.month, self.day)
+
+        def refresh_calendar(result=None):
+            """Refresh calendar after event changes"""
+            if result:
+                print("[Calendar] Event changes detected, refreshing...")
+            self._paint_calendar()
+            self.load_data()
+            if DEBUG:
+                print("[Calendar] Calendar refreshed after event changes")
+
+        self.session.openWithCallback(
+            refresh_calendar,
+            EventsView,
+            self.event_manager,
+            current_date
+        )
+
+    def event_added_callback(self, result):
+        """Callback after adding event"""
+        if result:
+            self._paint_calendar()
+            self.load_data()
 
     def add_event(self):
         """Add new event - with safety check"""
@@ -591,82 +1255,6 @@ class Calendar(Screen):
                 MessageBox.TYPE_ERROR
             )
 
-    def event_added_callback(self, result):
-        """Callback after adding event"""
-        if result:
-            self._paint_calendar()
-            self.load_data()
-
-    def manage_events(self):
-        """Manage events"""
-        if self.event_manager:
-            from .events_view import EventsView
-            current_date = datetime.date(self.year, self.month, self.day)
-            self.session.open(EventsView, self.event_manager, current_date)
-
-    def menu_callback(self, result):
-        if result:
-            result[1]()
-
-    def show_events(self):
-        """Show the events view for the current date - with safety checks"""
-
-        # 1. Master switch check
-        if not config.plugins.calendar.events_enabled.value:
-            print("[Calendar] Event system disabled, skipping show_events")
-            return
-
-        # 2. Check that EventManager exists
-        if self.event_manager is None:
-            # This should never happen if events_enabled = True
-            # But initialize it for safety
-            try:
-                from .event_manager import EventManager
-                self.event_manager = EventManager(self.session)
-                print("[Calendar] EventManager initialized on-demand")
-            except Exception as e:
-                print("[Calendar] Error initializing EventManager: {0}".format(e))
-                return
-
-        # 3. Proceed normally
-        current_date = datetime.date(self.year, self.month, self.day)
-
-        def refresh_calendar(result=None):
-            """Refresh calendar after event changes"""
-            if result:
-                print("[Calendar] Event changes detected, refreshing...")
-            self._paint_calendar()
-            self.load_data()
-            print("[Calendar] Calendar refreshed after event changes")
-
-        self.session.openWithCallback(
-            refresh_calendar,
-            EventsView,
-            self.event_manager,
-            current_date
-        )
-
-    def open_virtual_keyboard_for_field(self, field, field_name):
-        """
-        Open the virtual keyboard for a specific field, allowing user input.
-        After input is entered and saved, automatically navigate to the next field.
-        """
-        current_text = field.getText()
-
-        def calendar_callback(input_text):
-            if input_text:
-                field.setText(input_text)
-                self.save_data()
-
-            self.navigate_to_next_field()
-
-        self.session.openWithCallback(
-            calendar_callback,
-            VirtualKeyBoard,
-            title=field_name,
-            text=current_text
-        )
-
     def cleanup_past_events(self):
         """Clean up past non-recurring events"""
         if not config.plugins.calendar.events_enabled.value or not self.event_manager:
@@ -677,18 +1265,115 @@ class Calendar(Screen):
             )
             return
 
-        # Call EventManager cleanup method directly
+        # Directly call the method on the existing event_manager
         removed = self.event_manager.cleanup_past_events()
 
-        # Show result
+        # Show the result
         if removed > 0:
             message = _("Removed {0} past events").format(removed)
-            # Reload calendar
+            # Refresh the calendar
             self._paint_calendar()
+            self.load_data()
         else:
             message = _("No past events to remove")
 
         self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
+
+    def clear_holiday_cache(self):
+        """Clear holiday cache (call after importing new holidays)"""
+        self.holiday_cache = {}
+
+    def import_holidays_callback(self, result=None):
+        """Callback after importing holidays"""
+
+        def refresh_after_import():
+            self.clear_holiday_cache()
+            self._paint_calendar()
+            self.load_data()
+            if DEBUG:
+                print("[Calendar] Calendar refreshed after import operation")
+
+        self.refresh_timer = eTimer()
+        try:
+            self.refresh_timer_conn = self.refresh_timer.timeout.connect(refresh_after_import)
+        except AttributeError:
+            self.refresh_timer.callback.append(refresh_after_import)
+        self.refresh_timer.start(2000, True)
+
+    def import_holidays(self):
+        """Import holidays from Holidata.net"""
+        try:
+            from .holidays import HolidaysImportScreen
+            if DEBUG:
+                print("DEBUG: Opening HolidaysImportScreen")
+            self.session.openWithCallback(
+                self.import_holidays_callback,
+                HolidaysImportScreen,
+                plugin_path=self.path,
+                language=self.language
+            )
+
+        except Exception as e:
+            print("Holidays import error: " + str(e))
+            self.session.open(
+                MessageBox,
+                "Error: " + str(e),
+                MessageBox.TYPE_ERROR
+            )
+
+    def show_today_holidays(self):
+        """Show today's holidays"""
+        try:
+            from .holidays import show_holidays_today
+            show_holidays_today(self.session)
+        except Exception as e:
+            print("Show holidays error: " + str(e))
+            self.session.open(
+                MessageBox,
+                "Error: " + str(e),
+                MessageBox.TYPE_ERROR
+            )
+
+    def show_upcoming_holidays(self):
+        """Show upcoming holidays"""
+        try:
+            from .holidays import show_upcoming_holidays as holidays_upcoming
+            holidays_upcoming(self.session, days=30)
+        except Exception as e:
+            print("Show upcoming holidays error: " + str(e))
+            self.session.open(
+                MessageBox,
+                "Error: " + str(e),
+                MessageBox.TYPE_ERROR
+            )
+
+    def clear_holiday_database(self):
+        """Clears all holiday fields from files"""
+        try:
+            from .holidays import clear_holidays_dialog
+            clear_holidays_dialog(self.session)
+
+            def refresh_calendar():
+                self.clear_holiday_cache()
+                self._paint_calendar()
+                self.load_data()
+                if DEBUG:
+                    print("[Calendar] Calendar refreshed after holiday database clearing")
+
+            self.refresh_timer = eTimer()
+            try:
+                self.refresh_timer_conn = self.refresh_timer.timeout.connect(refresh_calendar)
+            except AttributeError:
+                self.refresh_timer.callback.append(refresh_calendar)
+            self.refresh_timer.start(2000, True)
+
+        except Exception as e:
+            print("Clear holidays error: " + str(e))
+            self.session.open(
+                MessageBox,
+                "Error: " + str(e),
+                MessageBox.TYPE_ERROR
+            )
 
     def navigate_to_next_field(self):
         """
@@ -711,219 +1396,25 @@ class Calendar(Screen):
             self.open_virtual_keyboard_for_field(self["monthpeople"], _("Month People"))
             self.current_field = self["monthpeople"]
         else:
-            print("All fields have been updated.")
+            if DEBUG:
+                print("All fields have been updated.")
             self.save_data()
 
-    def new_date(self):
-        """
-        Open the virtual keyboard to input a new date, focusing on the 'date' field.
-        """
-        self.current_field = self["date"]
-        self.open_virtual_keyboard_for_field(self["date"], _("Date"))
-
-    def save_data(self):
-        """Save data in the unified file"""
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            self.path,
-            self.language,
-            self.year,
-            self.month,
-            self.day
-        )
-
-        directory = dirname(file_path)
-        if not exists(directory):
-            try:
-                makedirs(directory)
-            except Exception as e:
-                print("Error creating directory: {0}".format(e))
-
-        try:
-            day_data = (
-                "[day]\n"
-                "date: {0}\n"
-                "datepeople: {1}\n"
-                "sign: {2}\n"
-                "holiday: {3}\n"
-                "description: {4}\n\n"
-                "[month]\n"
-                "monthpeople: {5}\n"
-            ).format(
-                self['date'].getText(),
-                self['datepeople'].getText(),
-                self['sign'].getText(),
-                self['holiday'].getText(),
-                self['description'].getText(),
-                self['monthpeople'].getText()
-            )
-
-            with open(file_path, "w") as f:
-                f.write(day_data)
-
-        except Exception as e:
-            print("Error saving data: {0}".format(e))
-
-    def edit_all_fields(self):
-        """
-        Start the process to edit all fields one by one by loading existing data first,
-        then sequentially opening the virtual keyboard for each field.
-        """
-        self.load_data()
-
-        self.edit_fields_sequence = [
-            ("date", _("Edit Date")),
-            ("datepeople", _("Edit Date People")),
-            ("sign", _("Edit Sign")),
-            ("holiday", _("Edit Holiday")),
-            ("description", _("Edit Description")),
-            ("monthpeople", _("Edit Month People"))
-        ]
-        self.current_edit_index = 0
-        self._edit_next_field()
-
-    def _edit_next_field(self):
-        """
-        Open the virtual keyboard to edit the next field in the sequence.
-        If all fields have been edited, save all data to the file.
-        """
-        if self.current_edit_index < len(self.edit_fields_sequence):
-            field_name, title = self.edit_fields_sequence[self.current_edit_index]
-            current_text = self[field_name].getText()
-            self.session.openWithCallback(
-                self._save_edited_field,
-                VirtualKeyBoard,
-                title=title,
-                text=current_text
-            )
-        else:
-            self.save_data()  # Save all fields to file at the end
-            print("All fields edited and saved.")
-
-    def _save_edited_field(self, input_text):
-        """
-        Save the edited input text to the current field and proceed to edit the next field.
-        """
-        if input_text is not None:
-            field_name, _ = self.edit_fields_sequence[self.current_edit_index]
-            self[field_name].setText(input_text)
-        self.current_edit_index += 1
-        self._edit_next_field()
-
-    def remove_date(self):
-        """Remove the date and clear all fields"""
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            self.path,
-            self.language,
-            self.year,
-            self.month,
-            self.day
-        )
-
-        if exists(file_path):
-            try:
-                with open(file_path, "w") as f:
-                    f.write("")
-
-                # Clear all relevant UI fields
-                self["date"].setText(_("No file in database..."))
-                self["datepeople"].setText("")
-                self["sign"].setText("")
-                self["holiday"].setText("")
-                self["description"].setText("")
-                self["monthpeople"].setText("")
-                print("Date removed for m{0}d{1}".format(self.month, self.day))
-            except Exception as e:
-                print("Error removing date: {0}".format(e))
-        else:
-            self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO)
-
-    def delete_file(self):
-        """Delete the data file for the selected date and update the UI accordingly."""
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            self.path,
-            self.language,
-            self.year,
-            self.month,
-            self.day
-        )
-
-        if exists(file_path):
-            try:
-                remove(file_path)
-                self["date"].setText(_("No file in database..."))
-                print("File deleted: {0}".format(file_path))
-            except Exception as e:
-                print("Error deleting file: {0}".format(e))
-        else:
-            self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO)
-
-    def load_data(self):
-        """Load data from the file and populate the corresponding fields in the UI."""
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            self.path,
-            self.language,
-            self.year,
-            self.month,
-            self.day
-        )
-
-        if exists(file_path):
-            try:
-                with open(file_path, "r") as f:
-                    lines = f.readlines()
-
-                day_data = {}
-                month_data = {}
-                current_section = None
-
-                for line in lines:
-                    line = line.strip()
-                    if line == "[day]":
-                        current_section = "day"
-                    elif line == "[month]":
-                        current_section = "month"
-                    elif current_section == "day" and ":" in line:
-                        key, value = line.split(":", 1)
-                        day_data[key.strip()] = value.strip()
-                    elif current_section == "month" and ":" in line:
-                        key, value = line.split(":", 1)
-                        month_data[key.strip()] = value.strip()
-
-                self["date"].setText(day_data.get("date", ""))
-                self["datepeople"].setText(day_data.get("datepeople", ""))
-                self["sign"].setText(day_data.get("sign", ""))
-                self["holiday"].setText(day_data.get("holiday", ""))
-                self["description"].setText(day_data.get("description", ""))
-                self["monthpeople"].setText(month_data.get("monthpeople", ""))
-
-            except Exception as e:
-                print("Error loading data: {0}".format(e))
-                self.clear_fields()
-        else:
-            self.clear_fields()
-
-        if self.event_manager:
-            self.add_events_to_description()
-
-    def clear_fields(self):
-        """Clear all fields"""
-        self["date"].setText(_("No file in database..."))
-        self["datepeople"].setText("")
-        self["sign"].setText("")
-        self["holiday"].setText("")
-        self["description"].setText("")
-        self["monthpeople"].setText("")
-
     def add_events_to_description(self):
-        """Add events to the description"""
+        """Add events to description display"""
         try:
             date_str = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
             day_events = self.event_manager.get_events_for_date(date_str)
 
             if day_events:
-                events_text = "\n\n" + _("TODAY'S EVENTS:") + "\n"
+                # Create visual separator
+                separator = "\n" + "-" * 40 + "\n"
+                events_text = separator + _("SCHEDULED EVENTS:") + "\n"
+
                 for event in day_events:
                     time_str = event.time[:5] if event.time else "00:00"
+
+                    # Repeat indicators
                     repeat_symbol = ""
                     if event.repeat == "daily":
                         repeat_symbol = " [D]"
@@ -934,12 +1425,19 @@ class Calendar(Screen):
                     elif event.repeat == "yearly":
                         repeat_symbol = " [Y]"
 
-                    status_symbol = " *" if event.enabled else " [X]"
-                    events_text += "• {0} - {1}{2}{3}\n".format(
+                    status_symbol = " *" if event.enabled else " [OFF]"
+
+                    # ADD LABELS TO DISPLAY
+                    labels_display = ""
+                    if event.labels:
+                        labels_display = " [" + ", ".join(event.labels[:3]) + "]"  # Show only first 3 labels
+
+                    events_text += "- {0} - {1}{2}{3}{4}\n".format(
                         time_str,
                         event.title,
                         repeat_symbol,
-                        status_symbol
+                        status_symbol,
+                        labels_display
                     )
 
                     if event.description:
@@ -948,152 +1446,258 @@ class Calendar(Screen):
                             desc = desc[:77] + "..."
                         events_text += "  {0}\n".format(desc)
 
+                events_text += "-" * 40
+
+                # Get current description
                 current_desc = self["description"].getText()
-                if current_desc == _("No file in database..."):
-                    self["description"].setText(events_text.strip())
-                else:
-                    self["description"].setText(current_desc + events_text)
+
+                # Remove any existing events display
+                if _("SCHEDULED EVENTS:") in current_desc:
+                    parts = current_desc.split(_("SCHEDULED EVENTS:"))
+                    current_desc = parts[0].rstrip()
+
+                # Add events to display only
+                self["description"].setText(current_desc + events_text)
+                if DEBUG:
+                    print("[Calendar] Events displayed with labels")
 
         except Exception as e:
-            print("Error adding events to description: {0}".format(e))
+            print("[Calendar] Error displaying events: {0}".format(e))
 
-    def _paint_calendar(self):
-        monthname = (_('January'),
-                     _('February'),
-                     _('March'),
-                     _('April'),
-                     _('May'),
-                     _('June'),
-                     _('July'),
-                     _('August'),
-                     _('September'),
-                     _('October'),
-                     _('November'),
-                     _('December'))
+    def _load_month_holidays(self, year, month):
+        """Load holidays for a specific month into cache"""
+        cache_key = (year, month)
 
-        i = 1
-        ir = 0
-        d1 = datetime.date(self.year, self.month, 1)
-        d2 = d1.weekday()
+        # Return if already in cache
+        if cache_key in self.holiday_cache:
+            return self.holiday_cache[cache_key]
 
-        if self.month == 12:
-            sdt1 = datetime.date(self.year + 1, 1, 1) - datetime.timedelta(1)
-        else:
-            sdt1 = datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(1)
+        month_holidays = {}
+        language = config.osd.language.value.split("_")[0].strip()
 
-        self.monthday = int(sdt1.day)
-        self.monthname = monthname[self.month - 1]
-        self["monthname"].setText(str(self.year) + ' ' + str(self.monthname))
+        # Iterate through possible days in month (1-31)
+        for day in range(1, 32):
+            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+                self.path,
+                language,
+                year,
+                month,
+                day
+            )
 
-        for x in range(42):
-            self['d' + str(x)].setText('')
-            self['d' + str(x)].instance.clearForegroundColor()
-            self['d' + str(x)].instance.clearBackgroundColor()
+            if exists(file_path):
+                try:
+                    with open(file_path, 'r') as f:
+                        content = f.read()
 
-            if (x + 7) % 7 == 0:
-                ir += 1
-                if ir < 5:
-                    self['wn' + str(ir)].setText('')
+                    # Parse holiday field
+                    for line in content.split('\n'):
+                        line = line.strip()
+                        if line.startswith('holiday:'):
+                            holiday_value = line.split(':', 1)[1].strip()
+                            if holiday_value and holiday_value != "None":
+                                month_holidays[day] = holiday_value
+                                break  # Found holiday, move to next day
+                except Exception as e:
+                    print("[Calendar] Error reading holiday file {0}: {1}".format(file_path, str(e)))
 
-            if x >= d2 and i <= self.monthday:
-                r = datetime.datetime(self.year, self.month, i)
-                wn1 = r.isocalendar()[1]
-                if ir <= 5:
-                    self['wn' + str(ir - 1)].setText('%0.2d' % wn1)
-                    self['d' + str(x)].setText(str(i))
-                    self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
-
-                # Check if there are events (only if enabled in config)
-                if self.event_manager and config.plugins.calendar.events_show_indicators.value:
-                    date_str = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, i)
-                    day_events = self.event_manager.get_events_for_date(date_str)
-
-                    if day_events:
-                        # Use color from configuration
-                        event_color = config.plugins.calendar.events_color.value
-                        self['d' + str(x)].instance.setForegroundColor(parseColor(event_color))
-                        # Add asterisk
-                        current_text = self['d' + str(x)].getText()
-                        self['d' + str(x)].setText(current_text + " *")
-
-                # Special colors (overridden if events exist)
-                if datetime.date(self.year, self.month, i) == datetime.date.today():
-                    self.nowday = True
-                    self['d' + str(x)].instance.setBackgroundColor(parseColor('green'))
-
-                if datetime.date(self.year, self.month, i).weekday() == 5:
-                    self['d' + str(x)].instance.setForegroundColor(parseColor('yellow'))
-
-                if datetime.date(self.year, self.month, i).weekday() == 6:
-                    self['d' + str(x)].instance.setForegroundColor(parseColor('red'))
-
-                i = i + 1
-
-        # Load content for the current date
-        self.load_data()
-        self._highlight_selected_day(self.selected_day)
+        # Store in cache
+        self.holiday_cache[cache_key] = month_holidays
+        return month_holidays
 
     def _highlight_selected_day(self, day):
-        """Highlight selected day with different background color"""
+        """Highlight selected day with blue background and white text"""
         today = localtime()[2]
-        for x in range(42):
-            # If this is the selected day, highlight it
-            if self['d' + str(x)].getText() == str(day) and day != today:
-                self['d' + str(x)].instance.setBackgroundColor(parseColor('blue'))
-                self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
 
-    def onDaySelected(self, day):
-        """Method to update selected day manually (when user selects a day)"""
+        # First, restore the original color of the previously selected day (if any and not today)
+        if hasattr(self, 'previous_selected_day') and self.previous_selected_day and self.previous_selected_day != today:
+            if hasattr(self, 'original_cell_states') and self.previous_selected_day in self.original_cell_states:
+                state = self.original_cell_states[self.previous_selected_day]
+                for x in range(42):
+                    cell_text = self['d' + str(x)].getText()
+                    if cell_text:
+                        clean_text = cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip()
+                        if clean_text.isdigit() and int(clean_text) == self.previous_selected_day:
+                            # Restore original color
+                            self['d' + str(x)].instance.setForegroundColor(state['color'])
+
+                            # Restore original text with marker if needed
+                            display_text = str(self.previous_selected_day)
+                            if state['is_holiday'] and config.plugins.calendar.holidays_enabled.value and config.plugins.calendar.holidays_show_indicators.value:
+                                display_text += " H"
+                            elif state['has_events'] and config.plugins.calendar.events_enabled.value and config.plugins.calendar.events_show_indicators.value:
+                                display_text += " *"
+                            self['d' + str(x)].setText(display_text)
+
+                            # Clear blue background
+                            self['d' + str(x)].instance.clearBackgroundColor()
+                            break
+
+        # Clear backgrounds of all non-today cells and save original states
+        if not hasattr(self, 'original_cell_states'):
+            self.original_cell_states = {}
+
+        for x in range(42):
+            cell_text = self['d' + str(x)].getText()
+            if cell_text and cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip().isdigit():
+                cell_day = int(cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip())
+
+                # Skip today - it keeps green background
+                if cell_day != today:
+                    # Clear any selection background (blue)
+                    self['d' + str(x)].instance.clearBackgroundColor()
+
+                    # Save original state for this day if not already saved
+                    if cell_day not in self.original_cell_states:
+                        is_holiday = ' H' in cell_text or 'H' in cell_text
+                        has_events = ' *' in cell_text or '*' in cell_text
+
+                        # Determine original color based on configuration
+                        original_color = parseColor('white')  # default
+
+                        # Check holiday color (if holidays enabled and has holiday)
+                        if is_holiday and config.plugins.calendar.holidays_enabled.value:
+                            original_color = parseColor(config.plugins.calendar.holidays_color.value)
+                        # Check event color (if events enabled and has events)
+                        elif has_events and config.plugins.calendar.events_enabled.value:
+                            original_color = parseColor(config.plugins.calendar.events_color.value)
+                        else:
+                            # Check weekend colors
+                            try:
+                                weekday = datetime.date(self.year, self.month, cell_day).weekday()
+                                if weekday == 5:  # Saturday
+                                    original_color = parseColor('yellow')
+                                elif weekday == 6:  # Sunday
+                                    original_color = parseColor('red')
+                            except:
+                                pass
+
+                        self.original_cell_states[cell_day] = {
+                            'color': original_color,
+                            'is_holiday': is_holiday,
+                            'has_events': has_events
+                        }
+
+        # Set new selection
         self.selected_day = day
-        self._paint_calendar()
+
+        # Save current as previous for next time
+        self.previous_selected_day = day
+
+        # Apply blue background and white text to selected day
+        if day != today:
+            for x in range(42):
+                cell_text = self['d' + str(x)].getText()
+                if cell_text:
+                    clean_text = cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip()
+                    if clean_text.isdigit() and int(clean_text) == day:
+                        # Save original state if not already saved
+                        if day not in self.original_cell_states:
+                            is_holiday = ' H' in cell_text or 'H' in cell_text
+                            has_events = ' *' in cell_text or '*' in cell_text
+
+                            # Determine original color based on configuration
+                            original_color = parseColor('white')  # default
+
+                            # Check holiday color (if holidays enabled and has holiday)
+                            if is_holiday and config.plugins.calendar.holidays_enabled.value:
+                                original_color = parseColor(config.plugins.calendar.holidays_color.value)
+                            # Check event color (if events enabled and has events)
+                            elif has_events and config.plugins.calendar.events_enabled.value:
+                                original_color = parseColor(config.plugins.calendar.events_color.value)
+                            else:
+                                # Check weekend colors
+                                try:
+                                    weekday = datetime.date(self.year, self.month, day).weekday()
+                                    if weekday == 5:  # Saturday
+                                        original_color = parseColor('yellow')
+                                    elif weekday == 6:  # Sunday
+                                        original_color = parseColor('red')
+                                except:
+                                    pass
+
+                            self.original_cell_states[day] = {
+                                'color': original_color,
+                                'is_holiday': is_holiday,
+                                'has_events': has_events
+                            }
+
+                        # Apply blue background and white text
+                        self['d' + str(x)].instance.setBackgroundColor(parseColor('blue'))
+                        self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
+
+                        # Remove markers when selected (clean display) - only show number
+                        self['d' + str(x)].setText(str(day))
+                        break
+        else:
+            # If selecting today, ensure text is visible on green background
+            for x in range(42):
+                cell_text = self['d' + str(x)].getText()
+                if cell_text:
+                    clean_text = cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip()
+                    if clean_text.isdigit() and int(clean_text) == day:
+                        # Today has green background, use white text
+                        self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
+
+                        # Also save original state for today if not already saved
+                        if day not in self.original_cell_states:
+                            is_holiday = ' H' in cell_text or 'H' in cell_text
+                            has_events = ' *' in cell_text or '*' in cell_text
+
+                            # For today, we use white text regardless (for contrast on green)
+                            original_color = parseColor('white')
+
+                            self.original_cell_states[day] = {
+                                'color': original_color,
+                                'is_holiday': is_holiday,
+                                'has_events': has_events
+                            }
+                        break
 
     def _nextday(self):
         try:
-            # Create a date object for the current day
-            current_date = datetime.date(self.year, self.month, self.day)
-            # Calculate next day
+            current_date = datetime.date(self.year, self.month, self.selected_day)
             next_date = current_date + datetime.timedelta(days=1)
             self.year = next_date.year
             self.month = next_date.month
             self.day = next_date.day
+            self.selected_day = self.day
         except ValueError:
-            # Handle invalid date (e.g., day out of range)
             if self.month == 12:
                 self.year += 1
                 self.month = 1
                 self.day = 1
+                self.selected_day = 1
             else:
                 self.month += 1
                 self.day = 1
-        # self._highlight_selected_day(self.selected_day)
-        self.selected_day = self.day
+                self.selected_day = 1
+
         self._paint_calendar()
+        self._highlight_selected_day(self.selected_day)
 
     def _prevday(self):
         try:
-            # Create a date object for the current day
-            current_date = datetime.date(self.year, self.month, self.day)
-            # Calculate previous day
+            current_date = datetime.date(self.year, self.month, self.selected_day)
             prev_date = current_date - datetime.timedelta(days=1)
             self.year = prev_date.year
             self.month = prev_date.month
             self.day = prev_date.day
+            self.selected_day = self.day
         except ValueError:
-            # Handle invalid date (e.g., day out of range)
             if self.month == 1:
                 self.year -= 1
                 self.month = 12
-                # Last day of December
                 self.day = 31
+                self.selected_day = 31
             else:
                 self.month -= 1
-                # Get last day of previous month
                 last_day = (datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(days=1)).day
                 self.day = last_day
+                self.selected_day = last_day
 
-        # self._highlight_selected_day(self.selected_day)
-        self.selected_day = self.day
         self._paint_calendar()
+        self._highlight_selected_day(self.selected_day)
 
     def _nextmonth(self):
         if self.month == 12:
@@ -1102,7 +1706,9 @@ class Calendar(Screen):
         else:
             self.month = self.month + 1
         self.day = 1
+        self.selected_day = 1
         self._paint_calendar()
+        self._highlight_selected_day(self.selected_day)
 
     def _prevmonth(self):
         if self.month == 1:
@@ -1112,7 +1718,9 @@ class Calendar(Screen):
             self.month = self.month - 1
             self.year = self.year
         self.day = 1
+        self.selected_day = 1
         self._paint_calendar()
+        self._highlight_selected_day(self.selected_day)
 
     def config(self):
         self.session.open(settingCalendar)
@@ -1120,9 +1728,11 @@ class Calendar(Screen):
     def about(self):
         info_text = (
             "Calendar Planner v.%s\n"
-            "Developer: on base plugin from Sirius0103 mod by Lululla\n"
+            "Developer: on base plugin from Sirius0103 Rewrite Code by Lululla\n"
+            "Homepage: www.corvoboys.org\n\n"
+            "Homepage: www.linuxsat-support.com\n\n"
             "Homepage: www.gisclub.tv\n\n"
-        ) % currversion
+        ) % PLUGIN_VERSION
         self.session.open(MessageBox, info_text, MessageBox.TYPE_INFO)
 
     def cancel(self):
@@ -1132,6 +1742,70 @@ class Calendar(Screen):
         self.close()
 
 
+def customSetupDom(setup=None, plugin=None):
+    """Version that supports setup.it.xml, setup.de.xml, etc."""
+    # Determine language
+    try:
+        lang = config.osd.language.value.split('_')[0]
+    except:
+        lang = "en"
+
+    # Locate plugin directory
+    if plugin:
+        plugin_dir = resolveFilename(SCOPE_PLUGINS, plugin)
+    else:
+        from Tools.Directories import SCOPE_SKIN
+        plugin_dir = resolveFilename(SCOPE_SKIN, "")
+
+    # List of XML files to try
+    xml_files = [
+        "setup." + lang + ".xml",  # setup.it.xml
+        "setup.xml"                # default
+    ]
+
+    setupFile = None
+    for xml_file in xml_files:
+        if plugin_dir:
+            test_path = join(plugin_dir, xml_file)
+            if fileExists(test_path):
+                setupFile = test_path
+                print("[Calendar] ✓ Using localized setup:", xml_file)
+                break
+
+    # If not found, fall back to the original
+    if not setupFile:
+        return original_setupDom(setup, plugin)
+
+    # Local cache
+    if not hasattr(customSetupDom, 'domSetups'):
+        customSetupDom.domSetups = {}
+        customSetupDom.setupModTimes = {}
+
+    try:
+        modTime = getmtime(setupFile)
+    except OSError:
+        return original_setupDom(setup, plugin)
+
+    # Check cache
+    if (setupFile in customSetupDom.domSetups and
+            setupFile in customSetupDom.setupModTimes and
+            customSetupDom.setupModTimes[setupFile] == modTime):
+        return customSetupDom.domSetups[setupFile]
+
+    # Read file
+    fileDom = fileReadXML(setupFile)
+    if fileDom:
+        customSetupDom.domSetups[setupFile] = fileDom
+        customSetupDom.setupModTimes[setupFile] = modTime
+        return fileDom
+
+    return original_setupDom(setup, plugin)
+
+
+Screens.Setup.setupDom = customSetupDom
+Screens.Setup.setupdom = customSetupDom
+
+
 class settingCalendar(Setup):
     def __init__(self, session, parent=None):
         Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
@@ -1139,6 +1813,94 @@ class settingCalendar(Setup):
 
     def keySave(self):
         Setup.keySave(self)
+
+
+"""
+def customSetupDom(setup=None, plugin=None):
+
+    # 1. Determine system language
+    system_language = config.osd.language.value.split('_')[0]
+
+    # 2. Plugin path
+    plugin_dir = resolveFilename(SCOPE_PLUGINS, plugin) if plugin else ""
+
+    # 3. Look for a localized file BEFORE setup.xml
+    xml_files_to_try = [
+        "setup." + system_language + ".xml",  # setup.it.xml
+        "setup.xml"                            # default
+    ]
+
+    setupFile = None
+    for xml_file in xml_files_to_try:
+        if plugin_dir:
+            test_file = join(plugin_dir, xml_file)
+        else:
+            # For system setup (without plugin)
+            test_file = resolveFilename(SCOPE_SKINS, xml_file)
+
+        if fileExists(test_file):
+            setupFile = test_file
+            print("[Calendar] Found setup file:", setupFile)
+            break
+
+    # 4. If no file is found, fall back to the original setup.xml
+    if not setupFile:
+        if plugin_dir:
+            setupFile = join(plugin_dir, "setup.xml")
+        else:
+            setupFile = resolveFilename(SCOPE_SKINS, "setup.xml")
+        print("[Calendar] Using default:", setupFile)
+
+    # 5. Cache check (same as original)
+    try:
+        modTime = getmtime(setupFile)
+    except OSError as err:
+        print("[Calendar] Error getting mod time:", err)
+        if setupFile in domSetups:
+            del domSetups[setupFile]
+        if setupFile in setupModTimes:
+            del setupModTimes[setupFile]
+        return fromstring("<setupxml />")
+
+    cached = (
+        setupFile in domSetups and
+        setupFile in setupModTimes and
+        setupModTimes[setupFile] == modTime
+    )
+
+    if cached:
+        print("[Calendar] Using cached setup")
+        return domSetups[setupFile]
+
+    # 6. Read and parse XML
+    fileDom = fileReadXML(setupFile, source="Calendar")
+
+    if fileDom is not None:
+        domSetups[setupFile] = fileDom
+        setupModTimes[setupFile] = modTime
+        print("[Calendar] Loaded XML with", len(fileDom.findall(".//item")), "items")
+        return fileDom
+
+    return fromstring("<setupxml />")
+
+
+class settingCalendar(Setup):
+    def __init__(self, session, parent=None):
+        import Screens
+        Screens.Setup.setupDom = customSetupDom
+        Screens.Setup.setupdom = customSetupDom  # Versione legacy
+        print("[Calendar] Initializing with language:", config.osd.language.value)
+
+        Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
+        self.parent = parent
+
+        Screens.Setup.setupDom = originalSetupDom
+        Screens.Setup.setupdom = originalSetupDom
+
+    def keySave(self):
+        Setup.keySave(self)
+
+"""
 
 
 def mainMenu(menuid):

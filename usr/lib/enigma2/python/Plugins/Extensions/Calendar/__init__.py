@@ -4,7 +4,7 @@
 """
 ###########################################################
 #                                                         #
-#  Calendar Plugin for Enigma2                            #
+#  Calendar Planner for Enigma2                           #
 #  Created by: Lululla                                    #
 #  Based on original work by: Sirius0103                  #
 #                                                         #
@@ -16,6 +16,7 @@
 #  • Event browser and management interface               #
 #  • Configurable notification settings                   #
 #  • Multi-language support for date data                 #
+#  • Holiday import system with automatic coloring        #
 #                                                         #
 #  EVENT SYSTEM:                                          #
 #  • Smart notifications (0-60 minutes before event)      #
@@ -35,6 +36,15 @@
 #  • Sound files location: /sounds/ directory             #
 #  • Auto-stop after playback completion                  #
 #                                                         #
+#  HOLIDAY SYSTEM:                                        #
+#  • Import holidays from Holidata.net                    #
+#  • Support for 30+ countries and languages              #
+#  • Automatic holiday coloring with configurable colors  #
+#  • "H" indicator for holiday days                       #
+#  • Smart cache system for fast loading                  #
+#  • Today's and upcoming holidays display                #
+#  • Integration with existing date files                 #
+#                                                         #
 #  DATE MANAGEMENT:                                       #
 #  • Create, edit, remove date information                #
 #  • Virtual keyboard for field editing                   #
@@ -45,9 +55,13 @@
 #  CALENDAR DISPLAY:                                      #
 #  • Color code: Today=green, Saturday=yellow, Sunday=red #
 #  • Event days highlighted in blue/cyan (configurable)   #
+#  • Holiday days highlighted in orange (configurable)    #
 #  • Asterisk (*) indicator for days with events          #
+#  • "H" indicator for holiday days                       #
 #  • Week numbers display                                 #
 #  • Smooth month navigation                              #
+#  • Day selection with blue background                   #
+#  • Color priority: Today > Selection > Holiday > Event  #
 #                                                         #
 #  CONFIGURATION:                                         #
 #  • Event system enable/disable                          #
@@ -56,35 +70,39 @@
 #  • Enable/disable sound playback                        #
 #  • Event color selection                                #
 #  • Show event indicators toggle                         #
+#  • Holiday system enable/disable                        #
+#  • Holiday color selection                              #
+#  • Show holiday indicators toggle                       #
 #  • Menu integration option                              #
 #                                                         #
 #  KEY CONTROLS - MAIN CALENDAR:                          #
-#   OK          - Open main menu (New/Edit/Remove/Events) #
-    RED         - Previous month                          #
-    GREEN       - Next month                              #
-    YELLOW      - Previous day                            #
-    BLUE        - Next day                                #
-    0 (ZERO)    - Open event management                   #
-    LEFT/RIGHT  - Previous/Next day                       #
-    UP/DOWN     - Previous/Next month                     #
-    MENU        - Configuration                           #
-    INFO/EPG    - About dialog                            #
+#   OK          - Open main menu                          #
+#                 (New/Edit/Remove/Events/Holidays)       #
+#   RED         - Previous month                          #
+#   GREEN       - Next month                              #
+#   YELLOW      - Previous day                            #
+#   BLUE        - Next day                                #
+#   0 (ZERO)    - Open event management                   #
+#   LEFT/RIGHT  - Previous/Next day                       #
+#   UP/DOWN     - Previous/Next month                     #
+#   MENU        - Configuration                           #
+#   INFO/EPG    - About dialog                            #
 #                                                         #
 #  KEY CONTROLS - EVENT DIALOG:                           #
 #   OK          - Edit current field                      #
-    RED         - Cancel                                  #
-    GREEN       - Save event                              #
-    YELLOW      - Delete event (edit mode only)           #
-    UP/DOWN     - Navigate between fields                 #
-    LEFT/RIGHT  - Change selection options                #
+#   RED         - Cancel                                  #
+#   GREEN       - Save event                              #
+#   YELLOW      - Delete event (edit mode only)           #
+#   UP/DOWN     - Navigate between fields                 #
+#   LEFT/RIGHT  - Change selection options                #
 #                                                         #
 #  KEY CONTROLS - EVENTS VIEW:                            #
 #   OK          - Edit selected event                     #
-    RED         - Add new event                           #
-    GREEN       - Edit selected event                     #
-    YELLOW      - Delete selected event                   #
-    BLUE        - Back to calendar                        #
-    UP/DOWN     - Navigate event list                     #
+#   RED         - Add new event                           #
+#   GREEN       - Edit selected event                     #
+#   YELLOW      - Delete selected event                   #
+#   BLUE        - Back to calendar                        #
+#   UP/DOWN     - Navigate event list                     #
 #                                                         #
 #  FILE STRUCTURE:                                        #
 #  • plugin.py - Main plugin entry point                  #
@@ -92,6 +110,7 @@
 #  • event_dialog.py - Event add/edit interface           #
 #  • events_view.py - Events browser                      #
 #  • notification_system.py - Notification display        #
+#  • holidays.py - Holiday import and management          #
 #  • events.json - Event database (JSON format)           #
 #  • base/ - Date information storage                     #
 #  • sounds/ - Audio files for notifications              #
@@ -111,7 +130,7 @@
 #    "date": "2025-12-19",                                #
 #    "time": "14:30",                                     #
 #    "repeat": "none",                                    #
-#    "notify_before": 15,                                 #
+#    "notify_before": 5,                                  #
 #    "enabled": true,                                     #
 #    "created": "2024-12-19 14:25:47"                     #
 #  }]                                                     #
@@ -121,11 +140,19 @@
 #  date: 2025-06-10                                       #
 #  datepeople: John Doe                                   #
 #  sign: Gemini                                           #
-#  holiday: None                                          #
+#  holiday: Christmas Day, New Year's Day                 #
 #  description: Special day description.                  #
 #                                                         #
 #  [month]                                                #
 #  monthpeople: Important people of the month             #
+#                                                         #
+#  HOLIDAY IMPORT:                                        #
+#  • Source: Holidata.net                                 #
+#  • Format: JSON Lines per country/year                  #
+#  • Countries: Italy, Germany, France, UK, USA, etc.     #
+#  • Languages: it, en, de, fr, es, etc.                  #
+#  • Cache: Memory-based for performance                  #
+#  • Integration: Updates holiday field in date files     #
 #                                                         #
 #  TECHNICAL DETAILS:                                     #
 #  • Python 2.7+ compatible                               #
@@ -135,16 +162,20 @@
 #  • Auto-skin detection (HD/FHD)                         #
 #  • Configurable via setup.xml                           #
 #  • Uses eServiceReference for audio playback            #
+#  • Holiday cache system for fast rendering              #
+#  • File-based holiday storage (no database)             #
 #                                                         #
 #  PERFORMANCE:                                           #
 #  • Efficient event checking algorithm                   #
 #  • Skipped checks for past non-recurring events         #
+#  • Holiday cache: 1 file read per month                 #
 #  • Minimal memory usage                                 #
 #  • Fast loading of date information                     #
 #                                                         #
 #  DEBUGGING:                                             #
 #  • Enable debug logs: check enigma2.log                 #
 #  • Filter: grep EventManager /tmp/enigma2.log           #
+#  • Holiday debug: grep Holidays /tmp/enigma2.log        #
 #  • Event check interval: 30 seconds                     #
 #  • Notification window: event time ± 5 minutes          #
 #  • Audio debug: check play_notification_sound() calls   #
@@ -152,6 +183,7 @@
 #  CREDITS:                                               #
 #  • Original Calendar plugin: Sirius0103                 #
 #  • Event system & modifications: Lululla                #
+#  • Holiday system & enhancements: Custom implementation #
 #  • Notification system: Custom implementation           #
 #  • Audio system: Enigma2 eServiceReference integration  #
 #  • Testing & feedback: Enigma2 community                #
@@ -159,33 +191,36 @@
 #  VERSION HISTORY:                                       #
 #  • v1.0 - Basic calendar functionality                  #
 #  • v1.1 - Complete event system added                   #
+#  • v1.2 - Holiday import and coloring system            #
+#  • v1.3 - Rewrite complete code . screen and source..   #
 #                                                         #
-#  Last Updated: 2025-12-20                               #
-#  Status: Stable with event & audio system               #
+#  Last Updated: 2025-12-21                               #
+#  Status: Stable with event & holiday system             #
 ###########################################################
 """
 
 from __future__ import absolute_import
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from os import environ
+from os.path import exists
 import gettext
-import os
-
 
 PluginLanguageDomain = 'Calendar'
 PluginLanguagePath = 'Extensions/Calendar/locale'
 plugin_path = "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/"
+PLUGIN_VERSION = "1.3"
 
 
 isDreambox = False
-if os.path.exists("/usr/bin/apt-get"):
+if exists("/usr/bin/apt-get"):
     isDreambox = True
 
 
 def localeInit():
     if isDreambox:
         lang = language.getLanguage()[:2]
-        os.environ["LANGUAGE"] = lang
+        environ["LANGUAGE"] = lang
     gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
 
 

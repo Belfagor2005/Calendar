@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-20 12:58+0100\n"
-"PO-Revision-Date: 2025-12-20 12:58+0100\n"
+"POT-Creation-Date: 2025-12-22 13:01+0100\n"
+"PO-Revision-Date: 2025-12-22 13:01+0100\n"
 "Last-Translator: Manfred Aabye <openmanniland@gmx.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -16,345 +16,537 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: event_dialog.py:292
+#: event_dialog.py:327
 msgid "Title:"
 msgstr ""
 
-#: event_dialog.py:294
+#: event_dialog.py:328 event_dialog.py:399 event_dialog.py:429
+#: event_dialog.py:447 event_dialog.py:455 event_dialog.py:494
+#: event_dialog.py:602
+msgid "Event"
+msgstr ""
+
+#: event_dialog.py:329
 msgid "Date:"
 msgstr ""
 
-#: event_dialog.py:296
+#: event_dialog.py:331
 msgid "Time:"
 msgstr ""
 
-#: event_dialog.py:298
+#: event_dialog.py:333
 msgid "Repeat:"
 msgstr ""
 
-#: event_dialog.py:300
+#: event_dialog.py:335
 msgid "Notify:"
 msgstr ""
 
-#: event_dialog.py:302
+#: event_dialog.py:337
 msgid "Active:"
 msgstr ""
 
-#: event_dialog.py:304
+#: event_dialog.py:339
 msgid "Description:"
 msgstr ""
 
-#: event_dialog.py:307
-msgid "Cancel"
-msgstr ""
-
-#: event_dialog.py:308
-msgid "Save"
-msgstr ""
-
-#: event_dialog.py:309
-msgid "Delete"
-msgstr ""
-
-#: event_dialog.py:312
-msgid "Title"
-msgstr ""
-
-#: event_dialog.py:313 plugin.py:723
-msgid "Date"
-msgstr ""
-
-#: event_dialog.py:314
-msgid "Time"
-msgstr ""
-
-#: event_dialog.py:315
-msgid "Repeat"
-msgstr ""
-
-#: event_dialog.py:316
-msgid "Notify"
-msgstr ""
-
-#: event_dialog.py:317
-msgid "Active"
-msgstr ""
-
-#: event_dialog.py:318 plugin.py:709
+#: event_dialog.py:340 event_dialog.py:353 event_dialog.py:420
+#: event_dialog.py:431 event_dialog.py:447 event_dialog.py:457
+#: event_dialog.py:494 event_dialog.py:615 plugin.py:1383
 msgid "Description"
 msgstr ""
 
-#: event_dialog.py:403
+#: event_dialog.py:342
+msgid "Cancel"
+msgstr ""
+
+#: event_dialog.py:343
+msgid "Save"
+msgstr ""
+
+#: event_dialog.py:344
+msgid "Delete"
+msgstr ""
+
+#: event_dialog.py:347
+msgid "Title"
+msgstr ""
+
+#: event_dialog.py:348 plugin.py:899
+msgid "Date"
+msgstr ""
+
+#: event_dialog.py:349
+msgid "Time"
+msgstr ""
+
+#: event_dialog.py:350
+msgid "Repeat"
+msgstr ""
+
+#: event_dialog.py:351
+msgid "Notify"
+msgstr ""
+
+#: event_dialog.py:352
+msgid "Active"
+msgstr ""
+
+#: event_dialog.py:466
 msgid "Enter "
 msgstr ""
 
-#: event_dialog.py:520
+#: event_dialog.py:608
 msgid "Title and date are required!"
 msgstr ""
 
-#: event_manager.py:620 plugin.py:567 plugin.py:676
-msgid "Event system is disabled. Enable it in settings."
-msgstr ""
-
-#: event_manager.py:629
-msgid "Do you want to remove all past non-recurring events?"
-msgstr ""
-
-#: event_manager.py:639 plugin.py:686
+#: event_manager.py:785 plugin.py:1266
 #, python-brace-format
 msgid "Removed {0} past events"
 msgstr ""
 
-#: event_manager.py:642 plugin.py:690
+#: event_manager.py:788 plugin.py:1271
 msgid "No past events to remove"
 msgstr ""
 
-#: events_view.py:221
+#: events_view.py:255
 msgid "Add"
 msgstr ""
 
-#: events_view.py:222
+#: events_view.py:256
 msgid "Edit"
 msgstr ""
 
-#: events_view.py:223
+#: events_view.py:257
 msgid "Remove"
 msgstr ""
 
-#: events_view.py:224
+#: events_view.py:258
 msgid "Back"
 msgstr ""
 
-#: plugin.py:199
+#: holidays.py:671
+msgid "Close"
+msgstr ""
+
+#: holidays.py:672
+msgid "Import"
+msgstr ""
+
+#: holidays.py:673
+msgid "Import All"
+msgstr ""
+
+#: holidays.py:801
+msgid "Clear ALL holiday entries from all date files?"
+msgstr ""
+
+#: plugin.py:251
 msgid "no"
 msgstr ""
 
-#: plugin.py:200
+#: plugin.py:252
 msgid "yes"
 msgstr ""
 
-#: plugin.py:221
+#: plugin.py:259 plugin.py:284
+msgid "Blue"
+msgstr ""
+
+#: plugin.py:260 plugin.py:285
+msgid "Cyan"
+msgstr ""
+
+#: plugin.py:261 plugin.py:286
+msgid "Purple"
+msgstr ""
+
+#: plugin.py:262 plugin.py:287
+#, fuzzy
+#| msgid "Wed"
+msgid "Red"
+msgstr "Mi"
+
+#: plugin.py:263 plugin.py:288
+msgid "Magenta"
+msgstr ""
+
+#: plugin.py:264 plugin.py:289
+msgid "Orange"
+msgstr ""
+
+#: plugin.py:265 plugin.py:290
+msgid "Yellow"
+msgstr ""
+
+#: plugin.py:266 plugin.py:291
+msgid "White"
+msgstr ""
+
+#: plugin.py:273
 msgid "Short beep"
 msgstr ""
 
-#: plugin.py:222
+#: plugin.py:274
 msgid "Notification tone"
 msgstr ""
 
-#: plugin.py:223
+#: plugin.py:275
 msgid "Alert sound"
 msgstr ""
 
-#: plugin.py:224
+#: plugin.py:276
 msgid "No sound"
 msgstr ""
 
-#: plugin.py:450
+#: plugin.py:539
 msgid "Calendar Planner"
 msgstr ""
 
-#: plugin.py:475
+#: plugin.py:567
 msgid "..."
 msgstr ""
 
-#: plugin.py:476
+#: plugin.py:568
 msgid "Mon"
 msgstr "Mo"
 
-#: plugin.py:477
+#: plugin.py:569
 msgid "Tue"
 msgstr "Di"
 
-#: plugin.py:478
+#: plugin.py:570
 msgid "Wed"
 msgstr "Mi"
 
-#: plugin.py:479
+#: plugin.py:571
 msgid "Thu"
 msgstr "Do"
 
-#: plugin.py:480
+#: plugin.py:572
 msgid "Fri"
 msgstr "Fr"
 
-#: plugin.py:481
+#: plugin.py:573
 msgid "Sat"
 msgstr "Sa"
 
-#: plugin.py:482
+#: plugin.py:574
 msgid "Sun"
 msgstr "So"
 
-#: plugin.py:486
+#: plugin.py:578
 #, python-format
 msgid "Calendar Planner v.%s"
 msgstr ""
 
-#: plugin.py:487
+#: plugin.py:579
 msgid "Month -"
 msgstr "Monat -"
 
-#: plugin.py:488
+#: plugin.py:580
 msgid "Month +"
 msgstr "Monat +"
 
-#: plugin.py:489
+#: plugin.py:581
 msgid "Day -"
 msgstr "Tag -"
 
-#: plugin.py:490
+#: plugin.py:582
 msgid "Day +"
 msgstr "Tag +"
 
-#: plugin.py:492
+#: plugin.py:584
 msgid "Files is Empty..."
 msgstr ""
 
-#: plugin.py:493 plugin.py:494 plugin.py:495 plugin.py:496 plugin.py:497
-#: plugin.py:498
+#: plugin.py:585 plugin.py:586 plugin.py:587 plugin.py:588 plugin.py:589
+#: plugin.py:590
 msgid ".............."
 msgstr ""
 
-#: plugin.py:543
+#: plugin.py:634
 msgid "New Date"
 msgstr ""
 
-#: plugin.py:544 plugin.py:775
+#: plugin.py:635 plugin.py:917
 msgid "Edit Date"
 msgstr ""
 
-#: plugin.py:545
+#: plugin.py:636
 msgid "Remove Date"
 msgstr ""
 
-#: plugin.py:546
+#: plugin.py:637
 msgid "Delete File"
 msgstr ""
 
-#: plugin.py:552
+#: plugin.py:643
 msgid "Manage Events"
 msgstr ""
 
-#: plugin.py:553
+#: plugin.py:644
 msgid "Add Event"
 msgstr ""
 
-#: plugin.py:554
+#: plugin.py:645
 msgid "Cleanup past events"
 msgstr ""
 
-#: plugin.py:557
+#: plugin.py:650
+msgid "Import Holidays"
+msgstr ""
+
+#: plugin.py:651
+msgid "Show Today's Holidays"
+msgstr ""
+
+#: plugin.py:652
+msgid "Show Upcoming Holidays"
+msgstr ""
+
+#: plugin.py:653
+msgid "Clear Holiday Database"
+msgstr ""
+
+#: plugin.py:657
+msgid "Check for Updates"
+msgstr ""
+
+#: plugin.py:660
 msgid "Exit"
 msgstr ""
 
-#: plugin.py:591
-msgid "Error opening event dialog"
+#: plugin.py:683 update_manager.py:58
+msgid "Update check error"
 msgstr ""
 
-#: plugin.py:700
-msgid "Date People"
+#: plugin.py:685
+#, python-format
+msgid "Error: %s"
 msgstr ""
 
-#: plugin.py:703
-msgid "Sign"
+#: plugin.py:738
+msgid "Date People: "
 msgstr ""
 
-#: plugin.py:706
-msgid "Holiday"
+#: plugin.py:745
+msgid "Sign: "
 msgstr ""
 
-#: plugin.py:712
-#, fuzzy
-#| msgid "Month -"
-msgid "Month People"
-msgstr "Monat -"
-
-#: plugin.py:776
-msgid "Edit Date People"
+#: plugin.py:752
+msgid "Holiday: "
 msgstr ""
 
-#: plugin.py:777
-msgid "Edit Sign"
+#: plugin.py:763
+msgid "Month People: "
 msgstr ""
 
-#: plugin.py:778
-msgid "Edit Holiday"
-msgstr ""
-
-#: plugin.py:779
-msgid "Edit Description"
-msgstr ""
-
-#: plugin.py:780
-msgid "Edit Month People"
-msgstr ""
-
-#: plugin.py:829 plugin.py:854 plugin.py:911 plugin.py:953
-msgid "No file in database..."
-msgstr "Keine Datei in der Datenbank..."
-
-#: plugin.py:839 plugin.py:859
-msgid "File not found!"
-msgstr ""
-
-#: plugin.py:925
+#: plugin.py:809 plugin.py:811
 msgid "TODAY'S EVENTS:"
 msgstr ""
 
-#: plugin.py:962
+#: plugin.py:856
+msgid "Error saving data"
+msgstr ""
+
+#: plugin.py:909 plugin.py:910 plugin.py:1402 plugin.py:1445 plugin.py:1446
+msgid "SCHEDULED EVENTS:"
+msgstr ""
+
+#: plugin.py:918
+msgid "Edit Date People"
+msgstr ""
+
+#: plugin.py:919
+msgid "Edit Sign"
+msgstr ""
+
+#: plugin.py:920
+msgid "Edit Holiday"
+msgstr ""
+
+#: plugin.py:921
+msgid "Edit Description"
+msgstr ""
+
+#: plugin.py:922
+msgid "Edit Month People"
+msgstr ""
+
+#: plugin.py:1003 plugin.py:1029
+msgid "No file in database..."
+msgstr "Keine Datei in der Datenbank..."
+
+#: plugin.py:1014 plugin.py:1035
+msgid "File not found!"
+msgstr ""
+
+#: plugin.py:1044
 msgid "January"
 msgstr "Januar"
 
-#: plugin.py:963
+#: plugin.py:1045
 msgid "February"
 msgstr "Februar"
 
-#: plugin.py:964
+#: plugin.py:1046
 msgid "March"
 msgstr "März"
 
-#: plugin.py:965
+#: plugin.py:1047
 msgid "April"
 msgstr "April"
 
-#: plugin.py:966
+#: plugin.py:1048
 msgid "May"
 msgstr "Mai"
 
-#: plugin.py:967
+#: plugin.py:1049
 msgid "June"
 msgstr "Juni"
 
-#: plugin.py:968
+#: plugin.py:1050
 msgid "July"
 msgstr "Juli"
 
-#: plugin.py:969
+#: plugin.py:1051
 msgid "August"
 msgstr "August"
 
-#: plugin.py:970
+#: plugin.py:1052
 msgid "September"
 msgstr "September"
 
-#: plugin.py:971
+#: plugin.py:1053
 msgid "October"
 msgstr "Oktober"
 
-#: plugin.py:972
+#: plugin.py:1054
 msgid "November"
 msgstr "November"
 
-#: plugin.py:973
+#: plugin.py:1055
 msgid "December"
 msgstr "Dezember"
 
-#: plugin.py:1148 plugin.py:1163 plugin.py:1172
+#: plugin.py:1223 plugin.py:1256
+msgid "Event system is disabled. Enable it in settings."
+msgstr ""
+
+#: plugin.py:1247
+msgid "Error opening event dialog"
+msgstr ""
+
+#: plugin.py:1374
+msgid "Date People"
+msgstr ""
+
+#: plugin.py:1377
+msgid "Sign"
+msgstr ""
+
+#: plugin.py:1380
+msgid "Holiday"
+msgstr ""
+
+#: plugin.py:1386
+msgid "Month People"
+msgstr ""
+
+#: plugin.py:1899 plugin.py:1914 plugin.py:1923
 msgid "Calendar"
 msgstr "Kalender"
 
-#: plugin.py:1164
+#: plugin.py:1915
 msgid "Calendar with events and notifications"
+msgstr ""
+
+#: update_manager.py:24
+msgid "Checking for updates..."
+msgstr ""
+
+#: update_manager.py:35
+msgid "Update check failed"
+msgstr ""
+
+#: update_manager.py:37
+msgid "Could not check for updates. Check internet connection."
+msgstr ""
+
+#: update_manager.py:42
+msgid "Update available!"
+msgstr ""
+
+#: update_manager.py:47
+msgid "Plugin is up to date"
+msgstr ""
+
+#: update_manager.py:49
+msgid "You have the latest version of Calendar."
+msgstr ""
+
+#: update_manager.py:60
+#, python-format
+msgid "Could not check for updates: %s"
+msgstr ""
+
+#: update_manager.py:74
+msgid "Update cancelled"
+msgstr ""
+
+#: update_manager.py:76
+msgid ""
+"A new version is available!\n"
+"\n"
+"Update now?\n"
+"\n"
+"(Recommended to backup first)"
+msgstr ""
+
+#: update_manager.py:92
+msgid "Update successful!"
+msgstr ""
+
+#: update_manager.py:94
+#, python-format
+msgid ""
+"%s\n"
+"\n"
+"Restart Enigma2 now for changes to take effect."
+msgstr ""
+
+#: update_manager.py:103
+msgid "Update failed"
+msgstr ""
+
+#: update_manager.py:109
+msgid "Updating plugin... Please wait"
+msgstr ""
+
+#: update_manager.py:126
+msgid "Please restart Enigma2 manually."
+msgstr ""
+
+#: updater.py:158
+msgid "Failed to create backup. Update cancelled."
+msgstr ""
+
+#: updater.py:166
+msgid "Update completed successfully!"
+msgstr ""
+
+#: updater.py:170
+msgid "Update failed. Restored from backup."
+msgstr ""
+
+#: updater.py:172
+msgid "Update failed and backup restore also failed!"
+msgstr ""
+
+#: updater.py:181
+#, python-format
+msgid "Update error: %s"
 msgstr ""
 
 #, fuzzy

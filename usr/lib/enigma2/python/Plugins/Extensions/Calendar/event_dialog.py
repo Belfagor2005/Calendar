@@ -4,7 +4,7 @@
 """
 ###########################################################
 #                                                         #
-#  Calendar Plugin for Enigma2                            #
+#  Calendar Planner for Enigma2                           #
 #  Created by: Lululla                                    #
 #  Based on original work by: Sirius0103                  #
 #                                                         #
@@ -16,6 +16,7 @@
 #  • Event browser and management interface               #
 #  • Configurable notification settings                   #
 #  • Multi-language support for date data                 #
+#  • Holiday import system with automatic coloring        #
 #                                                         #
 #  EVENT SYSTEM:                                          #
 #  • Smart notifications (0-60 minutes before event)      #
@@ -35,6 +36,15 @@
 #  • Sound files location: /sounds/ directory             #
 #  • Auto-stop after playback completion                  #
 #                                                         #
+#  HOLIDAY SYSTEM:                                        #
+#  • Import holidays from Holidata.net                    #
+#  • Support for 30+ countries and languages              #
+#  • Automatic holiday coloring with configurable colors  #
+#  • "H" indicator for holiday days                       #
+#  • Smart cache system for fast loading                  #
+#  • Today's and upcoming holidays display                #
+#  • Integration with existing date files                 #
+#                                                         #
 #  DATE MANAGEMENT:                                       #
 #  • Create, edit, remove date information                #
 #  • Virtual keyboard for field editing                   #
@@ -45,9 +55,13 @@
 #  CALENDAR DISPLAY:                                      #
 #  • Color code: Today=green, Saturday=yellow, Sunday=red #
 #  • Event days highlighted in blue/cyan (configurable)   #
+#  • Holiday days highlighted in orange (configurable)    #
 #  • Asterisk (*) indicator for days with events          #
+#  • "H" indicator for holiday days                       #
 #  • Week numbers display                                 #
 #  • Smooth month navigation                              #
+#  • Day selection with blue background                   #
+#  • Color priority: Today > Selection > Holiday > Event  #
 #                                                         #
 #  CONFIGURATION:                                         #
 #  • Event system enable/disable                          #
@@ -56,35 +70,39 @@
 #  • Enable/disable sound playback                        #
 #  • Event color selection                                #
 #  • Show event indicators toggle                         #
+#  • Holiday system enable/disable                        #
+#  • Holiday color selection                              #
+#  • Show holiday indicators toggle                       #
 #  • Menu integration option                              #
 #                                                         #
 #  KEY CONTROLS - MAIN CALENDAR:                          #
-#   OK          - Open main menu (New/Edit/Remove/Events) #
-    RED         - Previous month                          #
-    GREEN       - Next month                              #
-    YELLOW      - Previous day                            #
-    BLUE        - Next day                                #
-    0 (ZERO)    - Open event management                   #
-    LEFT/RIGHT  - Previous/Next day                       #
-    UP/DOWN     - Previous/Next month                     #
-    MENU        - Configuration                           #
-    INFO/EPG    - About dialog                            #
+#   OK          - Open main menu                          #
+#                 (New/Edit/Remove/Events/Holidays)       #
+#   RED         - Previous month                          #
+#   GREEN       - Next month                              #
+#   YELLOW      - Previous day                            #
+#   BLUE        - Next day                                #
+#   0 (ZERO)    - Open event management                   #
+#   LEFT/RIGHT  - Previous/Next day                       #
+#   UP/DOWN     - Previous/Next month                     #
+#   MENU        - Configuration                           #
+#   INFO/EPG    - About dialog                            #
 #                                                         #
 #  KEY CONTROLS - EVENT DIALOG:                           #
 #   OK          - Edit current field                      #
-    RED         - Cancel                                  #
-    GREEN       - Save event                              #
-    YELLOW      - Delete event (edit mode only)           #
-    UP/DOWN     - Navigate between fields                 #
-    LEFT/RIGHT  - Change selection options                #
+#   RED         - Cancel                                  #
+#   GREEN       - Save event                              #
+#   YELLOW      - Delete event (edit mode only)           #
+#   UP/DOWN     - Navigate between fields                 #
+#   LEFT/RIGHT  - Change selection options                #
 #                                                         #
 #  KEY CONTROLS - EVENTS VIEW:                            #
 #   OK          - Edit selected event                     #
-    RED         - Add new event                           #
-    GREEN       - Edit selected event                     #
-    YELLOW      - Delete selected event                   #
-    BLUE        - Back to calendar                        #
-    UP/DOWN     - Navigate event list                     #
+#   RED         - Add new event                           #
+#   GREEN       - Edit selected event                     #
+#   YELLOW      - Delete selected event                   #
+#   BLUE        - Back to calendar                        #
+#   UP/DOWN     - Navigate event list                     #
 #                                                         #
 #  FILE STRUCTURE:                                        #
 #  • plugin.py - Main plugin entry point                  #
@@ -92,6 +110,7 @@
 #  • event_dialog.py - Event add/edit interface           #
 #  • events_view.py - Events browser                      #
 #  • notification_system.py - Notification display        #
+#  • holidays.py - Holiday import and management          #
 #  • events.json - Event database (JSON format)           #
 #  • base/ - Date information storage                     #
 #  • sounds/ - Audio files for notifications              #
@@ -121,11 +140,19 @@
 #  date: 2025-06-10                                       #
 #  datepeople: John Doe                                   #
 #  sign: Gemini                                           #
-#  holiday: None                                          #
+#  holiday: Christmas Day, New Year's Day                 #
 #  description: Special day description.                  #
 #                                                         #
 #  [month]                                                #
 #  monthpeople: Important people of the month             #
+#                                                         #
+#  HOLIDAY IMPORT:                                        #
+#  • Source: Holidata.net                                 #
+#  • Format: JSON Lines per country/year                  #
+#  • Countries: Italy, Germany, France, UK, USA, etc.     #
+#  • Languages: it, en, de, fr, es, etc.                  #
+#  • Cache: Memory-based for performance                  #
+#  • Integration: Updates holiday field in date files     #
 #                                                         #
 #  TECHNICAL DETAILS:                                     #
 #  • Python 2.7+ compatible                               #
@@ -135,16 +162,20 @@
 #  • Auto-skin detection (HD/FHD)                         #
 #  • Configurable via setup.xml                           #
 #  • Uses eServiceReference for audio playback            #
+#  • Holiday cache system for fast rendering              #
+#  • File-based holiday storage (no database)             #
 #                                                         #
 #  PERFORMANCE:                                           #
 #  • Efficient event checking algorithm                   #
 #  • Skipped checks for past non-recurring events         #
+#  • Holiday cache: 1 file read per month                 #
 #  • Minimal memory usage                                 #
 #  • Fast loading of date information                     #
 #                                                         #
 #  DEBUGGING:                                             #
 #  • Enable debug logs: check enigma2.log                 #
 #  • Filter: grep EventManager /tmp/enigma2.log           #
+#  • Holiday debug: grep Holidays /tmp/enigma2.log        #
 #  • Event check interval: 30 seconds                     #
 #  • Notification window: event time ± 5 minutes          #
 #  • Audio debug: check play_notification_sound() calls   #
@@ -152,6 +183,7 @@
 #  CREDITS:                                               #
 #  • Original Calendar plugin: Sirius0103                 #
 #  • Event system & modifications: Lululla                #
+#  • Holiday system & enhancements: Custom implementation #
 #  • Notification system: Custom implementation           #
 #  • Audio system: Enigma2 eServiceReference integration  #
 #  • Testing & feedback: Enigma2 community                #
@@ -159,9 +191,11 @@
 #  VERSION HISTORY:                                       #
 #  • v1.0 - Basic calendar functionality                  #
 #  • v1.1 - Complete event system added                   #
+#  • v1.2 - Holiday import and coloring system            #
+#  • v1.3 - Rewrite complete code . screen and source..   #
 #                                                         #
-#  Last Updated: 2025-12-20                               #
-#  Status: Stable with event & audio system               #
+#  Last Updated: 2025-12-21                               #
+#  Status: Stable with event & holiday system             #
 ###########################################################
 """
 
@@ -172,6 +206,7 @@ from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
 from enigma import getDesktop
+
 from . import _
 from .event_manager import create_event_from_data
 
@@ -245,7 +280,7 @@ class EventDialog(Screen):
     def action_mapped(self, action):
         """Handle action mapping dynamically"""
         if action == "yellow" and not self.is_edit:
-            return  # Ignora tasto yellow se non in modalità edit
+            return  # Ignore yellow button unless in edit mode
 
         if action == "yellow":
             self.delete()
@@ -290,7 +325,7 @@ class EventDialog(Screen):
 
         # Initialize widgets
         self["title_label"] = Label(_("Title:"))
-        self["title_value"] = Label("")
+        self["title_value"] = Label(_("Event") if not (event and event.title) else "")  # Default
         self["date_label"] = Label(_("Date:"))
         self["date_value"] = Label(date or "")
         self["time_label"] = Label(_("Time:"))
@@ -302,7 +337,7 @@ class EventDialog(Screen):
         self["enabled_label"] = Label(_("Active:"))
         self["enabled_value"] = Label("Yes")
         self["description_label"] = Label(_("Description:"))
-        self["description_value"] = Label("")
+        self["description_value"] = Label(_("Description") if not (event and event.description) else "")
 
         self["key_red"] = Label(_("Cancel"))
         self["key_green"] = Label(_("Save"))
@@ -323,13 +358,15 @@ class EventDialog(Screen):
 
         if self.event:
             self.load_event_data()
+        else:
+            self.set_default_values()
 
         self["actions"] = ActionMap(
             [
-                "EventDialogActions",
-                "ColorActions",
-                "OkCancelActions",
-                "DirectionActions"
+                "CalendarActions",
+                # "ColorActions",
+                # "OkCancelActions",
+                # "DirectionActions"
             ],
             {
                 "cancel": self.cancel,
@@ -358,7 +395,10 @@ class EventDialog(Screen):
         if not self.event:
             return
 
-        self["title_value"].setText(self.event.title)
+        # Title – if empty, use default
+        title = self.event.title.strip() if self.event.title else _("Event")
+        self["title_value"].setText(title)
+
         self["date_value"].setText(self.event.date)
         self["time_value"].setText(self.event.time)
 
@@ -372,30 +412,53 @@ class EventDialog(Screen):
             if self.event.notify_before > 0
             else "At event time"
         )
-
         self["notify_value"].setText(notify_text)
 
         self["enabled_value"].setText("Yes" if self.event.enabled else "No")
-        self["description_value"].setText(self.event.description)
+
+        # Description – if empty, use default
+        description = self.event.description.strip() if self.event.description else _("Description")
+        self["description_value"].setText(description)
 
         self.enabled = self.event.enabled
 
+    def set_default_values(self):
+        """Set default values for new events"""
+        if not self.event:
+            if not self["title_value"].getText():
+                self["title_value"].setText(_("Event"))
+            if not self["description_value"].getText():
+                self["description_value"].setText(_("Description"))
+
     def edit_field(self):
-        """Edit current field"""
+        """Edit current field with placeholder handling"""
         if self.current_field_index >= len(self.fields):
             return
 
         field_name, field_label, widget = self.fields[self.current_field_index]
 
         if field_name in ["repeat", "notify", "enabled"]:
-            # These fields use selection, not virtual keyboard
+            # These fields use selection, not the virtual keyboard
             return
 
         current_text = widget.getText()
 
+        # If it is a placeholder, pass an empty string to the keyboard
+        if current_text in [_("Event"), _("Description")]:
+            current_text = ""
+
         def callback(new_text):
-            if new_text:
+            if new_text is not None:
+                # If the new string is empty, restore the placeholder
+                if not new_text.strip():
+                    if field_name == "title":
+                        new_text = _("Event")
+                    elif field_name == "description":
+                        new_text = _("Description")
                 widget.setText(new_text)
+
+                # Immediately update the highlight
+                self.update_highlight()
 
         self.session.openWithCallback(
             callback,
@@ -408,23 +471,42 @@ class EventDialog(Screen):
         """Move to previous field"""
         self.current_field_index = (self.current_field_index - 1) % len(self.fields)
         self.update_highlight()
+        print("[EventDialog] Moved to field: {0}".format(self.fields[self.current_field_index][0]))
 
     def next_field(self):
         """Move to next field"""
         self.current_field_index = (self.current_field_index + 1) % len(self.fields)
         self.update_highlight()
+        print("[EventDialog] Moved to field: {0}".format(self.fields[self.current_field_index][0]))
 
     def update_highlight(self):
-        """Update current field highlight - alternative version"""
+        """Update current field highlight with better visibility"""
+        current_field_name = self.fields[self.current_field_index][0]
+        print("[EventDialog] Highlighting field: {0}".format(current_field_name))
         for i, (field_name, field_label, widget) in enumerate(self.fields):
             if i == self.current_field_index:
-                # Current field – thick border
+                # Current field – intense highlight
                 widget.instance.setBorderWidth(3)
                 widget.instance.setBorderColor(parseColor("#00FF00"))
+
+                # Ensure the text is visible even if it is the default
+                current_text = widget.getText()
+                if not current_text or current_text in [_("Event"), _("Description")]:
+                    # If it is a placeholder, use a slightly different color
+                    widget.instance.setForegroundColor(parseColor("#AAAAAA"))
+                else:
+                    widget.instance.setForegroundColor(parseColor("#FFFFFF"))
+
+                # Background highlight
+                widget.instance.setBackgroundColor(parseColor("#1A3C1A"))
             else:
-                # Unselected fields – normal border
+                # Unselected fields
                 widget.instance.setBorderWidth(1)
-                widget.instance.setBorderColor(parseColor("#808080"))
+                widget.instance.setBorderColor(parseColor("#404040"))
+
+                # Restore normal colors
+                widget.instance.setForegroundColor(parseColor("#FFFFFF"))
+                widget.instance.setBackgroundColor(parseColor("#00808080"))
 
     def prev_option(self):
         """Previous option for selection fields"""
@@ -511,20 +593,32 @@ class EventDialog(Screen):
             return 5
 
     def save(self):
-        """Save event"""
+        """Save event with placeholder handling"""
         title = self["title_value"].getText().strip()
         date = self["date_value"].getText().strip()
         event_time = self["time_value"].getText().strip()
 
+        # If the title is placeholder, treat as empty
+        if title == _("Event"):
+            title = ""
+
         if not title or not date:
-            self.session.open(MessageBox, _("Title and date are required!"),
-                              MessageBox.TYPE_ERROR)
+            self.session.open(
+                MessageBox,
+                _("Title and date are required!"),
+                MessageBox.TYPE_ERROR
+            )
             return
 
-        # Create event data - usa 'event_time' invece di 'time'
+        # Placeholder handling for description
+        description = self["description_value"].getText().strip()
+        if description == _("Description"):
+            description = ""
+
+        # Create event data
         event_data = {
             'title': title,
-            'description': self["description_value"].getText(),
+            'description': description,
             'date': date,
             'event_time': event_time,
             'repeat': self.get_repeat_value(),
@@ -538,7 +632,7 @@ class EventDialog(Screen):
             if success:
                 self.close(True)
         else:
-            # Create new event
+            # Create new event - labels will be auto-extracted in Event.__init__
             new_event = create_event_from_data(**event_data)
             self.event_manager.add_event(new_event)
             self.close(True)

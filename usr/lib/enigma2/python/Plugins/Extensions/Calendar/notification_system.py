@@ -57,8 +57,13 @@ class NotificationManager:
 
     def __init__(self):
         self.notification_window = None
+        
         self.hide_timer = eTimer()
-        self.hide_timer.callback.append(self._hideNotification)
+        try:
+            self.hide_timer_conn = self.hide_timer.timeout.connect(self._hideNotification)
+        except AttributeError:
+            self.hide_timer.callback.append(self._hideNotification)
+
         self.is_initialized = False
 
     def initialize(self, session):

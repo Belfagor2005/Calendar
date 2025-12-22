@@ -4,7 +4,7 @@
 """
 ###########################################################
 #                                                         #
-#  Calendar Plugin for Enigma2                            #
+#  Calendar Planner for Enigma2                           #
 #  Created by: Lululla                                    #
 #  Based on original work by: Sirius0103                  #
 #                                                         #
@@ -16,6 +16,7 @@
 #  • Event browser and management interface               #
 #  • Configurable notification settings                   #
 #  • Multi-language support for date data                 #
+#  • Holiday import system with automatic coloring        #
 #                                                         #
 #  EVENT SYSTEM:                                          #
 #  • Smart notifications (0-60 minutes before event)      #
@@ -35,6 +36,15 @@
 #  • Sound files location: /sounds/ directory             #
 #  • Auto-stop after playback completion                  #
 #                                                         #
+#  HOLIDAY SYSTEM:                                        #
+#  • Import holidays from Holidata.net                    #
+#  • Support for 30+ countries and languages              #
+#  • Automatic holiday coloring with configurable colors  #
+#  • "H" indicator for holiday days                       #
+#  • Smart cache system for fast loading                  #
+#  • Today's and upcoming holidays display                #
+#  • Integration with existing date files                 #
+#                                                         #
 #  DATE MANAGEMENT:                                       #
 #  • Create, edit, remove date information                #
 #  • Virtual keyboard for field editing                   #
@@ -45,9 +55,13 @@
 #  CALENDAR DISPLAY:                                      #
 #  • Color code: Today=green, Saturday=yellow, Sunday=red #
 #  • Event days highlighted in blue/cyan (configurable)   #
+#  • Holiday days highlighted in orange (configurable)    #
 #  • Asterisk (*) indicator for days with events          #
+#  • "H" indicator for holiday days                       #
 #  • Week numbers display                                 #
 #  • Smooth month navigation                              #
+#  • Day selection with blue background                   #
+#  • Color priority: Today > Selection > Holiday > Event  #
 #                                                         #
 #  CONFIGURATION:                                         #
 #  • Event system enable/disable                          #
@@ -56,35 +70,39 @@
 #  • Enable/disable sound playback                        #
 #  • Event color selection                                #
 #  • Show event indicators toggle                         #
+#  • Holiday system enable/disable                        #
+#  • Holiday color selection                              #
+#  • Show holiday indicators toggle                       #
 #  • Menu integration option                              #
 #                                                         #
 #  KEY CONTROLS - MAIN CALENDAR:                          #
-#   OK          - Open main menu (New/Edit/Remove/Events) #
-    RED         - Previous month                          #
-    GREEN       - Next month                              #
-    YELLOW      - Previous day                            #
-    BLUE        - Next day                                #
-    0 (ZERO)    - Open event management                   #
-    LEFT/RIGHT  - Previous/Next day                       #
-    UP/DOWN     - Previous/Next month                     #
-    MENU        - Configuration                           #
-    INFO/EPG    - About dialog                            #
+#   OK          - Open main menu                          #
+#                 (New/Edit/Remove/Events/Holidays)       #
+#   RED         - Previous month                          #
+#   GREEN       - Next month                              #
+#   YELLOW      - Previous day                            #
+#   BLUE        - Next day                                #
+#   0 (ZERO)    - Open event management                   #
+#   LEFT/RIGHT  - Previous/Next day                       #
+#   UP/DOWN     - Previous/Next month                     #
+#   MENU        - Configuration                           #
+#   INFO/EPG    - About dialog                            #
 #                                                         #
 #  KEY CONTROLS - EVENT DIALOG:                           #
 #   OK          - Edit current field                      #
-    RED         - Cancel                                  #
-    GREEN       - Save event                              #
-    YELLOW      - Delete event (edit mode only)           #
-    UP/DOWN     - Navigate between fields                 #
-    LEFT/RIGHT  - Change selection options                #
+#   RED         - Cancel                                  #
+#   GREEN       - Save event                              #
+#   YELLOW      - Delete event (edit mode only)           #
+#   UP/DOWN     - Navigate between fields                 #
+#   LEFT/RIGHT  - Change selection options                #
 #                                                         #
 #  KEY CONTROLS - EVENTS VIEW:                            #
 #   OK          - Edit selected event                     #
-    RED         - Add new event                           #
-    GREEN       - Edit selected event                     #
-    YELLOW      - Delete selected event                   #
-    BLUE        - Back to calendar                        #
-    UP/DOWN     - Navigate event list                     #
+#   RED         - Add new event                           #
+#   GREEN       - Edit selected event                     #
+#   YELLOW      - Delete selected event                   #
+#   BLUE        - Back to calendar                        #
+#   UP/DOWN     - Navigate event list                     #
 #                                                         #
 #  FILE STRUCTURE:                                        #
 #  • plugin.py - Main plugin entry point                  #
@@ -92,6 +110,7 @@
 #  • event_dialog.py - Event add/edit interface           #
 #  • events_view.py - Events browser                      #
 #  • notification_system.py - Notification display        #
+#  • holidays.py - Holiday import and management          #
 #  • events.json - Event database (JSON format)           #
 #  • base/ - Date information storage                     #
 #  • sounds/ - Audio files for notifications              #
@@ -121,11 +140,19 @@
 #  date: 2025-06-10                                       #
 #  datepeople: John Doe                                   #
 #  sign: Gemini                                           #
-#  holiday: None                                          #
+#  holiday: Christmas Day, New Year's Day                 #
 #  description: Special day description.                  #
 #                                                         #
 #  [month]                                                #
 #  monthpeople: Important people of the month             #
+#                                                         #
+#  HOLIDAY IMPORT:                                        #
+#  • Source: Holidata.net                                 #
+#  • Format: JSON Lines per country/year                  #
+#  • Countries: Italy, Germany, France, UK, USA, etc.     #
+#  • Languages: it, en, de, fr, es, etc.                  #
+#  • Cache: Memory-based for performance                  #
+#  • Integration: Updates holiday field in date files     #
 #                                                         #
 #  TECHNICAL DETAILS:                                     #
 #  • Python 2.7+ compatible                               #
@@ -135,16 +162,20 @@
 #  • Auto-skin detection (HD/FHD)                         #
 #  • Configurable via setup.xml                           #
 #  • Uses eServiceReference for audio playback            #
+#  • Holiday cache system for fast rendering              #
+#  • File-based holiday storage (no database)             #
 #                                                         #
 #  PERFORMANCE:                                           #
 #  • Efficient event checking algorithm                   #
 #  • Skipped checks for past non-recurring events         #
+#  • Holiday cache: 1 file read per month                 #
 #  • Minimal memory usage                                 #
 #  • Fast loading of date information                     #
 #                                                         #
 #  DEBUGGING:                                             #
 #  • Enable debug logs: check enigma2.log                 #
 #  • Filter: grep EventManager /tmp/enigma2.log           #
+#  • Holiday debug: grep Holidays /tmp/enigma2.log        #
 #  • Event check interval: 30 seconds                     #
 #  • Notification window: event time ± 5 minutes          #
 #  • Audio debug: check play_notification_sound() calls   #
@@ -152,6 +183,7 @@
 #  CREDITS:                                               #
 #  • Original Calendar plugin: Sirius0103                 #
 #  • Event system & modifications: Lululla                #
+#  • Holiday system & enhancements: Custom implementation #
 #  • Notification system: Custom implementation           #
 #  • Audio system: Enigma2 eServiceReference integration  #
 #  • Testing & feedback: Enigma2 community                #
@@ -159,9 +191,11 @@
 #  VERSION HISTORY:                                       #
 #  • v1.0 - Basic calendar functionality                  #
 #  • v1.1 - Complete event system added                   #
+#  • v1.2 - Holiday import and coloring system            #
+#  • v1.3 - Rewrite complete code . screen and source..   #
 #                                                         #
-#  Last Updated: 2025-12-20                               #
-#  Status: Stable with event & audio system               #
+#  Last Updated: 2025-12-21                               #
+#  Status: Stable with event & holiday system             #
 ###########################################################
 """
 
@@ -170,8 +204,8 @@ import time
 import subprocess
 import shutil
 from datetime import datetime, timedelta
-from os import makedirs  # , listdir
-from os.path import exists, dirname, join  # , isfile, getsize
+from os import makedirs
+from os.path import exists, dirname, join
 from enigma import eTimer, eServiceReference, eServiceCenter
 from Components.config import config
 from Screens.MessageBox import MessageBox
@@ -180,7 +214,7 @@ from . import _, plugin_path
 
 events_json = join(plugin_path, "events.json")
 sounds_dir = join(plugin_path, "sounds")
-DEBUG = False
+DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
 
 
 try:
@@ -206,6 +240,67 @@ class Event:
         self.created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.id = int(time.time() * 1000)  # Unique ID
 
+        # NEW FIELD: Labels for display
+        self.labels = self._extract_labels()
+
+    def _extract_labels(self):
+        """Extract labels automatically from title and description"""
+        labels = []
+
+        # Extract keywords from title (minimum 3 letters)
+        if self.title and self.title != "Event":
+            words = self.title.split()
+            for word in words:
+                if len(word) > 2:  # Words with more than 2 characters
+                    clean_word = ''.join(c for c in word if c.isalnum())
+                    if clean_word:
+                        labels.append(clean_word.lower())
+
+        # Extract keywords from description
+        if self.description and self.description != "Description":
+            words = self.description.split()
+            for word in words:
+                if len(word) > 2:  # Words with more than 2 characters
+                    clean_word = ''.join(c for c in word if c.isalnum())
+                    if clean_word:
+                        labels.append(clean_word.lower())
+
+        # Add special labels based on event properties
+        if self.repeat != "none":
+            labels.append("recurring")
+            labels.append("repeat-" + self.repeat)
+
+        # Add status label
+        if self.enabled:
+            labels.append("active")
+        else:
+            labels.append("inactive")
+
+        # Add time-based labels
+        if self.time:
+            try:
+                hour = int(self.time.split(':')[0])
+                if 5 <= hour < 12:
+                    labels.append("morning")
+                elif 12 <= hour < 17:
+                    labels.append("afternoon")
+                elif 17 <= hour < 22:
+                    labels.append("evening")
+                else:
+                    labels.append("night")
+            except:
+                pass
+
+        # Remove duplicates and return
+        seen = set()
+        unique_labels = []
+        for label in labels:
+            if label not in seen:
+                seen.add(label)
+                unique_labels.append(label)
+
+        return unique_labels
+
     def to_dict(self):
         """Convert event to dictionary for JSON"""
         return {
@@ -217,7 +312,8 @@ class Event:
             'repeat': self.repeat,
             'notify_before': self.notify_before,
             'enabled': self.enabled,
-            'created': self.created
+            'created': self.created,
+            'labels': self.labels  # Save labels
         }
 
     @classmethod
@@ -228,6 +324,10 @@ class Event:
             if hasattr(event, key):
                 setattr(event, key, value)
         return event
+
+    def update_labels(self):
+        """Update labels after editing"""
+        self.labels = self._extract_labels()
 
     def get_datetime(self):
         """Return datetime object of the event"""
@@ -360,16 +460,26 @@ class EventManager:
         self.session = session
         self.events_file = events_file or events_json
         self.sound_dir = sounds_dir
+
         self.events = []
+
         self.notified_events = set()  # Events already notified in this session
+        self.tv_service_backup = None  # Per backup servizio TV
+        self.sound_stop_timer = None   # Per timer audio
 
         # Timer to check events
         self.check_timer = eTimer()
-        self.check_timer.callback.append(self.check_events)
+        try:
+            self.check_timer_conn = self.check_timer.timeout.connect(self.check_events)
+        except AttributeError:
+            self.check_timer.callback.append(self.check_events)
 
         # Timer to update current time
         self.time_timer = eTimer()
-        self.time_timer.callback.append(self.update_time)
+        try:
+            self.time_timer_conn = self.time_timer.timeout.connect(self.update_time)
+        except AttributeError:
+            self.time_timer.callback.append(self.update_time)
 
         self.load_events()
         self.start_monitoring()
@@ -377,18 +487,6 @@ class EventManager:
         # Initialize notification system if available
         if NOTIFICATION_AVAILABLE:
             init_notification_system(session)
-
-    def start_monitoring(self):
-        """Start event monitoring"""
-        # Check events every 30 seconds
-        self.check_timer.start(30000, True)
-        # Update time every minute
-        self.time_timer.start(60000, True)
-
-    def stop_monitoring(self):
-        """Stop event monitoring"""
-        self.check_timer.stop()
-        self.time_timer.stop()
 
     def load_events(self):
         """Load events from JSON file"""
@@ -404,6 +502,18 @@ class EventManager:
         except Exception as e:
             print("[EventManager] Error loading events: {0}".format(e))
             self.events = []
+
+    def start_monitoring(self):
+        """Start event monitoring"""
+        # Check events every 30 seconds
+        self.check_timer.start(30000, True)
+        # Update time every minute
+        self.time_timer.start(60000, True)
+
+    def stop_monitoring(self):
+        """Stop event monitoring"""
+        self.check_timer.stop()
+        self.time_timer.stop()
 
     def save_events(self):
         """Save events to JSON file"""
@@ -436,6 +546,10 @@ class EventManager:
                         setattr(event, 'time', value)
                     elif hasattr(event, key):
                         setattr(event, key, value)
+
+                # Update labels after modification
+                event.update_labels()
+
                 self.save_events()
                 print("[EventManager] Event updated: {0}".format(event.title))
                 return True
@@ -632,21 +746,40 @@ class EventManager:
 
     def cleanup_past_events(self):
         """Clean up past non-recurring events"""
-        if not config.plugins.calendar.events_enabled.value or not self.event_manager:
-            self.session.open(
-                MessageBox,
-                _("Event system is disabled. Enable it in settings."),
-                MessageBox.TYPE_INFO
-            )
-            return
+        if not config.plugins.calendar.events_enabled.value:
+            # No need to check self.event_manager anymore because self IS the EventManager
+            return 0
 
-        # Ask for confirmation
-        self.session.openWithCallback(
-            self._execute_cleanup,
-            MessageBox,
-            _("Do you want to remove all past non-recurring events?"),
-            MessageBox.TYPE_YESNO
-        )
+        now = datetime.now()
+        removed_count = 0
+        events_to_keep = []
+
+        for event in self.events:
+            if event.repeat != "none":
+                # Keep recurring events
+                events_to_keep.append(event)
+                continue
+
+            # For non-recurring events, check if they are past
+            event_dt = event.get_datetime()
+            if event_dt:
+                # If the event is more than 1 day past, remove it
+                if (now - event_dt) > timedelta(days=1):
+                    print("[EventManager] Removing past event: {0} ({1})".format(
+                        event.title, event.date))
+                    removed_count += 1
+                    continue
+
+            # Keep the event
+            events_to_keep.append(event)
+
+        # Update the event list if we removed any
+        if removed_count > 0:
+            self.events = events_to_keep
+            self.save_events()
+            print("[EventManager] Cleaned up {0} past events".format(removed_count))
+
+        return removed_count
 
     def _execute_cleanup(self, result):
         """Execute cleanup after confirmation"""
@@ -717,22 +850,27 @@ class EventManager:
                 # Show notification for 5 seconds
                 quick_notify(message, seconds=10)
 
-                # Set up a timer to stop sound when notification ends
+                # Timer to stop the sound when the notification ends
                 def stop_sound_when_notification_ends():
-                    if hasattr(self, 'sound_stop_timer') and self.sound_stop_timer:
-                        # Stop the sound timer
-                        if self.sound_stop_timer.isActive():
-                            self.sound_stop_timer.stop()
-                        # Stop audio playback and restore previous service
+                    try:
+                        if DEBUG:
+                            print("[EventManager] Notification timer ended, stopping sound")
+
+                        # Stop any active sound timer
+                        if hasattr(self, 'sound_stop_timer') and self.sound_stop_timer:
+                            if self.sound_stop_timer.isActive():
+                                self.sound_stop_timer.stop()
+
+                        # Call method to stop audio and restore TV
                         self.stop_notification_sound()
 
-                # Create a timer that matches notification duration
+                    except Exception as e:
+                        print("[EventManager] Error in notification end callback: " + str(e))
+
+                # 10-second timer (notification duration)
                 notification_timer = eTimer()
                 notification_timer.callback.append(stop_sound_when_notification_ends)
-                notification_timer.start(10000, True)  # 10 seconds
-                if DEBUG:
-                    print("[EventManager] Auto-stop timer set for 5000 ms")
-                self.notification_timer = notification_timer
+                notification_timer.start(10000, True)  # 5 seconds
 
             else:
                 print("[EventManager] NOTIFICATION: {0}".format(message))
@@ -746,27 +884,21 @@ class EventManager:
                 print("[EventManager] === START play_notification_sound ===")
                 print("[EventManager] Requested sound type: " + sound_type)
 
-            # 1. Get CURRENT service BEFORE anything else
+            # 1. SAVE the CURRENT service FIRST
             current_service = self.session.nav.getCurrentlyPlayingServiceReference()
 
-            # Save the ORIGINAL service (TV/radio), not audio file
-            self.original_service = current_service
+            # SAVE to a SEPARATE attribute for security
+            self.tv_service_backup = current_service
 
             if DEBUG:
-                if self.original_service:
-                    print("[EventManager] Original service saved: " + self.original_service.toString())
+                if self.tv_service_backup:
+                    print("[EventManager] TV service saved: " + self.tv_service_backup.toString())
                 else:
-                    print("[EventManager] No original service (TV might be off)")
+                    print("[EventManager] No TV service active (TV might be off)")
 
             # Try different possible sound directories
-            possible_sound_dirs = [
-                plugin_path + "sounds/",
-                plugin_path + "sound/",
-                sounds_dir,
-            ]
-
             sound_dir = None
-            for test_dir in possible_sound_dirs:
+            for test_dir in [plugin_path + "sounds/", plugin_path + "sound/", sounds_dir]:
                 if exists(test_dir):
                     sound_dir = test_dir
                     break
@@ -811,59 +943,58 @@ class EventManager:
             if DEBUG:
                 print("[EventManager] Found sound file: " + sound_path)
 
-            # Create eServiceReference for audio file
+            # 2. STOP the current service BEFORE playing audio
+            self.session.nav.stopService()
+            time.sleep(0.1)  # Piccola pausa
+
+            # 3. Create eServiceReference for audio file
             # 4097 = isFile (1) + isAudio (4096)
             service_ref = eServiceReference(4097, 0, sound_path)
             service_ref.setName("Calendar Notification")
 
             if DEBUG:
-                print("[EventManager] Service ref created: " + service_ref.toString())
+                print("[EventManager] Playing sound: " + sound_path)
 
-            # Stop current service and play audio
-            self.session.nav.stopService()
             self.session.nav.playService(service_ref)
 
-            if DEBUG:
-                print("[EventManager] playService() called successfully")
+            # 4. Timer STOP automatic
+            def stop_and_restore_tv():
+                if DEBUG:
+                    print("[EventManager] Auto-stop timer triggered")
 
-            # Create auto-stop timer for 10 seconds
-            def stop_and_restore():
                 try:
-                    if DEBUG:
-                        print("[EventManager] Auto-stop timer triggered")
-
                     # Stop audio playback
                     self.session.nav.stopService()
 
                     # Wait a bit
-                    time.sleep(0.1)
+                    time.sleep(0.2)
 
                     # Restore ORIGINAL service (TV/radio) if it exists
-                    if hasattr(self, 'original_service') and self.original_service:
+                    if hasattr(self, 'tv_service_backup') and self.tv_service_backup:
                         if DEBUG:
-                            print("[EventManager] Restoring original service: " +
-                                  self.original_service.toString())
+                            print("[EventManager] Restoring TV service: " +
+                                  self.tv_service_backup.toString())
 
                         # Check it's not our audio file
-                        if self.original_service.toString().find("Calendar Notification") == -1:
-                            self.session.nav.playService(self.original_service)
+                        if self.tv_service_backup.toString().find("Calendar Notification") == -1:
+                            self.session.nav.playService(self.tv_service_backup)
                         else:
                             if DEBUG:
-                                print("[EventManager] Skipping - original service is audio file")
-                    else:
-                        if DEBUG:
-                            print("[EventManager] No original service to restore")
+                                print("[EventManager] Skipping - backup is audio file")
 
                     # Clean up
-                    if hasattr(self, 'original_service'):
-                        self.original_service = None
+                    if hasattr(self, 'tv_service_backup'):
+                        self.tv_service_backup = None
 
                 except Exception as e:
-                    print("[EventManager] Error in stop_and_restore: " + str(e))
+                    print("[EventManager] Error in stop_and_restore_tv: " + str(e))
 
             # Create and start the timer
             stop_timer = eTimer()
-            stop_timer.callback.append(stop_and_restore)
+            try:
+                stop_timer_conn = stop_timer.timeout.connect(stop_and_restore_tv)
+            except AttributeError:
+                stop_timer.callback.append(stop_and_restore_tv)
             stop_timer.start(10000, True)  # 10 seconds
 
             if DEBUG:
@@ -881,44 +1012,25 @@ class EventManager:
 
     def stop_notification_sound(self):
         try:
-            # DEBUG log
             if DEBUG:
                 print("[EventManager] stop_notification_sound called")
-                if hasattr(self, 'previous_service'):
-                    print("[EventManager] Previous service exists: {0}".format(
-                        self.previous_service.toString() if self.previous_service else "None"))
 
-            # 1. Stop current audio playback
+            # Ferma audio
             self.session.nav.stopService()
+            time.sleep(0.2)
 
-            # 2. Wait a bit for stop to complete
-            time.sleep(0.1)  # 100ms delay
-
-            # 3. Restore previous service if it exists AND is NOT the audio file
-            if hasattr(self, 'previous_service') and self.previous_service:
-                # Check if previous service is NOT our notification sound
-                current_service_ref = self.session.nav.getCurrentlyPlayingServiceReference()
-
+            # Restore previous service if it exists AND is NOT the audio file
+            if hasattr(self, 'tv_service_backup') and self.tv_service_backup:
                 if DEBUG:
-                    print("[EventManager] Current service before restore: {0}".format(
-                        current_service_ref.toString() if current_service_ref else "None"))
-                    print("[EventManager] Attempting to restore: {0}".format(
-                        self.previous_service.toString()))
+                    print("[EventManager] Restoring from backup: " +
+                          self.tv_service_backup.toString())
 
                 # Only restore if it's a TV/radio service, not audio file
-                if self.previous_service.toString().find("Calendar Notification") == -1:
-                    self.session.nav.playService(self.previous_service)
-                    if DEBUG:
-                        print("[EventManager] Previous service restored successfully")
-                else:
-                    if DEBUG:
-                        print("[EventManager] Skipping restore - previous service is notification sound")
+                if self.tv_service_backup.toString().find("Calendar Notification") == -1:
+                    self.session.nav.playService(self.tv_service_backup)
 
                 # Clear the reference
-                self.previous_service = None
-            else:
-                if DEBUG:
-                    print("[EventManager] No previous service to restore")
+                self.tv_service_backup = None
 
             return True
 
@@ -952,7 +1064,10 @@ class EventManager:
                         pass
 
             check_timer = eTimer()
-            check_timer.callback.append(check_if_playing)
+            try:
+                check_timer_conn = check_timer.timeout.connect(check_if_playing)
+            except AttributeError:
+                check_timer.callback.append(check_if_playing)
             check_timer.start(1000, True)  # Check after 1 second
 
         except Exception as e:
