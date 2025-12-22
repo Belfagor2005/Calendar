@@ -1,8 +1,8 @@
 #!/bin/bash
 ## setup command=wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/Calendar/main/installer.sh -O - | /bin/bash
 
-version='1.1'
-changelog="--RECODED- NOTIFYER"
+version='1.3'
+changelog="--REWRITE ALL CODE"
 
 TMPPATH=/tmp/Calendar-install
 FILEPATH=/tmp/Calendar-main.tar.gz
