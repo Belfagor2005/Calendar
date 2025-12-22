@@ -364,9 +364,6 @@ class EventDialog(Screen):
         self["actions"] = ActionMap(
             [
                 "CalendarActions",
-                # "ColorActions",
-                # "OkCancelActions",
-                # "DirectionActions"
             ],
             {
                 "cancel": self.cancel,

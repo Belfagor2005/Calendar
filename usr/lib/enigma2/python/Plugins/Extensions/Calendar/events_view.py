@@ -199,12 +199,13 @@
 ###########################################################
 """
 
-from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.MenuList import MenuList
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
 from enigma import getDesktop
+
 from . import _
 
 
@@ -260,8 +261,6 @@ class EventsView(Screen):
         self["actions"] = ActionMap(
             [
                 "CalendarActions",
-                # "ColorActions",
-                # "OkCancelActions"
             ],
             {
                 "cancel": self.close,

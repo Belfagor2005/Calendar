@@ -464,8 +464,8 @@ class EventManager:
         self.events = []
 
         self.notified_events = set()  # Events already notified in this session
-        self.tv_service_backup = None  # Per backup servizio TV
-        self.sound_stop_timer = None   # Per timer audio
+        self.tv_service_backup = None  # For TV service backup
+        self.sound_stop_timer = None   # For audio timer
 
         # Timer to check events
         self.check_timer = eTimer()
@@ -869,8 +869,11 @@ class EventManager:
 
                 # 10-second timer (notification duration)
                 notification_timer = eTimer()
-                notification_timer.callback.append(stop_sound_when_notification_ends)
-                notification_timer.start(10000, True)  # 5 seconds
+                try:
+                    notification_timer_conn = notification_timer.timeout.connect(stop_sound_when_notification_ends)
+                except AttributeError:
+                    notification_timer.callback.append(stop_sound_when_notification_ends)
+                notification_timer.start(10000, True)  # 10 seconds
 
             else:
                 print("[EventManager] NOTIFICATION: {0}".format(message))

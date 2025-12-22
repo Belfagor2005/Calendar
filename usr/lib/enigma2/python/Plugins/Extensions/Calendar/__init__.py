@@ -209,7 +209,7 @@ import gettext
 PluginLanguageDomain = 'Calendar'
 PluginLanguagePath = 'Extensions/Calendar/locale'
 plugin_path = "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/"
-PLUGIN_VERSION = "1.3"
+PLUGIN_VERSION = "1.4"
 
 
 isDreambox = False

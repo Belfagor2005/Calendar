@@ -1,8 +1,8 @@
 #!/bin/bash
 ## setup command=wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/Calendar/main/installer.sh -O - | /bin/bash
 
-version='1.3'
-changelog="--REWRITE ALL CODE"
+version='1.4'
+changelog="--Test on Update - fix minor"
 
 TMPPATH=/tmp/Calendar-install
 FILEPATH=/tmp/Calendar-main.tar.gz
@@ -177,16 +177,16 @@ IMAGE NAME: ${distro_value:-Unknown}
 IMAGE VERSION: ${distro_version:-Unknown}
 EOF
 
-echo "Restarting enigma2 in 3 seconds..."
-sleep 3
+echo "Restarting enigma2..."
+# sleep 3
 
-# Restart Enigma2
-if command -v systemctl >/dev/null 2>&1; then
-    systemctl restart enigma2
-elif command -v init >/dev/null 2>&1; then
-    init 4 && sleep 2 && init 3
-else
-    killall -9 enigma2
-fi
+# # Restart Enigma2
+# if command -v systemctl >/dev/null 2>&1; then
+    # systemctl restart enigma2
+# elif command -v init >/dev/null 2>&1; then
+    # init 4 && sleep 2 && init 3
+# else
+    # killall -9 enigma2
+# fi
 
 exit 0

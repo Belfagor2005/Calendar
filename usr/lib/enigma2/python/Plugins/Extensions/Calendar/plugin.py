@@ -203,7 +203,6 @@ import datetime
 from time import localtime
 from os import remove, makedirs
 from os.path import exists, dirname, join, getmtime
-# from xml.etree.ElementTree import fromstring
 
 from enigma import getDesktop
 from Plugins.Plugin import PluginDescriptor
@@ -234,7 +233,6 @@ from Tools.Directories import (
     fileExists,
     resolveFilename,
     SCOPE_PLUGINS,
-    # SCOPE_SKINS,
     fileReadXML
 )
 from enigma import eTimer
@@ -259,7 +257,6 @@ def init_calendar_config():
         ("yes", _("yes"))])
     config.plugins.calendar.events_enabled = ConfigYesNo(default=True)
     config.plugins.calendar.events_notifications = ConfigYesNo(default=True)
-    # config.plugins.calendar.highlight = ConfigYesNo(default=True)
     config.plugins.calendar.events_show_indicators = ConfigYesNo(default=True)
     config.plugins.calendar.events_color = ConfigSelection(
         choices=[
@@ -293,7 +290,7 @@ def init_calendar_config():
             ("yellow", _("Yellow")),
             ("white", _("White")),
         ],
-        default="orange"  # orange as default
+        default="blue"  # blue as default
     )
     config.plugins.calendar.debug_enabled = ConfigYesNo(default=False)
 
@@ -1814,93 +1811,6 @@ class settingCalendar(Setup):
     def keySave(self):
         Setup.keySave(self)
 
-
-"""
-def customSetupDom(setup=None, plugin=None):
-
-    # 1. Determine system language
-    system_language = config.osd.language.value.split('_')[0]
-
-    # 2. Plugin path
-    plugin_dir = resolveFilename(SCOPE_PLUGINS, plugin) if plugin else ""
-
-    # 3. Look for a localized file BEFORE setup.xml
-    xml_files_to_try = [
-        "setup." + system_language + ".xml",  # setup.it.xml
-        "setup.xml"                            # default
-    ]
-
-    setupFile = None
-    for xml_file in xml_files_to_try:
-        if plugin_dir:
-            test_file = join(plugin_dir, xml_file)
-        else:
-            # For system setup (without plugin)
-            test_file = resolveFilename(SCOPE_SKINS, xml_file)
-
-        if fileExists(test_file):
-            setupFile = test_file
-            print("[Calendar] Found setup file:", setupFile)
-            break
-
-    # 4. If no file is found, fall back to the original setup.xml
-    if not setupFile:
-        if plugin_dir:
-            setupFile = join(plugin_dir, "setup.xml")
-        else:
-            setupFile = resolveFilename(SCOPE_SKINS, "setup.xml")
-        print("[Calendar] Using default:", setupFile)
-
-    # 5. Cache check (same as original)
-    try:
-        modTime = getmtime(setupFile)
-    except OSError as err:
-        print("[Calendar] Error getting mod time:", err)
-        if setupFile in domSetups:
-            del domSetups[setupFile]
-        if setupFile in setupModTimes:
-            del setupModTimes[setupFile]
-        return fromstring("<setupxml />")
-
-    cached = (
-        setupFile in domSetups and
-        setupFile in setupModTimes and
-        setupModTimes[setupFile] == modTime
-    )
-
-    if cached:
-        print("[Calendar] Using cached setup")
-        return domSetups[setupFile]
-
-    # 6. Read and parse XML
-    fileDom = fileReadXML(setupFile, source="Calendar")
-
-    if fileDom is not None:
-        domSetups[setupFile] = fileDom
-        setupModTimes[setupFile] = modTime
-        print("[Calendar] Loaded XML with", len(fileDom.findall(".//item")), "items")
-        return fileDom
-
-    return fromstring("<setupxml />")
-
-
-class settingCalendar(Setup):
-    def __init__(self, session, parent=None):
-        import Screens
-        Screens.Setup.setupDom = customSetupDom
-        Screens.Setup.setupdom = customSetupDom  # Versione legacy
-        print("[Calendar] Initializing with language:", config.osd.language.value)
-
-        Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
-        self.parent = parent
-
-        Screens.Setup.setupDom = originalSetupDom
-        Screens.Setup.setupdom = originalSetupDom
-
-    def keySave(self):
-        Setup.keySave(self)
-
-"""
 
 
 def mainMenu(menuid):
