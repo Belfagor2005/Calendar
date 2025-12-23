@@ -1,19 +1,19 @@
 name: Update Translation Files
 
 on:
-  workflow_dispatch:  # Solo attivazione manuale da GitHub UI
+  workflow_dispatch:
     inputs:
       reason:
-        description: 'Motivo dell\'aggiornamento'
+        description: 'Motivo aggiornamento'
         required: false
-        default: 'Aggiornamento automatico traduzioni'
+        default: 'Aggiornamento traduzioni automatico'
 
 jobs:
   update-translations:
     runs-on: ubuntu-latest
     
     steps:
-    # 1. Checkout del repository completo
+    # 1. Checkout repository
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
@@ -25,52 +25,60 @@ jobs:
       with:
         python-version: '3.10'
     
-    # 3. Installa gettext (msgmerge, msgfmt) + altri tool
+    # 3. Installa gettext
     - name: Install required tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y gettext python3-lxml
+        sudo apt-get install -y gettext
     
-    # 4. Esegui lo script di aggiornamento UNIFICATO
+    # 4. Vai nella cartella plugin (DOBBIAMO ENTRARE nella struttura)
+    - name: Go to plugin directory
+      run: |
+        cd "usr/lib/enigma2/python/Plugins/Extensions/Calendar"
+        echo "Current dir: $(pwd)"
+        ls -la
+    
+    # 5. Esegui lo script di aggiornamento (ora nella cartella plugin)
     - name: Update all translation files
       run: |
         cd "usr/lib/enigma2/python/Plugins/Extensions/Calendar"
+        
+        # Crea/aggiorna il file .pot
         python ../../../../../../.github/scripts/update_all_translations.py
-    
-    # 5. Verifica se ci sono cambiamenti
+        
+        # Mostra cosa è cambiato
+        echo "=== File modificati ==="
+        git status --porcelain || true
+        
+    # 6. Verifica cambiamenti
     - name: Check for changes
       id: check-changes
       run: |
         if git diff --quiet; then
           echo "has_changes=false" >> $GITHUB_OUTPUT
-          echo "## Niente da aggiornare" >> $GITHUB_STEP_SUMMARY
+          echo "##Niente da aggiornare" >> $GITHUB_STEP_SUMMARY
         else
           echo "has_changes=true" >> $GITHUB_OUTPUT
-          echo "## 📝 Cambiamenti rilevati" >> $GITHUB_STEP_SUMMARY
-          echo "Sono state aggiunte nuove stringhe da tradurre." >> $GITHUB_STEP_SUMMARY
+          echo "## Cambiamenti rilevati" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**File modificati:**" >> $GITHUB_STEP_SUMMARY
-          git diff --name-only >> $GITHUB_STEP_SUMMARY
+          echo "**Nuove stringhe aggiunte ai file .po:**" >> $GITHUB_STEP_SUMMARY
+          git diff --name-only | grep -E '\.(pot|po)$' || true >> $GITHUB_STEP_SUMMARY
         fi
     
-    # 6. Se ci sono cambiamenti, crea PR
+    # 7. Crea PR se ci sono cambiamenti
     - name: Create Pull Request
       if: steps.check-changes.outputs.has_changes == 'true'
       uses: peter-evans/create-pull-request@v6
       with:
-        commit-message: "🌍 Update translation files"
-        title: "🌍 Update Translation Files (automatic)"
+        commit-message: "Update translation files (new strings)"
+        title: "Update Translation Files"
         body: |
-          **Questo PR è stato generato automaticamente dal workflow di aggiornamento traduzioni.**
-          
-          **Cosa contiene:**
+          **Aggiornamento automatico delle traduzioni**
+          **Cosa è stato fatto:**
           - Nuove stringhe estratte da `setup.xml` e file `.py`
-          - Aggiornamento di tutti i file `.po` esistenti
-          - **NESSUN** file `.mo` modificato (solo i sorgenti `.po`)
-          
-          **Lingue aggiornate:** `cs`, `de`, `el`, `fr`, `hu`, `it`, `ru`, `sk`, `sl`, `sv`, `zh`
-          
-          **Nota:** Le traduzioni esistenti non sono state rimosse. Le nuove stringhe appaiono come `msgstr ""` da tradurre.
-        branch: "update-translations-$(date +%s)"
+          - File `Calendar.pot` aggiornato
+          - Tutti i file `.po` aggiornati con `msgmerge`
+          **Nota:** Le traduzioni esistenti sono state preservate. Le nuove stringhe appaiono come `msgstr ""` (da tradurre).
+        branch: "update-translations-$(date +%Y%m%d-%H%M%S)"
         delete-branch: true
-        labels: "translations, automated"
+        labels: "translations,automated-pr"
