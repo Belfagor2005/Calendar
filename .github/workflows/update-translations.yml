@@ -1,0 +1,84 @@
+name: Update Translation Files
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Motivo aggiornamento'
+        required: false
+        default: 'Aggiornamento traduzioni automatico'
+
+jobs:
+  update-translations:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # 1. Checkout repository
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    # 2. Setup Python
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    # 3. Installa gettext
+    - name: Install required tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gettext
+    
+    # 4. Vai nella cartella plugin (DOBBIAMO ENTRARE nella struttura)
+    - name: Go to plugin directory
+      run: |
+        cd "usr/lib/enigma2/python/Plugins/Extensions/Calendar"
+        echo "Current dir: $(pwd)"
+        ls -la
+    
+    # 5. Esegui lo script di aggiornamento (ora nella cartella plugin)
+    - name: Update all translation files
+      run: |
+        cd "usr/lib/enigma2/python/Plugins/Extensions/Calendar"
+        
+        # Crea/aggiorna il file .pot
+        python ../../../../../../.github/scripts/update_all_translations.py
+        
+        # Mostra cosa è cambiato
+        echo "=== File modificati ==="
+        git status --porcelain || true
+        
+    # 6. Verifica cambiamenti
+    - name: Check for changes
+      id: check-changes
+      run: |
+        if git diff --quiet; then
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+          echo "##Niente da aggiornare" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "## Cambiamenti rilevati" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Nuove stringhe aggiunte ai file .po:**" >> $GITHUB_STEP_SUMMARY
+          git diff --name-only | grep -E '\.(pot|po)$' || true >> $GITHUB_STEP_SUMMARY
+        fi
+    
+    # 7. Crea PR se ci sono cambiamenti
+    - name: Create Pull Request
+      if: steps.check-changes.outputs.has_changes == 'true'
+      uses: peter-evans/create-pull-request@v6
+      with:
+        commit-message: "Update translation files (new strings)"
+        title: "Update Translation Files"
+        body: |
+          **Aggiornamento automatico delle traduzioni**
+          **Cosa è stato fatto:**
+          - Nuove stringhe estratte da `setup.xml` e file `.py`
+          - File `Calendar.pot` aggiornato
+          - Tutti i file `.po` aggiornati con `msgmerge`
+          **Nota:** Le traduzioni esistenti sono state preservate. Le nuove stringhe appaiono come `msgstr ""` (da tradurre).
+        branch: "update-translations-$(date +%Y%m%d-%H%M%S)"
+        delete-branch: true
+        labels: "translations,automated-pr"
