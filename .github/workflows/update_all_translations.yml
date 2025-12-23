@@ -112,8 +112,24 @@ jobs:
           
           # Run the update script from repository root
           python ".github/scripts/update_all_translations.py"
-      
-      # 5. Check for changes
+
+      # 5. Compile .po files to .mo
+      - name: Compile .mo files
+        run: |
+          cd "usr/lib/enigma2/python/Plugins/Extensions/Calendar"
+          echo "=== Compiling .mo files ==="
+          
+          # Find all .po files in locale subdirectories
+          for po_file in $(find locale -name "*.po"); do
+            # Create corresponding .mo filename
+            mo_file="${po_file%.po}.mo"
+            echo "Compiling: $po_file -> $mo_file"
+            # Use msgfmt to compile
+            msgfmt -o "$mo_file" "$po_file"
+          done
+          echo "Compilation completed."
+
+      # 6. Check for changes
       - name: Check for changes
         id: check-changes
         run: |
@@ -128,7 +144,7 @@ jobs:
             git diff --name-only | grep -v "^$" || true >> $GITHUB_STEP_SUMMARY
           fi
       
-      # 6. Create PR if changes detected
+      # 7. Create PR if changes detected
       - name: Create Pull Request
         if: steps.check-changes.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@v6
@@ -142,8 +158,6 @@ jobs:
             - New strings extracted from `setup.xml` and `.py` files
             - `Calendar.pot` file updated
             - All `.po` files updated with `msgmerge`
-            
-            **Updated languages:** cs, de, el, fr, hu, it, ru, sk, sl, sv, zh
             
             **Note:** Existing translations were preserved. New strings appear as `msgstr ""` (to be translated).
           branch: "update-translations-$(date +%Y%m%d-%H%M%S)"
@@ -161,7 +175,7 @@ jobs:
             git diff --name-only | grep -v "^$" || true >> $GITHUB_STEP_SUMMARY
           fi
       
-      # 6. Create PR if changes detected
+      # 8. Create PR if changes detected
       - name: Create Pull Request
         if: steps.check-changes.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@v6
