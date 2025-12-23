@@ -16,459 +16,436 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: event_dialog.py:327
-msgid "Title:"
-msgstr "Заголовок:"
-
-#: event_dialog.py:328 event_dialog.py:399 event_dialog.py:429
-#: event_dialog.py:447 event_dialog.py:455 event_dialog.py:494
-#: event_dialog.py:602
-msgid "Event"
-msgstr "Событие"
-
-#: event_dialog.py:329
-msgid "Date:"
-msgstr "Дата:"
-
-#: event_dialog.py:331
-msgid "Time:"
-msgstr "Время:"
-
-#: event_dialog.py:333
-msgid "Repeat:"
-msgstr "Повторять:"
-
-#: event_dialog.py:335
-msgid "Notify:"
-msgstr "Уведомить:"
-
-#: event_dialog.py:337
-msgid "Active:"
-msgstr "Активен:"
-
-#: event_dialog.py:339
-msgid "Description:"
-msgstr "Описание:"
-
-#: event_dialog.py:340 event_dialog.py:353 event_dialog.py:420
-#: event_dialog.py:431 event_dialog.py:447 event_dialog.py:457
-#: event_dialog.py:494 event_dialog.py:615 plugin.py:1393
-msgid "Description"
-msgstr "Описание"
-
-#: event_dialog.py:342
-msgid "Cancel"
-msgstr "Отмена"
-
-#: event_dialog.py:343
-msgid "Save"
-msgstr "Сохранить"
-
-#: event_dialog.py:344
-msgid "Delete"
-msgstr "Удалить"
-
-#: event_dialog.py:347
-msgid "Title"
-msgstr "Заголовок"
-
-#: event_dialog.py:348 plugin.py:905
-msgid "Date"
-msgstr "Дата"
-
-#: event_dialog.py:349
-msgid "Time"
-msgstr "Время"
-
-#: event_dialog.py:350
-msgid "Repeat"
-msgstr "Повторять"
-
-#: event_dialog.py:351
-msgid "Notify"
-msgstr "Уведомить"
-
-#: event_dialog.py:352
-msgid "Active"
-msgstr "Активный"
-
-#: event_dialog.py:466
-msgid "Enter "
-msgstr "Ввод "
-
-#: event_dialog.py:608
-msgid "Title and date are required!"
-msgstr "Обязательно укажите заголовок и дату!"
-
-#: event_manager.py:790 plugin.py:1273
-#, python-brace-format
-msgid "Removed {0} past events"
-msgstr "Удалены {0} прошлые события"
-
-#: event_manager.py:793 plugin.py:1278
-msgid "No past events to remove"
-msgstr "Нет прошлых событий, которые нужно удалить"
-
-#: events_view.py:255
-msgid "Add"
-msgstr "Добавить"
-
-#: events_view.py:256
-msgid "Edit"
-msgstr "Редактировать"
-
-#: events_view.py:257
-msgid "Remove"
-msgstr "Удалить"
-
-#: events_view.py:258
-msgid "Back"
-msgstr "Назад"
-
-#: holidays.py:671
-msgid "Close"
-msgstr "Закрыть"
-
-#: holidays.py:672
-msgid "Import"
-msgstr "Импорт"
-
-#: holidays.py:673
-msgid "Import All"
-msgstr "Импортировать всё"
-
-#: holidays.py:801
-msgid "Clear ALL holiday entries from all date files?"
-msgstr "Удалить ВСЕ записи о праздниках из всех файлов с датами?"
-
-#: plugin.py:258
-msgid "no"
-msgstr "нет"
-
-#: plugin.py:259
-msgid "yes"
-msgstr "да"
-
-#: plugin.py:266 plugin.py:289
-msgid "Blue"
-msgstr "Синий"
-
-#: plugin.py:267 plugin.py:290
-msgid "Red"
-msgstr "Красный"
-
-#: plugin.py:268 plugin.py:291
-msgid "Green"
-msgstr "Зеленый"
-
-#: plugin.py:269 plugin.py:292
-msgid "Orange"
-msgstr "Оранжевый"
-
-#: plugin.py:270 plugin.py:293
-msgid "Yellow"
-msgstr "Желтый"
-
-#: plugin.py:271 plugin.py:294
-msgid "White"
-msgstr "Белый"
-
-#: plugin.py:278
-msgid "Short beep"
-msgstr "Короткий звуковой сигнал"
-
-#: plugin.py:279
-msgid "Notification tone"
-msgstr "Звук уведомления"
-
-#: plugin.py:280
-msgid "Alert sound"
-msgstr "Звуковой сигнал тревоги"
-
-#: plugin.py:281
-msgid "No sound"
-msgstr "Нет звука"
-
-#: plugin.py:544
-msgid "Calendar Planner"
-msgstr "Календарь-планер"
-
-#: plugin.py:572
 msgid "..."
 msgstr "..."
 
-#: plugin.py:573
-msgid "Mon"
-msgstr "Пон"
-
-#: plugin.py:574
-msgid "Tue"
-msgstr "Вт"
-
-#: plugin.py:575
-msgid "Wed"
-msgstr "Ср"
-
-#: plugin.py:576
-msgid "Thu"
-msgstr "Чт"
-
-#: plugin.py:577
-msgid "Fri"
-msgstr "Пт"
-
-#: plugin.py:578
-msgid "Sat"
-msgstr "Сб"
-
-#: plugin.py:579
-msgid "Sun"
-msgstr "Вс"
-
-#: plugin.py:583
-#, python-format
-msgid "Calendar Planner v.%s"
-msgstr "Календарь-планировщик v.%s"
-
-#: plugin.py:584
-msgid "Month -"
-msgstr "Месяц -"
-
-#: plugin.py:585
-msgid "Month +"
-msgstr "Месяц +"
-
-#: plugin.py:586
-msgid "Day -"
-msgstr "День -"
-
-#: plugin.py:587
-msgid "Day +"
-msgstr "День +"
-
-#: plugin.py:589
-msgid "Files is Empty..."
-msgstr "Файлы пусты..."
-
-#: plugin.py:590 plugin.py:591 plugin.py:592 plugin.py:593 plugin.py:594
-#: plugin.py:595
 msgid ".............."
 msgstr ".............."
 
-#: plugin.py:596
-msgid "Calendar Planner | Ready"
-msgstr "Календарь-планер | Готов"
+msgid "Active"
+msgstr "Активный"
 
-#: plugin.py:640
-msgid "New Date"
-msgstr "Новая дата"
+msgid "Active:"
+msgstr "Активен:"
 
-#: plugin.py:641 plugin.py:923
-msgid "Edit Date"
-msgstr "Изменить дату"
+msgid "Add"
+msgstr "Добавить"
 
-#: plugin.py:642
-msgid "Remove Date"
-msgstr "Удалить дату"
-
-#: plugin.py:643
-msgid "Delete File"
-msgstr "Удалить файл"
-
-#: plugin.py:649
-msgid "Manage Events"
-msgstr "Управление событиями"
-
-#: plugin.py:650
 msgid "Add Event"
 msgstr "Добавить событие"
 
-#: plugin.py:651
-msgid "Cleanup past events"
-msgstr "Уборка последствий прошлых событий"
+msgid "Alert sound"
+msgstr "Звуковой сигнал тревоги"
 
-#: plugin.py:656
-msgid "Import Holidays"
-msgstr "Импортные праздники"
-
-#: plugin.py:657
-msgid "Show Today's Holidays"
-msgstr "Показать сегодняшние праздники"
-
-#: plugin.py:658
-msgid "Show Upcoming Holidays"
-msgstr "Показать предстоящие праздники"
-
-#: plugin.py:659
-msgid "Clear Holiday Database"
-msgstr "Прозрачная база данных праздников"
-
-#: plugin.py:663
-msgid "Check for Updates"
-msgstr "Проверить наличие обновлений"
-
-#: plugin.py:666
-msgid "Exit"
-msgstr "Выход"
-
-#: plugin.py:688 update_manager.py:58
-msgid "Update check error"
-msgstr "Ошибка проверки обновления"
-
-#: plugin.py:690
-#, python-format
-msgid "Error: %s"
-msgstr "Ошибка: %s"
-
-#: plugin.py:744
-msgid "Date People: "
-msgstr "Люди, с которыми можно встречаться: "
-
-#: plugin.py:751
-msgid "Sign: "
-msgstr "Знак: "
-
-#: plugin.py:758
-msgid "Holiday: "
-msgstr "Праздничный день: "
-
-#: plugin.py:769
-msgid "Month People: "
-msgstr "Люди месяца: "
-
-#: plugin.py:815 plugin.py:817
-msgid "TODAY'S EVENTS:"
-msgstr "События сегодняшнего дня:"
-
-#: plugin.py:862
-msgid "Error saving data"
-msgstr "Ошибка сохранения данных"
-
-#: plugin.py:915 plugin.py:916 plugin.py:1412 plugin.py:1455 plugin.py:1456
-msgid "SCHEDULED EVENTS:"
-msgstr "ЗАПЛАНИРОВАННЫЕ МЕРОПРИЯТИЯ:"
-
-#: plugin.py:924
-msgid "Edit Date People"
-msgstr "Редактировать дату Люди"
-
-#: plugin.py:925
-msgid "Edit Sign"
-msgstr "Редактировать знак"
-
-#: plugin.py:926
-msgid "Edit Holiday"
-msgstr "Редактировать отпуск"
-
-#: plugin.py:927
-msgid "Edit Description"
-msgstr "Редактировать описание"
-
-#: plugin.py:928
-msgid "Edit Month People"
-msgstr "Редактировать Месяц Люди"
-
-#: plugin.py:1009 plugin.py:1035
-msgid "No file in database..."
-msgstr "Нет файла в базе данных..."
-
-#: plugin.py:1020 plugin.py:1041
-msgid "File not found!"
-msgstr "Файл не найден!"
-
-#: plugin.py:1050
-msgid "January"
-msgstr "Январь"
-
-#: plugin.py:1051
-msgid "February"
-msgstr "Февраль"
-
-#: plugin.py:1052
-msgid "March"
-msgstr "Март"
-
-#: plugin.py:1053
 msgid "April"
 msgstr "Апрель"
 
-#: plugin.py:1054
-msgid "May"
-msgstr "Май"
-
-#: plugin.py:1055
-msgid "June"
-msgstr "Июнь"
-
-#: plugin.py:1056
-msgid "July"
-msgstr "Июль"
-
-#: plugin.py:1057
 msgid "August"
 msgstr "Август"
 
-#: plugin.py:1058
-msgid "September"
-msgstr "Сентябрь"
+msgid "Back"
+msgstr "Назад"
 
-#: plugin.py:1059
-msgid "October"
-msgstr "Октябрь"
+msgid "Blue"
+msgstr "Синий"
 
-#: plugin.py:1060
-msgid "November"
-msgstr "Ноябрь"
-
-#: plugin.py:1061
-msgid "December"
-msgstr "Декабрь"
-
-#: plugin.py:1230 plugin.py:1263
-msgid "Event system is disabled. Enable it in settings."
-msgstr "Система событий отключена. Включите её в настройках."
-
-#: plugin.py:1254
-msgid "Error opening event dialog"
-msgstr "Ошибка при открытии диалогового окна события"
-
-#: plugin.py:1384
-msgid "Date People"
-msgstr "Знакомства с людьми"
-
-#: plugin.py:1387
-msgid "Sign"
-msgstr "Подпись"
-
-#: plugin.py:1390
-msgid "Holiday"
-msgstr "Праздник"
-
-#: plugin.py:1396
-msgid "Month People"
-msgstr "Месяц Люди"
-
-#: plugin.py:1909 plugin.py:1924 plugin.py:1933
+#, fuzzy
 msgid "Calendar"
+msgstr "Календарь-планер"
+
+msgid "Calendar Planner"
+msgstr "Календарь-планер"
+
+msgid "Calendar Planner v.%s"
+msgstr "Календарь-планировщик v.%s"
+
+msgid "Calendar Planner | Ready"
+msgstr "Календарь-планер | Готов"
+
+#, fuzzy
+msgid "Calendar Settings"
 msgstr "Календарь"
 
-#: plugin.py:1925
+#, fuzzy
 msgid "Calendar with events and notifications"
 msgstr "Календарь событий и уведомлений"
 
-#: update_manager.py:24
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Check for Updates"
+msgstr "Проверить наличие обновлений"
+
 msgid "Checking for updates..."
 msgstr "Проверка наличия обновлений..."
 
-#: update_manager.py:35
-msgid "Update check failed"
-msgstr "Проверка обновления не удалась"
+msgid "Cleanup past events"
+msgstr "Уборка последствий прошлых событий"
 
-#: update_manager.py:37
+msgid "Clear ALL holiday entries from all date files?"
+msgstr "Удалить ВСЕ записи о праздниках из всех файлов с датами?"
+
+msgid "Clear Holiday Database"
+msgstr "Прозрачная база данных праздников"
+
+msgid "Close"
+msgstr "Закрыть"
+
+#, fuzzy
+msgid "Color days with holidays."
+msgstr "Показать сегодняшние праздники"
+
+msgid "Color for days with events."
+msgstr ""
+
+msgid "Color for holiday days."
+msgstr ""
+
 msgid "Could not check for updates. Check internet connection."
 msgstr "Не удалось проверить наличие обновлений. Проверьте подключение к интернету."
 
-#: update_manager.py:42
+msgid "Could not check for updates: %s"
+msgstr "Не удалось проверить наличие обновлений: %s"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Date People"
+msgstr "Знакомства с людьми"
+
+#, fuzzy
+msgid "Date People:"
+msgstr "Люди, с которыми можно встречаться: "
+
+msgid "Date:"
+msgstr "Дата:"
+
+msgid "Day +"
+msgstr "День +"
+
+msgid "Day -"
+msgstr "День -"
+
+msgid "Debug Settings"
+msgstr ""
+
+msgid "Debug and logging options"
+msgstr ""
+
+msgid "December"
+msgstr "Декабрь"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Delete File"
+msgstr "Удалить файл"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Description:"
+msgstr "Описание:"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "Edit Date"
+msgstr "Изменить дату"
+
+msgid "Edit Date People"
+msgstr "Редактировать дату Люди"
+
+msgid "Edit Description"
+msgstr "Редактировать описание"
+
+msgid "Edit Holiday"
+msgstr "Редактировать отпуск"
+
+msgid "Edit Month People"
+msgstr "Редактировать Месяц Люди"
+
+msgid "Edit Sign"
+msgstr "Редактировать знак"
+
+msgid "Enable debug mode"
+msgstr ""
+
+msgid "Enable event management with date/time."
+msgstr ""
+
+msgid "Enable event system"
+msgstr ""
+
+msgid "Enable holiday coloring"
+msgstr ""
+
+msgid "Enable notifications"
+msgstr ""
+
+#, fuzzy
+msgid "Enter"
+msgstr "Ввод "
+
+msgid "Error opening event dialog"
+msgstr "Ошибка при открытии диалогового окна события"
+
+msgid "Error saving data"
+msgstr "Ошибка сохранения данных"
+
+msgid "Error: %s"
+msgstr "Ошибка: %s"
+
+#, fuzzy
+msgid "Event"
+msgstr "Добавить событие"
+
+msgid "Event Settings"
+msgstr ""
+
+#, fuzzy
+msgid "Event color"
+msgstr "Событие"
+
+msgid "Event management system"
+msgstr ""
+
+msgid "Event system is disabled. Enable it in settings."
+msgstr "Система событий отключена. Включите её в настройках."
+
+msgid "Exit"
+msgstr "Выход"
+
+msgid "Failed to create backup. Update cancelled."
+msgstr "Не удалось создать резервную копию. Обновление отменено."
+
+msgid "February"
+msgstr "Февраль"
+
+msgid "File not found!"
+msgstr "Файл не найден!"
+
+msgid "Files is Empty..."
+msgstr "Файлы пусты..."
+
+msgid "Fri"
+msgstr "Пт"
+
+msgid "Green"
+msgstr "Зеленый"
+
+msgid "Holiday"
+msgstr "Праздник"
+
+#, fuzzy
+msgid "Holiday Settings"
+msgstr "Праздничный день: "
+
+#, fuzzy
+msgid "Holiday color"
+msgstr "Праздничный день: "
+
+msgid "Holiday display and coloring"
+msgstr ""
+
+#, fuzzy
+msgid "Holiday:"
+msgstr "Праздник"
+
+msgid "Import"
+msgstr "Импорт"
+
+msgid "Import All"
+msgstr "Импортировать всё"
+
+msgid "Import Holidays"
+msgstr "Импортные праздники"
+
+msgid "January"
+msgstr "Январь"
+
+msgid "July"
+msgstr "Июль"
+
+msgid "June"
+msgstr "Июнь"
+
+msgid "Manage Events"
+msgstr "Управление событиями"
+
+msgid "March"
+msgstr "Март"
+
+msgid "May"
+msgstr "Май"
+
+msgid "Mon"
+msgstr "Пон"
+
+msgid "Month +"
+msgstr "Месяц +"
+
+msgid "Month -"
+msgstr "Месяц -"
+
+msgid "Month People"
+msgstr "Месяц Люди"
+
+#, fuzzy
+msgid "Month People:"
+msgstr "Люди месяца: "
+
+msgid "New Date"
+msgstr "Новая дата"
+
+msgid "No file in database..."
+msgstr "Нет файла в базе данных..."
+
+msgid "No past events to remove"
+msgstr "Нет прошлых событий, которые нужно удалить"
+
+msgid "No sound"
+msgstr "Нет звука"
+
+#, fuzzy
+msgid "Notification sound type"
+msgstr "Звук уведомления"
+
+#, fuzzy
+msgid "Notification tone"
+msgstr "Звук уведомления"
+
+msgid "Notify"
+msgstr "Уведомить"
+
+msgid "Notify:"
+msgstr "Уведомить:"
+
+msgid "November"
+msgstr "Ноябрь"
+
+msgid "October"
+msgstr "Октябрь"
+
+msgid "Orange"
+msgstr "Оранжевый"
+
+#, fuzzy
+msgid "Play a sound when event notification appears."
+msgstr "Календарь событий и уведомлений"
+
+#, fuzzy
+msgid "Play sound with notifications"
+msgstr "Календарь событий и уведомлений"
+
+msgid "Please restart Enigma2 manually."
+msgstr "Пожалуйста, перезапустите Enigma2 вручную."
+
+msgid "Plugin is up to date"
+msgstr "Плагин обновлен"
+
+msgid "Red"
+msgstr "Красный"
+
+msgid "Remove"
+msgstr "Удалить"
+
+msgid "Remove Date"
+msgstr "Удалить дату"
+
+msgid "Removed {0} past events"
+msgstr "Удалены {0} прошлые события"
+
+msgid "Repeat"
+msgstr "Повторять"
+
+msgid "Repeat:"
+msgstr "Повторять:"
+
+msgid "SCHEDULED EVENTS:"
+msgstr "ЗАПЛАНИРОВАННЫЕ МЕРОПРИЯТИЯ:"
+
+msgid "Sat"
+msgstr "Сб"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "September"
+msgstr "Сентябрь"
+
+msgid "Short beep"
+msgstr "Короткий звуковой сигнал"
+
+msgid "Show 'H' marker on holiday days."
+msgstr ""
+
+msgid "Show Calendar in main information menu."
+msgstr ""
+
+msgid "Show Calendar in menu:"
+msgstr ""
+
+#, fuzzy
+msgid "Show Today's Holidays"
+msgstr "Показать предстоящие праздники"
+
+msgid "Show Upcoming Holidays"
+msgstr "Показать предстоящие праздники"
+
+msgid "Show debug messages in console/log."
+msgstr ""
+
+msgid "Show event indicators"
+msgstr ""
+
+#, fuzzy
+msgid "Show holiday indicators"
+msgstr "Показать сегодняшние праздники"
+
+msgid "Show markers on days with events."
+msgstr ""
+
+msgid "Show notifications for upcoming events."
+msgstr ""
+
+msgid "Sign"
+msgstr "Подпись"
+
+#, fuzzy
+msgid "Sign:"
+msgstr "Знак: "
+
+msgid "Sun"
+msgstr "Вс"
+
+msgid "TODAY'S EVENTS:"
+msgstr "События сегодняшнего дня:"
+
+msgid "Thu"
+msgstr "Чт"
+
+msgid "Time"
+msgstr "Время"
+
+msgid "Time:"
+msgstr "Время:"
+
+msgid "Title"
+msgstr "Заголовок"
+
+msgid "Title and date are required!"
+msgstr "Обязательно укажите заголовок и дату!"
+
+msgid "Title:"
+msgstr "Заголовок:"
+
+msgid "Tue"
+msgstr "Вт"
+
+msgid "Type of sound to play with notifications."
+msgstr ""
+
 msgid "Update available!"
 msgstr ""
 "{server_version} {version_server}\n"
@@ -476,90 +453,82 @@ msgstr ""
 "\n"
 "{update_available}"
 
-#: update_manager.py:47
-msgid "Plugin is up to date"
-msgstr "Плагин обновлен"
-
-#: update_manager.py:49
-msgid "You have the latest version of Calendar."
-msgstr "У вас установлена последняя версия Календаря."
-
-#: update_manager.py:60
-#, python-format
-msgid "Could not check for updates: %s"
-msgstr "Не удалось проверить наличие обновлений: %s"
-
-#: update_manager.py:74
 msgid "Update cancelled"
 msgstr "Обновление отменено"
 
-#: update_manager.py:76
-msgid ""
-"A new version is available!\n"
-"\n"
-"Update now?\n"
-"\n"
-"(Recommended to backup first)"
-msgstr ""
-"Доступна новая версия!\n"
-"\n"
-"Обновить сейчас?\n"
-"\n"
-"(Рекомендуется сначала сделать резервную копию)"
+msgid "Update check error"
+msgstr "Ошибка проверки обновления"
 
-#: update_manager.py:92
-msgid "Update successful!"
-msgstr "Обновление успешно завершено!"
+msgid "Update check failed"
+msgstr "Проверка обновления не удалась"
 
-#: update_manager.py:94
-#, python-format
-msgid ""
-"%s\n"
-"\n"
-"Restart Enigma2 now for changes to take effect."
-msgstr ""
-"%s\n"
-"\n"
-"Перезапустите Enigma2 сейчас, чтобы изменения вступили в силу."
-
-#: update_manager.py:103
-msgid "Update failed"
-msgstr "Сбой обновления"
-
-#: update_manager.py:109
-msgid "Updating plugin... Please wait"
-msgstr "Обновление плагина... Пожалуйста, подождите"
-
-#: update_manager.py:126
-msgid "Please restart Enigma2 manually."
-msgstr "Пожалуйста, перезапустите Enigma2 вручную."
-
-#: updater.py:158
-msgid "Failed to create backup. Update cancelled."
-msgstr "Не удалось создать резервную копию. Обновление отменено."
-
-#: updater.py:166
 msgid "Update completed successfully!"
 msgstr "Обновление успешно завершено!"
 
-#: updater.py:170
-msgid "Update failed. Restored from backup."
-msgstr "Обновление не удалось. Восстановлено из резервной копии."
+msgid "Update error: %s"
+msgstr "Ошибка обновления: %s"
 
-#: updater.py:172
+msgid "Update failed"
+msgstr "Сбой обновления"
+
 msgid "Update failed and backup restore also failed!"
 msgstr "Обновление не удалось, восстановление резервной копии также не удалось!"
 
-#: updater.py:181
+msgid "Update failed. Restored from backup."
+msgstr "Обновление не удалось. Восстановлено из резервной копии."
+
+msgid "Update successful!"
+msgstr "Обновление успешно завершено!"
+
+msgid "Updating plugin... Please wait"
+msgstr "Обновление плагина... Пожалуйста, подождите"
+
+msgid "Wed"
+msgstr "Ср"
+
+msgid "White"
+msgstr "Белый"
+
+msgid "Yellow"
+msgstr "Желтый"
+
+msgid "You have the latest version of Calendar."
+msgstr "У вас установлена последняя версия Календаря."
+
+msgid "no"
+msgstr "нет"
+
+msgid "yes"
+msgstr "да"
+
 #, python-format
-msgid "Update error: %s"
-msgstr "Ошибка обновления: %s"
+#~ msgid ""
+#~ "%s\n"
+#~ "\n"
+#~ "Restart Enigma2 now for changes to take effect."
+#~ msgstr ""
+#~ "%s\n"
+#~ "\n"
+#~ "Перезапустите Enigma2 сейчас, чтобы изменения вступили в силу."
+
+#~ msgid ""
+#~ "A new version is available!\n"
+#~ "\n"
+#~ "Update now?\n"
+#~ "\n"
+#~ "(Recommended to backup first)"
+#~ msgstr ""
+#~ "Доступна новая версия!\n"
+#~ "\n"
+#~ "Обновить сейчас?\n"
+#~ "\n"
+#~ "(Рекомендуется сначала сделать резервную копию)"
 
 #~ msgid "Cyan"
 #~ msgstr "Бирюзовый"
 
-#~ msgid "Purple"
+#~ msgid "Magenta"
 #~ msgstr "Пурпурный"
 
-#~ msgid "Magenta"
+#~ msgid "Purple"
 #~ msgstr "Пурпурный"

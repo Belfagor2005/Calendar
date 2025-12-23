@@ -16,546 +16,515 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: event_dialog.py:327
-msgid "Title:"
-msgstr "Názov:"
-
-#: event_dialog.py:328 event_dialog.py:399 event_dialog.py:429
-#: event_dialog.py:447 event_dialog.py:455 event_dialog.py:494
-#: event_dialog.py:602
-msgid "Event"
-msgstr "Udalosť"
-
-#: event_dialog.py:329
-msgid "Date:"
-msgstr "Dátum:"
-
-#: event_dialog.py:331
-msgid "Time:"
-msgstr "Čas:"
-
-#: event_dialog.py:333
-msgid "Repeat:"
-msgstr "Opakujte:"
-
-#: event_dialog.py:335
-msgid "Notify:"
-msgstr "Upozorniť:"
-
-#: event_dialog.py:337
-msgid "Active:"
-msgstr "Aktívne:"
-
-#: event_dialog.py:339
-msgid "Description:"
-msgstr "Popis:"
-
-#: event_dialog.py:340 event_dialog.py:353 event_dialog.py:420
-#: event_dialog.py:431 event_dialog.py:447 event_dialog.py:457
-#: event_dialog.py:494 event_dialog.py:615 plugin.py:1393
-msgid "Description"
-msgstr "Popis"
-
-#: event_dialog.py:342
-msgid "Cancel"
-msgstr "Zrušiť"
-
-#: event_dialog.py:343
-msgid "Save"
-msgstr "Uložiť"
-
-#: event_dialog.py:344
-msgid "Delete"
-msgstr "Odstrániť"
-
-#: event_dialog.py:347
-msgid "Title"
-msgstr "Názov"
-
-#: event_dialog.py:348 plugin.py:905
-msgid "Date"
-msgstr "Dátum"
-
-#: event_dialog.py:349
-msgid "Time"
-msgstr "Čas"
-
-#: event_dialog.py:350
-msgid "Repeat"
-msgstr "Opakovať"
-
-#: event_dialog.py:351
-msgid "Notify"
-msgstr "Upozorniť"
-
-#: event_dialog.py:352
-msgid "Active"
-msgstr "Aktívny"
-
-#: event_dialog.py:466
-msgid "Enter "
-msgstr "Zadajte "
-
-#: event_dialog.py:608
-msgid "Title and date are required!"
-msgstr "Názov a dátum sú povinné!"
-
-#: event_manager.py:790 plugin.py:1273
-#, python-brace-format
-msgid "Removed {0} past events"
-msgstr "Odstránené minulé udalosti ({0})"
-
-#: event_manager.py:793 plugin.py:1278
-msgid "No past events to remove"
-msgstr "Žiadne minulé udalosti na odstránenie"
-
-#: events_view.py:255
-msgid "Add"
-msgstr "Pridať"
-
-#: events_view.py:256
-msgid "Edit"
-msgstr "Upraviť"
-
-#: events_view.py:257
-msgid "Remove"
-msgstr "Odstrániť"
-
-#: events_view.py:258
-msgid "Back"
-msgstr "Späť"
-
-#: holidays.py:671
-msgid "Close"
-msgstr "Zatvoriť"
-
-#: holidays.py:672
-msgid "Import"
-msgstr "Import"
-
-#: holidays.py:673
-msgid "Import All"
-msgstr "Importovať všetko"
-
-#: holidays.py:801
-msgid "Clear ALL holiday entries from all date files?"
-msgstr "Vymazať VŠETKY záznamy o sviatkoch zo všetkých súborov s dátumami?"
-
-#: plugin.py:258
-msgid "no"
-msgstr "nie"
-
-#: plugin.py:259
-msgid "yes"
-msgstr "áno"
-
-#: plugin.py:266 plugin.py:289
-msgid "Blue"
-msgstr "Studená modrá"
-
-#: plugin.py:267 plugin.py:290
-msgid "Red"
-msgstr "Červená"
-
-#: plugin.py:268 plugin.py:291
-msgid "Green"
-msgstr "Zelená"
-
-#: plugin.py:269 plugin.py:292
-msgid "Orange"
-msgstr "Svetlo oranžová"
-
-#: plugin.py:270 plugin.py:293
-msgid "Yellow"
-msgstr "Žltá"
-
-#: plugin.py:271 plugin.py:294
-msgid "White"
-msgstr "Biely"
-
-#: plugin.py:278
-msgid "Short beep"
-msgstr "Krátke pípnutie"
-
-#: plugin.py:279
-msgid "Notification tone"
-msgstr "Tón upozornenia"
-
-#: plugin.py:280
-msgid "Alert sound"
-msgstr "Zvuk upozornenia"
-
-#: plugin.py:281
-msgid "No sound"
-msgstr "Bez zvuku"
-
-#: plugin.py:544
-msgid "Calendar Planner"
-msgstr "Plánovač kalendárov"
-
-#: plugin.py:572
 msgid "..."
 msgstr "..."
 
-#: plugin.py:573
-msgid "Mon"
-msgstr "Pon"
-
-#: plugin.py:574
-msgid "Tue"
-msgstr "Uto"
-
-#: plugin.py:575
-msgid "Wed"
-msgstr "Str"
-
-#: plugin.py:576
-msgid "Thu"
-msgstr "Štv"
-
-#: plugin.py:577
-msgid "Fri"
-msgstr "Pia"
-
-#: plugin.py:578
-msgid "Sat"
-msgstr "Sob"
-
-#: plugin.py:579
-msgid "Sun"
-msgstr "Ned"
-
-#: plugin.py:583
-#, python-format
-msgid "Calendar Planner v.%s"
-msgstr "Plánovač kalendárov verzia %s"
-
-#: plugin.py:584
-msgid "Month -"
-msgstr "Mesiac -"
-
-#: plugin.py:585
-msgid "Month +"
-msgstr "Mesiac +"
-
-#: plugin.py:586
-msgid "Day -"
-msgstr "Deň -"
-
-#: plugin.py:587
-msgid "Day +"
-msgstr "Deň +"
-
-#: plugin.py:589
-msgid "Files is Empty..."
-msgstr "Súbory sú prázdne..."
-
-#: plugin.py:590 plugin.py:591 plugin.py:592 plugin.py:593 plugin.py:594
-#: plugin.py:595
 msgid ".............."
 msgstr ".............."
 
-#: plugin.py:596
-msgid "Calendar Planner | Ready"
-msgstr "Plánovač kalendárov | Pripravený"
+msgid "Active"
+msgstr "Aktívny"
 
-#: plugin.py:640
-msgid "New Date"
-msgstr "Nový dátum"
+msgid "Active:"
+msgstr "Aktívne:"
 
-#: plugin.py:641 plugin.py:923
-msgid "Edit Date"
-msgstr "Upraviť dátum"
+msgid "Add"
+msgstr "Pridať"
 
-#: plugin.py:642
-msgid "Remove Date"
-msgstr "Dátum odstránenia"
-
-#: plugin.py:643
-msgid "Delete File"
-msgstr "Vymazať súbor"
-
-#: plugin.py:649
-msgid "Manage Events"
-msgstr "Správa udalostí"
-
-#: plugin.py:650
 msgid "Add Event"
 msgstr "Pridať udalosť"
 
-#: plugin.py:651
-msgid "Cleanup past events"
-msgstr "Upratovanie minulých udalostí"
+msgid "Alert sound"
+msgstr "Zvuk upozornenia"
 
-#: plugin.py:656
-msgid "Import Holidays"
-msgstr "Dovoz sviatkov"
-
-#: plugin.py:657
-msgid "Show Today's Holidays"
-msgstr "Zobraziť dnešné sviatky"
-
-#: plugin.py:658
-msgid "Show Upcoming Holidays"
-msgstr "Zobraziť nadchádzajúce sviatky"
-
-#: plugin.py:659
-msgid "Clear Holiday Database"
-msgstr "Vymazať databázu dovoleniek"
-
-#: plugin.py:663
-msgid "Check for Updates"
-msgstr "Skontrolovať aktualizácie"
-
-#: plugin.py:666
-msgid "Exit"
-msgstr "Ukončiť"
-
-#: plugin.py:688 update_manager.py:58
-msgid "Update check error"
-msgstr "Chyba kontroly aktualizácií"
-
-#: plugin.py:690
-#, python-format
-msgid "Error: %s"
-msgstr "Chyba: %s"
-
-#: plugin.py:744
-msgid "Date People: "
-msgstr "Stretnutie s ľuďmi: "
-
-#: plugin.py:751
-msgid "Sign: "
-msgstr "Prihlásenie: "
-
-#: plugin.py:758
-msgid "Holiday: "
-msgstr "Sviatok: "
-
-#: plugin.py:769
-msgid "Month People: "
-msgstr "Ľudia mesiaca: "
-
-#: plugin.py:815 plugin.py:817
-msgid "TODAY'S EVENTS:"
-msgstr "DNEŠNÉ UDALOSTI:"
-
-#: plugin.py:862
-msgid "Error saving data"
-msgstr "Chyba pri ukladaní údajov"
-
-#: plugin.py:915 plugin.py:916 plugin.py:1412 plugin.py:1455 plugin.py:1456
-msgid "SCHEDULED EVENTS:"
-msgstr "PLÁNOVANÉ PODUJATIA:"
-
-#: plugin.py:924
-msgid "Edit Date People"
-msgstr "Upraviť dátum Ľudia"
-
-#: plugin.py:925
-msgid "Edit Sign"
-msgstr "Upraviť označenie"
-
-#: plugin.py:926
-msgid "Edit Holiday"
-msgstr "Upraviť sviatok"
-
-#: plugin.py:927
-msgid "Edit Description"
-msgstr "Upraviť popis"
-
-#: plugin.py:928
-msgid "Edit Month People"
-msgstr "Upraviť mesiac Ľudia"
-
-#: plugin.py:1009 plugin.py:1035
-msgid "No file in database..."
-msgstr "Žiadny súbor v databáze..."
-
-#: plugin.py:1020 plugin.py:1041
-msgid "File not found!"
-msgstr "Súbor sa nenašiel!"
-
-#: plugin.py:1050
-msgid "January"
-msgstr "Január"
-
-#: plugin.py:1051
-msgid "February"
-msgstr "Február"
-
-#: plugin.py:1052
-msgid "March"
-msgstr "Marec"
-
-#: plugin.py:1053
 msgid "April"
 msgstr "Apríl"
 
-#: plugin.py:1054
-msgid "May"
-msgstr "Máj"
-
-#: plugin.py:1055
-msgid "June"
-msgstr "Jún"
-
-#: plugin.py:1056
-msgid "July"
-msgstr "Júl"
-
-#: plugin.py:1057
 msgid "August"
 msgstr "August"
 
-#: plugin.py:1058
-msgid "September"
-msgstr "September"
+msgid "Back"
+msgstr "Späť"
 
-#: plugin.py:1059
-msgid "October"
-msgstr "Október"
+msgid "Blue"
+msgstr "Studená modrá"
 
-#: plugin.py:1060
-msgid "November"
-msgstr "November"
-
-#: plugin.py:1061
-msgid "December"
-msgstr "December"
-
-#: plugin.py:1230 plugin.py:1263
-msgid "Event system is disabled. Enable it in settings."
-msgstr "Systém udalostí je vypnutý. Povoľte ho v nastaveniach."
-
-#: plugin.py:1254
-msgid "Error opening event dialog"
-msgstr "Chyba pri otváraní dialógového okna udalosti"
-
-#: plugin.py:1384
-msgid "Date People"
-msgstr "Stretnutie s ľuďmi"
-
-#: plugin.py:1387
-msgid "Sign"
-msgstr "Podpísať"
-
-#: plugin.py:1390
-msgid "Holiday"
-msgstr "Sviatok"
-
-#: plugin.py:1396
-msgid "Month People"
-msgstr "Mesiac Ľudia"
-
-#: plugin.py:1909 plugin.py:1924 plugin.py:1933
+#, fuzzy
 msgid "Calendar"
+msgstr "Plánovač kalendárov"
+
+msgid "Calendar Planner"
+msgstr "Plánovač kalendárov"
+
+msgid "Calendar Planner v.%s"
+msgstr "Plánovač kalendárov verzia %s"
+
+msgid "Calendar Planner | Ready"
+msgstr "Plánovač kalendárov | Pripravený"
+
+#, fuzzy
+msgid "Calendar Settings"
 msgstr "Kalendár"
 
-#: plugin.py:1925
+#, fuzzy
 msgid "Calendar with events and notifications"
 msgstr "Kalendár s udalosťami a upozorneniami"
 
-#: update_manager.py:24
+msgid "Cancel"
+msgstr "Zrušiť"
+
+msgid "Check for Updates"
+msgstr "Skontrolovať aktualizácie"
+
 msgid "Checking for updates..."
 msgstr "Kontrola aktualizácií..."
 
-#: update_manager.py:35
-msgid "Update check failed"
-msgstr "Kontrola aktualizácií zlyhala"
+msgid "Cleanup past events"
+msgstr "Upratovanie minulých udalostí"
 
-#: update_manager.py:37
+msgid "Clear ALL holiday entries from all date files?"
+msgstr "Vymazať VŠETKY záznamy o sviatkoch zo všetkých súborov s dátumami?"
+
+msgid "Clear Holiday Database"
+msgstr "Vymazať databázu dovoleniek"
+
+msgid "Close"
+msgstr "Zatvoriť"
+
+#, fuzzy
+msgid "Color days with holidays."
+msgstr "Zobraziť dnešné sviatky"
+
+msgid "Color for days with events."
+msgstr ""
+
+msgid "Color for holiday days."
+msgstr ""
+
 msgid "Could not check for updates. Check internet connection."
 msgstr "Nepodarilo sa skontrolovať aktualizácie. Skontrolujte internetové pripojenie."
 
-#: update_manager.py:42
-msgid "Update available!"
-msgstr "Aktualizácia k dispozícii!"
-
-#: update_manager.py:47
-msgid "Plugin is up to date"
-msgstr "Plugin je aktuálny"
-
-#: update_manager.py:49
-msgid "You have the latest version of Calendar."
-msgstr "Máte najnovšiu verziu Kalendára."
-
-#: update_manager.py:60
-#, python-format
 msgid "Could not check for updates: %s"
 msgstr "Nepodarilo sa skontrolovať aktualizácie: %s"
 
-#: update_manager.py:74
-msgid "Update cancelled"
-msgstr "Aktualizácia zrušená"
+msgid "Date"
+msgstr "Dátum"
 
-#: update_manager.py:76
-msgid ""
-"A new version is available!\n"
-"\n"
-"Update now?\n"
-"\n"
-"(Recommended to backup first)"
+msgid "Date People"
+msgstr "Stretnutie s ľuďmi"
+
+#, fuzzy
+msgid "Date People:"
+msgstr "Stretnutie s ľuďmi: "
+
+msgid "Date:"
+msgstr "Dátum:"
+
+msgid "Day +"
+msgstr "Deň +"
+
+msgid "Day -"
+msgstr "Deň -"
+
+msgid "Debug Settings"
 msgstr ""
-"Je k dispozícii nová verzia!\n"
-"\n"
-"Aktualizovať teraz?\n"
-"\n"
-"(Odporúča sa najskôr zálohovať)"
 
-#: update_manager.py:92
-msgid "Update successful!"
-msgstr "Aktualizácia úspešná!"
-
-#: update_manager.py:94
-#, python-format
-msgid ""
-"%s\n"
-"\n"
-"Restart Enigma2 now for changes to take effect."
+msgid "Debug and logging options"
 msgstr ""
-"%s\n"
-"\n"
-"Reštartujte Enigmu2, aby sa zmeny prejavili."
 
-#: update_manager.py:103
-msgid "Update failed"
-msgstr "Aktualizácia zlyhala"
+msgid "December"
+msgstr "December"
 
-#: update_manager.py:109
-msgid "Updating plugin... Please wait"
-msgstr "Aktualizácia pluginu... Čakajte prosím"
+msgid "Delete"
+msgstr "Odstrániť"
 
-#: update_manager.py:126
-msgid "Please restart Enigma2 manually."
-msgstr "Prosím, reštartujte Enigmu2 manuálne."
+msgid "Delete File"
+msgstr "Vymazať súbor"
 
-#: updater.py:158
+msgid "Description"
+msgstr "Popis"
+
+msgid "Description:"
+msgstr "Popis:"
+
+msgid "Edit"
+msgstr "Upraviť"
+
+msgid "Edit Date"
+msgstr "Upraviť dátum"
+
+msgid "Edit Date People"
+msgstr "Upraviť dátum Ľudia"
+
+msgid "Edit Description"
+msgstr "Upraviť popis"
+
+msgid "Edit Holiday"
+msgstr "Upraviť sviatok"
+
+msgid "Edit Month People"
+msgstr "Upraviť mesiac Ľudia"
+
+msgid "Edit Sign"
+msgstr "Upraviť označenie"
+
+msgid "Enable debug mode"
+msgstr ""
+
+msgid "Enable event management with date/time."
+msgstr ""
+
+msgid "Enable event system"
+msgstr ""
+
+msgid "Enable holiday coloring"
+msgstr ""
+
+msgid "Enable notifications"
+msgstr ""
+
+#, fuzzy
+msgid "Enter"
+msgstr "Zadajte "
+
+msgid "Error opening event dialog"
+msgstr "Chyba pri otváraní dialógového okna udalosti"
+
+msgid "Error saving data"
+msgstr "Chyba pri ukladaní údajov"
+
+msgid "Error: %s"
+msgstr "Chyba: %s"
+
+#, fuzzy
+msgid "Event"
+msgstr "Pridať udalosť"
+
+msgid "Event Settings"
+msgstr ""
+
+#, fuzzy
+msgid "Event color"
+msgstr "Udalosť"
+
+msgid "Event management system"
+msgstr ""
+
+msgid "Event system is disabled. Enable it in settings."
+msgstr "Systém udalostí je vypnutý. Povoľte ho v nastaveniach."
+
+msgid "Exit"
+msgstr "Ukončiť"
+
 msgid "Failed to create backup. Update cancelled."
 msgstr "Vytvorenie zálohy zlyhalo. Aktualizácia zrušená."
 
-#: updater.py:166
+msgid "February"
+msgstr "Február"
+
+msgid "File not found!"
+msgstr "Súbor sa nenašiel!"
+
+msgid "Files is Empty..."
+msgstr "Súbory sú prázdne..."
+
+msgid "Fri"
+msgstr "Pia"
+
+msgid "Green"
+msgstr "Zelená"
+
+msgid "Holiday"
+msgstr "Sviatok"
+
+#, fuzzy
+msgid "Holiday Settings"
+msgstr "Sviatok: "
+
+#, fuzzy
+msgid "Holiday color"
+msgstr "Sviatok: "
+
+msgid "Holiday display and coloring"
+msgstr ""
+
+#, fuzzy
+msgid "Holiday:"
+msgstr "Sviatok"
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Import All"
+msgstr "Importovať všetko"
+
+msgid "Import Holidays"
+msgstr "Dovoz sviatkov"
+
+msgid "January"
+msgstr "Január"
+
+msgid "July"
+msgstr "Júl"
+
+msgid "June"
+msgstr "Jún"
+
+msgid "Manage Events"
+msgstr "Správa udalostí"
+
+msgid "March"
+msgstr "Marec"
+
+msgid "May"
+msgstr "Máj"
+
+msgid "Mon"
+msgstr "Pon"
+
+msgid "Month +"
+msgstr "Mesiac +"
+
+msgid "Month -"
+msgstr "Mesiac -"
+
+msgid "Month People"
+msgstr "Mesiac Ľudia"
+
+#, fuzzy
+msgid "Month People:"
+msgstr "Ľudia mesiaca: "
+
+msgid "New Date"
+msgstr "Nový dátum"
+
+msgid "No file in database..."
+msgstr "Žiadny súbor v databáze..."
+
+msgid "No past events to remove"
+msgstr "Žiadne minulé udalosti na odstránenie"
+
+msgid "No sound"
+msgstr "Bez zvuku"
+
+#, fuzzy
+msgid "Notification sound type"
+msgstr "Tón upozornenia"
+
+#, fuzzy
+msgid "Notification tone"
+msgstr "Tón upozornenia"
+
+msgid "Notify"
+msgstr "Upozorniť"
+
+msgid "Notify:"
+msgstr "Upozorniť:"
+
+msgid "November"
+msgstr "November"
+
+msgid "October"
+msgstr "Október"
+
+msgid "Orange"
+msgstr "Svetlo oranžová"
+
+#, fuzzy
+msgid "Play a sound when event notification appears."
+msgstr "Kalendár s udalosťami a upozorneniami"
+
+#, fuzzy
+msgid "Play sound with notifications"
+msgstr "Kalendár s udalosťami a upozorneniami"
+
+msgid "Please restart Enigma2 manually."
+msgstr "Prosím, reštartujte Enigmu2 manuálne."
+
+msgid "Plugin is up to date"
+msgstr "Plugin je aktuálny"
+
+msgid "Red"
+msgstr "Červená"
+
+msgid "Remove"
+msgstr "Odstrániť"
+
+msgid "Remove Date"
+msgstr "Dátum odstránenia"
+
+msgid "Removed {0} past events"
+msgstr "Odstránené minulé udalosti ({0})"
+
+msgid "Repeat"
+msgstr "Opakovať"
+
+msgid "Repeat:"
+msgstr "Opakujte:"
+
+msgid "SCHEDULED EVENTS:"
+msgstr "PLÁNOVANÉ PODUJATIA:"
+
+msgid "Sat"
+msgstr "Sob"
+
+msgid "Save"
+msgstr "Uložiť"
+
+msgid "September"
+msgstr "September"
+
+msgid "Short beep"
+msgstr "Krátke pípnutie"
+
+msgid "Show 'H' marker on holiday days."
+msgstr ""
+
+msgid "Show Calendar in main information menu."
+msgstr ""
+
+msgid "Show Calendar in menu:"
+msgstr ""
+
+#, fuzzy
+msgid "Show Today's Holidays"
+msgstr "Zobraziť nadchádzajúce sviatky"
+
+msgid "Show Upcoming Holidays"
+msgstr "Zobraziť nadchádzajúce sviatky"
+
+msgid "Show debug messages in console/log."
+msgstr ""
+
+msgid "Show event indicators"
+msgstr ""
+
+#, fuzzy
+msgid "Show holiday indicators"
+msgstr "Zobraziť dnešné sviatky"
+
+msgid "Show markers on days with events."
+msgstr ""
+
+msgid "Show notifications for upcoming events."
+msgstr ""
+
+msgid "Sign"
+msgstr "Podpísať"
+
+#, fuzzy
+msgid "Sign:"
+msgstr "Prihlásenie: "
+
+msgid "Sun"
+msgstr "Ned"
+
+msgid "TODAY'S EVENTS:"
+msgstr "DNEŠNÉ UDALOSTI:"
+
+msgid "Thu"
+msgstr "Štv"
+
+msgid "Time"
+msgstr "Čas"
+
+msgid "Time:"
+msgstr "Čas:"
+
+msgid "Title"
+msgstr "Názov"
+
+msgid "Title and date are required!"
+msgstr "Názov a dátum sú povinné!"
+
+msgid "Title:"
+msgstr "Názov:"
+
+msgid "Tue"
+msgstr "Uto"
+
+msgid "Type of sound to play with notifications."
+msgstr ""
+
+msgid "Update available!"
+msgstr "Aktualizácia k dispozícii!"
+
+msgid "Update cancelled"
+msgstr "Aktualizácia zrušená"
+
+msgid "Update check error"
+msgstr "Chyba kontroly aktualizácií"
+
+msgid "Update check failed"
+msgstr "Kontrola aktualizácií zlyhala"
+
 msgid "Update completed successfully!"
 msgstr "Aktualizácia bola úspešne dokončená!"
 
-#: updater.py:170
-msgid "Update failed. Restored from backup."
-msgstr "Aktualizácia zlyhala. Obnovené zo zálohy."
+msgid "Update error: %s"
+msgstr "Chyba aktualizácie: %s"
 
-#: updater.py:172
+msgid "Update failed"
+msgstr "Aktualizácia zlyhala"
+
 msgid "Update failed and backup restore also failed!"
 msgstr "Aktualizácia zlyhala a obnovenie zálohy tiež zlyhalo!"
 
-#: updater.py:181
+msgid "Update failed. Restored from backup."
+msgstr "Aktualizácia zlyhala. Obnovené zo zálohy."
+
+msgid "Update successful!"
+msgstr "Aktualizácia úspešná!"
+
+msgid "Updating plugin... Please wait"
+msgstr "Aktualizácia pluginu... Čakajte prosím"
+
+msgid "Wed"
+msgstr "Str"
+
+msgid "White"
+msgstr "Biely"
+
+msgid "Yellow"
+msgstr "Žltá"
+
+msgid "You have the latest version of Calendar."
+msgstr "Máte najnovšiu verziu Kalendára."
+
+msgid "no"
+msgstr "nie"
+
+msgid "yes"
+msgstr "áno"
+
 #, python-format
-msgid "Update error: %s"
-msgstr "Chyba aktualizácie: %s"
+#~ msgid ""
+#~ "%s\n"
+#~ "\n"
+#~ "Restart Enigma2 now for changes to take effect."
+#~ msgstr ""
+#~ "%s\n"
+#~ "\n"
+#~ "Reštartujte Enigmu2, aby sa zmeny prejavili."
+
+#~ msgid ""
+#~ "A new version is available!\n"
+#~ "\n"
+#~ "Update now?\n"
+#~ "\n"
+#~ "(Recommended to backup first)"
+#~ msgstr ""
+#~ "Je k dispozícii nová verzia!\n"
+#~ "\n"
+#~ "Aktualizovať teraz?\n"
+#~ "\n"
+#~ "(Odporúča sa najskôr zálohovať)"
 
 #~ msgid "Cyan"
 #~ msgstr "Tyrkysový"
 
-#~ msgid "Purple"
-#~ msgstr "Svetlo fialová"
-
 #~ msgid "Magenta"
 #~ msgstr "Purpurová farba"
+
+#~ msgid "Purple"
+#~ msgstr "Svetlo fialová"
