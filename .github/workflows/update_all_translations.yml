@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       plugin_name:
-        description: 'Plugin name (e.g., Calendar, Vavoo, IPAudio)'
+        description: 'Plugin name Calendar'
         required: true
         default: 'Calendar'
 
