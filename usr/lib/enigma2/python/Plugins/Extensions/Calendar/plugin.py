@@ -202,19 +202,13 @@
 import datetime
 from time import localtime
 from os import remove, makedirs
-from os.path import exists, dirname, join, getmtime
+from os.path import exists, dirname
 
 from enigma import getDesktop
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
-
-try:
-    from Screens.Setup import setupDom as original_setupDom
-except ImportError:
-    # Fallback Python 2
-    from Screens.Setup import setupdom as original_setupDom
 
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 
@@ -229,22 +223,11 @@ from Components.config import (
     ConfigYesNo,
 )
 
-from Tools.Directories import (
-    fileExists,
-    resolveFilename,
-    SCOPE_PLUGINS,
-    fileReadXML
-)
 from enigma import eTimer
 from skin import parseColor
-import Screens.Setup
 
 from . import _, plugin_path, PLUGIN_VERSION
 from .events_view import EventsView
-
-# Performance Cache
-domSetups = {}
-setupModTimes = {}
 
 
 def init_calendar_config():
@@ -1568,8 +1551,8 @@ class Calendar(Screen):
                 # Skip today - it keeps green background
                 # usa is_today invece di day != today
                 cell_is_today = (cell_day == current_time[2] and
-                               self.year == current_time[0] and
-                               self.month == current_time[1])
+                                 self.year == current_time[0] and
+                                 self.month == current_time[1])
 
                 if not cell_is_today:
                     # Clear any selection background (blue)
@@ -1785,70 +1768,6 @@ class Calendar(Screen):
 
     def exit(self):
         self.close()
-
-
-def customSetupDom(setup=None, plugin=None):
-    """Version that supports setup.it.xml, setup.de.xml, etc."""
-    # Determine language
-    try:
-        lang = config.osd.language.value.split('_')[0]
-    except:
-        lang = "en"
-
-    # Locate plugin directory
-    if plugin:
-        plugin_dir = resolveFilename(SCOPE_PLUGINS, plugin)
-    else:
-        from Tools.Directories import SCOPE_SKIN
-        plugin_dir = resolveFilename(SCOPE_SKIN, "")
-
-    # List of XML files to try
-    xml_files = [
-        "setup." + lang + ".xml",  # setup.it.xml
-        "setup.xml"                # default
-    ]
-
-    setupFile = None
-    for xml_file in xml_files:
-        if plugin_dir:
-            test_path = join(plugin_dir, xml_file)
-            if fileExists(test_path):
-                setupFile = test_path
-                print("[Calendar] ✓ Using localized setup:", xml_file)
-                break
-
-    # If not found, fall back to the original
-    if not setupFile:
-        return original_setupDom(setup, plugin)
-
-    # Local cache
-    if not hasattr(customSetupDom, 'domSetups'):
-        customSetupDom.domSetups = {}
-        customSetupDom.setupModTimes = {}
-
-    try:
-        modTime = getmtime(setupFile)
-    except OSError:
-        return original_setupDom(setup, plugin)
-
-    # Check cache
-    if (setupFile in customSetupDom.domSetups and
-            setupFile in customSetupDom.setupModTimes and
-            customSetupDom.setupModTimes[setupFile] == modTime):
-        return customSetupDom.domSetups[setupFile]
-
-    # Read file
-    fileDom = fileReadXML(setupFile)
-    if fileDom:
-        customSetupDom.domSetups[setupFile] = fileDom
-        customSetupDom.setupModTimes[setupFile] = modTime
-        return fileDom
-
-    return original_setupDom(setup, plugin)
-
-
-Screens.Setup.setupDom = customSetupDom
-Screens.Setup.setupdom = customSetupDom
 
 
 class settingCalendar(Setup):
