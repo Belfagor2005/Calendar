@@ -31,6 +31,10 @@ msgstr "Aktivní:"
 msgid "Add"
 msgstr "Přidat"
 
+#, fuzzy
+msgid "Add Contact"
+msgstr "Přidat událost"
+
 msgid "Add Event"
 msgstr "Přidat událost"
 
@@ -43,11 +47,26 @@ msgstr "Duben"
 msgid "August"
 msgstr "Srpen"
 
+msgid "Auto-convert to vCard"
+msgstr ""
+
+msgid "Automatically convert legacy files to vCard format on first use"
+msgstr ""
+
 msgid "Back"
 msgstr "Zpět"
 
+msgid "Birthday (YYYY-MM-DD)"
+msgstr ""
+
 msgid "Blue"
 msgstr "Modrá"
+
+msgid "CONTACTS WITH BIRTHDAYS TODAY:"
+msgstr ""
+
+msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
+msgstr ""
 
 #, fuzzy
 msgid "Calendar"
@@ -73,17 +92,33 @@ msgstr "Kalendář s událostmi a oznámeními"
 msgid "Cancel"
 msgstr "Zrušit"
 
+#, fuzzy
+msgid "Cancelling..."
+msgstr "Zrušit"
+
+msgid "Cannot delete: Contact has no ID"
+msgstr ""
+
+msgid "Categories (comma separated)"
+msgstr ""
+
 msgid "Check for Updates"
 msgstr "Zkontrolovat aktualizace"
 
 msgid "Checking for updates..."
 msgstr "Kontrola aktualizací..."
 
+msgid "Choose between legacy text files or standard vCard format"
+msgstr ""
+
 msgid "Cleanup past events"
 msgstr "Úklid minulých událostí"
 
 msgid "Clear ALL holiday entries from all date files?"
 msgstr "Vymazat VŠECHNY záznamy o svátcích ze všech datových souborů?"
+
+msgid "Clear All"
+msgstr ""
 
 msgid "Clear Holiday Database"
 msgstr "Vymazat databázi dovolených"
@@ -92,13 +127,59 @@ msgid "Close"
 msgstr "Zavřít"
 
 #, fuzzy
-msgid "Color days with holidays."
+msgid "Color days with holidays"
 msgstr "Zobrazit dnešní svátky"
 
-msgid "Color for days with events."
+#, fuzzy
+msgid "Color for days with events"
+msgstr "Zobrazit dnešní svátky"
+
+#, fuzzy
+msgid "Color for holiday days"
+msgstr "Zobrazit dnešní svátky"
+
+msgid "Completed"
 msgstr ""
 
-msgid "Color for holiday days."
+#, fuzzy
+msgid "Contact '{0}' deleted successfully"
+msgstr "Aktualizace byla úspěšně dokončena!"
+
+msgid "Contacts: {0} (Search: '{1}')"
+msgstr ""
+
+msgid "Contacts: {0} ({1})"
+msgstr ""
+
+#, fuzzy
+msgid "Conversion completed successfully!"
+msgstr "Aktualizace byla úspěšně dokončena!"
+
+msgid "Convert all existing data to vCard format?"
+msgstr ""
+
+msgid "Convert to Legacy"
+msgstr ""
+
+msgid "Convert to legacy format"
+msgstr ""
+
+msgid "Convert to vCard"
+msgstr ""
+
+msgid "Convert to vCard format"
+msgstr ""
+
+msgid "Converted: {0} files, Errors: {1}"
+msgstr ""
+
+msgid "Converting to Legacy..."
+msgstr ""
+
+msgid "Converting to vCard..."
+msgstr ""
+
+msgid "Converting: {0} ({1}/{2})"
 msgstr ""
 
 msgid "Could not check for updates. Check internet connection."
@@ -106,6 +187,21 @@ msgstr "Nepodařilo se zkontrolovat aktualizace. Zkontrolujte připojení k inte
 
 msgid "Could not check for updates: %s"
 msgstr "Nepodařilo se zkontrolovat aktualizace: %s"
+
+msgid "Current format: {0}"
+msgstr ""
+
+msgid "Database Converter"
+msgstr ""
+
+msgid "Database Statistics"
+msgstr ""
+
+msgid "Database converted to vCard format"
+msgstr ""
+
+msgid "Database format"
+msgstr ""
 
 msgid "Date"
 msgstr "Datum"
@@ -126,12 +222,6 @@ msgstr "Nejlepší den"
 msgid "Day -"
 msgstr "Nejlepší den"
 
-msgid "Debug Settings"
-msgstr ""
-
-msgid "Debug and logging options"
-msgstr ""
-
 msgid "December"
 msgstr "Prosinec"
 
@@ -147,8 +237,15 @@ msgstr "Popis"
 msgid "Description:"
 msgstr "Popis:"
 
+msgid "E:{0}"
+msgstr ""
+
 msgid "Edit"
 msgstr "Upravit"
+
+#, fuzzy
+msgid "Edit Contact"
+msgstr "Editovat datum"
 
 msgid "Edit Date"
 msgstr "Editovat datum"
@@ -168,10 +265,17 @@ msgstr "Upravit měsíc Osoby"
 msgid "Edit Sign"
 msgstr "Upravit znamení"
 
+#, fuzzy
+msgid "Edit: {0}"
+msgstr "Upravit"
+
+msgid "Email"
+msgstr ""
+
 msgid "Enable debug mode"
 msgstr ""
 
-msgid "Enable event management with date/time."
+msgid "Enable event management with date/time"
 msgstr ""
 
 msgid "Enable event system"
@@ -187,8 +291,19 @@ msgstr ""
 msgid "Enter"
 msgstr "Zadejte "
 
+#, fuzzy
+msgid "Error deleting contact"
+msgstr "Chyba při ukládání dat"
+
+msgid "Error deleting contact '{0}'"
+msgstr ""
+
 msgid "Error opening event dialog"
 msgstr "Chyba při otevírání dialogového okna události"
+
+#, fuzzy
+msgid "Error saving contact"
+msgstr "Chyba při ukládání dat"
 
 msgid "Error saving data"
 msgstr "Chyba při ukládání dat"
@@ -197,33 +312,37 @@ msgid "Error: %s"
 msgstr "Chyba: %s"
 
 #, fuzzy
+msgid "Errors: {0}"
+msgstr "Chyba: %s"
+
+#, fuzzy
 msgid "Event"
 msgstr "Přidat událost"
-
-msgid "Event Settings"
-msgstr ""
 
 #, fuzzy
 msgid "Event color"
 msgstr "Událost"
 
-msgid "Event management system"
-msgstr ""
-
 msgid "Event system is disabled. Enable it in settings."
 msgstr "Systém událostí je vypnutý. Povolte ho v nastavení."
-
-msgid "Exit"
-msgstr "Odejít"
 
 msgid "Failed to create backup. Update cancelled."
 msgstr "Vytvoření zálohy se nezdařilo. Aktualizace zrušena."
 
+msgid "Failed to start import"
+msgstr ""
+
 msgid "February"
 msgstr "Únor"
 
+msgid "Field {0}/{1}: {2}"
+msgstr ""
+
 msgid "File not found!"
 msgstr "Soubor nenalezen!"
+
+msgid "File: {0}"
+msgstr ""
 
 msgid "Files is Empty..."
 msgstr "Soubory jsou prázdné..."
@@ -238,19 +357,15 @@ msgid "Holiday"
 msgstr "Svátek"
 
 #, fuzzy
-msgid "Holiday Settings"
-msgstr "Svátek: "
-
-#, fuzzy
 msgid "Holiday color"
 msgstr "Svátek: "
-
-msgid "Holiday display and coloring"
-msgstr ""
 
 #, fuzzy
 msgid "Holiday:"
 msgstr "Svátek"
+
+msgid "I:{0}"
+msgstr ""
 
 msgid "Import"
 msgstr "Import"
@@ -261,6 +376,36 @@ msgstr "Importovat vše"
 msgid "Import Holidays"
 msgstr "Dovoz svátků"
 
+msgid "Import completed - Sorting contacts..."
+msgstr ""
+
+#, fuzzy
+msgid "Import completed!"
+msgstr "Dovoz svátků"
+
+#, fuzzy
+msgid "Import error: {0}"
+msgstr "Chyba aktualizace: %s"
+
+msgid "Import vCard File"
+msgstr ""
+
+#, fuzzy
+msgid "Imported: {0}"
+msgstr "Import"
+
+msgid "Imported: {0} contacts"
+msgstr ""
+
+msgid "Importing vCard File"
+msgstr ""
+
+msgid "Initializing..."
+msgstr ""
+
+msgid "Invalid birthday format. Use YYYY-MM-DD"
+msgstr ""
+
 msgid "January"
 msgstr "Leden"
 
@@ -270,6 +415,25 @@ msgstr "Červenec"
 msgid "June"
 msgstr "Červen"
 
+msgid "Language: {0}"
+msgstr ""
+
+msgid "Legacy files: {0}"
+msgstr ""
+
+msgid "Legacy format (text files)"
+msgstr ""
+
+msgid "Legacy: {0}"
+msgstr ""
+
+msgid "Legacy: {0} files | vCard: {1} files"
+msgstr ""
+
+#, fuzzy
+msgid "Manage Contacts"
+msgstr "Spravovat události"
+
 msgid "Manage Events"
 msgstr "Spravovat události"
 
@@ -278,6 +442,9 @@ msgstr "Březen"
 
 msgid "May"
 msgstr "Květen"
+
+msgid "Modified: {0}"
+msgstr ""
 
 msgid "Mon"
 msgstr "Po"
@@ -295,17 +462,47 @@ msgstr "Měsíční lidé"
 msgid "Month People:"
 msgstr "Lidé měsíce: "
 
+msgid "Name"
+msgstr ""
+
+msgid "Name is required"
+msgstr ""
+
 msgid "New Date"
 msgstr "Nové datum"
 
+msgid "Next Field"
+msgstr ""
+
+msgid "No contact selected"
+msgstr ""
+
 msgid "No file in database..."
 msgstr "Žádný soubor v databázi..."
+
+msgid "No file selected"
+msgstr ""
+
+msgid "No legacy files found"
+msgstr ""
+
+msgid "No legacy files found to convert"
+msgstr ""
 
 msgid "No past events to remove"
 msgstr "Žádné minulé události k odstranění"
 
 msgid "No sound"
 msgstr "Žádný zvuk"
+
+msgid "No vCard files found"
+msgstr ""
+
+msgid "No vCard files found to convert"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
 
 #, fuzzy
 msgid "Notification sound type"
@@ -330,8 +527,14 @@ msgstr "Říjen"
 msgid "Orange"
 msgstr "Oranžová"
 
+msgid "Paths:"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
 #, fuzzy
-msgid "Play a sound when event notification appears."
+msgid "Play a sound when event notification appears"
 msgstr "Kalendář s událostmi a oznámeními"
 
 #, fuzzy
@@ -344,8 +547,26 @@ msgstr "Restartujte prosím Enigmu2 ručně."
 msgid "Plugin is up to date"
 msgstr "Plugin je aktuální"
 
+msgid "Press GREEN to import"
+msgstr ""
+
+msgid "Press TEXT to search"
+msgstr ""
+
+msgid "Progress: {0}%"
+msgstr ""
+
+msgid "Ready"
+msgstr ""
+
 msgid "Red"
 msgstr "Červená"
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Refreshed"
+msgstr ""
 
 msgid "Remove"
 msgstr "Odstranit"
@@ -362,6 +583,9 @@ msgstr "Opakovat"
 msgid "Repeat:"
 msgstr "Opakovat:"
 
+msgid "S:{0}"
+msgstr ""
+
 msgid "SCHEDULED EVENTS:"
 msgstr "PLÁNOVANÉ AKCE:"
 
@@ -371,19 +595,36 @@ msgstr "So"
 msgid "Save"
 msgstr "Uložit"
 
+#, fuzzy
+msgid "Search contacts"
+msgstr "Spravovat události"
+
+#, fuzzy
+msgid "Search:"
+msgstr "Březen"
+
+msgid "Select a file, not a folder"
+msgstr ""
+
+msgid "Select vCard file to import"
+msgstr ""
+
+msgid "Selected: {0}"
+msgstr ""
+
 msgid "September"
 msgstr "Září"
 
 msgid "Short beep"
 msgstr "Krátké pípnutí"
 
-msgid "Show 'H' marker on holiday days."
+msgid "Show 'H' marker on holiday days"
 msgstr ""
 
-msgid "Show Calendar in main information menu."
+msgid "Show Calendar in main information menu"
 msgstr ""
 
-msgid "Show Calendar in menu:"
+msgid "Show Calendar in menu"
 msgstr ""
 
 #, fuzzy
@@ -393,7 +634,7 @@ msgstr "Zobrazit nadcházející svátky"
 msgid "Show Upcoming Holidays"
 msgstr "Zobrazit nadcházející svátky"
 
-msgid "Show debug messages in console/log."
+msgid "Show debug messages in console/log"
 msgstr ""
 
 msgid "Show event indicators"
@@ -403,10 +644,10 @@ msgstr ""
 msgid "Show holiday indicators"
 msgstr "Zobrazit dnešní svátky"
 
-msgid "Show markers on days with events."
+msgid "Show markers on days with events"
 msgstr ""
 
-msgid "Show notifications for upcoming events."
+msgid "Show notifications for upcoming events"
 msgstr ""
 
 msgid "Sign"
@@ -416,11 +657,38 @@ msgstr "Znamení"
 msgid "Sign:"
 msgstr "Znamení: "
 
+msgid "Size: {0:.1f} MB"
+msgstr ""
+
+msgid "Skipped: {0}"
+msgstr ""
+
+msgid "Skipped: {0} (duplicates)"
+msgstr ""
+
+msgid "Sort"
+msgstr ""
+
+msgid "Sorted by birthday"
+msgstr ""
+
+msgid "Sorted by category"
+msgstr ""
+
+msgid "Sorted by name"
+msgstr ""
+
+msgid "Sorted by: Birthday"
+msgstr ""
+
+msgid "Sorted by: Category"
+msgstr ""
+
+msgid "Sorted by: Name"
+msgstr ""
+
 msgid "Sun"
 msgstr "Ne"
-
-msgid "TODAY'S EVENTS:"
-msgstr "DNEŠNÍ UDÁLOSTI:"
 
 msgid "Thu"
 msgstr "Čt"
@@ -440,11 +708,15 @@ msgstr "Název a datum jsou povinné!"
 msgid "Title:"
 msgstr "Název:"
 
+msgid "Total: {0}"
+msgstr ""
+
 msgid "Tue"
 msgstr "Út"
 
-msgid "Type of sound to play with notifications."
-msgstr ""
+#, fuzzy
+msgid "Type of sound to play with notifications"
+msgstr "Kalendář s událostmi a oznámeními"
 
 msgid "Update available!"
 msgstr ""
@@ -485,6 +757,15 @@ msgstr "Aktualizace úspěšná!"
 msgid "Updating plugin... Please wait"
 msgstr "Aktualizace pluginu... Čekejte prosím"
 
+msgid "Using legacy database format"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Waiting for thread to stop..."
+msgstr ""
+
 msgid "Wed"
 msgstr "St"
 
@@ -500,8 +781,23 @@ msgstr "Máte nejnovější verzi Kalendáře."
 msgid "no"
 msgstr "ne"
 
+msgid "vCard files: {0}"
+msgstr ""
+
+msgid "vCard format (standard)"
+msgstr ""
+
+msgid "vCard import feature not available: {0}"
+msgstr ""
+
+msgid "vCard: {0}"
+msgstr ""
+
 msgid "yes"
 msgstr "ano"
+
+msgid "{0}"
+msgstr ""
 
 #, python-format
 #~ msgid ""
@@ -529,8 +825,18 @@ msgstr "ano"
 #~ msgid "Cyan"
 #~ msgstr "Azurová"
 
+#~ msgid "Exit"
+#~ msgstr "Odejít"
+
+#, fuzzy
+#~ msgid "Holiday Settings"
+#~ msgstr "Svátek: "
+
 #~ msgid "Magenta"
 #~ msgstr "Magenta"
 
 #~ msgid "Purple"
 #~ msgstr "Fialová"
+
+#~ msgid "TODAY'S EVENTS:"
+#~ msgstr "DNEŠNÍ UDÁLOSTI:"

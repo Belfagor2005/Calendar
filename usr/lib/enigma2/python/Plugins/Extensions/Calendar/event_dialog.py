@@ -17,6 +17,9 @@
 #  • Configurable notification settings                   #
 #  • Multi-language support for date data                 #
 #  • Holiday import system with automatic coloring        #
+#  • vCard (.vcf) import/export system                    #
+#  • Contact management with birthdays                    #
+#  • Database format converter (Legacy ↔ vCard)           #
 #                                                         #
 #  EVENT SYSTEM:                                          #
 #  • Smart notifications (0-60 minutes before event)      #
@@ -45,6 +48,23 @@
 #  • Today's and upcoming holidays display                #
 #  • Integration with existing date files                 #
 #                                                         #
+#  VCARD & CONTACT SYSTEM:                                #
+#  • Import thousands of contacts from .vcf files         #
+#  • Multi-threaded import (no GUI freeze)                #
+#  • Contact management with birthdays                    #
+#  • Birthday tracking with age calculation               #
+#  • Contact sorting (name, birthday, category)           #
+#  • Search by name, phone, email, notes                  #
+#  • Duplicate detection during import                    #
+#  • Progress bar with cancel option                      #
+#                                                         #
+#  DATABASE MANAGEMENT:                                   #
+#  • Convert between Legacy and vCard formats             #
+#  • Creates automatic backups before conversion          #
+#  • Preserves all data during conversion                 #
+#  • Progress indicator during conversion                 #
+#  • Consistency checking between formats                 #
+#                                                         #
 #  DATE MANAGEMENT:                                       #
 #  • Create, edit, remove date information                #
 #  • Virtual keyboard for field editing                   #
@@ -58,6 +78,7 @@
 #  • Holiday days highlighted in orange (configurable)    #
 #  • Asterisk (*) indicator for days with events          #
 #  • "H" indicator for holiday days                       #
+#  • Birthday contacts display in description             #
 #  • Week numbers display                                 #
 #  • Smooth month navigation                              #
 #  • Day selection with blue background                   #
@@ -74,10 +95,12 @@
 #  • Holiday color selection                              #
 #  • Show holiday indicators toggle                       #
 #  • Menu integration option                              #
+#  • Database format selection (Legacy/vCard)             #
 #                                                         #
 #  KEY CONTROLS - MAIN CALENDAR:                          #
 #   OK          - Open main menu                          #
-#                 (New/Edit/Remove/Events/Holidays)       #
+#                 (New/Edit/Remove/Events/Holidays/       #
+#                  Contacts/Import vCard/Converter)       #
 #   RED         - Previous month                          #
 #   GREEN       - Next month                              #
 #   YELLOW      - Previous day                            #
@@ -104,6 +127,27 @@
 #   BLUE        - Back to calendar                        #
 #   UP/DOWN     - Navigate event list                     #
 #                                                         #
+#  KEY CONTROLS - CONTACTS VIEW:                          #
+#   OK          - Edit selected contact                   #
+#   RED         - Add new contact                         #
+#   GREEN       - Edit selected contact                   #
+#   YELLOW      - Delete selected contact                 #
+#   BLUE        - Toggle sort mode (Name/Birthday/Cat.)   #
+#   UP/DOWN     - Navigate contact list                   #
+#                                                         #
+#  KEY CONTROLS - VCARD IMPORTER:                         #
+#   OK          - Select file                             #
+#   RED         - Cancel                                  #
+#   GREEN       - Import selected file                    #
+#   YELLOW      - View file info (size, contacts)         #
+#   BLUE        - Refresh file list                       #
+#                                                         #
+#  KEY CONTROLS - DATABASE CONVERTER:                     #
+#   OK          - Show statistics                         #
+#   RED         - Cancel                                  #
+#   GREEN       - Convert to vCard format                 #
+#   BLUE        - Convert to legacy format                #
+#                                                         #
 #  FILE STRUCTURE:                                        #
 #  • plugin.py - Main plugin entry point                  #
 #  • event_manager.py - Event management core             #
@@ -111,8 +155,14 @@
 #  • events_view.py - Events browser                      #
 #  • notification_system.py - Notification display        #
 #  • holidays.py - Holiday import and management          #
+#  • vcard_importer.py - vCard import system              #
+#  • birthday_manager.py - Contact management             #
+#  • contacts_view.py - Contacts browser                  #
+#  • birthday_dialog.py - Contact add/edit dialog         #
+#  • database_converter.py - Format converter             #
 #  • events.json - Event database (JSON format)           #
 #  • base/ - Date information storage                     #
+#  • base/contacts/ - vCard contact storage               #
 #  • sounds/ - Audio files for notifications              #
 #  • buttons/ - Button images for UI                      #
 #                                                         #
@@ -134,6 +184,16 @@
 #    "enabled": true,                                     #
 #    "created": "2024-12-19 14:25:47"                     #
 #  }]                                                     #
+#                                                         #
+#  CONTACT STORAGE FORMAT (contacts/*.txt):               #
+#  [contact]                                              #
+#  FN: John Doe                                           #
+#  BDAY: 1990-05-15                                       #
+#  TEL: +391234567890                                     #
+#  EMAIL: john@example.com                                #
+#  CATEGORIES: Family, Friends                            #
+#  NOTE: Birthday reminder                                #
+#  CREATED: 2024-12-25 10:30:00                           #
 #                                                         #
 #  DATE FILE FORMAT (YYYYMMDD.txt):                       #
 #  [day]                                                  #
@@ -158,17 +218,19 @@
 #  • Python 2.7+ compatible                               #
 #  • Uses eTimer for background monitoring                #
 #  • JSON storage for events                              #
+#  • Threaded vCard import (no GUI freeze)                #
 #  • Virtual keyboard integration                         #
 #  • Auto-skin detection (HD/FHD)                         #
 #  • Configurable via setup.xml                           #
 #  • Uses eServiceReference for audio playback            #
 #  • Holiday cache system for fast rendering              #
-#  • File-based holiday storage (no database)             #
+#  • File-based storage (no database)                     #
 #                                                         #
 #  PERFORMANCE:                                           #
 #  • Efficient event checking algorithm                   #
 #  • Skipped checks for past non-recurring events         #
 #  • Holiday cache: 1 file read per month                 #
+#  • Threaded import for large vCard files                #
 #  • Minimal memory usage                                 #
 #  • Fast loading of date information                     #
 #                                                         #
@@ -176,6 +238,7 @@
 #  • Enable debug logs: check enigma2.log                 #
 #  • Filter: grep EventManager /tmp/enigma2.log           #
 #  • Holiday debug: grep Holidays /tmp/enigma2.log        #
+#  • vCard debug: grep VCardImporter /tmp/enigma2.log     #
 #  • Event check interval: 30 seconds                     #
 #  • Notification window: event time ± 5 minutes          #
 #  • Audio debug: check play_notification_sound() calls   #
@@ -184,6 +247,7 @@
 #  • Original Calendar plugin: Sirius0103                 #
 #  • Event system & modifications: Lululla                #
 #  • Holiday system & enhancements: Custom implementation #
+#  • vCard system & database converter: Lululla           #
 #  • Notification system: Custom implementation           #
 #  • Audio system: Enigma2 eServiceReference integration  #
 #  • Testing & feedback: Enigma2 community                #
@@ -193,12 +257,14 @@
 #  • v1.1 - Complete event system added                   #
 #  • v1.2 - Holiday import and coloring system            #
 #  • v1.3 - Rewrite complete code . screen and source..   #
+#  • v1.4 - minor fix for update and timers py2           #
+#  • v1.5 - vCard import/export & contact management      #
 #                                                         #
-#  Last Updated: 2025-12-21                               #
-#  Status: Stable with event & holiday system             #
+#  Last Updated: 2025-12-25                               #
+#  Status: Stable with all systems integrated             #
 ###########################################################
 """
-
+from __future__ import print_function
 from Screens.Screen import Screen
 from skin import parseColor
 from Screens.VirtualKeyBoard import VirtualKeyBoard
@@ -217,25 +283,25 @@ class EventDialog(Screen):
     if (getDesktop(0).size().width() >= 1920):
         skin = """
         <screen name="EventDialog" position="center,center" size="1000,700" title="Event Management" flags="wfNoBorder">
-            <widget name="title_label" position="20,20" size="960,40" font="Regular;32" />
+            <widget name="title_label" position="20,20" size="960,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="title_value" position="20,70" size="960,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="date_label" position="20,140" size="300,40" font="Regular;32" />
+            <widget name="date_label" position="20,140" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="date_value" position="20,190" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="time_label" position="340,140" size="300,40" font="Regular;32" />
+            <widget name="time_label" position="340,140" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="time_value" position="340,190" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="repeat_label" position="660,140" size="300,40" font="Regular;32" />
+            <widget name="repeat_label" position="660,140" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="repeat_value" position="660,190" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="notify_label" position="20,260" size="300,40" font="Regular;32" />
+            <widget name="notify_label" position="20,260" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="notify_value" position="20,310" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="enabled_label" position="340,260" size="300,40" font="Regular;32" />
+            <widget name="enabled_label" position="340,260" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="enabled_value" position="340,310" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="description_label" position="20,380" size="960,40" font="Regular;32" />
+            <widget name="description_label" position="20,380" size="960,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="description_value" position="20,430" size="960,200" font="Regular;28" backgroundColor="#00808080" />
 
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="50,690" size="230,10" alphatest="blend" />
@@ -248,25 +314,25 @@ class EventDialog(Screen):
     else:
         skin = """
         <screen name="EventDialog" position="center,center" size="800,600" title="Event Management" flags="wfNoBorder">
-            <widget name="title_label" position="20,20" size="760,30" font="Regular;24" />
+            <widget name="title_label" position="20,20" size="760,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="title_value" position="20,55" size="760,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="date_label" position="20,110" size="240,30" font="Regular;24" />
+            <widget name="date_label" position="20,110" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="date_value" position="20,145" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="time_label" position="280,110" size="240,30" font="Regular;24" />
+            <widget name="time_label" position="280,110" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="time_value" position="280,145" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="repeat_label" position="540,110" size="240,30" font="Regular;24" />
+            <widget name="repeat_label" position="540,110" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="repeat_value" position="540,145" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="notify_label" position="20,200" size="240,30" font="Regular;24" />
+            <widget name="notify_label" position="20,200" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="notify_value" position="20,235" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="enabled_label" position="280,200" size="240,30" font="Regular;24" />
+            <widget name="enabled_label" position="280,200" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="enabled_value" position="280,235" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="description_label" position="20,290" size="760,30" font="Regular;24" />
+            <widget name="description_label" position="20,290" size="760,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="description_value" position="20,325" size="760,200" font="Regular;20" backgroundColor="#00808080" />
 
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="45,586" size="200,10" alphatest="blend" />

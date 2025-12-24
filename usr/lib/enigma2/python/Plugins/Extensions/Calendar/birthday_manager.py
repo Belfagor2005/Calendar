@@ -265,210 +265,240 @@
 ###########################################################
 """
 from __future__ import print_function
-from Components.ActionMap import ActionMap
-from Components.MenuList import MenuList
-from Components.Label import Label
-from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
-from enigma import getDesktop
-
-from . import _
+import time
+from os import makedirs, listdir, remove
+from datetime import datetime
+from os.path import exists, join
 
 
-class EventsView(Screen):
-    """View to display and manage events"""
+class BirthdayManager:
+    """Manages contacts and birthdays in vCard-like format"""
 
-    if (getDesktop(0).size().width() >= 1920):
-        skin = """
-        <screen name="EventsView" position="center,center" size="1200,800" title="Events View" flags="wfNoBorder">
-            <widget name="date_label" position="20,20" size="1160,50" font="Regular;36" halign="center" valign="center" />
-            <widget name="events_list" position="20,90" size="1160,500" itemHeight="50" font="Regular;30" scrollbarMode="showNever" />
-            <widget name="event_details" position="20,594" size="1160,121" font="Regular;24" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="50,768" size="230,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="364,769" size="230,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="666,770" size="230,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="944,770" size="230,10" alphatest="blend" />
-            <widget name="key_red" position="50,725" size="230,40" font="Regular;28" halign="center" valign="center" />
-            <widget name="key_green" position="365,725" size="230,40" font="Regular;28" halign="center" valign="center" />
-            <widget name="key_yellow" position="665,725" size="230,40" font="Regular;28" halign="center" valign="center" />
-            <widget name="key_blue" position="944,725" size="230,40" font="Regular;28" halign="center" valign="center" />
-        </screen>"""
-    else:
-        skin = """
-        <screen name="EventsView" position="center,center" size="800,600" title="Events View" flags="wfNoBorder">
-            <widget name="date_label" position="20,20" size="760,35" font="Regular;24" halign="center" valign="center" />
-            <widget name="events_list" position="20,70" size="760,350" itemHeight="35" font="Regular;20" scrollbarMode="showNever" />
-            <widget name="event_details" position="20,425" size="760,110" font="Regular;18" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="35,571" size="150,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="213,572" size="150,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="398,572" size="150,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="591,572" size="150,10" alphatest="blend" />
-            <widget name="key_red" position="35,545" size="150,25" font="Regular;20" halign="center" valign="center" />
-            <widget name="key_green" position="215,545" size="150,25" font="Regular;20" halign="center" valign="center" />
-            <widget name="key_yellow" position="400,545" size="150,25" font="Regular;20" halign="center" valign="center" />
-            <widget name="key_blue" position="595,545" size="150,25" font="Regular;20" halign="center" valign="center" />
-        </screen>"""
+    def __init__(self, plugin_path):
+        self.plugin_path = plugin_path
+        self.contacts_path = join(plugin_path, "base", "contacts")
+        self.contacts = []
+        self._ensure_directories()
+        self.load_all_contacts()
 
-    def __init__(self, session, event_manager, date=None):
-        Screen.__init__(self, session)
-        self.event_manager = event_manager
-        self.date = date
-        self.current_events = []
+    def _ensure_directories(self):
+        """Create necessary directories"""
+        if not exists(self.contacts_path):
+            makedirs(self.contacts_path)
 
-        self["date_label"] = Label("")
-        self["events_list"] = MenuList([])
-        self["event_details"] = Label("")
+    def sort_contacts_by_name(self):
+        """Sort contacts alphabetically by FN (Formatted Name)"""
+        self.contacts.sort(key=lambda x: x.get('FN', '').lower())
 
-        self["key_red"] = Label(_("Add"))
-        self["key_green"] = Label(_("Edit"))
-        self["key_yellow"] = Label(_("Remove"))
-        self["key_blue"] = Label(_("Back"))
+    def sort_contacts_by_birthday(self):
+        """Sort contacts by birthday (month/day)"""
+        def get_birthday_sort_key(contact):
+            bday = contact.get('BDAY', '')
+            if bday:
+                try:
+                    # Extract month and day for sorting
+                    from datetime import datetime
+                    bday_date = datetime.strptime(bday, "%Y-%m-%d")
+                    return (bday_date.month, bday_date.day, contact.get('FN', '').lower())
+                except:
+                    return (13, 32, contact.get('FN', '').lower())  # Invalid dates at end
+            else:
+                return (13, 32, contact.get('FN', '').lower())  # No birthday at end
 
-        self["actions"] = ActionMap(
-            [
-                "CalendarActions",
-            ],
-            {
-                "cancel": self.close,
-                "ok": self.edit_event,
-                "red": self.add_event,
-                "green": self.edit_event,
-                "yellow": self.delete_event,
-                "blue": self.close,
-                "up": self.up,
-                "down": self.down,
-            }, -1
-        )
+        self.contacts.sort(key=get_birthday_sort_key)
 
-        self.onLayoutFinish.append(self.load_events)
+    def sort_contacts_by_category(self):
+        """Sort contacts by category"""
+        self.contacts.sort(key=lambda x: x.get('CATEGORIES', '').lower())
 
-    def load_events(self):
-        """Load events for the current date"""
-        if self.date:
-            date_str = "{0}-{1:02d}-{2:02d}".format(
-                self.date.year,
-                self.date.month,
-                self.date.day
-            )
-            self["date_label"].setText("Events for {0}".format(date_str))
-            self.current_events = self.event_manager.get_events_for_date(date_str)
+    def search_and_sort(self, search_term, sort_by='name'):
+        """
+        Search and sort contacts
+
+        Args:
+            search_term: Text to search for
+            sort_by: 'name', 'birthday', or 'category'
+
+        Returns:
+            Sorted list of matching contacts
+        """
+        results = self.search_contacts(search_term)
+
+        if sort_by == 'name':
+            results.sort(key=lambda x: x.get('FN', '').lower())
+        elif sort_by == 'birthday':
+            results.sort(key=lambda x: (
+                x.get('BDAY', '9999-99-99'),  # No birthday last
+                x.get('FN', '').lower()
+            ))
+        elif sort_by == 'category':
+            results.sort(key=lambda x: x.get('CATEGORIES', '').lower())
+
+        return results
+
+    def load_all_contacts(self):
+        """Load all contacts from directory"""
+        self.contacts = []
+
+        if not exists(self.contacts_path):
+            return
+
+        for filename in listdir(self.contacts_path):
+            if filename.endswith(".txt"):
+                contact_id = filename[:-4]  # Remove .txt
+                contact = self.load_contact(contact_id)
+                if contact:
+                    self.contacts.append(contact)
+
+        # AUTO-SORT contacts by name when loading
+        self.sort_contacts_by_name()
+
+    def load_contact(self, contact_id):
+        """Load single contact from file"""
+        filepath = join(self.contacts_path, contact_id + ".txt")
+
+        if not exists(filepath):
+            return None
+
+        contact = {
+            'id': contact_id,
+            'FN': '',           # Formatted Name
+            'BDAY': '',         # Birthday (YYYY-MM-DD)
+            'TEL': '',          # Telephone
+            'EMAIL': '',        # Email
+            'ADR': '',          # Address
+            'ORG': '',          # Organization
+            'TITLE': '',        # Title/Job
+            'CATEGORIES': '',   # Tags (Family,Work,Friend)
+            'NOTE': '',         # Notes
+            'URL': '',          # Website
+            'created': ''
+        }
+
+        try:
+            with open(filepath, 'r') as f:
+                lines = f.readlines()
+
+            current_section = None
+            for line in lines:
+                line = line.strip()
+                if line == "[contact]":
+                    current_section = "contact"
+                elif current_section == "contact" and ":" in line:
+                    key, value = line.split(":", 1)
+                    key = key.strip()
+                    if key in contact:
+                        contact[key] = value.strip()
+
+            return contact
+
+        except Exception as e:
+            print("[BirthdayManager] Error loading contact {0}: {1}".format(contact_id, str(e)))
+            return None
+
+    def save_contact(self, contact_data):
+        """Save contact to file"""
+        if 'id' in contact_data:
+            contact_id = contact_data['id']
         else:
-            self["date_label"].setText("Upcoming events (7 days)")
-            upcoming = self.event_manager.get_upcoming_events(7)
-            self.current_events = [event for _, event in upcoming]
+            # Generate new ID
+            contact_id = str(int(time.time() * 1000))
+            contact_data['id'] = contact_id
 
-        # Prepare list for display
-        event_list = []
-        for event in self.current_events:
-            time_str = event.time if event.time else "00:00"
-            repeat_str = {
-                "none": "",
-                "daily": " [D]",
-                "weekly": " [W]",
-                "monthly": " [M]",
-                "yearly": " [Y]"
-            }.get(event.repeat, "")
+        filepath = join(self.contacts_path, contact_id + ".txt")
 
-            status = "✓" if event.enabled else "✗"
-            event_list.append("{0} {1} - {2}{3}".format(status, time_str, event.title, repeat_str))
+        try:
+            # Format contact file
+            content = "[contact]\n"
+            for key in ['FN', 'BDAY', 'TEL', 'EMAIL', 'ADR',
+                        'ORG', 'TITLE', 'CATEGORIES', 'NOTE', 'URL']:
+                value = contact_data.get(key, '')
+                if value:
+                    content += "{0}: {1}\n".format(key, value)
 
-        self["events_list"].setList(event_list)
+            # Add creation date if new contact
+            if 'created' not in contact_data or not contact_data['created']:
+                contact_data['created'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # Update details
-        self.update_details()
+            content += "CREATED: {0}\n".format(contact_data.get('created', ''))
 
-    def update_details(self):
-        """Update details of the selected event"""
-        index = self["events_list"].getSelectedIndex()
+            # Save to file
+            with open(filepath, 'w') as f:
+                f.write(content)
 
-        if 0 <= index < len(self.current_events):
-            event = self.current_events[index]
-            details = []
+            # Reload contacts
+            self.load_all_contacts()
+            return contact_id
 
-            if event.description:
-                details.append(event.description[:100])
+        except Exception as e:
+            print("[BirthdayManager] Error saving contact: {0}".format(str(e)))
+            return None
 
-            if event.notify_before > 0:
-                details.append("Notify: {0} min before".format(event.notify_before))
+    def delete_contact(self, contact_id):
+        """Delete contact"""
+        filepath = join(self.contacts_path, contact_id + ".txt")
 
-            if event.repeat != "none":
-                repeat_text = {
-                    "daily": "Daily",
-                    "weekly": "Weekly",
-                    "monthly": "Monthly",
-                    "yearly": "Yearly"
-                }.get(event.repeat, "")
-                details.append("Repeat: {0}".format(repeat_text))
+        if exists(filepath):
+            try:
+                remove(filepath)
+                self.load_all_contacts()
+                return True
+            except Exception as e:
+                print("[BirthdayManager] Error deleting contact: {0}".format(str(e)))
 
-            self["event_details"].setText(" | ".join(details))
-        else:
-            self["event_details"].setText("")
+        return False
 
-    def up(self):
-        """Move selection up"""
-        self["events_list"].up()
-        self.update_details()
+    def get_contacts_for_date(self, date_str):
+        """Get contacts with birthdays on specific date"""
+        try:
+            # Parse date string (format: YYYY-MM-DD)
+            target_date = datetime.strptime(date_str, "%Y-%m-%d")
 
-    def down(self):
-        """Move selection down"""
-        self["events_list"].down()
-        self.update_details()
+            results = []
+            for contact in self.contacts:
+                bday = contact.get('BDAY', '')
+                if not bday:
+                    continue
 
-    def add_event(self):
-        """Add new event"""
-        if self.date:
-            from .event_dialog import EventDialog
-            self.session.openWithCallback(
-                self.event_added_callback,
-                EventDialog,
-                self.event_manager,
-                date="{0}-{1:02d}-{2:02d}".format(self.date.year, self.date.month, self.date.day)
-            )
+                try:
+                    # Check if birthday matches (ignore year)
+                    bday_date = datetime.strptime(bday, "%Y-%m-%d")
+                    if bday_date.month == target_date.month and bday_date.day == target_date.day:
+                        results.append(contact)
+                except ValueError:
+                    # Invalid date format
+                    continue
 
-    def edit_event(self):
-        """Edit selected event"""
-        index = self["events_list"].getSelectedIndex()
-        if 0 <= index < len(self.current_events):
-            from .event_dialog import EventDialog
-            self.session.openWithCallback(
-                self.event_updated_callback,
-                EventDialog,
-                self.event_manager,
-                event=self.current_events[index]
-            )
+            return results
+        except Exception as e:
+            print("[BirthdayManager] Error getting contacts for date: {}".format(e))
+            return []
 
-    def delete_event(self):
-        """Delete selected event"""
-        index = self["events_list"].getSelectedIndex()
-        if 0 <= index < len(self.current_events):
-            event = self.current_events[index]
+    def get_contacts_by_category(self, category):
+        """Get contacts by category/tag"""
+        results = []
+        category_lower = category.lower()
 
-            self.session.openWithCallback(
-                lambda result: self.confirm_delete(event.id, result),
-                MessageBox,
-                "Delete event '{0}'?".format(event.title),
-                MessageBox.TYPE_YESNO
-            )
+        for contact in self.contacts:
+            categories = contact.get('CATEGORIES', '').lower()
+            if category_lower in categories:
+                results.append(contact)
 
-    def confirm_delete(self, event_id, result=None):
-        """Confirm event deletion"""
-        if result:
-            self.event_manager.delete_event(event_id)
-            self.load_events()
-            self.close(True)
+        return results
 
-    def event_added_callback(self, result=None):
-        """Callback after adding event"""
-        if result:
-            self.load_events()
-            self.close(True)
+    def search_contacts(self, search_term):
+        """Search contacts by name, phone, email, or note"""
+        results = []
+        search_term = search_term.lower()
 
-    def event_updated_callback(self, result=None):
-        """Callback after editing event"""
-        if result:
-            self.load_events()
-            self.close(True)
+        for contact in self.contacts:
+            # Search in various fields
+            search_fields = ['FN', 'TEL', 'EMAIL', 'NOTE', 'CATEGORIES', 'ORG', 'TITLE']
 
-    def close(self, result=None):
-        """Close the screen"""
-        Screen.close(self, result)
+            for field in search_fields:
+                field_value = contact.get(field, '').lower()
+                if search_term in field_value:
+                    results.append(contact)
+                    break
+
+        return results

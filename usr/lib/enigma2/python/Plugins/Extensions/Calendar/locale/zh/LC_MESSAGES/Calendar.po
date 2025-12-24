@@ -29,6 +29,9 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+msgid "Add Contact"
+msgstr ""
+
 msgid "Add Event"
 msgstr ""
 
@@ -41,10 +44,25 @@ msgstr "四月"
 msgid "August"
 msgstr "八月"
 
+msgid "Auto-convert to vCard"
+msgstr ""
+
+msgid "Automatically convert legacy files to vCard format on first use"
+msgstr ""
+
 msgid "Back"
 msgstr ""
 
+msgid "Birthday (YYYY-MM-DD)"
+msgstr ""
+
 msgid "Blue"
+msgstr ""
+
+msgid "CONTACTS WITH BIRTHDAYS TODAY:"
+msgstr ""
+
+msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
 msgstr ""
 
 #, fuzzy
@@ -71,10 +89,22 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+msgid "Cancelling..."
+msgstr ""
+
+msgid "Cannot delete: Contact has no ID"
+msgstr ""
+
+msgid "Categories (comma separated)"
+msgstr ""
+
 msgid "Check for Updates"
 msgstr ""
 
 msgid "Checking for updates..."
+msgstr ""
+
+msgid "Choose between legacy text files or standard vCard format"
 msgstr ""
 
 msgid "Cleanup past events"
@@ -83,25 +113,85 @@ msgstr ""
 msgid "Clear ALL holiday entries from all date files?"
 msgstr ""
 
+msgid "Clear All"
+msgstr ""
+
 msgid "Clear Holiday Database"
 msgstr ""
 
 msgid "Close"
 msgstr "关闭"
 
-msgid "Color days with holidays."
+msgid "Color days with holidays"
 msgstr ""
 
-msgid "Color for days with events."
+msgid "Color for days with events"
 msgstr ""
 
-msgid "Color for holiday days."
+msgid "Color for holiday days"
+msgstr ""
+
+msgid "Completed"
+msgstr ""
+
+msgid "Contact '{0}' deleted successfully"
+msgstr ""
+
+msgid "Contacts: {0} (Search: '{1}')"
+msgstr ""
+
+msgid "Contacts: {0} ({1})"
+msgstr ""
+
+msgid "Conversion completed successfully!"
+msgstr ""
+
+msgid "Convert all existing data to vCard format?"
+msgstr ""
+
+msgid "Convert to Legacy"
+msgstr ""
+
+msgid "Convert to legacy format"
+msgstr ""
+
+msgid "Convert to vCard"
+msgstr ""
+
+msgid "Convert to vCard format"
+msgstr ""
+
+msgid "Converted: {0} files, Errors: {1}"
+msgstr ""
+
+msgid "Converting to Legacy..."
+msgstr ""
+
+msgid "Converting to vCard..."
+msgstr ""
+
+msgid "Converting: {0} ({1}/{2})"
 msgstr ""
 
 msgid "Could not check for updates. Check internet connection."
 msgstr ""
 
 msgid "Could not check for updates: %s"
+msgstr ""
+
+msgid "Current format: {0}"
+msgstr ""
+
+msgid "Database Converter"
+msgstr ""
+
+msgid "Database Statistics"
+msgstr ""
+
+msgid "Database converted to vCard format"
+msgstr ""
+
+msgid "Database format"
 msgstr ""
 
 msgid "Date"
@@ -122,12 +212,6 @@ msgstr "天 +"
 msgid "Day -"
 msgstr "天 -"
 
-msgid "Debug Settings"
-msgstr ""
-
-msgid "Debug and logging options"
-msgstr ""
-
 msgid "December"
 msgstr "十二月"
 
@@ -143,7 +227,13 @@ msgstr ""
 msgid "Description:"
 msgstr ""
 
+msgid "E:{0}"
+msgstr ""
+
 msgid "Edit"
+msgstr ""
+
+msgid "Edit Contact"
 msgstr ""
 
 msgid "Edit Date"
@@ -164,10 +254,16 @@ msgstr ""
 msgid "Edit Sign"
 msgstr ""
 
+msgid "Edit: {0}"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
 msgid "Enable debug mode"
 msgstr ""
 
-msgid "Enable event management with date/time."
+msgid "Enable event management with date/time"
 msgstr ""
 
 msgid "Enable event system"
@@ -182,7 +278,16 @@ msgstr ""
 msgid "Enter"
 msgstr ""
 
+msgid "Error deleting contact"
+msgstr ""
+
+msgid "Error deleting contact '{0}'"
+msgstr ""
+
 msgid "Error opening event dialog"
+msgstr ""
+
+msgid "Error saving contact"
 msgstr ""
 
 msgid "Error saving data"
@@ -191,31 +296,34 @@ msgstr ""
 msgid "Error: %s"
 msgstr ""
 
-msgid "Event"
+msgid "Errors: {0}"
 msgstr ""
 
-msgid "Event Settings"
+msgid "Event"
 msgstr ""
 
 msgid "Event color"
 msgstr ""
 
-msgid "Event management system"
-msgstr ""
-
 msgid "Event system is disabled. Enable it in settings."
-msgstr ""
-
-msgid "Exit"
 msgstr ""
 
 msgid "Failed to create backup. Update cancelled."
 msgstr ""
 
+msgid "Failed to start import"
+msgstr ""
+
 msgid "February"
 msgstr "二月"
 
+msgid "Field {0}/{1}: {2}"
+msgstr ""
+
 msgid "File not found!"
+msgstr ""
+
+msgid "File: {0}"
 msgstr ""
 
 msgid "Files is Empty..."
@@ -230,16 +338,13 @@ msgstr ""
 msgid "Holiday"
 msgstr ""
 
-msgid "Holiday Settings"
-msgstr ""
-
 msgid "Holiday color"
 msgstr ""
 
-msgid "Holiday display and coloring"
+msgid "Holiday:"
 msgstr ""
 
-msgid "Holiday:"
+msgid "I:{0}"
 msgstr ""
 
 msgid "Import"
@@ -251,6 +356,33 @@ msgstr ""
 msgid "Import Holidays"
 msgstr ""
 
+msgid "Import completed - Sorting contacts..."
+msgstr ""
+
+msgid "Import completed!"
+msgstr ""
+
+msgid "Import error: {0}"
+msgstr ""
+
+msgid "Import vCard File"
+msgstr ""
+
+msgid "Imported: {0}"
+msgstr ""
+
+msgid "Imported: {0} contacts"
+msgstr ""
+
+msgid "Importing vCard File"
+msgstr ""
+
+msgid "Initializing..."
+msgstr ""
+
+msgid "Invalid birthday format. Use YYYY-MM-DD"
+msgstr ""
+
 msgid "January"
 msgstr "一月"
 
@@ -260,6 +392,24 @@ msgstr "七月"
 msgid "June"
 msgstr "六月"
 
+msgid "Language: {0}"
+msgstr ""
+
+msgid "Legacy files: {0}"
+msgstr ""
+
+msgid "Legacy format (text files)"
+msgstr ""
+
+msgid "Legacy: {0}"
+msgstr ""
+
+msgid "Legacy: {0} files | vCard: {1} files"
+msgstr ""
+
+msgid "Manage Contacts"
+msgstr ""
+
 msgid "Manage Events"
 msgstr ""
 
@@ -268,6 +418,9 @@ msgstr "三月"
 
 msgid "May"
 msgstr "五月"
+
+msgid "Modified: {0}"
+msgstr ""
 
 msgid "Mon"
 msgstr "周一"
@@ -286,16 +439,46 @@ msgstr "月份 + "
 msgid "Month People:"
 msgstr "月份 + "
 
+msgid "Name"
+msgstr ""
+
+msgid "Name is required"
+msgstr ""
+
 msgid "New Date"
+msgstr ""
+
+msgid "Next Field"
+msgstr ""
+
+msgid "No contact selected"
 msgstr ""
 
 msgid "No file in database..."
 msgstr "数据库中没有文件..."
 
+msgid "No file selected"
+msgstr ""
+
+msgid "No legacy files found"
+msgstr ""
+
+msgid "No legacy files found to convert"
+msgstr ""
+
 msgid "No past events to remove"
 msgstr ""
 
 msgid "No sound"
+msgstr ""
+
+msgid "No vCard files found"
+msgstr ""
+
+msgid "No vCard files found to convert"
+msgstr ""
+
+msgid "Notes"
 msgstr ""
 
 msgid "Notification sound type"
@@ -319,7 +502,13 @@ msgstr "十月"
 msgid "Orange"
 msgstr ""
 
-msgid "Play a sound when event notification appears."
+msgid "Paths:"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Play a sound when event notification appears"
 msgstr ""
 
 msgid "Play sound with notifications"
@@ -331,9 +520,27 @@ msgstr ""
 msgid "Plugin is up to date"
 msgstr ""
 
+msgid "Press GREEN to import"
+msgstr ""
+
+msgid "Press TEXT to search"
+msgstr ""
+
+msgid "Progress: {0}%"
+msgstr ""
+
+msgid "Ready"
+msgstr ""
+
 #, fuzzy
 msgid "Red"
 msgstr "星期三"
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Refreshed"
+msgstr ""
 
 msgid "Remove"
 msgstr ""
@@ -350,6 +557,9 @@ msgstr ""
 msgid "Repeat:"
 msgstr ""
 
+msgid "S:{0}"
+msgstr ""
+
 msgid "SCHEDULED EVENTS:"
 msgstr ""
 
@@ -359,21 +569,37 @@ msgstr "星期六"
 msgid "Save"
 msgstr "保存"
 
+msgid "Search contacts"
+msgstr ""
+
+#, fuzzy
+msgid "Search:"
+msgstr "三月"
+
+msgid "Select a file, not a folder"
+msgstr ""
+
+msgid "Select vCard file to import"
+msgstr ""
+
+msgid "Selected: {0}"
+msgstr ""
+
 msgid "September"
 msgstr "九月"
 
 msgid "Short beep"
 msgstr ""
 
-msgid "Show 'H' marker on holiday days."
+msgid "Show 'H' marker on holiday days"
 msgstr ""
 
 #, fuzzy
-msgid "Show Calendar in main information menu."
+msgid "Show Calendar in main information menu"
 msgstr "在菜单信息中显示日历："
 
 #, fuzzy
-msgid "Show Calendar in menu:"
+msgid "Show Calendar in menu"
 msgstr "在菜单信息中显示日历："
 
 msgid "Show Today's Holidays"
@@ -382,7 +608,7 @@ msgstr ""
 msgid "Show Upcoming Holidays"
 msgstr ""
 
-msgid "Show debug messages in console/log."
+msgid "Show debug messages in console/log"
 msgstr ""
 
 msgid "Show event indicators"
@@ -391,10 +617,10 @@ msgstr ""
 msgid "Show holiday indicators"
 msgstr ""
 
-msgid "Show markers on days with events."
+msgid "Show markers on days with events"
 msgstr ""
 
-msgid "Show notifications for upcoming events."
+msgid "Show notifications for upcoming events"
 msgstr ""
 
 msgid "Sign"
@@ -403,11 +629,38 @@ msgstr ""
 msgid "Sign:"
 msgstr ""
 
+msgid "Size: {0:.1f} MB"
+msgstr ""
+
+msgid "Skipped: {0}"
+msgstr ""
+
+msgid "Skipped: {0} (duplicates)"
+msgstr ""
+
+msgid "Sort"
+msgstr ""
+
+msgid "Sorted by birthday"
+msgstr ""
+
+msgid "Sorted by category"
+msgstr ""
+
+msgid "Sorted by name"
+msgstr ""
+
+msgid "Sorted by: Birthday"
+msgstr ""
+
+msgid "Sorted by: Category"
+msgstr ""
+
+msgid "Sorted by: Name"
+msgstr ""
+
 msgid "Sun"
 msgstr "星期天"
-
-msgid "TODAY'S EVENTS:"
-msgstr ""
 
 msgid "Thu"
 msgstr "星期四"
@@ -427,10 +680,13 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
+msgid "Total: {0}"
+msgstr ""
+
 msgid "Tue"
 msgstr "星期二"
 
-msgid "Type of sound to play with notifications."
+msgid "Type of sound to play with notifications"
 msgstr ""
 
 msgid "Update available!"
@@ -466,6 +722,15 @@ msgstr ""
 msgid "Updating plugin... Please wait"
 msgstr ""
 
+msgid "Using legacy database format"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Waiting for thread to stop..."
+msgstr ""
+
 msgid "Wed"
 msgstr "星期三"
 
@@ -481,8 +746,23 @@ msgstr ""
 msgid "no"
 msgstr "否"
 
+msgid "vCard files: {0}"
+msgstr ""
+
+msgid "vCard format (standard)"
+msgstr ""
+
+msgid "vCard import feature not available: {0}"
+msgstr ""
+
+msgid "vCard: {0}"
+msgstr ""
+
 msgid "yes"
 msgstr "是"
+
+msgid "{0}"
+msgstr ""
 
 #~ msgid ""
 #~ "Calendar\n"
