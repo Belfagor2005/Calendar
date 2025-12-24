@@ -536,7 +536,7 @@ This plugin is open-source software. See the LICENSE file for details.
 - **vCard System & Contact Management**: Lululla
 - **Audio Notification System**: Integrated by Lululla
 - **Holiday Import System**: Integrated by Lululla
-- **Homepage**: www.gisclub.tv
+- **Homepage**: www.linuxsat-support.com - www.corvoboys.org - www.gisclub.tv
 
 ---
 
