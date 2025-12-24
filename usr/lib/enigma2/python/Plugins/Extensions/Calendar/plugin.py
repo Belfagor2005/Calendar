@@ -17,6 +17,9 @@
 #  • Configurable notification settings                   #
 #  • Multi-language support for date data                 #
 #  • Holiday import system with automatic coloring        #
+#  • vCard (.vcf) import/export system                    #
+#  • Contact management with birthdays                    #
+#  • Database format converter (Legacy ↔ vCard)           #
 #                                                         #
 #  EVENT SYSTEM:                                          #
 #  • Smart notifications (0-60 minutes before event)      #
@@ -45,6 +48,23 @@
 #  • Today's and upcoming holidays display                #
 #  • Integration with existing date files                 #
 #                                                         #
+#  VCARD & CONTACT SYSTEM:                                #
+#  • Import thousands of contacts from .vcf files         #
+#  • Multi-threaded import (no GUI freeze)                #
+#  • Contact management with birthdays                    #
+#  • Birthday tracking with age calculation               #
+#  • Contact sorting (name, birthday, category)           #
+#  • Search by name, phone, email, notes                  #
+#  • Duplicate detection during import                    #
+#  • Progress bar with cancel option                      #
+#                                                         #
+#  DATABASE MANAGEMENT:                                   #
+#  • Convert between Legacy and vCard formats             #
+#  • Creates automatic backups before conversion          #
+#  • Preserves all data during conversion                 #
+#  • Progress indicator during conversion                 #
+#  • Consistency checking between formats                 #
+#                                                         #
 #  DATE MANAGEMENT:                                       #
 #  • Create, edit, remove date information                #
 #  • Virtual keyboard for field editing                   #
@@ -58,6 +78,7 @@
 #  • Holiday days highlighted in orange (configurable)    #
 #  • Asterisk (*) indicator for days with events          #
 #  • "H" indicator for holiday days                       #
+#  • Birthday contacts display in description             #
 #  • Week numbers display                                 #
 #  • Smooth month navigation                              #
 #  • Day selection with blue background                   #
@@ -74,10 +95,12 @@
 #  • Holiday color selection                              #
 #  • Show holiday indicators toggle                       #
 #  • Menu integration option                              #
+#  • Database format selection (Legacy/vCard)             #
 #                                                         #
 #  KEY CONTROLS - MAIN CALENDAR:                          #
 #   OK          - Open main menu                          #
-#                 (New/Edit/Remove/Events/Holidays)       #
+#                 (New/Edit/Remove/Events/Holidays/       #
+#                  Contacts/Import vCard/Converter)       #
 #   RED         - Previous month                          #
 #   GREEN       - Next month                              #
 #   YELLOW      - Previous day                            #
@@ -104,6 +127,27 @@
 #   BLUE        - Back to calendar                        #
 #   UP/DOWN     - Navigate event list                     #
 #                                                         #
+#  KEY CONTROLS - CONTACTS VIEW:                          #
+#   OK          - Edit selected contact                   #
+#   RED         - Add new contact                         #
+#   GREEN       - Edit selected contact                   #
+#   YELLOW      - Delete selected contact                 #
+#   BLUE        - Toggle sort mode (Name/Birthday/Cat.)   #
+#   UP/DOWN     - Navigate contact list                   #
+#                                                         #
+#  KEY CONTROLS - VCARD IMPORTER:                         #
+#   OK          - Select file                             #
+#   RED         - Cancel                                  #
+#   GREEN       - Import selected file                    #
+#   YELLOW      - View file info (size, contacts)         #
+#   BLUE        - Refresh file list                       #
+#                                                         #
+#  KEY CONTROLS - DATABASE CONVERTER:                     #
+#   OK          - Show statistics                         #
+#   RED         - Cancel                                  #
+#   GREEN       - Convert to vCard format                 #
+#   BLUE        - Convert to legacy format                #
+#                                                         #
 #  FILE STRUCTURE:                                        #
 #  • plugin.py - Main plugin entry point                  #
 #  • event_manager.py - Event management core             #
@@ -111,8 +155,14 @@
 #  • events_view.py - Events browser                      #
 #  • notification_system.py - Notification display        #
 #  • holidays.py - Holiday import and management          #
+#  • vcard_importer.py - vCard import system              #
+#  • birthday_manager.py - Contact management             #
+#  • contacts_view.py - Contacts browser                  #
+#  • birthday_dialog.py - Contact add/edit dialog         #
+#  • database_converter.py - Format converter             #
 #  • events.json - Event database (JSON format)           #
 #  • base/ - Date information storage                     #
+#  • base/contacts/ - vCard contact storage               #
 #  • sounds/ - Audio files for notifications              #
 #  • buttons/ - Button images for UI                      #
 #                                                         #
@@ -134,6 +184,16 @@
 #    "enabled": true,                                     #
 #    "created": "2024-12-19 14:25:47"                     #
 #  }]                                                     #
+#                                                         #
+#  CONTACT STORAGE FORMAT (contacts/*.txt):               #
+#  [contact]                                              #
+#  FN: John Doe                                           #
+#  BDAY: 1990-05-15                                       #
+#  TEL: +391234567890                                     #
+#  EMAIL: john@example.com                                #
+#  CATEGORIES: Family, Friends                            #
+#  NOTE: Birthday reminder                                #
+#  CREATED: 2024-12-25 10:30:00                           #
 #                                                         #
 #  DATE FILE FORMAT (YYYYMMDD.txt):                       #
 #  [day]                                                  #
@@ -158,17 +218,19 @@
 #  • Python 2.7+ compatible                               #
 #  • Uses eTimer for background monitoring                #
 #  • JSON storage for events                              #
+#  • Threaded vCard import (no GUI freeze)                #
 #  • Virtual keyboard integration                         #
 #  • Auto-skin detection (HD/FHD)                         #
 #  • Configurable via setup.xml                           #
 #  • Uses eServiceReference for audio playback            #
 #  • Holiday cache system for fast rendering              #
-#  • File-based holiday storage (no database)             #
+#  • File-based storage (no database)                     #
 #                                                         #
 #  PERFORMANCE:                                           #
 #  • Efficient event checking algorithm                   #
 #  • Skipped checks for past non-recurring events         #
 #  • Holiday cache: 1 file read per month                 #
+#  • Threaded import for large vCard files                #
 #  • Minimal memory usage                                 #
 #  • Fast loading of date information                     #
 #                                                         #
@@ -176,6 +238,7 @@
 #  • Enable debug logs: check enigma2.log                 #
 #  • Filter: grep EventManager /tmp/enigma2.log           #
 #  • Holiday debug: grep Holidays /tmp/enigma2.log        #
+#  • vCard debug: grep VCardImporter /tmp/enigma2.log     #
 #  • Event check interval: 30 seconds                     #
 #  • Notification window: event time ± 5 minutes          #
 #  • Audio debug: check play_notification_sound() calls   #
@@ -184,6 +247,7 @@
 #  • Original Calendar plugin: Sirius0103                 #
 #  • Event system & modifications: Lululla                #
 #  • Holiday system & enhancements: Custom implementation #
+#  • vCard system & database converter: Lululla           #
 #  • Notification system: Custom implementation           #
 #  • Audio system: Enigma2 eServiceReference integration  #
 #  • Testing & feedback: Enigma2 community                #
@@ -193,12 +257,14 @@
 #  • v1.1 - Complete event system added                   #
 #  • v1.2 - Holiday import and coloring system            #
 #  • v1.3 - Rewrite complete code . screen and source..   #
+#  • v1.4 - minor fix for update and timers py2           #
+#  • v1.5 - vCard import/export & contact management      #
 #                                                         #
-#  Last Updated: 2025-12-21                               #
-#  Status: Stable with event & holiday system             #
+#  Last Updated: 2025-12-25                               #
+#  Status: Stable with all systems integrated             #
 ###########################################################
 """
-
+from __future__ import print_function
 import datetime
 from time import localtime
 from os import remove, makedirs
@@ -209,9 +275,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
-
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-
 from Components.ActionMap import ActionMap  # , HelpableActionMap
 from Components.MenuList import MenuList
 from Components.Label import Label
@@ -222,12 +286,15 @@ from Components.config import (
     ConfigSelection,
     ConfigYesNo,
 )
-
 from enigma import eTimer
 from skin import parseColor
 
 from . import _, plugin_path, PLUGIN_VERSION
 from .events_view import EventsView
+from .birthday_manager import BirthdayManager
+from .contacts_view import ContactsView
+from .birthday_dialog import BirthdayDialog
+# from .database_converter import DatabaseConverter
 
 
 def init_calendar_config():
@@ -277,6 +344,16 @@ def init_calendar_config():
     )
     config.plugins.calendar.debug_enabled = ConfigYesNo(default=False)
 
+    # DATABASE FORMAT CONFIGURATION
+    config.plugins.calendar.database_format = ConfigSelection(
+        choices=[
+            ("legacy", _("Legacy format (text files)")),
+            ("vcard", _("vCard format (standard)"))
+        ],
+        default="legacy"
+    )
+    config.plugins.calendar.auto_convert = ConfigYesNo(default=True)
+
 
 DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
 init_calendar_config()
@@ -284,10 +361,10 @@ init_calendar_config()
 
 class MenuDialog(Screen):
     skin = """
-    <screen name="MenuDialog" position="center,center" size="600,600" title="Edit Settings" flags="wfNoBorder">
-        <widget name="menu" position="10,10" size="580,540" itemHeight="40" font="Regular;32" scrollbarMode="showOnDemand" />
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="135,560" size="75,36" alphatest="blend" zPosition="5" />
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="400,560" size="74,40" alphatest="on" zPosition="5" />
+    <screen name="MenuDialog" position="center,center" size="600,720" title="Edit Settings" flags="wfNoBorder">
+        <widget name="menu" position="10,10" size="580,650" itemHeight="40" font="Regular;32" scrollbarMode="showOnDemand" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="135,680" size="75,36" alphatest="blend" zPosition="5" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="400,680" size="74,40" alphatest="on" zPosition="5" />
     </screen>
     """
 
@@ -315,10 +392,10 @@ class Calendar(Screen):
     if (getDesktop(0).size().width() >= 1920):
         skin = """
         <!-- Calendar -->
-        <screen name="Calendar" position="5,5" size="1900,1060" title=" " flags="wfNoBorder">
-            <eLabel backgroundColor="#001a2336" cornerRadius="30" position="0,910" size="1905,90" zPosition="0" />
+        <screen name="Calendar" position="center,center" size="1900,1060" title=" " flags="wfNoBorder">
+            <eLabel backgroundColor="#001a2336" cornerRadius="30" position="0,970" size="1905,90" zPosition="0" />
             <eLabel name="" position="-118,-404" size="1920,1080" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-            <widget source="session.VideoPicture" render="Pig" position="1392,622" zPosition="19" size="475,271" backgroundColor="transparent" transparent="0" cornerRadius="14" />
+            <widget source="session.VideoPicture" render="Pig" position="1392,692" zPosition="19" size="475,271" backgroundColor="transparent" transparent="0" cornerRadius="14" />
 
             <!-- SEPARATORE
             <eLabel position="30,915" size="1740,5" backgroundColor="#FF555555" zPosition="1" />
@@ -392,37 +469,37 @@ class Calendar(Screen):
 
             <!-- TESTI INFORMATIVI -->
             <widget name="monthname" position="15,8" size="533,45" font="Regular; 36" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="date" position="555,10" size="1230,40" font="Regular; 30" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="datepeople" position="555,60" size="1230,38" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="monthpeople" position="15,540" size="533,368" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="sign" position="555,105" size="1230,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="holiday" position="555,188" size="1230,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="description" position="555,270" size="1230,638" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" valign="top" transparent="1" />
-            <widget name="status" position="555,858" size="976,50" font="Regular; 32" foregroundColor="#3333ff" zPosition="5" halign="left" transparent="1" />
+            <widget name="date" position="555,10" size="1330,45" font="Regular; 30" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
+            <widget name="datepeople" position="555,60" size="1330,45" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="monthpeople" position="15,540" size="533,427" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="sign" position="555,110" size="1330,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="holiday" position="555,188" size="1330,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="description" position="555,270" size="1330,696" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" valign="top" transparent="1" />
+            <widget name="status" position="1351,971" size="537,45" font="Regular; 32" foregroundColor="#3333ff" zPosition="5" halign="center" transparent="1" />
 
             <!-- TASTI FUNZIONE -->
-            <widget name="key_red" position="113,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_green" position="443,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_yellow" position="773,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_blue" position="1103,928" size="200,30" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_red" position="110,995" size="230,35" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_green" position="440,995" size="230,35" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_yellow" position="773,995" size="230,35" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_blue" position="1100,995" size="230,35" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
 
             <!-- ICONE TASTI -->
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="110,960" size="230,10" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="440,960" size="230,10" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="771,960" size="230,10" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="1099,960" size="230,10" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="1353,930" size="75,36" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="1447,930" size="75,36" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1540,930" size="74,40" alphatest="on" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1633,930" size="77,36" alphatest="on" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="110,1030" size="230,10" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="440,1030" size="230,10" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="771,1030" size="230,10" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="1100,1030" size="230,10" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="1453,1020" size="75,36" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="1547,1020" size="75,36" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1640,1020" size="74,40" alphatest="on" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1728,1020" size="77,36" alphatest="on" zPosition="5" />
         </screen>"""
     else:
         skin = """
         <!-- Calendar -->
         <screen name="Calendar" position="center,center" size="1280,720" title=" " flags="wfNoBorder">
-            <eLabel backgroundColor="#001a2336" cornerRadius="20" position="0,630" size="1280,50" zPosition="0" />
+            <eLabel backgroundColor="#001a2336" cornerRadius="20" position="0,655" size="1280,60" zPosition="0" />
             <eLabel name="" position="-80,-270" size="1280,720" zPosition="-1" cornerRadius="12" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-            <widget source="session.VideoPicture" render="Pig" position="933,431" zPosition="19" size="315,180" backgroundColor="transparent" transparent="0" cornerRadius="10" />
+            <widget source="session.VideoPicture" render="Pig" position="933,471" zPosition="19" size="315,180" backgroundColor="transparent" transparent="0" cornerRadius="10" />
 
             <!-- NOMI GIORNI SETTIMANA -->
             <widget name="w0" position="10,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
@@ -493,29 +570,29 @@ class Calendar(Screen):
 
             <!-- TESTI INFORMATIVI -->
             <widget name="monthname" position="10,5" size="355,30" font="Regular; 24" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="date" position="370,7" size="820,27" font="Regular; 20" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="datepeople" position="370,40" size="820,25" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="monthpeople" position="10,360" size="355,245" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="sign" position="370,70" size="820,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="holiday" position="370,125" size="820,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="description" position="370,180" size="820,410" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" valign="top" transparent="1" />
-            <widget name="status" position="371,588" size="648,40" font="Regular; 22" foregroundColor="#3333ff" halign="left" zPosition="5" transparent="1" />
+            <widget name="date" position="370,7" size="895,27" font="Regular; 20" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
+            <widget name="datepeople" position="370,40" size="895,30" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="monthpeople" position="10,360" size="355,290" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="sign" position="370,75" size="895,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="holiday" position="370,130" size="895,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="description" position="370,180" size="895,470" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" valign="top" transparent="1" />
+            <widget name="status" position="889,656" size="378,25" font="Regular; 20" foregroundColor="#3333ff" halign="center" zPosition="5" transparent="1" />
 
             <!-- TASTI FUNZIONE -->
-            <widget name="key_red" position="70,640" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_green" position="295,640" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_yellow" position="515,640" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
-            <widget name="key_blue" position="730,640" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_red" position="70,675" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_green" position="295,675" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_yellow" position="515,675" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
+            <widget name="key_blue" position="730,675" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
 
             <!-- ICONE TASTI -->
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="70,660" size="155,7" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="295,660" size="155,7" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="515,660" size="155,7" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="730,660" size="155,7" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="900,640" size="50,24" alphatest="blend" zPosition="5" scale="1" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="962,640" size="50,24" alphatest="blend" zPosition="5" scale="1" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1024,640" size="49,27" alphatest="on" zPosition="5" scale="1" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1086,640" size="51,24" alphatest="on" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="70,695" size="155,7" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="295,695" size="155,7" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="515,695" size="155,7" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="730,695" size="155,7" alphatest="blend" zPosition="5" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="930,685" size="50,24" alphatest="blend" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="997,685" size="50,24" alphatest="blend" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1059,685" size="50,24" alphatest="on" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1121,685" size="50,24" alphatest="on" zPosition="5" scale="1" />
         </screen>"""
 
     def __init__(self, session):
@@ -536,6 +613,9 @@ class Calendar(Screen):
 
         self.language = config.osd.language.value.split("_")[0].strip()
         self.path = plugin_path
+
+        self.birthday_manager = BirthdayManager(plugin_path)
+        self.database_format = config.plugins.calendar.database_format.value
 
         self.selected_bg_color = None
         self.nowday = False
@@ -600,13 +680,12 @@ class Calendar(Screen):
 
                 "menu": self.config,
                 "info": self.about,
-                # "epg": self.about,
                 "0": self.show_events,
             }, -1
         )
         self.onLayoutFinish.append(self._paint_calendar)
 
-    def menu_callback(self, result):
+    def menu_callback(self, result=None):
         if result:
             result[1]()
 
@@ -622,6 +701,10 @@ class Calendar(Screen):
             (_("Edit Date"), self.edit_all_fields),
             (_("Remove Date"), self.remove_date),
             (_("Delete File"), self.delete_file),
+
+            (_("Manage Contacts"), self.show_contacts),
+            (_("Add Contact"), self.add_contact),
+            (_("Import vCard File"), self.import_vcard_file),
         ]
 
         # ADD EVENT OPTIONS ONLY IF ENABLED
@@ -639,12 +722,19 @@ class Calendar(Screen):
             (_("Show Upcoming Holidays"), self.show_upcoming_holidays),
             (_("Clear Holiday Database"), self.clear_holiday_database),
         ])
+
+        # ADD DATABASE CONVERSION OPTIONS
+        if self.database_format == "legacy":
+            menu.append((_("Convert to vCard format"), self.convert_to_vcard))
+        else:
+            menu.append((_("Convert to legacy format"), self.convert_to_legacy))
+
         # ADD UPDATER
         menu.extend([
             (_("Check for Updates"), self.check_for_updates),
         ])
 
-        menu.append((_("Exit"), self.close))
+        # menu.append((_("Exit"), self.close))
 
         self.session.openWithCallback(self.menu_callback, MenuDialog, menu)
 
@@ -661,7 +751,6 @@ class Calendar(Screen):
             latest = updater.get_latest_version()
             print("Direct test - Latest version: %s" % latest)
 
-            # UpdateManager
             UpdateManager.check_for_updates(self.session, self["status"])
 
         except Exception as e:
@@ -688,16 +777,24 @@ class Calendar(Screen):
         self["monthpeople"].setText("")
 
     def load_data(self):
-        """Load data from file and display labels with data"""
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            self.path,
-            self.language,
-            self.year,
-            self.month,
-            self.day
-        )
+        """Load data from file - UNIFIED PARSER that reads any format"""
+        if self.database_format == "vcard":
+            file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
+                self.path,
+                self.language,
+                self.year,
+                self.month,
+                self.day
+            )
+        else:
+            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+                self.path,
+                self.language,
+                self.year,
+                self.month,
+                self.day
+            )
 
-        # ALWAYS show the current date as default
         default_date = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
 
         if exists(file_path):
@@ -705,74 +802,160 @@ class Calendar(Screen):
                 with open(file_path, "r") as f:
                     lines = f.readlines()
 
-                day_data = {}
-                month_data = {}
-                current_section = None
+                # Parse file content with unified parser
+                data = self._parse_file_content(lines, self.database_format)
 
-                for line in lines:
-                    line = line.strip()
-                    if line == "[day]":
-                        current_section = "day"
-                    elif line == "[month]":
-                        current_section = "month"
-                    elif current_section == "day" and ":" in line:
-                        key, value = line.split(":", 1)
-                        day_data[key.strip()] = value.strip()
-                    elif current_section == "month" and ":" in line:
-                        key, value = line.split(":", 1)
-                        month_data[key.strip()] = value.strip()
-
-                # Date - use value from file if present, otherwise default date
-                date_val = day_data.get("date", default_date)
-                self["date"].setText(date_val)
-
-                # Date People - add label
-                datepeople_val = day_data.get("datepeople", "")
-                if datepeople_val:
-                    self["datepeople"].setText(_("Date People: ") + datepeople_val)
-                else:
-                    self["datepeople"].setText("")
-
-                # Sign - add label
-                sign_val = day_data.get("sign", "")
-                if sign_val:
-                    self["sign"].setText(_("Sign: ") + sign_val)
-                else:
-                    self["sign"].setText("")
-
-                # Holiday - add label
-                holiday_val = day_data.get("holiday", "")
-                if holiday_val and holiday_val != "None":
-                    self["holiday"].setText(_("Holiday: ") + holiday_val)
-                else:
-                    self["holiday"].setText("")
-
-                # Description - no label (already multi-line)
-                description_val = day_data.get("description", "")
-                self["description"].setText(description_val)
-
-                # Month People - add label
-                monthpeople_val = month_data.get("monthpeople", "")
-                if monthpeople_val:
-                    self["monthpeople"].setText(_("Month People: ") + monthpeople_val)
-                else:
-                    self["monthpeople"].setText("")
+                # Display data with correct mapping
+                self._display_parsed_data(data, default_date)
 
             except Exception as e:
                 print("[Calendar] Error loading data: {0}".format(str(e)))
                 # In case of error, show at least the default date
-                self["date"].setText(default_date)
+                self._load_default_data(default_date)
                 self.clear_other_fields()
         else:
             if DEBUG:
                 print("[Calendar] File not found: {0}".format(file_path))
-            # If the file does not exist, show the default date
-            self["date"].setText(default_date)
+            self._load_default_data(default_date)
             self.clear_other_fields()
+
+        self.add_contacts_to_display()
 
         # Add events if enabled
         if self.event_manager:
             self.add_events_to_description()
+
+        # Add events if enabled
+        if self.event_manager:
+            self.add_events_to_description()
+
+    def _parse_file_content(self, lines, format_type):
+        """
+        Unified parser that reads any format and returns standardized data
+
+        Mapping CORRECTED:
+        Legacy → vCard
+        date: → DATE:
+        datepeople: → FN:
+        sign: → CATEGORIES:
+        holiday: → holiday: (STAYS SAME - don't change!)
+        description: → NOTE:
+        monthpeople: → CONTACTS:
+        """
+        data = {}
+        current_section = None
+
+        for line in lines:
+            line = line.strip()
+
+            # Detect sections
+            if line == "[day]" or line == "[contact]":
+                current_section = "main"
+            elif line == "[month]":
+                current_section = "month"
+            elif line.startswith("[") and line.endswith("]"):
+                current_section = line[1:-1]
+
+            # Parse key-value pairs
+            elif current_section and ":" in line:
+                key, value = line.split(":", 1)
+                key = key.strip()
+                value = value.strip()
+
+                # Store with original key
+                data[key] = value
+
+        return data
+
+    def _display_parsed_data(self, data, default_date):
+        """Display parsed data with correct labels"""
+        # Determine which fields to use based on format
+        if self.database_format == "vcard":
+            # vCard format mapping
+            date_val = data.get("DATE:", data.get("BDAY:", default_date))
+            datepeople_val = data.get("FN:", "")
+            sign_val = data.get("CATEGORIES:", "")
+            holiday_val = data.get("holiday:", data.get("NOTE:", ""))  # holiday: stays first priority
+            description_val = data.get("NOTE:", data.get("DESCRIPTION:", ""))
+            monthpeople_val = data.get("CONTACTS:", data.get("ORG:", ""))
+        else:
+            # Legacy format
+            date_val = data.get("date", default_date)
+            datepeople_val = data.get("datepeople", "")
+            sign_val = data.get("sign", "")
+            holiday_val = data.get("holiday", "")
+            description_val = data.get("description", "")
+            monthpeople_val = data.get("monthpeople", "")
+
+        # Display values with labels
+        self["date"].setText(date_val)
+
+        if datepeople_val:
+            self["datepeople"].setText(_("Date People: ") + datepeople_val)
+        else:
+            self["datepeople"].setText("")
+
+        if sign_val:
+            self["sign"].setText(_("Sign: ") + sign_val)
+        else:
+            self["sign"].setText("")
+
+        if holiday_val and holiday_val != "None":
+            self["holiday"].setText(_("Holiday: ") + holiday_val)
+        else:
+            self["holiday"].setText("")
+
+        self["description"].setText(description_val)
+
+        if monthpeople_val:
+            self["monthpeople"].setText(_("Month People: ") + monthpeople_val)
+        else:
+            self["monthpeople"].setText("")
+
+    def _load_default_data(self, default_date):
+        """Load default data when file doesn't exist"""
+        self["date"].setText(default_date)
+        self["datepeople"].setText("")
+        self["sign"].setText("")
+        self["holiday"].setText("")
+        self["description"].setText("")
+        self["monthpeople"].setText("")
+
+    def convert_to_vcard(self):
+        """Convert all existing data to vCard format"""
+
+        def conversion_callback(result):
+            if result:
+                config.plugins.calendar.database_format.value = "vcard"
+                config.plugins.calendar.database_format.save()
+                self.database_format = "vcard"
+                self._paint_calendar()
+                self.load_data()
+                self.session.open(
+                    MessageBox,
+                    _("Database converted to vCard format"),
+                    MessageBox.TYPE_INFO
+                )
+
+        self.session.openWithCallback(
+            conversion_callback,
+            MessageBox,
+            _("Convert all existing data to vCard format?"),
+            MessageBox.TYPE_YESNO
+        )
+
+    def convert_to_legacy(self):
+        """Convert back to legacy format"""
+        config.plugins.calendar.database_format.value = "legacy"
+        config.plugins.calendar.database_format.save()
+        self.database_format = "legacy"
+        self._paint_calendar()
+        self.load_data()
+        self.session.open(
+            MessageBox,
+            _("Using legacy database format"),
+            MessageBox.TYPE_INFO
+        )
 
     def clear_other_fields(self):
         """Clear all fields except date"""
@@ -783,7 +966,14 @@ class Calendar(Screen):
         self["monthpeople"].setText("")
 
     def save_data(self):
-        """Save data to unified file"""
+        """Save data to file - supports both formats"""
+        if self.database_format == "vcard":
+            self._save_vcard_data()
+        else:
+            self._save_legacy_data()
+
+    def _save_legacy_data(self):
+        """Save data to unified file in legacy format"""
         file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
             self.path,
             self.language,
@@ -802,19 +992,17 @@ class Calendar(Screen):
                 print("[Calendar] Error creating directory: {0}".format(str(e)))
 
         try:
-            # Get current values
-            date_text = self['date'].getText() or ""
-            datepeople_text = self['datepeople'].getText() or ""
-            sign_text = self['sign'].getText() or ""
-            holiday_text = self['holiday'].getText() or ""
-            description_text = self['description'].getText() or ""
-            monthpeople_text = self['monthpeople'].getText() or ""
+            # Get current values and remove labels
+            date_text = self._clean_field_text(self['date'].getText())
+            datepeople_text = self._clean_field_text(self['datepeople'].getText(), "Date People: ")
+            sign_text = self._clean_field_text(self['sign'].getText(), "Sign: ")
+            holiday_text = self._clean_field_text(self['holiday'].getText(), "Holiday: ")
+            description_text = self._clean_field_text(self['description'].getText())
+            monthpeople_text = self._clean_field_text(self['monthpeople'].getText(), "Month People: ")
 
-            # IMPORTANT: Remove any event display from description before saving
-            # Events should only be in events.json, not in the database file
-            if _("TODAY'S EVENTS:") in description_text:
-                # Split at the events section and keep only the user's description
-                parts = description_text.split(_("TODAY'S EVENTS:"))
+            # Clean events from description before saving
+            if _("SCHEDULED EVENTS:") in description_text:
+                parts = description_text.split(_("SCHEDULED EVENTS:"))
                 description_text = parts[0].rstrip()
                 if DEBUG:
                     print("[Calendar] Cleaned events from description before saving")
@@ -845,23 +1033,97 @@ class Calendar(Screen):
                 f.write(day_data)
 
             if DEBUG:
-                print("[Calendar] Data saved successfully to: {0}".format(file_path))
+                print("[Calendar] Legacy data saved successfully to: {0}".format(file_path))
 
             # After saving, if there are events for this date, add them to display
-            if self.event_manager:
-                # First load the clean data we just saved
-                self["description"].setText(description_text)
-                # Then add events for display only
-                self.add_events_to_description()
+            # if self.event_manager:
+                # # First load the clean data we just saved
+                # self["description"].setText(description_text)
+                # # Then add events for display only
+                # self.add_events_to_description()
 
         except Exception as e:
-            print("[Calendar] Error saving data: {0}".format(str(e)))
-            # Optionally show error to user
+            print("[Calendar] Error saving legacy data: {0}".format(str(e)))
             self.session.open(
                 MessageBox,
                 _("Error saving data"),
                 MessageBox.TYPE_ERROR
             )
+
+    def _save_vcard_data(self):
+        """Save in vCard format"""
+        file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
+            self.path,
+            self.language,
+            self.year,
+            self.month,
+            self.day
+        )
+
+        directory = dirname(file_path)
+        if not exists(directory):
+            try:
+                makedirs(directory)
+            except Exception as e:
+                print("[Calendar] Error creating directory: {0}".format(str(e)))
+
+        try:
+            # Get current values and remove labels
+            date_text = self._clean_field_text(self['date'].getText())
+            datepeople_text = self._clean_field_text(self['datepeople'].getText(), "Date People: ")
+            sign_text = self._clean_field_text(self['sign'].getText(), "Sign: ")
+            holiday_text = self._clean_field_text(self['holiday'].getText(), "Holiday: ")
+            description_text = self._clean_field_text(self['description'].getText())
+            monthpeople_text = self._clean_field_text(self['monthpeople'].getText(), "Month People: ")
+
+            # Clean events from description before saving
+            if _("SCHEDULED EVENTS:") in description_text:
+                parts = description_text.split(_("SCHEDULED EVENTS:"))
+                description_text = parts[0].rstrip()
+
+            # Format as vCard-like file
+            # MAPPING CORRECTED:
+            # date: → DATE:
+            # datepeople: → FN:
+            # sign: → CATEGORIES:
+            # holiday: → holiday: (STAYS SAME!)
+            # description: → NOTE:
+            # monthpeople: → CONTACTS:
+
+            contact_data = (
+                "[contact]\n"
+                "DATE: {0}\n"
+                "FN: {1}\n"
+                "CATEGORIES: {2}\n"
+                "holiday: {3}\n"
+                "NOTE: {4}\n"
+                "CONTACTS: {5}\n"
+            ).format(
+                date_text,
+                datepeople_text,
+                sign_text,
+                holiday_text,
+                description_text,
+                monthpeople_text
+            )
+
+            with open(file_path, "w") as f:
+                f.write(contact_data)
+
+            print("[Calendar] vCard data saved to: {0}".format(file_path))
+
+        except Exception as e:
+            print("[Calendar] Error saving vCard data: {0}".format(str(e)))
+
+    def _clean_field_text(self, text, prefix=""):
+        """Remove label prefix from field text"""
+        if not text:
+            return ""
+
+        if prefix and text.startswith(prefix):
+            return text[len(prefix):].strip()
+
+        return text.strip()
 
     def open_virtual_keyboard_for_field(self, field, field_name):
         """
@@ -889,6 +1151,123 @@ class Calendar(Screen):
             title=field_name,
             text=current_text
         )
+
+    def show_contacts(self):
+        """Show contacts list"""
+        self.session.openWithCallback(
+            self.contact_updated_callback,
+            ContactsView,
+            self.birthday_manager
+        )
+
+    def add_contact(self):
+        """Add new contact"""
+        self.session.openWithCallback(
+            self.contact_updated_callback,
+            BirthdayDialog,
+            self.birthday_manager
+        )
+
+    def add_contacts_to_display(self):
+        """Add contact information to display"""
+        try:
+            date_str = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
+            day_contacts = self.birthday_manager.get_contacts_for_date(date_str)
+
+            if day_contacts:
+                contacts_text = _("CONTACTS WITH BIRTHDAYS TODAY:\n")
+
+                for contact in day_contacts:
+                    name = contact.get('FN', 'Unknown')
+                    age = self._calculate_age(contact.get('BDAY', ''))
+                    phone = contact.get('TEL', '')
+                    email = contact.get('EMAIL', '')
+
+                    contact_line = "- {0}".format(name)
+                    if age:
+                        contact_line += " ({0})".format(age)
+                    if phone:
+                        contact_line += " - {0}".format(phone)
+                    if email:
+                        contact_line += " - {0}".format(email)
+
+                    contacts_text += contact_line + "\n"
+
+                # Add to description
+                current_desc = self["description"].getText()
+                if _("CONTACTS WITH BIRTHDAYS TODAY:") in current_desc:
+                    # Remove existing contacts section
+                    parts = current_desc.split(_("CONTACTS WITH BIRTHDAYS TODAY:"))
+                    current_desc = parts[0].rstrip()
+
+                # Add new contacts section
+                separator = "\n" + "-" * 40 + "\n"
+                self["description"].setText(current_desc + separator + contacts_text.rstrip())
+
+        except Exception as e:
+            print("[Calendar] Error displaying contacts: {}".format(e))
+
+    def _calculate_age(self, bday_str):
+        """Calculate age from birthday string"""
+        if not bday_str:
+            return ""
+
+        try:
+            from datetime import datetime
+            birth_date = datetime.strptime(bday_str, "%Y-%m-%d")
+            today = datetime.now()
+
+            age = today.year - birth_date.year
+            # Adjust if birthday hasn't occurred this year
+            if (today.month, today.day) < (birth_date.month, birth_date.day):
+                age -= 1
+
+            return str(age)
+        except:
+            return ""
+
+    def import_vcard_file(self):
+        """Import contacts from a vCard file"""
+        print("[Calendar] DEBUG: Starting vCard import function")
+
+        try:
+            from .vcf_importer import VCardImporter
+            print("[Calendar] DEBUG: VCardImporter imported successfully")
+
+            print("[Calendar] DEBUG: Opening VCardImporter screen")
+            self.session.open(
+                VCardImporter,
+                self.birthday_manager
+            )
+
+        except ImportError as e:
+            print("[Calendar] ERROR: Import failed: {}".format(e))
+            import traceback
+            traceback.print_exc()
+
+            self.session.open(
+                MessageBox,
+                _("vCard import feature not available: {0}").format(str(e)),
+                MessageBox.TYPE_INFO
+            )
+        except Exception as e:
+            print("[Calendar] ERROR: Unexpected error: {}".format(e))
+            import traceback
+            traceback.print_exc()
+
+    def contact_updated_callback(self, result=None):
+        """Callback after contact operations"""
+        print(f"[Calendar DEBUG] Contact callback called with result: {result}")
+        if result:
+            if DEBUG:
+                print("[Calendar] Contact operation successful, refreshing calendar...")
+
+            self.birthday_manager.load_all_contacts()
+            self._paint_calendar()
+            self.load_data()
+        else:
+            if DEBUG:
+                print("[Calendar] Contact operation cancelled or no changes")
 
     def new_date(self):
         """
@@ -992,13 +1371,22 @@ class Calendar(Screen):
 
     def remove_date(self):
         """Remove the date and clear all fields"""
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            self.path,
-            self.language,
-            self.year,
-            self.month,
-            self.day
-        )
+        if self.database_format == "vcard":
+            file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
+                self.path,
+                self.language,
+                self.year,
+                self.month,
+                self.day
+            )
+        else:
+            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+                self.path,
+                self.language,
+                self.year,
+                self.month,
+                self.day
+            )
 
         if exists(file_path):
             try:
@@ -1020,14 +1408,23 @@ class Calendar(Screen):
             self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO)
 
     def delete_file(self):
-        """Delete the data file for the selected date and update the UI accordingly."""
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            self.path,
-            self.language,
-            self.year,
-            self.month,
-            self.day
-        )
+        """Delete the data file for the selected date"""
+        if self.database_format == "vcard":
+            file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
+                self.path,
+                self.language,
+                self.year,
+                self.month,
+                self.day
+            )
+        else:
+            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+                self.path,
+                self.language,
+                self.year,
+                self.month,
+                self.day
+            )
 
         if exists(file_path):
             try:
@@ -1213,7 +1610,7 @@ class Calendar(Screen):
             current_date
         )
 
-    def event_added_callback(self, result):
+    def event_added_callback(self, result=None):
         """Callback after adding event"""
         if result:
             self._paint_calendar()
@@ -1474,13 +1871,23 @@ class Calendar(Screen):
 
         # Iterate through possible days in month (1-31)
         for day in range(1, 32):
-            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                self.path,
-                language,
-                year,
-                month,
-                day
-            )
+            # Use correct path based on format
+            if self.database_format == "vcard":
+                file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
+                    self.path,
+                    language,
+                    year,
+                    month,
+                    day
+                )
+            else:
+                file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+                    self.path,
+                    language,
+                    year,
+                    month,
+                    day
+                )
 
             if exists(file_path):
                 try:

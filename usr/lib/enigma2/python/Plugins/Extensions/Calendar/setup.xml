@@ -1,30 +1,32 @@
 <setupxml>
 	<setup key="settingCalendar" title="Calendar Settings">
-		<!-- Event System -->
-		<item level="1" text="Event Settings" description="Event management system"/>
+		<!-- Database Format -->
+		<item level="0" text="Database format" description="Choose between legacy text files or standard vCard format">config.plugins.calendar.database_format</item>
+		<if conditional="config.plugins.calendar.database_format.value == 'legacy'">
+			<item level="0" text="Auto-convert to vCard" description="Automatically convert legacy files to vCard format on first use">config.plugins.calendar.auto_convert</item>
+		</if>
 		<!-- Display Settings -->
-		<item level="0" text="Show Calendar in menu:" description="Show Calendar in main information menu.">config.plugins.calendar.menu</item>
-		<!-- Event Settings -->
-		<item level="0" text="Enable event system" description="Enable event management with date/time.">config.plugins.calendar.events_enabled</item>
+		<item level="0" text="Show Calendar in menu" description="Show Calendar in main information menu">config.plugins.calendar.menu</item>
+		<!-- Event System -->
+		<item level="0" text="Enable event system" description="Enable event management with date/time">config.plugins.calendar.events_enabled</item>
 		<if conditional="config.plugins.calendar.events_enabled.value">
-			<item level="0" text="Enable notifications" description="Show notifications for upcoming events.">config.plugins.calendar.events_notifications</item>
+			<item level="0" text="Enable notifications" description="Show notifications for upcoming events">config.plugins.calendar.events_notifications</item>
 			<if conditional="config.plugins.calendar.events_notifications.value">
-				<item level="0" text="Play sound with notifications" description="Play a sound when event notification appears.">config.plugins.calendar.events_play_sound</item>
-				<item level="0" text="Notification sound type" description="Type of sound to play with notifications.">config.plugins.calendar.events_sound_type</item>
+				<item level="0" text="Play sound with notifications" description="Play a sound when event notification appears">config.plugins.calendar.events_play_sound</item>
+				<item level="0" text="Notification sound type" description="Type of sound to play with notifications">config.plugins.calendar.events_sound_type</item>
 			</if>
-			<item level="0" text="Show event indicators" description="Show markers on days with events.">config.plugins.calendar.events_show_indicators</item>
+			<item level="0" text="Show event indicators" description="Show markers on days with events">config.plugins.calendar.events_show_indicators</item>
 			<if conditional="config.plugins.calendar.events_show_indicators.value">
-				<item level="0" text="Event color" description="Color for days with events.">config.plugins.calendar.events_color</item>
+				<item level="0" text="Event color" description="Color for days with events">config.plugins.calendar.events_color</item>
 			</if>
 		</if>
 		<!-- Holiday Settings -->
-		<item level="1" text="Holiday Settings" description="Holiday display and coloring"/>
-		<item level="0" text="Enable holiday coloring" description="Color days with holidays.">config.plugins.calendar.holidays_enabled</item>
+		<item level="0" text="Enable holiday coloring" description="Color days with holidays">config.plugins.calendar.holidays_enabled</item>
 		<if conditional="config.plugins.calendar.holidays_enabled.value">
-			<item level="0" text="Show holiday indicators" description="Show 'H' marker on holiday days.">config.plugins.calendar.holidays_show_indicators</item>
-			<item level="0" text="Holiday color" description="Color for holiday days.">config.plugins.calendar.holidays_color</item>
+			<item level="0" text="Show holiday indicators" description="Show 'H' marker on holiday days">config.plugins.calendar.holidays_show_indicators</item>
+			<item level="0" text="Holiday color" description="Color for holiday days">config.plugins.calendar.holidays_color</item>
 		</if>
-		<item level="1" text="Debug Settings" description="Debug and logging options"/>
-		<item level="0" text="Enable debug mode" description="Show debug messages in console/log.">config.plugins.calendar.debug_enabled</item>
+		<!-- Debug Settings -->
+		<item level="0" text="Enable debug mode" description="Show debug messages in console/log">config.plugins.calendar.debug_enabled</item>
 	</setup>
 </setupxml>

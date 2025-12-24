@@ -31,6 +31,10 @@ msgstr "Aktív:"
 msgid "Add"
 msgstr "Hozzáadás"
 
+#, fuzzy
+msgid "Add Contact"
+msgstr "Esemény hozzáadása"
+
 msgid "Add Event"
 msgstr "Esemény hozzáadása"
 
@@ -43,11 +47,26 @@ msgstr "Április"
 msgid "August"
 msgstr "Augusztus"
 
+msgid "Auto-convert to vCard"
+msgstr ""
+
+msgid "Automatically convert legacy files to vCard format on first use"
+msgstr ""
+
 msgid "Back"
 msgstr "Vissza"
 
+msgid "Birthday (YYYY-MM-DD)"
+msgstr ""
+
 msgid "Blue"
 msgstr "Kék"
+
+msgid "CONTACTS WITH BIRTHDAYS TODAY:"
+msgstr ""
+
+msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
+msgstr ""
 
 #, fuzzy
 msgid "Calendar"
@@ -73,17 +92,33 @@ msgstr "Naptár eseményekkel és értesítésekkel"
 msgid "Cancel"
 msgstr "Mégsem"
 
+#, fuzzy
+msgid "Cancelling..."
+msgstr "Mégsem"
+
+msgid "Cannot delete: Contact has no ID"
+msgstr ""
+
+msgid "Categories (comma separated)"
+msgstr ""
+
 msgid "Check for Updates"
 msgstr "Frissítések keresése"
 
 msgid "Checking for updates..."
 msgstr "Frissítések keresése..."
 
+msgid "Choose between legacy text files or standard vCard format"
+msgstr ""
+
 msgid "Cleanup past events"
 msgstr "Korábbi események takarítása"
 
 msgid "Clear ALL holiday entries from all date files?"
 msgstr "Törli az ÖSSZES ünnepnap-bejegyzést az összes dátumfájlból?"
+
+msgid "Clear All"
+msgstr ""
 
 msgid "Clear Holiday Database"
 msgstr "Ünnepi adatbázis törlése"
@@ -92,13 +127,59 @@ msgid "Close"
 msgstr "Bezár"
 
 #, fuzzy
-msgid "Color days with holidays."
+msgid "Color days with holidays"
 msgstr "Mai ünnepek megjelenítése"
 
-msgid "Color for days with events."
+#, fuzzy
+msgid "Color for days with events"
+msgstr "Mai ünnepek megjelenítése"
+
+#, fuzzy
+msgid "Color for holiday days"
+msgstr "Mai ünnepek megjelenítése"
+
+msgid "Completed"
 msgstr ""
 
-msgid "Color for holiday days."
+#, fuzzy
+msgid "Contact '{0}' deleted successfully"
+msgstr "A frissítés sikeresen befejeződött!"
+
+msgid "Contacts: {0} (Search: '{1}')"
+msgstr ""
+
+msgid "Contacts: {0} ({1})"
+msgstr ""
+
+#, fuzzy
+msgid "Conversion completed successfully!"
+msgstr "A frissítés sikeresen befejeződött!"
+
+msgid "Convert all existing data to vCard format?"
+msgstr ""
+
+msgid "Convert to Legacy"
+msgstr ""
+
+msgid "Convert to legacy format"
+msgstr ""
+
+msgid "Convert to vCard"
+msgstr ""
+
+msgid "Convert to vCard format"
+msgstr ""
+
+msgid "Converted: {0} files, Errors: {1}"
+msgstr ""
+
+msgid "Converting to Legacy..."
+msgstr ""
+
+msgid "Converting to vCard..."
+msgstr ""
+
+msgid "Converting: {0} ({1}/{2})"
 msgstr ""
 
 msgid "Could not check for updates. Check internet connection."
@@ -106,6 +187,21 @@ msgstr "Nem sikerült frissítéseket keresni. Ellenőrizze az internetkapcsolat
 
 msgid "Could not check for updates: %s"
 msgstr "Nem sikerült frissítéseket keresni: %s"
+
+msgid "Current format: {0}"
+msgstr ""
+
+msgid "Database Converter"
+msgstr ""
+
+msgid "Database Statistics"
+msgstr ""
+
+msgid "Database converted to vCard format"
+msgstr ""
+
+msgid "Database format"
+msgstr ""
 
 msgid "Date"
 msgstr "Dátum"
@@ -126,12 +222,6 @@ msgstr "NAPPAL"
 msgid "Day -"
 msgstr "NAPPAL"
 
-msgid "Debug Settings"
-msgstr ""
-
-msgid "Debug and logging options"
-msgstr ""
-
 msgid "December"
 msgstr "December"
 
@@ -147,8 +237,15 @@ msgstr "Leírás"
 msgid "Description:"
 msgstr "Leírás:"
 
+msgid "E:{0}"
+msgstr ""
+
 msgid "Edit"
 msgstr "Szerkesztés"
+
+#, fuzzy
+msgid "Edit Contact"
+msgstr "Dátum szerkesztése"
 
 msgid "Edit Date"
 msgstr "Dátum szerkesztése"
@@ -168,10 +265,17 @@ msgstr "Hónap Személyek Szerkesztése"
 msgid "Edit Sign"
 msgstr "Szerkesztési jel"
 
+#, fuzzy
+msgid "Edit: {0}"
+msgstr "Szerkesztés"
+
+msgid "Email"
+msgstr ""
+
 msgid "Enable debug mode"
 msgstr ""
 
-msgid "Enable event management with date/time."
+msgid "Enable event management with date/time"
 msgstr ""
 
 msgid "Enable event system"
@@ -187,8 +291,19 @@ msgstr ""
 msgid "Enter"
 msgstr "Bevitel "
 
+#, fuzzy
+msgid "Error deleting contact"
+msgstr "Hiba az adatok mentése során"
+
+msgid "Error deleting contact '{0}'"
+msgstr ""
+
 msgid "Error opening event dialog"
 msgstr "Hiba az esemény párbeszédpanelének megnyitásakor"
+
+#, fuzzy
+msgid "Error saving contact"
+msgstr "Hiba az adatok mentése során"
 
 msgid "Error saving data"
 msgstr "Hiba az adatok mentése során"
@@ -197,33 +312,37 @@ msgid "Error: %s"
 msgstr "Hiba: %s"
 
 #, fuzzy
+msgid "Errors: {0}"
+msgstr "Hiba: %s"
+
+#, fuzzy
 msgid "Event"
 msgstr "Esemény hozzáadása"
-
-msgid "Event Settings"
-msgstr ""
 
 #, fuzzy
 msgid "Event color"
 msgstr "Esemény"
 
-msgid "Event management system"
-msgstr ""
-
 msgid "Event system is disabled. Enable it in settings."
 msgstr "Az eseményrendszer le van tiltva. Engedélyezze a beállításokban."
-
-msgid "Exit"
-msgstr "Kilépés"
 
 msgid "Failed to create backup. Update cancelled."
 msgstr "Nem sikerült biztonsági mentést készíteni. Frissítés megszakítva."
 
+msgid "Failed to start import"
+msgstr ""
+
 msgid "February"
 msgstr "Február"
 
+msgid "Field {0}/{1}: {2}"
+msgstr ""
+
 msgid "File not found!"
 msgstr "Fájl nem található!"
+
+msgid "File: {0}"
+msgstr ""
 
 msgid "Files is Empty..."
 msgstr "A fájlok üresek..."
@@ -238,19 +357,15 @@ msgid "Holiday"
 msgstr "Ünnepnap"
 
 #, fuzzy
-msgid "Holiday Settings"
-msgstr "Ünnep: "
-
-#, fuzzy
 msgid "Holiday color"
 msgstr "Ünnep: "
-
-msgid "Holiday display and coloring"
-msgstr ""
 
 #, fuzzy
 msgid "Holiday:"
 msgstr "Ünnepnap"
+
+msgid "I:{0}"
+msgstr ""
 
 msgid "Import"
 msgstr "Importálás"
@@ -261,6 +376,36 @@ msgstr "Összes importálása"
 msgid "Import Holidays"
 msgstr "Import ünnepek"
 
+msgid "Import completed - Sorting contacts..."
+msgstr ""
+
+#, fuzzy
+msgid "Import completed!"
+msgstr "Import ünnepek"
+
+#, fuzzy
+msgid "Import error: {0}"
+msgstr "Frissítési hiba: %s"
+
+msgid "Import vCard File"
+msgstr ""
+
+#, fuzzy
+msgid "Imported: {0}"
+msgstr "Importálás"
+
+msgid "Imported: {0} contacts"
+msgstr ""
+
+msgid "Importing vCard File"
+msgstr ""
+
+msgid "Initializing..."
+msgstr ""
+
+msgid "Invalid birthday format. Use YYYY-MM-DD"
+msgstr ""
+
 msgid "January"
 msgstr "Január"
 
@@ -270,6 +415,25 @@ msgstr "Július"
 msgid "June"
 msgstr "Június"
 
+msgid "Language: {0}"
+msgstr ""
+
+msgid "Legacy files: {0}"
+msgstr ""
+
+msgid "Legacy format (text files)"
+msgstr ""
+
+msgid "Legacy: {0}"
+msgstr ""
+
+msgid "Legacy: {0} files | vCard: {1} files"
+msgstr ""
+
+#, fuzzy
+msgid "Manage Contacts"
+msgstr "Események kezelése"
+
 msgid "Manage Events"
 msgstr "Események kezelése"
 
@@ -278,6 +442,9 @@ msgstr "Március"
 
 msgid "May"
 msgstr "Máj"
+
+msgid "Modified: {0}"
+msgstr ""
 
 msgid "Mon"
 msgstr "Hé"
@@ -295,17 +462,47 @@ msgstr "Hónap Emberek"
 msgid "Month People:"
 msgstr "Hónap Emberek: "
 
+msgid "Name"
+msgstr ""
+
+msgid "Name is required"
+msgstr ""
+
 msgid "New Date"
 msgstr "Új dátum"
 
+msgid "Next Field"
+msgstr ""
+
+msgid "No contact selected"
+msgstr ""
+
 msgid "No file in database..."
 msgstr "Nincs fájl az adatbázisban..."
+
+msgid "No file selected"
+msgstr ""
+
+msgid "No legacy files found"
+msgstr ""
+
+msgid "No legacy files found to convert"
+msgstr ""
 
 msgid "No past events to remove"
 msgstr "Nincsenek eltávolítható múltbeli események"
 
 msgid "No sound"
 msgstr "Nincs hang"
+
+msgid "No vCard files found"
+msgstr ""
+
+msgid "No vCard files found to convert"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
 
 #, fuzzy
 msgid "Notification sound type"
@@ -330,8 +527,14 @@ msgstr "Október"
 msgid "Orange"
 msgstr "Narancssárga"
 
+msgid "Paths:"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
 #, fuzzy
-msgid "Play a sound when event notification appears."
+msgid "Play a sound when event notification appears"
 msgstr "Naptár eseményekkel és értesítésekkel"
 
 #, fuzzy
@@ -344,8 +547,26 @@ msgstr "Kérjük, indítsa újra manuálisan az Enigma2-t."
 msgid "Plugin is up to date"
 msgstr "A bővítmény naprakész"
 
+msgid "Press GREEN to import"
+msgstr ""
+
+msgid "Press TEXT to search"
+msgstr ""
+
+msgid "Progress: {0}%"
+msgstr ""
+
+msgid "Ready"
+msgstr ""
+
 msgid "Red"
 msgstr "Piros"
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Refreshed"
+msgstr ""
 
 msgid "Remove"
 msgstr "Eltávolítás"
@@ -362,6 +583,9 @@ msgstr "Ismétlés"
 msgid "Repeat:"
 msgstr "Ismételje meg:"
 
+msgid "S:{0}"
+msgstr ""
+
 msgid "SCHEDULED EVENTS:"
 msgstr "MEGRENDEZETT ESEMÉNYEK:"
 
@@ -371,19 +595,36 @@ msgstr "Szo"
 msgid "Save"
 msgstr "Mentés"
 
+#, fuzzy
+msgid "Search contacts"
+msgstr "Események kezelése"
+
+#, fuzzy
+msgid "Search:"
+msgstr "Március"
+
+msgid "Select a file, not a folder"
+msgstr ""
+
+msgid "Select vCard file to import"
+msgstr ""
+
+msgid "Selected: {0}"
+msgstr ""
+
 msgid "September"
 msgstr "Szeptember"
 
 msgid "Short beep"
 msgstr "Rövid sípolás"
 
-msgid "Show 'H' marker on holiday days."
+msgid "Show 'H' marker on holiday days"
 msgstr ""
 
-msgid "Show Calendar in main information menu."
+msgid "Show Calendar in main information menu"
 msgstr ""
 
-msgid "Show Calendar in menu:"
+msgid "Show Calendar in menu"
 msgstr ""
 
 #, fuzzy
@@ -393,7 +634,7 @@ msgstr "Közelgő ünnepek megjelenítése"
 msgid "Show Upcoming Holidays"
 msgstr "Közelgő ünnepek megjelenítése"
 
-msgid "Show debug messages in console/log."
+msgid "Show debug messages in console/log"
 msgstr ""
 
 msgid "Show event indicators"
@@ -403,10 +644,10 @@ msgstr ""
 msgid "Show holiday indicators"
 msgstr "Mai ünnepek megjelenítése"
 
-msgid "Show markers on days with events."
+msgid "Show markers on days with events"
 msgstr ""
 
-msgid "Show notifications for upcoming events."
+msgid "Show notifications for upcoming events"
 msgstr ""
 
 msgid "Sign"
@@ -416,11 +657,38 @@ msgstr "Aláírás"
 msgid "Sign:"
 msgstr "Jel: "
 
+msgid "Size: {0:.1f} MB"
+msgstr ""
+
+msgid "Skipped: {0}"
+msgstr ""
+
+msgid "Skipped: {0} (duplicates)"
+msgstr ""
+
+msgid "Sort"
+msgstr ""
+
+msgid "Sorted by birthday"
+msgstr ""
+
+msgid "Sorted by category"
+msgstr ""
+
+msgid "Sorted by name"
+msgstr ""
+
+msgid "Sorted by: Birthday"
+msgstr ""
+
+msgid "Sorted by: Category"
+msgstr ""
+
+msgid "Sorted by: Name"
+msgstr ""
+
 msgid "Sun"
 msgstr "Vas"
-
-msgid "TODAY'S EVENTS:"
-msgstr "MAI ESEMÉNYEK:"
 
 msgid "Thu"
 msgstr "Csü"
@@ -440,11 +708,15 @@ msgstr "A cím és a dátum megadása kötelező!"
 msgid "Title:"
 msgstr "Cím:"
 
+msgid "Total: {0}"
+msgstr ""
+
 msgid "Tue"
 msgstr "Kedd"
 
-msgid "Type of sound to play with notifications."
-msgstr ""
+#, fuzzy
+msgid "Type of sound to play with notifications"
+msgstr "Naptár eseményekkel és értesítésekkel"
 
 msgid "Update available!"
 msgstr ""
@@ -483,6 +755,15 @@ msgstr "Sikeres frissítés!"
 msgid "Updating plugin... Please wait"
 msgstr "Bővítmény frissítése... Kérjük, várjon"
 
+msgid "Using legacy database format"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Waiting for thread to stop..."
+msgstr ""
+
 msgid "Wed"
 msgstr "Sze"
 
@@ -498,8 +779,23 @@ msgstr "A Naptár legújabb verziójával rendelkezel."
 msgid "no"
 msgstr "nem"
 
+msgid "vCard files: {0}"
+msgstr ""
+
+msgid "vCard format (standard)"
+msgstr ""
+
+msgid "vCard import feature not available: {0}"
+msgstr ""
+
+msgid "vCard: {0}"
+msgstr ""
+
 msgid "yes"
 msgstr "igen"
+
+msgid "{0}"
+msgstr ""
 
 #, python-format
 #~ msgid ""
@@ -527,8 +823,18 @@ msgstr "igen"
 #~ msgid "Cyan"
 #~ msgstr "Ciánkék"
 
+#~ msgid "Exit"
+#~ msgstr "Kilépés"
+
+#, fuzzy
+#~ msgid "Holiday Settings"
+#~ msgstr "Ünnep: "
+
 #~ msgid "Magenta"
 #~ msgstr "Magenta"
 
 #~ msgid "Purple"
 #~ msgstr "Lila"
+
+#~ msgid "TODAY'S EVENTS:"
+#~ msgstr "MAI ESEMÉNYEK:"

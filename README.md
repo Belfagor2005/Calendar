@@ -1,10 +1,9 @@
 ![](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)
-[![Version](https://img.shields.io/badge/Version-1.4-blue.svg)](https://github.com/Belfagor2005/Calendar)
+[![Version](https://img.shields.io/badge/Version-1.5-blue.svg)](https://github.com/Belfagor2005/Calendar)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-2.7%2B%203.X%2B-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![GitHub stars](https://img.shields.io/github/stars/Belfagor2005/Calendar?style=social)](https://github.com/Belfagor2005/Calendar/stargazers)
-
 
 # Calendar Planner for Enigma2
 
@@ -27,6 +26,17 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Event Settings**: Configurable notification duration, colors, and display options
 - **Automatic Monitoring**: Background event checking every 30 seconds
 - **Past Event Cleanup**: Automatic skipping of old non-recurring events to improve performance
+
+### vCard Contact Management System
+- **vCard Import/Export**: Import thousands of contacts from .vcf files with progress tracking
+- **Contact Management**: Full contact database with birthday tracking and age calculation
+- **Contact Browser**: Browse, search, and sort contacts by name, birthday, or category
+- **Birthday Tracking**: Automatically track birthdays and show on calendar
+- **Duplicate Detection**: Smart detection during import to avoid duplicate contacts
+- **Multi-threaded Import**: Import large vCard files without GUI freeze
+- **Contact Sorting**: Sort contacts by name, birthday, or category
+- **Search Function**: Search contacts by name, phone, email, notes
+- **Database Format**: Stores contacts in vCard-like format for compatibility
 
 ### Holiday Import & Management System
 - **International Holiday Database**: Import holidays from Holidata.net for 30+ countries
@@ -63,9 +73,15 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
    - `events_view.py` - Events browser
    - `notification_system.py` - Notification display system
    - `holidays.py` - Holiday import and management
+   - `vcard_importer.py` - vCard import system
+   - `birthday_manager.py` - Contact management
+   - `contacts_view.py` - Contacts browser
+   - `birthday_dialog.py` - Contact add/edit dialog
+   - `database_converter.py` - Database format converter
    - `sounds/` - Audio files directory
    - `buttons/` - Button images directory
    - `base/` - Data storage directory structure
+   - `base/contacts/` - Contact storage directory
 
 3. Audio files setup (optional but recommended):
    - Place `alert.wav`, `notify.wav`, `beep.wav` in `sounds/` directory
@@ -90,6 +106,9 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
   - **Import Holidays**: Import holidays from Holidata.net
   - **Show Today's Holidays**: Display holidays for current day
   - **Show Upcoming Holidays**: View holidays for next 30 days
+  - **Manage Contacts**: Access contact management
+  - **Import vCard**: Import contacts from vCard files
+  - **Database Converter**: Convert between contact database formats
   - **Cleanup Past Events**: Remove old non-recurring events
   - **Exit**: Close the plugin
 
@@ -98,12 +117,30 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Add Event**: Create new events with date, time, and notification settings
 - **Edit Event**: Modify existing events
 - **Delete Event**: Remove unwanted events
-- **Event Types**: 
+- **Event Types**:
   - One-time events (no repeat)
   - Daily recurring events
   - Weekly recurring events (same weekday)
   - Monthly recurring events (same day of month)
   - Yearly recurring events (same date annually)
+
+### Contact Management
+- **Contacts Menu**: Access from main menu to manage contacts
+- **Add Contact**: Manually add new contacts with birthdays
+- **Edit Contact**: Modify existing contact information
+- **Delete Contact**: Remove unwanted contacts
+- **Sort Contacts**: Sort by name, birthday, or category
+- **Search Contacts**: Search by name, phone, email, notes
+- **Birthday Tracking**: Contacts with birthdays automatically shown on calendar
+- **vCard Import**: Import thousands of contacts from .vcf files
+
+### vCard Import Process
+1. Select **Import vCard** from main menu
+2. Navigate to your .vcf or .vcard file
+3. View file information (size, contact count)
+4. Start import with progress tracking
+5. Duplicate contacts are automatically skipped
+6. Contacts are automatically sorted by name
 
 ### Holiday Management
 - **Import Holidays**: Select a country to import holidays for current year
@@ -112,6 +149,13 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Upcoming View**: Preview holidays for the next month
 - **Automatic Integration**: Holidays are saved to existing date files
 - **Color Coding**: Holiday days are automatically colored on calendar
+
+### Database Format Converter
+- **Convert to vCard**: Convert legacy contact format to standard vCard
+- **Convert to Legacy**: Convert vCard format back to legacy format
+- **Automatic Backup**: Creates backup before conversion
+- **Progress Tracking**: Shows conversion progress
+- **Data Preservation**: All contact data preserved during conversion
 
 ### Audio Notifications
 - **Automatic Playback**: Sounds play automatically when events trigger
@@ -123,32 +167,35 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 
 ```
 Calendar/
-├── plugin.py
-├── event_manager.py
-├── event_dialog.py
-├── events_view.py
-├── notification_system.py
-├── holidays.py                   # Holiday import and management
-├── sounds/                       # Audio notification files
-│   ├── beep.wav                  # Short beep (low priority)
-│   ├── beep.mp3                  # MP3 version
-│   ├── notify.wav                # Normal notification tone
-│   ├── notify.mp3                # MP3 version
-│   ├── alert.wav                 # Alert sound (high priority)
-│   └── alert.mp3                 # MP3 version
-├── buttons/
-├── base/
-├── setup.xml
-└── events.json
+├── plugin.py                      # Main plugin entry point
+├── event_manager.py               # Event management core
+├── event_dialog.py                # Event add/edit interface
+├── events_view.py                 # Events browser
+├── notification_system.py         # Notification display system
+├── holidays.py                    # Holiday import and management
+├── vcard_importer.py              # vCard import system
+├── birthday_manager.py            # Contact management core
+├── contacts_view.py               # Contacts browser
+├── birthday_dialog.py             # Contact add/edit dialog
+├── database_converter.py          # Database format converter
+├── sounds/                        # Audio notification files
+│   ├── beep.wav                   # Short beep (low priority)
+│   ├── beep.mp3                   # MP3 version
+│   ├── notify.wav                 # Normal notification tone
+│   ├── notify.mp3                 # MP3 version
+│   ├── alert.wav                  # Alert sound (high priority)
+│   └── alert.mp3                  # MP3 version
+├── buttons/                       # UI button images
+├── base/                          # Data storage
+│   └── contacts/                  # Contact storage (.txt files)
+├── setup.xml                      # Plugin setup configuration
+└── events.json                    # Event database (JSON format)
 ```
 
-### Data File Format
-Date information files are stored in:
-```
-base/[language]/day/YYYYMMDD.txt
-```
+### Data File Formats
 
-Format example (with holiday):
+#### Date Information Files
+Stored in: `base/[language]/day/YYYYMMDD.txt`
 ```ini
 [day]
 date: 2025-12-25
@@ -161,15 +208,27 @@ description: Christmas celebration with family.
 monthpeople: 
 ```
 
-### Holiday Integration
-Holidays are imported and stored directly in date files:
-- **Source**: Holidata.net (JSON Lines format)
-- **Integration**: Updates `holiday:` field in existing date files
-- **Multiple Holidays**: Can store multiple holidays separated by commas
-- **Preservation**: Keeps existing data when adding new holidays
+#### Contact Storage Format
+Each contact stored as `[contact_id].txt` in `base/contacts/`:
+```ini
+[contact]
+FN: John Doe
+BDAY: 1990-05-15
+TEL: +391234567890
+EMAIL: john@example.com
+CATEGORIES: Family, Friends
+NOTE: Birthday reminder
+CREATED: 2024-12-25 10:30:00
+```
 
-### Event Database
-Events are stored in JSON format in `events.json`:
+#### vCard Import/Export
+- **Import**: Supports standard .vcf/.vcard files
+- **Export**: Contacts can be exported to vCard format
+- **Fields Supported**: Name, Birthday, Phone, Email, Address, Organization, Categories, Notes, URL
+- **Format Compatibility**: Works with vCard 2.1 and 3.0
+
+#### Event Database
+Events stored in JSON format in `events.json`:
 ```json
 [
   {
@@ -185,6 +244,13 @@ Events are stored in JSON format in `events.json`:
   }
 ]
 ```
+
+### Holiday Integration
+Holidays are imported and stored directly in date files:
+- **Source**: Holidata.net (JSON Lines format)
+- **Integration**: Updates `holiday:` field in existing date files
+- **Multiple Holidays**: Can store multiple holidays separated by commas
+- **Preservation**: Keeps existing data when adding new holidays
 
 ## ⚙️ Configuration
 
@@ -202,12 +268,28 @@ The plugin includes configuration options accessible through:
 - **Holiday System**: Enable/disable holiday coloring
 - **Show Holiday Indicators**: Toggle "H" marker on holiday days
 - **Holiday Color**: Color for holiday days on calendar
+- **Contact Database Format**: Choose between Legacy or vCard format
 - **Audio Settings**:
   - **Play Sound**: Enable/disable audio notifications
   - **Sound Type**: Choose between Short beep, Notification tone, Alert sound, or None
   - **Auto-start Event Monitor**: Start event monitoring on plugin launch
 
 ## 🔧 Technical Details
+
+### vCard Import System
+- **Multi-threaded Architecture**: Imports large vCard files without blocking GUI
+- **Progress Tracking**: Real-time progress bar with contact count
+- **Duplicate Detection**: Smart duplicate checking during import
+- **Error Handling**: Graceful handling of malformed vCard entries
+- **Performance**: Efficient memory usage for large files
+- **Field Parsing**: Support for standard vCard fields with charset detection
+
+### Contact Management
+- **Birthday Calculation**: Automatic age calculation from birth dates
+- **Sorting Algorithms**: Efficient sorting by name, birthday, category
+- **Search Functionality**: Fast text search across multiple fields
+- **File-based Storage**: Each contact stored in separate .txt file
+- **Automatic Backups**: Before database format conversion
 
 ### Event Notification Logic
 - Background monitoring every 30 seconds
@@ -232,50 +314,133 @@ The plugin includes configuration options accessible through:
 
 ### Key Components
 1. **EventManager**: Central event handling with JSON storage and audio playback
-2. **HolidaysManager**: Holiday import, caching, and display management
-3. **EventDialog**: User interface for event creation/editing
-4. **EventsView**: Browser for viewing and managing events
-5. **HolidaysImportScreen**: Interface for importing holidays by country
-6. **NotificationSystem**: Display system for visual alerts
-7. **AudioEngine**: Integrated sound playback using Enigma2 services
+2. **BirthdayManager**: Contact management with vCard import/export
+3. **VCardImporter**: vCard file parser and importer with progress tracking
+4. **HolidaysManager**: Holiday import, caching, and display management
+5. **EventDialog**: User interface for event creation/editing
+6. **BirthdayDialog**: Contact add/edit interface with field highlighting
+7. **ContactsView**: Contact browser with sorting and search
+8. **DatabaseConverter**: Format conversion between Legacy and vCard
+9. **EventsView**: Browser for viewing and managing events
+10. **HolidaysImportScreen**: Interface for importing holidays by country
+11. **NotificationSystem**: Display system for visual alerts
+12. **AudioEngine**: Integrated sound playback using Enigma2 services
 
 ### Dependencies
-- Python standard libraries: `datetime`, `json`, `os`, `urllib2`
+- Python standard libraries: `datetime`, `json`, `os`, `urllib2`, `threading`
 - Enigma2 components: `eTimer`, `ActionMap`, `Screen`, `eServiceReference`
 - Custom notification system for visual alerts
 - Audio files (included in repository)
 
+## 🎮 Key Controls
+
+### Main Calendar
+- **OK**: Open main menu
+- **RED**: Previous month
+- **GREEN**: Next month
+- **YELLOW**: Previous day
+- **BLUE**: Next day
+- **0 (ZERO)**: Open event management
+- **LEFT/RIGHT**: Previous/Next day
+- **UP/DOWN**: Previous/Next month
+- **MENU**: Configuration
+- **INFO/EPG**: About dialog
+
+### Event Dialog
+- **OK**: Edit current field
+- **RED**: Cancel
+- **GREEN**: Save event
+- **YELLOW**: Delete event (edit mode only)
+- **UP/DOWN**: Navigate between fields
+- **LEFT/RIGHT**: Change selection options
+
+### Events View
+- **OK**: Edit selected event
+- **RED**: Add new event
+- **GREEN**: Edit selected event
+- **YELLOW**: Delete selected event
+- **BLUE**: Back to calendar
+- **UP/DOWN**: Navigate event list
+
+### Contacts View
+- **OK**: Edit selected contact
+- **RED**: Add new contact
+- **GREEN**: Edit selected contact
+- **YELLOW**: Delete selected contact
+- **BLUE**: Toggle sort mode (Name/Birthday/Category)
+- **UP/DOWN**: Navigate contact list
+
+### vCard Importer
+- **OK**: Select file
+- **RED**: Cancel
+- **GREEN**: Import selected file
+- **YELLOW**: View file info (size, contacts)
+- **BLUE**: Refresh file list
+
+### Database Converter
+- **OK**: Show statistics
+- **RED**: Cancel
+- **GREEN**: Convert to vCard format
+- **BLUE**: Convert to legacy format
+
+### Birthday Dialog (Contact Editor)
+- **OK**: Edit current highlighted field
+- **RED**: Cancel
+- **GREEN**: Save contact
+- **YELLOW**: Next field
+- **BLUE**: Delete contact / Clear all fields
+- **UP/DOWN**: Navigate between fields
+- **Field Highlighting**: Current field highlighted with color background
+
 ## 🐛 Troubleshooting
 
 ### Common Issues
-1. **No audio notifications**:
+1. **vCard Import Issues**:
+   - Check file format is .vcf or .vcard
+   - Ensure file contains valid vCard data
+   - Check file permissions: `chmod 644 filename.vcf`
+   - Large files may take time to process
+
+2. **No audio notifications**:
    - Check audio files exist in `sounds/` directory
    - Verify "Play Sound" is enabled in settings
    - Ensure audio format is WAV or MP3
    - Check file permissions: `chmod 644 sounds/*`
 
-2. **Holidays not showing/coloring**:
+3. **Contacts not showing**:
+   - Verify contacts exist in `base/contacts/` directory
+   - Check file permissions on contacts folder
+   - Ensure birthday format is YYYY-MM-DD
+   - Restart plugin to reload contacts
+
+4. **Holidays not showing/coloring**:
    - Verify holiday system is enabled in settings
    - Check internet connection for holiday import
    - Ensure `holidays.py` file exists and is executable
    - Import holidays for your country first
 
-3. **Audio interrupts TV/radio permanently**:
+5. **Audio interrupts TV/radio permanently**:
    - Normal behavior: audio stops automatically after 3 seconds
    - Previous service should restore automatically
    - Check for errors in `/tmp/enigma2.log`
 
-4. **No notifications appearing**:
+6. **Database conversion errors**:
+   - Automatic backup created before conversion
+   - Check disk space availability
+   - Verify contact files are not corrupted
+   - Manual backup available in plugin directory
+
+7. **No notifications appearing**:
    - Check event system is enabled in settings
    - Verify notification duration is set correctly
    - Ensure event time has passed the scheduled time
 
-5. **Events/Holidays not saving**:
+8. **Events/Holidays not saving**:
    - Check write permissions in plugin directory
    - Verify `events.json` file exists and is writable
    - Ensure `base/` directory has write permissions
 
-6. **Calendar not displaying**:
+9. **Calendar not displaying**:
    - Ensure all skin files are present
    - Check for Python errors in debug log
 
@@ -284,6 +449,12 @@ Enable debug messages by checking the plugin logs:
 ```
 # Event system debug
 tail -f /tmp/enigma2.log | grep EventManager
+
+# vCard import debug
+tail -f /tmp/enigma2.log | grep VCardImporter
+
+# Contact management debug
+tail -f /tmp/enigma2.log | grep BirthdayManager
 
 # Holiday system debug
 tail -f /tmp/enigma2.log | grep Holidays
@@ -301,35 +472,48 @@ tail -f /tmp/enigma2.log | grep Calendar
 - Initial release with basic calendar functionality
 
 ### v1.1
-- **Added**: Complete event management system
-- **Added**: Smart notifications with configurable timing
-- **Added**: Recurring event support (daily, weekly, monthly, yearly)
-- **Added**: Visual indicators for days with events
-- **Added**: Event browser and management interface
-- **Added**: Configuration options for event system
-- **Improved**: Navigation and user interface
-- **Fixed**: Various bug fixes and performance improvements
-- **Added**: Complete audio notification system with priority-based sounds
-- **Added**: Support for WAV and MP3 audio formats
-- **Added**: Automatic audio playback for event notifications
-- **Added**: Service restoration after audio playback
-- **Added**: Past event skipping for improved performance
-- **Added**: Cleanup past events feature
-- **Added**: Color configuration with hexadecimal color codes
-- **Enhanced**: Event checking algorithm efficiency
-- **Improved**: Error handling and debugging information
-- **Fixed**: Skin warnings and widget count mismatches
-- **Fixed**: Recursion errors in event management
-- **Added**: International holiday import system from Holidata.net
-- **Added**: Automatic holiday coloring on calendar
-- **Added**: "H" indicator for holiday days
-- **Added**: Country selection for holiday import (30+ countries)
-- **Added**: Smart cache system for fast holiday loading
-- **Added**: Today's and upcoming holidays display
-- **Added**: Holiday configuration options (enable/color/indicators)
-- **Added**: Holiday integration with existing date files
-- **Improved**: Calendar rendering with holiday/event priority system
-- **Enhanced**: Day selection with blue background over holidays/events
+- Added complete event management system
+- Added smart notifications with configurable timing
+- Added recurring event support (daily, weekly, monthly, yearly)
+- Added visual indicators for days with events
+- Added event browser and management interface
+
+### v1.2
+- Added complete audio notification system with priority-based sounds
+- Added support for WAV and MP3 audio formats
+- Added automatic audio playback for event notifications
+- Added service restoration after audio playback
+- Added past event skipping for improved performance
+
+### v1.3
+- Added international holiday import system from Holidata.net
+- Added automatic holiday coloring on calendar
+- Added "H" indicator for holiday days
+- Added country selection for holiday import (30+ countries)
+- Added smart cache system for fast holiday loading
+- Added today's and upcoming holidays display
+
+### v1.4
+- Improved calendar rendering with holiday/event priority system
+- Enhanced day selection with blue background over holidays/events
+- Fixed skin warnings and widget count mismatches
+- Improved error handling and debugging information
+- Enhanced navigation and user interface
+
+### v1.5 - Current Version
+- **NEW**: vCard import/export system for contacts
+- **NEW**: Complete contact management with birthday tracking
+- **NEW**: Contact browser with sorting by name, birthday, category
+- **NEW**: Multi-threaded vCard import with progress tracking
+- **NEW**: Database format converter (Legacy ↔ vCard)
+- **NEW**: Search function for contacts
+- **NEW**: Duplicate detection during vCard import
+- **NEW**: Birthday dialog with field highlighting
+- **NEW**: Contact storage in vCard-like format
+- **Improved**: Memory management for large contact imports
+- **Enhanced**: User interface for contact management
+- **Added**: Automatic backups before database conversion
+- **Fixed**: Various performance improvements and bug fixes
 
 ## 🤝 Contributing
 
@@ -339,6 +523,7 @@ Contributions are welcome! Please ensure:
 - All changes are tested on Enigma2 receivers
 - Audio files follow naming convention: `beep`, `notify`, `alert` with `.wav` or `.mp3` extension
 - Holiday data follows JSON Lines format compatible with Holidata.net
+- vCard import supports standard vCard 2.1/3.0 format
 
 ## 📄 License
 
@@ -348,6 +533,7 @@ This plugin is open-source software. See the LICENSE file for details.
 
 - **Original Developer**: Sirius0103
 - **Modifications & Event System**: Lululla
+- **vCard System & Contact Management**: Lululla
 - **Audio Notification System**: Integrated by Lululla
 - **Holiday Import System**: Integrated by Lululla
 - **Homepage**: www.gisclub.tv
@@ -357,4 +543,6 @@ This plugin is open-source software. See the LICENSE file for details.
 *Note: This plugin requires an Enigma2-based receiver (OpenPLi, OpenATV, etc.)*
 *Audio notifications work best with receivers that support audio playback via eServiceReference*
 *Holiday import requires internet connection to access Holidata.net*
+*vCard import requires .vcf or .vcard files in standard vCard format*
+*Contact management requires sufficient disk space for contact storage*
 ```
