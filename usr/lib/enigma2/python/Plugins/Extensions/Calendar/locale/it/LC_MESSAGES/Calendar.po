@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 14:37+0100\n"
-"PO-Revision-Date: 2025-12-24 20:31+0100\n"
+"PO-Revision-Date: 2025-12-25 00:33+0100\n"
 "Last-Translator: \n"
 "Language-Team: <sirius.al@rambler.ru>\n"
 "Language: it\n"
@@ -30,9 +30,8 @@ msgstr "Attivo:"
 msgid "Add"
 msgstr "Aggiungi"
 
-#, fuzzy
 msgid "Add Contact"
-msgstr "Aggiungi Evento"
+msgstr "Aggiungi Contatto"
 
 msgid "Add Event"
 msgstr "Aggiungi Evento"
@@ -47,7 +46,7 @@ msgid "August"
 msgstr "Agosto"
 
 msgid "Auto-convert to vCard"
-msgstr ""
+msgstr "Conversione automatica in vCard"
 
 msgid "Automatically convert legacy files to vCard format on first use"
 msgstr "Converti automaticamente i file legacy in formato vCard al primo utilizzo"
@@ -56,16 +55,16 @@ msgid "Back"
 msgstr "Torna"
 
 msgid "Birthday (YYYY-MM-DD)"
-msgstr ""
+msgstr "Data di nascita (AAAA-MM-GG)"
 
 msgid "Blue"
 msgstr "Blu"
 
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
-msgstr ""
+msgstr "CONTATTI CON COMPLEANNI OGGI:"
 
 msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
-msgstr ""
+msgstr "CONTATTI CON COMPLEANNI OGGI:\n"
 
 msgid "Calendar"
 msgstr "Calendario"
@@ -88,15 +87,14 @@ msgstr "Calendario con eventi e notifiche"
 msgid "Cancel"
 msgstr "Annulla"
 
-#, fuzzy
 msgid "Cancelling..."
-msgstr "Annulla"
+msgstr "Annullamento..."
 
 msgid "Cannot delete: Contact has no ID"
-msgstr ""
+msgstr "Impossibile eliminare: il contatto non ha ID"
 
 msgid "Categories (comma separated)"
-msgstr ""
+msgstr "Categorie (separate da virgole)"
 
 msgid "Check for Updates"
 msgstr "Controlla gli aggiornamenti"
@@ -114,7 +112,7 @@ msgid "Clear ALL holiday entries from all date files?"
 msgstr "Cancellare TUTTE le voci delle festività da tutti i file data?"
 
 msgid "Clear All"
-msgstr ""
+msgstr "Pulisci tutto"
 
 msgid "Clear Holiday Database"
 msgstr "Cancella il database delle festività"
@@ -122,61 +120,56 @@ msgstr "Cancella il database delle festività"
 msgid "Close"
 msgstr "Chiudi"
 
-#, fuzzy
 msgid "Color days with holidays"
-msgstr "Colora i giorni con le festività."
+msgstr "Colora i giorni con le festività"
 
-#, fuzzy
 msgid "Color for days with events"
-msgstr "Colora le giornate con eventi."
+msgstr "Colora le giornate con eventi"
 
-#, fuzzy
 msgid "Color for holiday days"
-msgstr "Colori per i giorni di festa."
+msgstr "Colori per i giorni di festa"
 
 msgid "Completed"
-msgstr ""
+msgstr "Completato"
 
-#, fuzzy
 msgid "Contact '{0}' deleted successfully"
-msgstr "Aggiornamento completato con successo!"
+msgstr "Contatto '{0}' eliminato con successo"
 
 msgid "Contacts: {0} (Search: '{1}')"
-msgstr ""
+msgstr "Contatti: {0} (Cerca: '{1}')"
 
 msgid "Contacts: {0} ({1})"
-msgstr ""
+msgstr "Contatti: {0} ({1})"
 
-#, fuzzy
 msgid "Conversion completed successfully!"
-msgstr "Aggiornamento completato con successo!"
+msgstr "Conversione completata con successo!"
 
 msgid "Convert all existing data to vCard format?"
-msgstr ""
+msgstr "Convertire tutti i dati esistenti in formato vCard?"
 
 msgid "Convert to Legacy"
-msgstr ""
+msgstr "Converti in Legacy"
 
 msgid "Convert to legacy format"
-msgstr ""
+msgstr "Converti in formato legacy"
 
 msgid "Convert to vCard"
-msgstr ""
+msgstr "Converti in vCard"
 
 msgid "Convert to vCard format"
-msgstr ""
+msgstr "Converti in formato vCard"
 
 msgid "Converted: {0} files, Errors: {1}"
-msgstr ""
+msgstr "Convertiti: {0} file, Errori: {1}"
 
 msgid "Converting to Legacy..."
-msgstr ""
+msgstr "Conversione in Legacy..."
 
 msgid "Converting to vCard..."
-msgstr ""
+msgstr "Conversione in vCard..."
 
 msgid "Converting: {0} ({1}/{2})"
-msgstr ""
+msgstr "Conversione: {0} ({1}/{2})"
 
 msgid "Could not check for updates. Check internet connection."
 msgstr "Impossibile verificare la presenza di aggiornamenti. Controllare la connessione Internet."
@@ -185,19 +178,19 @@ msgid "Could not check for updates: %s"
 msgstr "Impossibile verificare la presenza di aggiornamenti: %s"
 
 msgid "Current format: {0}"
-msgstr ""
+msgstr "Formato Corrente: {0}"
 
 msgid "Database Converter"
-msgstr ""
+msgstr "Convertitore Database"
 
 msgid "Database Statistics"
-msgstr ""
+msgstr "Statistiche del database"
 
 msgid "Database converted to vCard format"
-msgstr ""
+msgstr "Database convertito in formato vCard"
 
 msgid "Database format"
-msgstr ""
+msgstr "Formato Database"
 
 msgid "Date"
 msgstr "Data"
@@ -233,14 +226,13 @@ msgid "Description:"
 msgstr "Descrizione:"
 
 msgid "E:{0}"
-msgstr ""
+msgstr "E:{0}"
 
 msgid "Edit"
 msgstr "Modifica"
 
-#, fuzzy
 msgid "Edit Contact"
-msgstr "Modifica Dati"
+msgstr "Modifica Contatti"
 
 msgid "Edit Date"
 msgstr "Modifica Dati"
@@ -260,19 +252,17 @@ msgstr "Modifica Mese Persone"
 msgid "Edit Sign"
 msgstr "Modifica Segno"
 
-#, fuzzy
 msgid "Edit: {0}"
-msgstr "Modifica"
+msgstr "Modifica: {0}"
 
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 msgid "Enable debug mode"
 msgstr "Abilita la modalità debug"
 
-#, fuzzy
 msgid "Enable event management with date/time"
-msgstr "Abilita la gestione degli eventi con data/ora."
+msgstr "Abilita la gestione degli eventi con data/ora"
 
 msgid "Enable event system"
 msgstr "Abilita la colorazione delle vacanze"
@@ -286,19 +276,17 @@ msgstr "Abilita le notifiche"
 msgid "Enter"
 msgstr "Invio"
 
-#, fuzzy
 msgid "Error deleting contact"
-msgstr "Errore durante il salvataggio dei dati"
+msgstr "Errore durante l'eliminazione del contatto"
 
 msgid "Error deleting contact '{0}'"
-msgstr ""
+msgstr "Errore durante l'eliminazione del contatto '{0}'"
 
 msgid "Error opening event dialog"
 msgstr "Errore durante l'apertura della finestra di dialogo dell'evento"
 
-#, fuzzy
 msgid "Error saving contact"
-msgstr "Errore durante il salvataggio dei dati"
+msgstr "Errore durante il salvataggio dei contatti"
 
 msgid "Error saving data"
 msgstr "Errore durante il salvataggio dei dati"
@@ -306,9 +294,8 @@ msgstr "Errore durante il salvataggio dei dati"
 msgid "Error: %s"
 msgstr "Errore: %s"
 
-#, fuzzy
 msgid "Errors: {0}"
-msgstr "Errore: %s"
+msgstr "Errori: {0}"
 
 msgid "Event"
 msgstr "Evento"
@@ -323,19 +310,19 @@ msgid "Failed to create backup. Update cancelled."
 msgstr "Impossibile creare il backup. Aggiornamento annullato."
 
 msgid "Failed to start import"
-msgstr ""
+msgstr "Impossibile avviare l'importazione"
 
 msgid "February"
 msgstr "Febbraio"
 
 msgid "Field {0}/{1}: {2}"
-msgstr ""
+msgstr "Campo {0}/{1}: {2}"
 
 msgid "File not found!"
 msgstr "File non trovato!"
 
 msgid "File: {0}"
-msgstr ""
+msgstr "File: {0}"
 
 msgid "Files is Empty..."
 msgstr "File vuoto..."
@@ -356,7 +343,7 @@ msgid "Holiday:"
 msgstr "Festività:"
 
 msgid "I:{0}"
-msgstr ""
+msgstr "I:{0}"
 
 msgid "Import"
 msgstr "Importa"
@@ -368,34 +355,31 @@ msgid "Import Holidays"
 msgstr "Importa Festività"
 
 msgid "Import completed - Sorting contacts..."
-msgstr ""
+msgstr "Importazione completata - Ordinamento dei contatti in corso..."
 
-#, fuzzy
 msgid "Import completed!"
-msgstr "Importa Festività"
+msgstr "Importazione completata!"
 
-#, fuzzy
 msgid "Import error: {0}"
-msgstr "Errore di aggiornamento: %s"
+msgstr "Errore importazione: {0}"
 
 msgid "Import vCard File"
-msgstr ""
+msgstr "Importa file vCard"
 
-#, fuzzy
 msgid "Imported: {0}"
-msgstr "Importa"
+msgstr "Importati: {0}"
 
 msgid "Imported: {0} contacts"
-msgstr ""
+msgstr "Importati: {0} contatti"
 
 msgid "Importing vCard File"
-msgstr ""
+msgstr "Importazione del file vCard"
 
 msgid "Initializing..."
-msgstr ""
+msgstr "Inizializzazione in corso..."
 
 msgid "Invalid birthday format. Use YYYY-MM-DD"
-msgstr ""
+msgstr "Formato data di nascita non valido. Utilizzare AAAA-MM-GG"
 
 msgid "January"
 msgstr "Gennaio"
@@ -407,23 +391,22 @@ msgid "June"
 msgstr "Giugno"
 
 msgid "Language: {0}"
-msgstr ""
+msgstr "Lingua: {0}"
 
 msgid "Legacy files: {0}"
-msgstr ""
+msgstr "File legacy: {0}"
 
 msgid "Legacy format (text files)"
-msgstr ""
+msgstr "Formato legacy (file di testo)"
 
 msgid "Legacy: {0}"
-msgstr ""
+msgstr "Legacy: {0}"
 
 msgid "Legacy: {0} files | vCard: {1} files"
-msgstr ""
+msgstr "Legacy: {0} file | vCard: {1} file"
 
-#, fuzzy
 msgid "Manage Contacts"
-msgstr "Gestisci eventi"
+msgstr "Gestisci Contatti"
 
 msgid "Manage Events"
 msgstr "Gestisci eventi"
@@ -435,7 +418,7 @@ msgid "May"
 msgstr "Maggio"
 
 msgid "Modified: {0}"
-msgstr ""
+msgstr "Modificato: {0}"
 
 msgid "Mon"
 msgstr "Lun"
@@ -453,31 +436,31 @@ msgid "Month People:"
 msgstr "Mese Persona:"
 
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 msgid "Name is required"
-msgstr ""
+msgstr "Il nome è obbligatorio"
 
 msgid "New Date"
 msgstr "Nuovi Dati"
 
 msgid "Next Field"
-msgstr ""
+msgstr "Campo successivo"
 
 msgid "No contact selected"
-msgstr ""
+msgstr "Nessun contatto selezionato"
 
 msgid "No file in database..."
 msgstr "Nessun file nel database..."
 
 msgid "No file selected"
-msgstr ""
+msgstr "Nessun file selezionato"
 
 msgid "No legacy files found"
-msgstr ""
+msgstr "Nessun file legacy trovato"
 
 msgid "No legacy files found to convert"
-msgstr ""
+msgstr "Nessun file legacy trovato da convertire"
 
 msgid "No past events to remove"
 msgstr "Nessun evento passato da rimuovere"
@@ -486,13 +469,13 @@ msgid "No sound"
 msgstr "Nessun Suono"
 
 msgid "No vCard files found"
-msgstr ""
+msgstr "Nessun file vCard trovato"
 
 msgid "No vCard files found to convert"
-msgstr ""
+msgstr "Nessun file vCard trovato da convertire"
 
 msgid "Notes"
-msgstr ""
+msgstr "Note"
 
 msgid "Notification sound type"
 msgstr "Tipo di Tono di Notifica"
@@ -516,14 +499,13 @@ msgid "Orange"
 msgstr "Arancione"
 
 msgid "Paths:"
-msgstr ""
+msgstr "Percorso:"
 
 msgid "Phone"
-msgstr ""
+msgstr "Telefono"
 
-#, fuzzy
 msgid "Play a sound when event notification appears"
-msgstr "Riproduci un suono quando appare la notifica dell'evento."
+msgstr "Riproduci un suono quando appare la notifica dell'evento"
 
 msgid "Play sound with notifications"
 msgstr "Riproduci suono con notifiche"
@@ -535,25 +517,25 @@ msgid "Plugin is up to date"
 msgstr "Il plugin è aggiornato"
 
 msgid "Press GREEN to import"
-msgstr ""
+msgstr "Premi VERDE per importare"
 
 msgid "Press TEXT to search"
-msgstr ""
+msgstr "Premi TESTO per cercare"
 
 msgid "Progress: {0}%"
-msgstr ""
+msgstr "Progresso: {0}%"
 
 msgid "Ready"
-msgstr ""
+msgstr "Pronto"
 
 msgid "Red"
 msgstr "Rosso"
 
 msgid "Refresh"
-msgstr ""
+msgstr "Ricarica"
 
 msgid "Refreshed"
-msgstr ""
+msgstr "Ricaricato"
 
 msgid "Remove"
 msgstr "Rimuovi"
@@ -571,7 +553,7 @@ msgid "Repeat:"
 msgstr "Ripeti:"
 
 msgid "S:{0}"
-msgstr ""
+msgstr "S:{0}"
 
 msgid "SCHEDULED EVENTS:"
 msgstr "EVENTI IN PROGRAMMA:"
@@ -582,22 +564,20 @@ msgstr "Sab"
 msgid "Save"
 msgstr "Salva"
 
-#, fuzzy
 msgid "Search contacts"
-msgstr "Gestisci eventi"
+msgstr "Cerca Contatti"
 
-#, fuzzy
 msgid "Search:"
-msgstr "Marzo"
+msgstr "Cerca:"
 
 msgid "Select a file, not a folder"
-msgstr ""
+msgstr "Seleziona un file, non una cartella"
 
 msgid "Select vCard file to import"
-msgstr ""
+msgstr "Seleziona il file vCard da importare"
 
 msgid "Selected: {0}"
-msgstr ""
+msgstr "Selezionato: {0}"
 
 msgid "September"
 msgstr "Settembre"
@@ -605,17 +585,14 @@ msgstr "Settembre"
 msgid "Short beep"
 msgstr "Beep breve"
 
-#, fuzzy
 msgid "Show 'H' marker on holiday days"
-msgstr "Mostrare il marcatore 'H' nei giorni festivi."
+msgstr "Mostrare il marcatore 'H' nei giorni festivi"
 
-#, fuzzy
 msgid "Show Calendar in main information menu"
-msgstr "Mostra Calendario nel menu principale delle informazioni."
+msgstr "Mostra Calendario nel menu principale delle informazioni"
 
-#, fuzzy
 msgid "Show Calendar in menu"
-msgstr "Mostra Calendario nel menu:"
+msgstr "Mostra Calendario nel menu"
 
 msgid "Show Today's Holidays"
 msgstr "Mostra le festività di oggi"
@@ -623,9 +600,8 @@ msgstr "Mostra le festività di oggi"
 msgid "Show Upcoming Holidays"
 msgstr "Mostra le prossime festività"
 
-#, fuzzy
 msgid "Show debug messages in console/log"
-msgstr "Mostra i messaggi di debug nella console/registro."
+msgstr "Mostra i messaggi di debug nella console/registro"
 
 msgid "Show event indicators"
 msgstr "Mostra indicatori di evento"
@@ -633,13 +609,11 @@ msgstr "Mostra indicatori di evento"
 msgid "Show holiday indicators"
 msgstr "Mostra indicatori festività"
 
-#, fuzzy
 msgid "Show markers on days with events"
-msgstr "Mostra i marcatori nei giorni con eventi."
+msgstr "Mostra i marcatori nei giorni con eventi"
 
-#, fuzzy
 msgid "Show notifications for upcoming events"
-msgstr "Mostra notifiche per i prossimi eventi."
+msgstr "Mostra notifiche per i prossimi eventi"
 
 msgid "Sign"
 msgstr "Segno"
@@ -648,34 +622,34 @@ msgid "Sign:"
 msgstr "Segno:"
 
 msgid "Size: {0:.1f} MB"
-msgstr ""
+msgstr "Dimensione: {0:.1f} MB"
 
 msgid "Skipped: {0}"
-msgstr ""
+msgstr "Saltato: {0}"
 
 msgid "Skipped: {0} (duplicates)"
-msgstr ""
+msgstr "Saltato: {0} (duplicati)"
 
 msgid "Sort"
-msgstr ""
+msgstr "Ordina"
 
 msgid "Sorted by birthday"
-msgstr ""
+msgstr "Ordinato per Compleanno"
 
 msgid "Sorted by category"
-msgstr ""
+msgstr "Ordinato per Nome"
 
 msgid "Sorted by name"
-msgstr ""
+msgstr "Ordinato per Nome"
 
 msgid "Sorted by: Birthday"
-msgstr ""
+msgstr "Ordinato per: Compleanno"
 
 msgid "Sorted by: Category"
-msgstr ""
+msgstr "Ordinato per: Categoria"
 
 msgid "Sorted by: Name"
-msgstr ""
+msgstr "Ordinato per: Nome"
 
 msgid "Sun"
 msgstr "Dom"
@@ -699,14 +673,13 @@ msgid "Title:"
 msgstr "Titolo:"
 
 msgid "Total: {0}"
-msgstr ""
+msgstr "Totale: {0}"
 
 msgid "Tue"
 msgstr "Mar"
 
-#, fuzzy
 msgid "Type of sound to play with notifications"
-msgstr "Tipo di suono da riprodurre con le notifiche."
+msgstr "Tipo di suono da riprodurre con le notifiche"
 
 msgid "Update available!"
 msgstr "Aggiornamento disponibile!"
@@ -742,13 +715,13 @@ msgid "Updating plugin... Please wait"
 msgstr "Aggiornamento del plugin... Attendi"
 
 msgid "Using legacy database format"
-msgstr ""
+msgstr "Utilizzo del formato di database legacy"
 
 msgid "View"
-msgstr ""
+msgstr "Mostra"
 
 msgid "Waiting for thread to stop..."
-msgstr ""
+msgstr "In attesa che il thread si interrompa..."
 
 msgid "Wed"
 msgstr "Mer"
@@ -766,22 +739,22 @@ msgid "no"
 msgstr "no"
 
 msgid "vCard files: {0}"
-msgstr ""
+msgstr "vCard:: file  {0}"
 
 msgid "vCard format (standard)"
-msgstr ""
+msgstr "vCard: formato (standard)"
 
 msgid "vCard import feature not available: {0}"
-msgstr ""
+msgstr "vCard: La funzionalità di importazione non è disponibile: {0}"
 
 msgid "vCard: {0}"
-msgstr ""
+msgstr "vCard: {0}"
 
 msgid "yes"
 msgstr "si"
 
 msgid "{0}"
-msgstr ""
+msgstr "{0}"
 
 #, python-format
 #~ msgid ""
