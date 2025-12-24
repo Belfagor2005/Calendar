@@ -45,7 +45,10 @@ class SimpleNotifyWidget(Screen):
 
     def _setupUI(self):
         """Setup UI after layout completion"""
-        self.instance.setAnimationMode(0)  # Disable animations
+        try:
+            self.instance.setAnimationMode(0)  # Disable animations
+        except AttributeError:
+            pass
 
     def updateMessage(self, text):
         """Update notification text"""
