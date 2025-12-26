@@ -308,9 +308,6 @@ msgstr "Ошибка сохранения данных"
 msgid "Error saving data"
 msgstr "Ошибка сохранения данных"
 
-msgid "Error: %s"
-msgstr "Ошибка: %s"
-
 #, fuzzy
 msgid "Errors: {0}"
 msgstr "Ошибка: %s"
@@ -822,6 +819,9 @@ msgstr ""
 
 #~ msgid "Cyan"
 #~ msgstr "Бирюзовый"
+
+#~ msgid "Error: %s"
+#~ msgstr "Ошибка: %s"
 
 #~ msgid "Exit"
 #~ msgstr "Выход"

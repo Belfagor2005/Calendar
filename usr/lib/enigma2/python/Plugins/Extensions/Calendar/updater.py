@@ -273,7 +273,7 @@ from os import makedirs
 from os.path import join, exists
 from sys import version_info
 
-from . import _, PLUGIN_VERSION, plugin_path
+from . import _, PLUGIN_VERSION, PLUGIN_PATH, USER_AGENT
 
 if version_info[0] == 3:
     from urllib.request import urlopen, Request
@@ -281,7 +281,6 @@ else:
     from urllib2 import urlopen, Request
 
 
-USER_AGENT = "Calendar-Enigma2-Updater/%s" % PLUGIN_VERSION
 
 
 class PluginUpdater:
@@ -297,7 +296,7 @@ class PluginUpdater:
     INSTALLER_URL = "https://raw.githubusercontent.com/Belfagor2005/Calendar/main/installer.sh"
 
     # Backup directory
-    BACKUP_DIR = "/tmp/Calendar_backup"
+    BACKUP_DIR = "/tmp/calendar_backup"
 
     def __init__(self):
         self.current_version = PLUGIN_VERSION
@@ -468,13 +467,13 @@ class PluginUpdater:
             backup_name = "backup_v%s_%s" % (self.current_version, timestamp)
             self.backup_path = join(self.BACKUP_DIR, backup_name)
 
-            if exists(plugin_path):
+            if exists(PLUGIN_PATH):
                 print("Creating backup to: %s" % self.backup_path)
-                shutil.copytree(plugin_path, self.backup_path)
+                shutil.copytree(PLUGIN_PATH, self.backup_path)
                 print("Backup created successfully")
                 return True
             else:
-                print("Plugin path not found: %s" % plugin_path)
+                print("Plugin path not found: %s" % PLUGIN_PATH)
                 return False
         except Exception as e:
             print("Backup failed: %s" % e)
@@ -487,11 +486,11 @@ class PluginUpdater:
                 print("Restoring from backup: %s" % self.backup_path)
 
                 # Remove current plugin
-                if exists(plugin_path):
-                    shutil.rmtree(plugin_path)
+                if exists(PLUGIN_PATH):
+                    shutil.rmtree(PLUGIN_PATH)
 
                 # Restore from backup
-                shutil.copytree(self.backup_path, plugin_path)
+                shutil.copytree(self.backup_path, PLUGIN_PATH)
                 print("Restored successfully")
                 return True
             else:

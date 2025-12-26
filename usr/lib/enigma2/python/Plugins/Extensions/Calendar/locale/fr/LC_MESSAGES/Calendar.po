@@ -292,9 +292,6 @@ msgstr ""
 msgid "Error saving data"
 msgstr ""
 
-msgid "Error: %s"
-msgstr ""
-
 msgid "Errors: {0}"
 msgstr ""
 

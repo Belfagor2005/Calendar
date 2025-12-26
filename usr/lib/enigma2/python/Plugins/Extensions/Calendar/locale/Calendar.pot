@@ -5,6 +5,9 @@
 
 
 
+
+
+
 msgid "..."
 msgstr ""
 
@@ -279,9 +282,6 @@ msgid "Error saving contact"
 msgstr ""
 
 msgid "Error saving data"
-msgstr ""
-
-msgid "Error: %s"
 msgstr ""
 
 msgid "Errors: {0}"

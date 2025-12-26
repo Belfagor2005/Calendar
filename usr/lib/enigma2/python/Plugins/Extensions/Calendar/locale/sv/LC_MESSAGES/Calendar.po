@@ -302,9 +302,6 @@ msgstr "Chyba pri načítaní kategórie"
 msgid "Error saving data"
 msgstr "Chyba pri načítaní kategórie"
 
-msgid "Error: %s"
-msgstr "Chyba: %s"
-
 #, fuzzy
 msgid "Errors: {0}"
 msgstr "Chyba: %s"
@@ -1081,6 +1078,9 @@ msgstr ""
 
 #~ msgid "Error loading information"
 #~ msgstr "Chyba pri načítavaní informácií"
+
+#~ msgid "Error: %s"
+#~ msgstr "Chyba: %s"
 
 #, fuzzy
 #~ msgid "Event Settings"

@@ -17,6 +17,9 @@
 #  • Configurable notification settings                   #
 #  • Multi-language support for date data                 #
 #  • Holiday import system with automatic coloring        #
+#  • vCard (.vcf) import/export system                    #
+#  • Contact management with birthdays                    #
+#  • Database format converter (Legacy ↔ vCard)           #
 #                                                         #
 #  EVENT SYSTEM:                                          #
 #  • Smart notifications (0-60 minutes before event)      #
@@ -45,6 +48,23 @@
 #  • Today's and upcoming holidays display                #
 #  • Integration with existing date files                 #
 #                                                         #
+#  VCARD & CONTACT SYSTEM:                                #
+#  • Import thousands of contacts from .vcf files         #
+#  • Multi-threaded import (no GUI freeze)                #
+#  • Contact management with birthdays                    #
+#  • Birthday tracking with age calculation               #
+#  • Contact sorting (name, birthday, category)           #
+#  • Search by name, phone, email, notes                  #
+#  • Duplicate detection during import                    #
+#  • Progress bar with cancel option                      #
+#                                                         #
+#  DATABASE MANAGEMENT:                                   #
+#  • Convert between Legacy and vCard formats             #
+#  • Creates automatic backups before conversion          #
+#  • Preserves all data during conversion                 #
+#  • Progress indicator during conversion                 #
+#  • Consistency checking between formats                 #
+#                                                         #
 #  DATE MANAGEMENT:                                       #
 #  • Create, edit, remove date information                #
 #  • Virtual keyboard for field editing                   #
@@ -58,6 +78,7 @@
 #  • Holiday days highlighted in orange (configurable)    #
 #  • Asterisk (*) indicator for days with events          #
 #  • "H" indicator for holiday days                       #
+#  • Birthday contacts display in description             #
 #  • Week numbers display                                 #
 #  • Smooth month navigation                              #
 #  • Day selection with blue background                   #
@@ -74,10 +95,12 @@
 #  • Holiday color selection                              #
 #  • Show holiday indicators toggle                       #
 #  • Menu integration option                              #
+#  • Database format selection (Legacy/vCard)             #
 #                                                         #
 #  KEY CONTROLS - MAIN CALENDAR:                          #
 #   OK          - Open main menu                          #
-#                 (New/Edit/Remove/Events/Holidays)       #
+#                 (New/Edit/Remove/Events/Holidays/       #
+#                  Contacts/Import vCard/Converter)       #
 #   RED         - Previous month                          #
 #   GREEN       - Next month                              #
 #   YELLOW      - Previous day                            #
@@ -104,6 +127,27 @@
 #   BLUE        - Back to calendar                        #
 #   UP/DOWN     - Navigate event list                     #
 #                                                         #
+#  KEY CONTROLS - CONTACTS VIEW:                          #
+#   OK          - Edit selected contact                   #
+#   RED         - Add new contact                         #
+#   GREEN       - Edit selected contact                   #
+#   YELLOW      - Delete selected contact                 #
+#   BLUE        - Toggle sort mode (Name/Birthday/Cat.)   #
+#   UP/DOWN     - Navigate contact list                   #
+#                                                         #
+#  KEY CONTROLS - VCARD IMPORTER:                         #
+#   OK          - Select file                             #
+#   RED         - Cancel                                  #
+#   GREEN       - Import selected file                    #
+#   YELLOW      - View file info (size, contacts)         #
+#   BLUE        - Refresh file list                       #
+#                                                         #
+#  KEY CONTROLS - DATABASE CONVERTER:                     #
+#   OK          - Show statistics                         #
+#   RED         - Cancel                                  #
+#   GREEN       - Convert to vCard format                 #
+#   BLUE        - Convert to legacy format                #
+#                                                         #
 #  FILE STRUCTURE:                                        #
 #  • plugin.py - Main plugin entry point                  #
 #  • event_manager.py - Event management core             #
@@ -111,8 +155,14 @@
 #  • events_view.py - Events browser                      #
 #  • notification_system.py - Notification display        #
 #  • holidays.py - Holiday import and management          #
+#  • vcard_importer.py - vCard import system              #
+#  • birthday_manager.py - Contact management             #
+#  • contacts_view.py - Contacts browser                  #
+#  • birthday_dialog.py - Contact add/edit dialog         #
+#  • database_converter.py - Format converter             #
 #  • events.json - Event database (JSON format)           #
 #  • base/ - Date information storage                     #
+#  • base/contacts/ - vCard contact storage               #
 #  • sounds/ - Audio files for notifications              #
 #  • buttons/ - Button images for UI                      #
 #                                                         #
@@ -134,6 +184,16 @@
 #    "enabled": true,                                     #
 #    "created": "2024-12-19 14:25:47"                     #
 #  }]                                                     #
+#                                                         #
+#  CONTACT STORAGE FORMAT (contacts/*.txt):               #
+#  [contact]                                              #
+#  FN: John Doe                                           #
+#  BDAY: 1990-05-15                                       #
+#  TEL: +391234567890                                     #
+#  EMAIL: john@example.com                                #
+#  CATEGORIES: Family, Friends                            #
+#  NOTE: Birthday reminder                                #
+#  CREATED: 2024-12-25 10:30:00                           #
 #                                                         #
 #  DATE FILE FORMAT (YYYYMMDD.txt):                       #
 #  [day]                                                  #
@@ -158,17 +218,19 @@
 #  • Python 2.7+ compatible                               #
 #  • Uses eTimer for background monitoring                #
 #  • JSON storage for events                              #
+#  • Threaded vCard import (no GUI freeze)                #
 #  • Virtual keyboard integration                         #
 #  • Auto-skin detection (HD/FHD)                         #
 #  • Configurable via setup.xml                           #
 #  • Uses eServiceReference for audio playback            #
 #  • Holiday cache system for fast rendering              #
-#  • File-based holiday storage (no database)             #
+#  • File-based storage (no database)                     #
 #                                                         #
 #  PERFORMANCE:                                           #
 #  • Efficient event checking algorithm                   #
 #  • Skipped checks for past non-recurring events         #
 #  • Holiday cache: 1 file read per month                 #
+#  • Threaded import for large vCard files                #
 #  • Minimal memory usage                                 #
 #  • Fast loading of date information                     #
 #                                                         #
@@ -176,6 +238,7 @@
 #  • Enable debug logs: check enigma2.log                 #
 #  • Filter: grep EventManager /tmp/enigma2.log           #
 #  • Holiday debug: grep Holidays /tmp/enigma2.log        #
+#  • vCard debug: grep VCardImporter /tmp/enigma2.log     #
 #  • Event check interval: 30 seconds                     #
 #  • Notification window: event time ± 5 minutes          #
 #  • Audio debug: check play_notification_sound() calls   #
@@ -184,6 +247,7 @@
 #  • Original Calendar plugin: Sirius0103                 #
 #  • Event system & modifications: Lululla                #
 #  • Holiday system & enhancements: Custom implementation #
+#  • vCard system & database converter: Lululla           #
 #  • Notification system: Custom implementation           #
 #  • Audio system: Enigma2 eServiceReference integration  #
 #  • Testing & feedback: Enigma2 community                #
@@ -193,35 +257,37 @@
 #  • v1.1 - Complete event system added                   #
 #  • v1.2 - Holiday import and coloring system            #
 #  • v1.3 - Rewrite complete code . screen and source..   #
+#  • v1.4 - minor fix for update and timers py2           #
+#  • v1.5 - vCard import/export & contact management      #
 #                                                         #
-#  Last Updated: 2025-12-21                               #
-#  Status: Stable with event & holiday system             #
+#  Last Updated: 2025-12-25                               #
+#  Status: Stable with all systems integrated             #
 ###########################################################
 """
 
-from __future__ import absolute_import
-from Components.Language import language
+from __future__ import print_function
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
-from os import environ
+from Components.Language import language
 from os.path import exists
+from os import environ
 import gettext
 
+PLUGIN_NAME = "Calendar"
+PLUGIN_VERSION = "1.5"
+PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format(PLUGIN_NAME))
+PLUGIN_ICON = resolveFilename(SCOPE_PLUGINS, "Extensions/Calendar/plugin.png")
+USER_AGENT = "Calendar-Enigma2-Updater/%s" % PLUGIN_VERSION
 PluginLanguageDomain = 'Calendar'
-PluginLanguagePath = 'Extensions/Calendar/locale'
-plugin_path = "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/"
-PLUGIN_VERSION = "1.4"
-
-
-isDreambox = False
-if exists("/usr/bin/apt-get"):
-    isDreambox = True
+PluginLanguagePath = "Extensions/Calendar/locale"
+isDreambox = exists("/usr/bin/apt-get")
 
 
 def localeInit():
     if isDreambox:
         lang = language.getLanguage()[:2]
         environ["LANGUAGE"] = lang
-    gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
+    if PLUGIN_NAME and PluginLanguagePath:
+        gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
 
 
 if isDreambox:

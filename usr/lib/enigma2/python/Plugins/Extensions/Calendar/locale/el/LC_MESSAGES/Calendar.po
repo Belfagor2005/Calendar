@@ -307,9 +307,6 @@ msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 msgid "Error saving data"
 msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 
-msgid "Error: %s"
-msgstr ""
-
 msgid "Errors: {0}"
 msgstr ""
 

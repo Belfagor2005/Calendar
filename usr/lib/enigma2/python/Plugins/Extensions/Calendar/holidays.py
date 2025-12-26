@@ -288,7 +288,7 @@ from Components.config import config
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
-from . import _, plugin_path
+from . import _, PLUGIN_PATH
 
 DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
 
@@ -333,7 +333,7 @@ COUNTRY_LANGUAGE_MAP = {
 class HolidaysManager:
     def __init__(self, plugin_path=None, language="it"):
         """Use the filesystem instead of the SQL database"""
-        self.plugin_path = plugin_path or "/usr/lib/enigma2/python/Plugins/Extensions/Calendar/"
+        self.plugin_path = plugin_path or PLUGIN_PATH
         self.language = language
         self.holidays_data = {}
 
@@ -714,7 +714,7 @@ class HolidaysImportScreen(Screen):
 
         # Use the master calendar values
         if plugin_path is None:
-            from . import plugin_path as pp
+            from . import PLUGIN_PATH as pp
             plugin_path = pp
 
         if language is None:
@@ -854,7 +854,7 @@ def clear_holidays_dialog(session):
         language = config.osd.language.value.split("_")[0].strip()
 
         session.openWithCallback(
-            lambda result: execute_clear_holidays(result, session, plugin_path, language),
+            lambda result: execute_clear_holidays(result, session, PLUGIN_PATH, language),
             MessageBox,
             _("Clear ALL holiday entries from all date files?"),
             MessageBox.TYPE_YESNO
@@ -874,7 +874,7 @@ def execute_clear_holidays(result, session, plugin_path, language):
 def show_holidays_today(session):
     """Show today's holidays from the filesystem"""
     try:
-        plugin_path_val = plugin_path
+        plugin_path_val = PLUGIN_PATH
         language = config.osd.language.value.split("_")[0].strip()
         today = datetime.now()
         if DEBUG:
@@ -928,7 +928,7 @@ def show_holidays_today(session):
 def show_upcoming_holidays(session, days=30):
     """Show upcoming holidays from the text files"""
     try:
-        plugin_path_val = plugin_path
+        plugin_path_val = PLUGIN_PATH
         language = config.osd.language.value.split("_")[0].strip()
         manager = HolidaysManager(plugin_path_val, language)
         holidays = manager.get_upcoming_holidays(days)

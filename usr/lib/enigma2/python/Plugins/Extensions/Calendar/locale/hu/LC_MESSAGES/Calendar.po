@@ -308,9 +308,6 @@ msgstr "Hiba az adatok mentése során"
 msgid "Error saving data"
 msgstr "Hiba az adatok mentése során"
 
-msgid "Error: %s"
-msgstr "Hiba: %s"
-
 #, fuzzy
 msgid "Errors: {0}"
 msgstr "Hiba: %s"
@@ -822,6 +819,9 @@ msgstr ""
 
 #~ msgid "Cyan"
 #~ msgstr "Ciánkék"
+
+#~ msgid "Error: %s"
+#~ msgstr "Hiba: %s"
 
 #~ msgid "Exit"
 #~ msgstr "Kilépés"

@@ -289,7 +289,7 @@ from Components.config import (
 from enigma import eTimer
 from skin import parseColor
 
-from . import _, plugin_path, PLUGIN_VERSION
+from . import _, PLUGIN_PATH, PLUGIN_VERSION, PLUGIN_ICON
 from .events_view import EventsView
 from .birthday_manager import BirthdayManager
 from .contacts_view import ContactsView
@@ -612,9 +612,9 @@ class Calendar(Screen):
             self.event_manager = None
 
         self.language = config.osd.language.value.split("_")[0].strip()
-        self.path = plugin_path
+        self.path = PLUGIN_PATH
 
-        self.birthday_manager = BirthdayManager(plugin_path)
+        self.birthday_manager = BirthdayManager(PLUGIN_PATH)
         self.database_format = config.plugins.calendar.database_format.value
 
         self.selected_bg_color = None
@@ -734,31 +734,23 @@ class Calendar(Screen):
             (_("Check for Updates"), self.check_for_updates),
         ])
 
-        # menu.append((_("Exit"), self.close))
-
         self.session.openWithCallback(self.menu_callback, MenuDialog, menu)
 
     def check_for_updates(self):
         """Check for plugin updates"""
-        from .update_manager import UpdateManager
-        from .updater import PluginUpdater
         print("check_for_updates called from main menu")
         try:
             print("Creating UpdateManager instance...")
             updater = PluginUpdater()
             print("PluginUpdater created successfully")
-
             latest = updater.get_latest_version()
             print("Direct test - Latest version: %s" % latest)
-
+            from .update_manager import UpdateManager
             UpdateManager.check_for_updates(self.session, self["status"])
-
+            self.update_cache_status()
         except Exception as e:
             print("Direct test error: %s" % e)
             self["status"].setText(_("Update check error"))
-            self.session.open(MessageBox,
-                              _("Error: %s") % str(e),
-                              MessageBox.TYPE_ERROR)
 
     def clear_fields(self):
         """Clear all fields for new date (but keep date)"""
@@ -1703,7 +1695,7 @@ class Calendar(Screen):
             self.session.openWithCallback(
                 self.import_holidays_callback,
                 HolidaysImportScreen,
-                plugin_path=self.path,
+                PLUGIN_PATH=self.path,
                 language=self.language
             )
 
@@ -2207,7 +2199,7 @@ def Plugins(**kwargs):
         name=_("Calendar"),
         description=_("Calendar with events and notifications"),
         where=[PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU],
-        icon="plugin.png",
+        icon=PLUGIN_ICON,
         fnc=main
     ))
 

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 14:37+0100\n"
-"PO-Revision-Date: 2025-12-25 00:33+0100\n"
+"PO-Revision-Date: 2025-12-26 12:59+0100\n"
 "Last-Translator: \n"
 "Language-Team: <sirius.al@rambler.ru>\n"
 "Language: it\n"
@@ -290,9 +290,6 @@ msgstr "Errore durante il salvataggio dei contatti"
 
 msgid "Error saving data"
 msgstr "Errore durante il salvataggio dei dati"
-
-msgid "Error: %s"
-msgstr "Errore: %s"
 
 msgid "Errors: {0}"
 msgstr "Errori: {0}"
@@ -814,6 +811,9 @@ msgstr "{0}"
 
 #~ msgid "Do you want to remove all past non-recurring events?"
 #~ msgstr "Vuoi rimuovere tutti gli eventi passati non ricorrenti?"
+
+#~ msgid "Error: %s"
+#~ msgstr "Errore: %s"
 
 #~ msgid "Event Settings"
 #~ msgstr "Impostazioni evento"

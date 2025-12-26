@@ -23,7 +23,7 @@
 #  Status: Stable with event system                       #
 ###########################################################
 """
-
+from __future__ import print_function
 from Screens.Screen import Screen
 from Components.Label import Label
 from enigma import eTimer
@@ -60,7 +60,7 @@ class NotificationManager:
 
     def __init__(self):
         self.notification_window = None
-        
+
         self.hide_timer = eTimer()
         try:
             self.hide_timer_conn = self.hide_timer.timeout.connect(self._hideNotification)

@@ -308,9 +308,6 @@ msgstr "Chyba pri ukladaní údajov"
 msgid "Error saving data"
 msgstr "Chyba pri ukladaní údajov"
 
-msgid "Error: %s"
-msgstr "Chyba: %s"
-
 #, fuzzy
 msgid "Errors: {0}"
 msgstr "Chyba: %s"
@@ -818,6 +815,9 @@ msgstr ""
 
 #~ msgid "Cyan"
 #~ msgstr "Tyrkysový"
+
+#~ msgid "Error: %s"
+#~ msgstr "Chyba: %s"
 
 #~ msgid "Exit"
 #~ msgstr "Ukončiť"
