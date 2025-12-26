@@ -17,6 +17,7 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Data Management**: Edit multiple fields via virtual keyboard with intuitive field navigation
 - **File Operations**: Create, edit, remove, or delete date data files with custom naming (YYYYMMDD.txt)
 - **Multi-language Support**: Data organized by language folders for localization
+- **Smooth navigation**: with keyboard shortcuts
 
 ### Event Management System
 - **Smart Event Notifications**: Get notified before events start (configurable from 0 to 60 minutes before)
@@ -31,22 +32,26 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **vCard Import/Export**: Import thousands of contacts from .vcf files with progress tracking
 - **Contact Management**: Full contact database with birthday tracking and age calculation
 - **Contact Browser**: Browse, search, and sort contacts by name, birthday, or category
+- **Contact sorting**: (name, birthday, category)
 - **Birthday Tracking**: Automatically track birthdays and show on calendar
 - **Duplicate Detection**: Smart detection during import to avoid duplicate contacts
 - **Multi-threaded Import**: Import large vCard files without GUI freeze
 - **Contact Sorting**: Sort contacts by name, birthday, or category
 - **Search Function**: Search contacts by name, phone, email, notes
 - **Database Format**: Stores contacts in vCard-like format for compatibility
+- **Database format converter**: (Legacy ↔ vCard)
+- **Duplicate detection**: during import
+- **vCard export**: to `/tmp/calendar.vcf`
 
 ### Holiday Import & Management System
-- **International Holiday Database**: Import holidays from Holidata.net for 30+ countries
 - **Automatic Coloring**: Holiday days are automatically colored on the calendar
-- **Visual Indicators**: "H" marker shown on holiday days (configurable)
+- **Country Support**: Italy, Germany, France, UK, USA, Spain, and many more
+- **International Holiday Database**: Import holidays from Holidata.net for 30+ countries
+- **Language Support**: Localized holiday names for each country
 - **Smart Cache**: Fast loading with month-based caching system
 - **Today's Holidays**: View holidays for the current day
 - **Upcoming Holidays**: Display holidays for the next 30 days
-- **Country Support**: Italy, Germany, France, UK, USA, Spain, and many more
-- **Language Support**: Localized holiday names for each country
+- **Visual Indicators**: "H" marker shown on holiday days (configurable)
 
 ### Audio Notification System
 - **Built-in Sound Alerts**: Three distinct sound types for different priorities
@@ -199,13 +204,13 @@ Stored in: `base/[language]/day/YYYYMMDD.txt`
 ```ini
 [day]
 date: 2025-12-25
-datepeople: 
+datepeople:
 sign: Capricorn
 holiday: Christmas Day
 description: Christmas celebration with family.
 
 [month]
-monthpeople: 
+monthpeople:
 ```
 
 #### Contact Storage Format
@@ -220,12 +225,6 @@ CATEGORIES: Family, Friends
 NOTE: Birthday reminder
 CREATED: 2024-12-25 10:30:00
 ```
-
-#### vCard Import/Export
-- **Import**: Supports standard .vcf/.vcard files
-- **Export**: Contacts can be exported to vCard format
-- **Fields Supported**: Name, Birthday, Phone, Email, Address, Organization, Categories, Notes, URL
-- **Format Compatibility**: Works with vCard 2.1 and 3.0
 
 #### Event Database
 Events stored in JSON format in `events.json`:
@@ -276,13 +275,21 @@ The plugin includes configuration options accessible through:
 
 ## 🔧 Technical Details
 
-### vCard Import System
+#### vCard Import/Export
 - **Multi-threaded Architecture**: Imports large vCard files without blocking GUI
 - **Progress Tracking**: Real-time progress bar with contact count
 - **Duplicate Detection**: Smart duplicate checking during import
 - **Error Handling**: Graceful handling of malformed vCard entries
 - **Performance**: Efficient memory usage for large files
+- **Fields Supported**: Name, Birthday, Phone, Email, Address, Organization, Categories, Notes, URL
 - **Field Parsing**: Support for standard vCard fields with charset detection
+- **vCard Export**: Export contacts to `/tmp/calendar.vcf`
+- **Database Converter**: UI for format conversion
+- **Auto-conversion**: Automatic format conversion option
+- **Contact Sorting**: Sort by name, birthday, or category in export
+- **Import**: Supports standard .vcf/.vcard files
+- **Export**: Contacts can be exported to vCard format
+- **Format Compatibility**: Works with vCard 2.1 and 3.0
 
 ### Contact Management
 - **Birthday Calculation**: Automatic age calculation from birth dates
@@ -370,12 +377,13 @@ The plugin includes configuration options accessible through:
 - **BLUE**: Toggle sort mode (Name/Birthday/Category)
 - **UP/DOWN**: Navigate contact list
 
-### vCard Importer
+### vCard Import/Export
 - **OK**: Select file
-- **RED**: Cancel
-- **GREEN**: Import selected file
+- **RED**: Cancel / Close
+- **GREEN**: Import selected file / Start export
 - **YELLOW**: View file info (size, contacts)
-- **BLUE**: Refresh file list
+- **BLUE**: Refresh file list / Toggle sort
+
 
 ### Database Converter
 - **OK**: Show statistics
@@ -393,7 +401,6 @@ The plugin includes configuration options accessible through:
 - **Field Highlighting**: Current field highlighted with color background
 
 ## 🐛 Troubleshooting
-
 ### Common Issues
 1. **vCard Import Issues**:
    - Check file format is .vcf or .vcard
@@ -500,7 +507,7 @@ tail -f /tmp/enigma2.log | grep Calendar
 - Improved error handling and debugging information
 - Enhanced navigation and user interface
 
-### v1.5 - Current Version
+### v1.5 
 - **NEW**: vCard import/export system for contacts
 - **NEW**: Complete contact management with birthday tracking
 - **NEW**: Contact browser with sorting by name, birthday, category
@@ -515,8 +522,23 @@ tail -f /tmp/enigma2.log | grep Calendar
 - **Added**: Automatic backups before database conversion
 - **Fixed**: Various performance improvements and bug fixes
 
-## 🤝 Contributing
+## v1.6
+- **vCard Export**: Export contacts to `/tmp/calendar.vcf`
+- **Database Converter**: UI for format conversion
+- **Auto-conversion**: Automatic format conversion option
+- **Contact Sorting**: Sort by name, birthday, or category in export
+- **Progress Tracking**: Visual feedback for all operations
+- **Performance**: Faster contact deduplication with cache
+- **UI**: Better progress bars and completion messages
+- **Config**: New database format settings
+- **Fixes**: Various bug fixes and stability improvements
+- **Fixed**: Database converter attribute error
+- **Fixed**: vCard export "no contacts" error
+- **Fixed**: Holiday cache refresh after config changes
+- **Fixed**: Import progress Cancel/Close button
+- **Fixed**: Contact sorting consistency
 
+## 🤝 Contributing
 Contributions are welcome! Please ensure:
 - Code follows existing style and structure
 - New features include appropriate configuration options
