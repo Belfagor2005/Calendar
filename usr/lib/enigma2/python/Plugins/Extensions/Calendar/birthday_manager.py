@@ -336,8 +336,72 @@ class BirthdayManager:
 
         return results
 
+    def get_contact_count(self):
+        """Return number of contacts"""
+        return len(self.contacts)
+
+    def get_contacts_with_birthdays(self):
+        """Get contacts that have birthday information"""
+        results = []
+        for contact in self.contacts:
+            if contact.get('BDAY'):
+                results.append(contact)
+        return results
+
+    def get_contacts_by_category(self, category):
+        """Get contacts by category/tag"""
+        results = []
+        category_lower = category.lower()
+
+        for contact in self.contacts:
+            categories = contact.get('CATEGORIES', '').lower()
+            if category_lower in categories:
+                results.append(contact)
+
+        return results
+
+    def get_contacts_by_birthday_month(self, month):
+        """Get contacts with birthdays in specific month"""
+        results = []
+        for contact in self.contacts:
+            bday = contact.get('BDAY', '')
+            if bday:
+                try:
+                    bday_date = datetime.strptime(bday, "%Y-%m-%d")
+                    if bday_date.month == month:
+                        results.append(contact)
+                except:
+                    continue
+        return results
+
+    def get_contacts_for_date(self, date_str):
+        """Get contacts with birthdays on specific date"""
+        try:
+            # Parse date string (format: YYYY-MM-DD)
+            target_date = datetime.strptime(date_str, "%Y-%m-%d")
+
+            results = []
+            for contact in self.contacts:
+                bday = contact.get('BDAY', '')
+                if not bday:
+                    continue
+
+                try:
+                    # Check if birthday matches (ignore year)
+                    bday_date = datetime.strptime(bday, "%Y-%m-%d")
+                    if bday_date.month == target_date.month and bday_date.day == target_date.day:
+                        results.append(contact)
+                except ValueError:
+                    # Invalid date format
+                    continue
+
+            return results
+        except Exception as e:
+            print("[BirthdayManager] Error getting contacts for date: {}".format(e))
+            return []
+
     def load_all_contacts(self):
-        """Load all contacts from directory"""
+        """Load all contacts from directory - SORTED by name"""
         self.contacts = []
 
         if not exists(self.contacts_path):
@@ -345,13 +409,15 @@ class BirthdayManager:
 
         for filename in listdir(self.contacts_path):
             if filename.endswith(".txt"):
-                contact_id = filename[:-4]  # Remove .txt
+                contact_id = filename[:-4]
                 contact = self.load_contact(contact_id)
                 if contact:
                     self.contacts.append(contact)
 
-        # AUTO-SORT contacts by name when loading
+        # SORT contacts alphabetically when loading
         self.sort_contacts_by_name()
+
+        print("[BirthdayManager] Loaded {0} contacts (sorted)".format(len(self.contacts)))
 
     def load_contact(self, contact_id):
         """Load single contact from file"""
@@ -447,44 +513,6 @@ class BirthdayManager:
                 print("[BirthdayManager] Error deleting contact: {0}".format(str(e)))
 
         return False
-
-    def get_contacts_for_date(self, date_str):
-        """Get contacts with birthdays on specific date"""
-        try:
-            # Parse date string (format: YYYY-MM-DD)
-            target_date = datetime.strptime(date_str, "%Y-%m-%d")
-
-            results = []
-            for contact in self.contacts:
-                bday = contact.get('BDAY', '')
-                if not bday:
-                    continue
-
-                try:
-                    # Check if birthday matches (ignore year)
-                    bday_date = datetime.strptime(bday, "%Y-%m-%d")
-                    if bday_date.month == target_date.month and bday_date.day == target_date.day:
-                        results.append(contact)
-                except ValueError:
-                    # Invalid date format
-                    continue
-
-            return results
-        except Exception as e:
-            print("[BirthdayManager] Error getting contacts for date: {}".format(e))
-            return []
-
-    def get_contacts_by_category(self, category):
-        """Get contacts by category/tag"""
-        results = []
-        category_lower = category.lower()
-
-        for contact in self.contacts:
-            categories = contact.get('CATEGORIES', '').lower()
-            if category_lower in categories:
-                results.append(contact)
-
-        return results
 
     def search_contacts(self, search_term):
         """Search contacts by name, phone, email, or note"""

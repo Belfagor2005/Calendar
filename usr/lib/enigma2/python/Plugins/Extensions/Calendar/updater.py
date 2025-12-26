@@ -281,8 +281,6 @@ else:
     from urllib2 import urlopen, Request
 
 
-
-
 class PluginUpdater:
     """Plugin update manager"""
 

@@ -276,7 +276,7 @@ from Components.Label import Label
 from Components.ProgressBar import ProgressBar
 from enigma import getDesktop
 
-from . import _
+from . import _, PLUGIN_PATH
 
 
 class DatabaseConverter(Screen):

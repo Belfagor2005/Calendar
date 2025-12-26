@@ -200,7 +200,14 @@ msgstr ""
 msgid "Database converted to vCard format"
 msgstr ""
 
+#, fuzzy
+msgid "Database converter error: {0}"
+msgstr "Ошибка обновления: %s"
+
 msgid "Database format"
+msgstr ""
+
+msgid "Database has been automatically converted to {0} format."
 msgstr ""
 
 msgid "Date"
@@ -298,6 +305,9 @@ msgstr "Ошибка сохранения данных"
 msgid "Error deleting contact '{0}'"
 msgstr ""
 
+msgid "Error exporting vCard: {0}"
+msgstr ""
+
 msgid "Error opening event dialog"
 msgstr "Ошибка при открытии диалогового окна события"
 
@@ -307,6 +317,10 @@ msgstr "Ошибка сохранения данных"
 
 msgid "Error saving data"
 msgstr "Ошибка сохранения данных"
+
+#, fuzzy
+msgid "Error: {0}"
+msgstr "Ошибка: %s"
 
 #, fuzzy
 msgid "Errors: {0}"
@@ -322,6 +336,20 @@ msgstr "Событие"
 
 msgid "Event system is disabled. Enable it in settings."
 msgstr "Система событий отключена. Включите её в настройках."
+
+#, fuzzy
+msgid "Export error: {0}"
+msgstr "Ошибка обновления: %s"
+
+msgid "Export failed or no contacts to export"
+msgstr ""
+
+msgid "Export vCard File"
+msgstr ""
+
+#, fuzzy
+msgid "Exporting contacts..."
+msgstr "Ошибка сохранения данных"
 
 msgid "Failed to create backup. Update cancelled."
 msgstr "Не удалось создать резервную копию. Обновление отменено."
@@ -488,6 +516,9 @@ msgstr ""
 
 msgid "No past events to remove"
 msgstr "Нет прошлых событий, которые нужно удалить"
+
+msgid "No sorting (original order)"
+msgstr ""
 
 msgid "No sound"
 msgstr "Нет звука"
@@ -666,6 +697,15 @@ msgstr ""
 msgid "Sort"
 msgstr ""
 
+msgid "Sort by birthday (month/day)"
+msgstr ""
+
+msgid "Sort by category"
+msgstr ""
+
+msgid "Sort by name (alphabetical)"
+msgstr ""
+
 msgid "Sorted by birthday"
 msgstr ""
 
@@ -775,6 +815,18 @@ msgstr "У вас установлена последняя версия Кал�
 
 msgid "no"
 msgstr "нет"
+
+msgid "not sorted"
+msgstr ""
+
+msgid "sorted by birthday"
+msgstr ""
+
+msgid "sorted by category"
+msgstr ""
+
+msgid "sorted by name"
+msgstr ""
 
 msgid "vCard files: {0}"
 msgstr ""

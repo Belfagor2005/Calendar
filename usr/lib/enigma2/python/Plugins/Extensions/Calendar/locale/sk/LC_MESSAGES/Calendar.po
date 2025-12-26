@@ -200,7 +200,14 @@ msgstr ""
 msgid "Database converted to vCard format"
 msgstr ""
 
+#, fuzzy
+msgid "Database converter error: {0}"
+msgstr "Chyba aktualizácie: %s"
+
 msgid "Database format"
+msgstr ""
+
+msgid "Database has been automatically converted to {0} format."
 msgstr ""
 
 msgid "Date"
@@ -298,6 +305,9 @@ msgstr "Chyba pri ukladaní údajov"
 msgid "Error deleting contact '{0}'"
 msgstr ""
 
+msgid "Error exporting vCard: {0}"
+msgstr ""
+
 msgid "Error opening event dialog"
 msgstr "Chyba pri otváraní dialógového okna udalosti"
 
@@ -307,6 +317,10 @@ msgstr "Chyba pri ukladaní údajov"
 
 msgid "Error saving data"
 msgstr "Chyba pri ukladaní údajov"
+
+#, fuzzy
+msgid "Error: {0}"
+msgstr "Chyba: %s"
 
 #, fuzzy
 msgid "Errors: {0}"
@@ -322,6 +336,20 @@ msgstr "Udalosť"
 
 msgid "Event system is disabled. Enable it in settings."
 msgstr "Systém udalostí je vypnutý. Povoľte ho v nastaveniach."
+
+#, fuzzy
+msgid "Export error: {0}"
+msgstr "Chyba aktualizácie: %s"
+
+msgid "Export failed or no contacts to export"
+msgstr ""
+
+msgid "Export vCard File"
+msgstr ""
+
+#, fuzzy
+msgid "Exporting contacts..."
+msgstr "Chyba pri ukladaní údajov"
 
 msgid "Failed to create backup. Update cancelled."
 msgstr "Vytvorenie zálohy zlyhalo. Aktualizácia zrušená."
@@ -488,6 +516,9 @@ msgstr ""
 
 msgid "No past events to remove"
 msgstr "Žiadne minulé udalosti na odstránenie"
+
+msgid "No sorting (original order)"
+msgstr ""
 
 msgid "No sound"
 msgstr "Bez zvuku"
@@ -666,6 +697,15 @@ msgstr ""
 msgid "Sort"
 msgstr ""
 
+msgid "Sort by birthday (month/day)"
+msgstr ""
+
+msgid "Sort by category"
+msgstr ""
+
+msgid "Sort by name (alphabetical)"
+msgstr ""
+
 msgid "Sorted by birthday"
 msgstr ""
 
@@ -771,6 +811,18 @@ msgstr "Máte najnovšiu verziu Kalendára."
 
 msgid "no"
 msgstr "nie"
+
+msgid "not sorted"
+msgstr ""
+
+msgid "sorted by birthday"
+msgstr ""
+
+msgid "sorted by category"
+msgstr ""
+
+msgid "sorted by name"
+msgstr ""
 
 msgid "vCard files: {0}"
 msgstr ""

@@ -273,7 +273,7 @@ from os import environ
 import gettext
 
 PLUGIN_NAME = "Calendar"
-PLUGIN_VERSION = "1.5"
+PLUGIN_VERSION = "1.6"
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format(PLUGIN_NAME))
 PLUGIN_ICON = resolveFilename(SCOPE_PLUGINS, "Extensions/Calendar/plugin.png")
 USER_AGENT = "Calendar-Enigma2-Updater/%s" % PLUGIN_VERSION

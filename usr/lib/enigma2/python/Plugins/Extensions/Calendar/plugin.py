@@ -268,7 +268,7 @@ from __future__ import print_function
 import datetime
 from time import localtime
 from os import remove, makedirs
-from os.path import exists, dirname
+from os.path import exists, dirname, join
 
 from enigma import getDesktop
 from Plugins.Plugin import PluginDescriptor
@@ -294,7 +294,7 @@ from .events_view import EventsView
 from .birthday_manager import BirthdayManager
 from .contacts_view import ContactsView
 from .birthday_dialog import BirthdayDialog
-# from .database_converter import DatabaseConverter
+from .database_converter import DatabaseConverter, auto_convert_database
 
 
 def init_calendar_config():
@@ -615,6 +615,14 @@ class Calendar(Screen):
         self.path = PLUGIN_PATH
 
         self.birthday_manager = BirthdayManager(PLUGIN_PATH)
+        print("[Calendar] BirthdayManager initialized, contacts: {0}".format(
+            len(self.birthday_manager.contacts)))
+
+        # Force reload to be sure
+        self.birthday_manager.load_all_contacts()
+        print("[Calendar] Contacts after reload: {0}".format(
+            len(self.birthday_manager.contacts)))
+
         self.database_format = config.plugins.calendar.database_format.value
 
         self.selected_bg_color = None
@@ -623,6 +631,9 @@ class Calendar(Screen):
 
         self.holiday_cache = {}
         self.cells_by_day = {}
+
+        if config.plugins.calendar.auto_convert.value:
+            self.auto_convert_database()
 
         # Create all UI elements
         for x in range(6):
@@ -705,6 +716,7 @@ class Calendar(Screen):
             (_("Manage Contacts"), self.show_contacts),
             (_("Add Contact"), self.add_contact),
             (_("Import vCard File"), self.import_vcard_file),
+            (_("Export vCard File"), self.export_vcard_file),
         ]
 
         # ADD EVENT OPTIONS ONLY IF ENABLED
@@ -728,6 +740,10 @@ class Calendar(Screen):
             menu.append((_("Convert to vCard format"), self.convert_to_vcard))
         else:
             menu.append((_("Convert to legacy format"), self.convert_to_legacy))
+
+        menu.extend([
+            (_("Database Converter"), self.database_converter),  # NUOVO!
+        ])
 
         # ADD UPDATER
         menu.extend([
@@ -1200,6 +1216,41 @@ class Calendar(Screen):
         except Exception as e:
             print("[Calendar] Error displaying contacts: {}".format(e))
 
+    def auto_convert_database(self):
+        """Auto-convert database based on configuration"""
+        try:
+            print("[Calendar] Checking for auto-conversion...")
+            print("[Calendar] Current format: {0}".format(self.database_format))
+            print("[Calendar] Auto-convert enabled: {0}".format(
+                config.plugins.calendar.auto_convert.value))
+
+            converted = auto_convert_database(
+                self.path,
+                self.language,
+                self.database_format
+            )
+
+            if converted:
+                print("[Calendar] Database auto-converted successfully")
+                # Ricarica i dati dopo la conversione
+                self._paint_calendar()
+                self.load_data()
+
+                # Mostra messaggio all'utente
+                self.session.open(
+                    MessageBox,
+                    _("Database has been automatically converted to {0} format.").format(
+                        self.database_format),
+                    MessageBox.TYPE_INFO,
+                    timeout=5
+                )
+            else:
+                print("[Calendar] No conversion needed")
+
+        except Exception as e:
+            print("[Calendar] Auto-convert error: {0}".format(str(e)))
+            # Non mostrare errore all'utente, è solo un'opzione automatica
+
     def _calculate_age(self, bday_str):
         """Calculate age from birthday string"""
         if not bday_str:
@@ -1248,9 +1299,118 @@ class Calendar(Screen):
             import traceback
             traceback.print_exc()
 
+    def export_vcard_file(self):
+        """Export all contacts to vCard file in /tmp"""
+        try:
+            # Prima controlla se ci sono contatti
+            if len(self.birthday_manager.contacts) == 0:
+                self.session.open(
+                    MessageBox,
+                    _("No contacts to export.\n\nAdd contacts first via Contacts menu."),
+                    MessageBox.TYPE_INFO
+                )
+                return
+
+            # Menu per scegliere l'ordinamento
+            menu = [
+                (_("Sort by name (alphabetical)"), lambda: self.do_export('name')),
+                (_("Sort by birthday (month/day)"), lambda: self.do_export('birthday')),
+                (_("Sort by category"), lambda: self.do_export('category')),
+                (_("No sorting (original order)"), lambda: self.do_export('none')),
+            ]
+
+            self.session.openWithCallback(
+                lambda choice: choice[1]() if choice else None,
+                MenuDialog,
+                menu
+            )
+
+        except Exception as e:
+            print("[Calendar] Error in export_vcard_file: {0}".format(str(e)))
+            self.session.open(
+                MessageBox,
+                _("Error: {0}").format(str(e)),
+                MessageBox.TYPE_ERROR
+            )
+
+    def do_export(self, sort_method='name'):
+        """Perform export with specified sort method"""
+        try:
+            from .vcf_importer import export_contacts_to_vcf
+
+            export_path = "/tmp/calendar.vcf"
+
+            # Mostra stato
+            self["status"].setText(_("Exporting contacts..."))
+
+            # Export con ordinamento
+            count = export_contacts_to_vcf(self.birthday_manager, export_path, sort_method)
+
+            if count > 0:
+                sort_text = {
+                    'name': _("sorted by name"),
+                    'birthday': _("sorted by birthday"),
+                    'category': _("sorted by category"),
+                    'none': _("not sorted")
+                }
+
+                message = _("Contacts exported successfully!\n\nFile: {0}\nContacts: {1}\n({2})").format(
+                    export_path, count, sort_text.get(sort_method, ''))
+                self.session.open(
+                    MessageBox,
+                    message,
+                    MessageBox.TYPE_INFO
+                )
+            else:
+                self.session.open(
+                    MessageBox,
+                    _("Export failed or no contacts to export"),
+                    MessageBox.TYPE_INFO
+                )
+
+            # Reset status
+            self["status"].setText(_("Calendar Planner | Ready"))
+
+        except Exception as e:
+            print("[Calendar] Error in do_export: {0}".format(str(e)))
+            self.session.open(
+                MessageBox,
+                _("Export error: {0}").format(str(e)),
+                MessageBox.TYPE_ERROR
+            )
+
+    def database_converter(self):
+        """Open database converter dialog"""
+        try:
+            print("[Calendar DEBUG] Plugin path: {0}".format(self.path))
+            print("[Calendar DEBUG] Language: {0}".format(self.language))
+
+            legacy_path = join(self.path, "base", self.language, "day")
+            vcard_path = join(self.path, "base", "vcard", self.language)
+
+            print("[Calendar DEBUG] Legacy path exists: {0} -> {1}".format(
+                legacy_path, exists(legacy_path)))
+            print("[Calendar DEBUG] vCard path exists: {0} -> {1}".format(
+                vcard_path, exists(vcard_path)))
+
+            self.session.open(
+                DatabaseConverter,
+                self.path,
+                self.language
+            )
+        except Exception as e:
+            print("[Calendar] Error opening database converter: {0}".format(str(e)))
+            import traceback
+            traceback.print_exc()
+            self.session.open(
+                MessageBox,
+                _("Database converter error: {0}").format(str(e)),
+                MessageBox.TYPE_ERROR
+            )
+
     def contact_updated_callback(self, result=None):
         """Callback after contact operations"""
-        print(f"[Calendar DEBUG] Contact callback called with result: {result}")
+        print("[Calendar DEBUG] Contact callback called with result: {}".format(result))
         if result:
             if DEBUG:
                 print("[Calendar] Contact operation successful, refreshing calendar...")
@@ -2151,7 +2311,13 @@ class Calendar(Screen):
         self._paint_calendar()
 
     def config(self):
-        self.session.open(settingCalendar)
+        """Open configuration"""
+        def config_closed_callback(result=None):
+            self.holiday_cache = {}
+            self._paint_calendar()
+            self.load_data()
+
+        self.session.openWithCallback(config_closed_callback, settingCalendar)
 
     def about(self):
         info_text = (
@@ -2174,9 +2340,30 @@ class settingCalendar(Setup):
     def __init__(self, session, parent=None):
         Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
         self.parent = parent
-
+    
     def keySave(self):
         Setup.keySave(self)
+        
+        if self.parent:
+            old_format = self.parent.database_format
+            new_format = config.plugins.calendar.database_format.value
+            if old_format != new_format:
+                print("[settingCalendar] Database format changed: {0} -> {1}".format(
+                    old_format, new_format))
+
+                if config.plugins.calendar.auto_convert.value:
+                    print("[settingCalendar] Auto-converting database...")
+                    self.parent.auto_convert_database()
+        self.close()
+
+
+# class settingCalendar(Setup):
+    # def __init__(self, session, parent=None):
+        # Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
+        # self.parent = parent
+
+    # def keySave(self):
+        # Setup.keySave(self)
 
 
 def mainMenu(menuid):

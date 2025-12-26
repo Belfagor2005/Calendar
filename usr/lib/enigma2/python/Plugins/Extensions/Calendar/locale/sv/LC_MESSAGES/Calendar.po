@@ -196,7 +196,14 @@ msgstr ""
 msgid "Database converted to vCard format"
 msgstr ""
 
+#, fuzzy
+msgid "Database converter error: {0}"
+msgstr "Chyba aktualizácie: %s"
+
 msgid "Database format"
+msgstr ""
+
+msgid "Database has been automatically converted to {0} format."
 msgstr ""
 
 msgid "Date"
@@ -291,6 +298,9 @@ msgstr "Chyba pri načítavaní krajín"
 msgid "Error deleting contact '{0}'"
 msgstr ""
 
+msgid "Error exporting vCard: {0}"
+msgstr ""
+
 msgid "Error opening event dialog"
 msgstr ""
 
@@ -301,6 +311,10 @@ msgstr "Chyba pri načítaní kategórie"
 #, fuzzy
 msgid "Error saving data"
 msgstr "Chyba pri načítaní kategórie"
+
+#, fuzzy
+msgid "Error: {0}"
+msgstr "Chyba: %s"
 
 #, fuzzy
 msgid "Errors: {0}"
@@ -314,6 +328,22 @@ msgstr ""
 
 msgid "Event system is disabled. Enable it in settings."
 msgstr ""
+
+#, fuzzy
+msgid "Export error: {0}"
+msgstr "Chyba aktualizácie: %s"
+
+#, fuzzy
+msgid "Export failed or no contacts to export"
+msgstr "Žiadne obľúbené položky na export"
+
+#, fuzzy
+msgid "Export vCard File"
+msgstr "Export zlyhal"
+
+#, fuzzy
+msgid "Exporting contacts..."
+msgstr "Chyba pri načítavaní krajín"
 
 msgid "Failed to create backup. Update cancelled."
 msgstr "Vytvorenie zálohy zlyhalo. Aktualizácia zrušená."
@@ -480,6 +510,9 @@ msgid "No legacy files found to convert"
 msgstr ""
 
 msgid "No past events to remove"
+msgstr ""
+
+msgid "No sorting (original order)"
 msgstr ""
 
 msgid "No sound"
@@ -658,6 +691,16 @@ msgstr ""
 msgid "Sort"
 msgstr ""
 
+msgid "Sort by birthday (month/day)"
+msgstr ""
+
+#, fuzzy
+msgid "Sort by category"
+msgstr "Prehľadávať podľa kategórie"
+
+msgid "Sort by name (alphabetical)"
+msgstr ""
+
 msgid "Sorted by birthday"
 msgstr ""
 
@@ -764,6 +807,21 @@ msgstr ""
 
 msgid "no"
 msgstr ""
+
+msgid "not sorted"
+msgstr ""
+
+#, fuzzy
+msgid "sorted by birthday"
+msgstr "Prehľadávať podľa kategórie"
+
+#, fuzzy
+msgid "sorted by category"
+msgstr "Prehľadávať podľa kategórie"
+
+#, fuzzy
+msgid "sorted by name"
+msgstr "Prehľadávať podľa kategórie"
 
 msgid "vCard files: {0}"
 msgstr ""
@@ -1271,9 +1329,6 @@ msgstr ""
 
 #~ msgid "No favorite channels"
 #~ msgstr "Žiadne obľúbené kanály"
-
-#~ msgid "No favorites to export"
-#~ msgstr "Žiadne obľúbené položky na export"
 
 #~ msgid "No stream URL"
 #~ msgstr "Žiadna URL adresa streamu"

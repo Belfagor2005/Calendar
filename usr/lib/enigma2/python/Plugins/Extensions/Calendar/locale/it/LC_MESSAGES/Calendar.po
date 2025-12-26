@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 14:37+0100\n"
-"PO-Revision-Date: 2025-12-26 12:59+0100\n"
+"PO-Revision-Date: 2025-12-26 15:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: <sirius.al@rambler.ru>\n"
 "Language: it\n"
@@ -189,8 +189,14 @@ msgstr "Statistiche del database"
 msgid "Database converted to vCard format"
 msgstr "Database convertito in formato vCard"
 
+msgid "Database converter error: {0}"
+msgstr "Errore del convertitore del database: {0}"
+
 msgid "Database format"
 msgstr "Formato Database"
+
+msgid "Database has been automatically converted to {0} format."
+msgstr "Il database è stato convertito automaticamente nel formato {0}."
 
 msgid "Date"
 msgstr "Data"
@@ -282,6 +288,9 @@ msgstr "Errore durante l'eliminazione del contatto"
 msgid "Error deleting contact '{0}'"
 msgstr "Errore durante l'eliminazione del contatto '{0}'"
 
+msgid "Error exporting vCard: {0}"
+msgstr "Errore durante esportazione vCard: '{0}'"
+
 msgid "Error opening event dialog"
 msgstr "Errore durante l'apertura della finestra di dialogo dell'evento"
 
@@ -290,6 +299,9 @@ msgstr "Errore durante il salvataggio dei contatti"
 
 msgid "Error saving data"
 msgstr "Errore durante il salvataggio dei dati"
+
+msgid "Error: {0}"
+msgstr "Errori: {0}"
 
 msgid "Errors: {0}"
 msgstr "Errori: {0}"
@@ -302,6 +314,18 @@ msgstr "Colore Evento"
 
 msgid "Event system is disabled. Enable it in settings."
 msgstr "Il sistema degli eventi è disabilitato. Abilitalo nelle impostazioni."
+
+msgid "Export error: {0}"
+msgstr "Errore esportazione: {0}"
+
+msgid "Export failed or no contacts to export"
+msgstr "Esportazione non riuscita o nessun contatto da esportare"
+
+msgid "Export vCard File"
+msgstr "Esporta file vCard"
+
+msgid "Exporting contacts..."
+msgstr "Esportazione contatti..."
 
 msgid "Failed to create backup. Update cancelled."
 msgstr "Impossibile creare il backup. Aggiornamento annullato."
@@ -461,6 +485,9 @@ msgstr "Nessun file legacy trovato da convertire"
 
 msgid "No past events to remove"
 msgstr "Nessun evento passato da rimuovere"
+
+msgid "No sorting (original order)"
+msgstr "Nessun ordinamento (ordine originale)"
 
 msgid "No sound"
 msgstr "Nessun Suono"
@@ -630,6 +657,15 @@ msgstr "Saltato: {0} (duplicati)"
 msgid "Sort"
 msgstr "Ordina"
 
+msgid "Sort by birthday (month/day)"
+msgstr "Ordina per Compleanno (mese/giorno)"
+
+msgid "Sort by category"
+msgstr "Ordina per Categoria"
+
+msgid "Sort by name (alphabetical)"
+msgstr "Ordina per nome (alfabetico)"
+
 msgid "Sorted by birthday"
 msgstr "Ordinato per Compleanno"
 
@@ -734,6 +770,18 @@ msgstr "Hai l'ultima versione di Calendar."
 
 msgid "no"
 msgstr "no"
+
+msgid "not sorted"
+msgstr "non ordinato"
+
+msgid "sorted by birthday"
+msgstr "ordinato per Compleanno"
+
+msgid "sorted by category"
+msgstr "ordinato per Categoria"
+
+msgid "sorted by name"
+msgstr "ordinato per Nome"
 
 msgid "vCard files: {0}"
 msgstr "vCard:: file  {0}"

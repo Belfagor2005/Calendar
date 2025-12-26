@@ -199,7 +199,13 @@ msgstr ""
 msgid "Database converted to vCard format"
 msgstr ""
 
+msgid "Database converter error: {0}"
+msgstr ""
+
 msgid "Database format"
+msgstr ""
+
+msgid "Database has been automatically converted to {0} format."
 msgstr ""
 
 msgid "Date"
@@ -297,6 +303,9 @@ msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 msgid "Error deleting contact '{0}'"
 msgstr ""
 
+msgid "Error exporting vCard: {0}"
+msgstr ""
+
 msgid "Error opening event dialog"
 msgstr "Σφάλμα κατά το άνοιγμα του παραθύρου συμβάντος"
 
@@ -306,6 +315,10 @@ msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 
 msgid "Error saving data"
 msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
+
+#, fuzzy
+msgid "Error: {0}"
+msgstr "Επεξεργασία"
 
 msgid "Errors: {0}"
 msgstr ""
@@ -320,6 +333,20 @@ msgstr "Συμβάν"
 
 msgid "Event system is disabled. Enable it in settings."
 msgstr "Το σύστημα συμβάντων είναι απενεργοποιημένο. Ενεργοποιήστε το στις ρυθμίσεις."
+
+#, fuzzy
+msgid "Export error: {0}"
+msgstr "Εισαγωγή"
+
+msgid "Export failed or no contacts to export"
+msgstr ""
+
+msgid "Export vCard File"
+msgstr ""
+
+#, fuzzy
+msgid "Exporting contacts..."
+msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 
 msgid "Failed to create backup. Update cancelled."
 msgstr ""
@@ -485,6 +512,9 @@ msgstr ""
 
 msgid "No past events to remove"
 msgstr "Δεν υπάρχουν παλαιά συμβάντα προς αφαίρεση"
+
+msgid "No sorting (original order)"
+msgstr ""
 
 msgid "No sound"
 msgstr "Χωρίς ήχο"
@@ -664,6 +694,15 @@ msgstr ""
 msgid "Sort"
 msgstr ""
 
+msgid "Sort by birthday (month/day)"
+msgstr ""
+
+msgid "Sort by category"
+msgstr ""
+
+msgid "Sort by name (alphabetical)"
+msgstr ""
+
 msgid "Sorted by birthday"
 msgstr ""
 
@@ -769,6 +808,18 @@ msgstr ""
 
 msgid "no"
 msgstr "όχι"
+
+msgid "not sorted"
+msgstr ""
+
+msgid "sorted by birthday"
+msgstr ""
+
+msgid "sorted by category"
+msgstr ""
+
+msgid "sorted by name"
+msgstr ""
 
 msgid "vCard files: {0}"
 msgstr ""
