@@ -741,6 +741,7 @@ class Calendar(Screen):
         print("check_for_updates called from main menu")
         try:
             print("Creating UpdateManager instance...")
+            from .updater import PluginUpdater
             updater = PluginUpdater()
             print("PluginUpdater created successfully")
             latest = updater.get_latest_version()
