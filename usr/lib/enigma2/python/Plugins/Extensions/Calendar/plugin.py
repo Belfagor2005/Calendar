@@ -170,9 +170,10 @@ init_calendar_config()
 class MenuDialog(Screen):
     skin = """
     <screen name="MenuDialog" position="center,center" size="600,720" title="Edit Settings" flags="wfNoBorder">
-        <widget name="menu" position="10,10" size="580,650" itemHeight="40" font="Regular;32" scrollbarMode="showOnDemand" />
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="135,680" size="75,36" alphatest="blend" zPosition="5" />
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="400,680" size="74,40" alphatest="on" zPosition="5" />
+        <widget name="menu" position="5,0" size="600,720" itemHeight="40" font="Regular;32" scrollbarMode="showOnDemand" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="355,680" size="75,40" alphatest="on" zPosition="5" />
+    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="430,680" size="75,36" alphatest="blend" zPosition="5" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="505,680" size="75,36" alphatest="blend" zPosition="5" />
     </screen>
     """
 
@@ -200,10 +201,10 @@ class Calendar(Screen):
     if (getDesktop(0).size().width() >= 1920):
         skin = """
         <!-- Calendar -->
-        <screen name="Calendar" position="center,center" size="1900,1060" title=" " flags="wfNoBorder">
-            <eLabel backgroundColor="#001a2336" cornerRadius="30" position="0,970" size="1905,90" zPosition="0" />
-            <eLabel name="" position="-118,-404" size="1920,1080" zPosition="-1" cornerRadius="18" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-            <widget source="session.VideoPicture" render="Pig" position="1392,692" zPosition="19" size="475,271" backgroundColor="transparent" transparent="0" cornerRadius="14" />
+        <screen name="Calendar" position="center,center" size="1900,1060" title=" " flags="wfNoBorder" zPosition="0">
+            <eLabel backgroundColor="#001a2336" cornerRadius="30" position="10,980" size="1880,90" zPosition="0" />
+            <eLabel name="" position="0,0" size="1920,1080" zPosition="-1" cornerRadius="20" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
+            <widget source="session.VideoPicture" render="Pig" position="1402,687" zPosition="19" size="475,271" backgroundColor="transparent" transparent="0" cornerRadius="20" />
 
             <!-- SEPARATORE
             <eLabel position="30,915" size="1740,5" backgroundColor="#FF555555" zPosition="1" />
@@ -277,13 +278,13 @@ class Calendar(Screen):
 
             <!-- TESTI INFORMATIVI -->
             <widget name="monthname" position="15,8" size="533,45" font="Regular; 36" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="date" position="555,10" size="1330,45" font="Regular; 30" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
+            <widget name="date" position="555,10" size="1330,45" font="Regular; 34" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
             <widget name="datepeople" position="555,60" size="1330,45" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="monthpeople" position="15,540" size="533,427" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="monthpeople" position="15,540" size="533,427" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="sign" position="555,110" size="1330,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="holiday" position="555,188" size="1330,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="description" position="555,270" size="1330,696" font="Regular; 30" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" valign="top" transparent="1" />
-            <widget name="status" position="1351,971" size="537,45" font="Regular; 32" foregroundColor="#3333ff" zPosition="5" halign="center" transparent="1" />
+            <widget name="description" position="555,270" size="1330,696" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" valign="top" transparent="1" />
+            <widget name="status" position="1351,971" size="537,45" font="Regular; 32" foregroundColor="#1edb76" zPosition="5" halign="center" transparent="1" />
 
             <!-- TASTI FUNZIONE -->
             <widget name="key_red" position="110,995" size="230,35" font="Regular;30" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
@@ -305,9 +306,9 @@ class Calendar(Screen):
         skin = """
         <!-- Calendar -->
         <screen name="Calendar" position="center,center" size="1280,720" title=" " flags="wfNoBorder">
-            <eLabel backgroundColor="#001a2336" cornerRadius="20" position="0,655" size="1280,60" zPosition="0" />
+            <eLabel backgroundColor="#001a2336" cornerRadius="20" position="10,655" size="1260,60" zPosition="0" />
             <eLabel name="" position="-80,-270" size="1280,720" zPosition="-1" cornerRadius="12" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-            <widget source="session.VideoPicture" render="Pig" position="933,471" zPosition="19" size="315,180" backgroundColor="transparent" transparent="0" cornerRadius="10" />
+            <widget source="session.VideoPicture" render="Pig" position="943,466" zPosition="19" size="315,180" backgroundColor="transparent" transparent="0" cornerRadius="10" />
 
             <!-- NOMI GIORNI SETTIMANA -->
             <widget name="w0" position="10,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
@@ -378,13 +379,13 @@ class Calendar(Screen):
 
             <!-- TESTI INFORMATIVI -->
             <widget name="monthname" position="10,5" size="355,30" font="Regular; 24" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="date" position="370,7" size="895,27" font="Regular; 20" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="datepeople" position="370,40" size="895,30" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="monthpeople" position="10,360" size="355,290" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="date" position="370,5" size="895,30" font="Regular; 24" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
+            <widget name="datepeople" position="370,35" size="895,40" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="monthpeople" position="10,360" size="355,290" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
             <widget name="sign" position="370,75" size="895,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="holiday" position="370,130" size="895,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="description" position="370,180" size="895,470" font="Regular; 20" foregroundColor="#008f8f8f" backgroundColor="background" halign="left" valign="top" transparent="1" />
-            <widget name="status" position="889,656" size="378,25" font="Regular; 20" foregroundColor="#3333ff" halign="center" zPosition="5" transparent="1" />
+            <widget name="holiday" position="370,125" size="895,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
+            <widget name="description" position="370,175" size="895,475" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" valign="top" transparent="1" />
+            <widget name="status" position="894,656" size="378,25" font="Regular; 20" foregroundColor="#1edb76" halign="center" zPosition="5" transparent="1" />
 
             <!-- TASTI FUNZIONE -->
             <widget name="key_red" position="70,675" size="155,20" font="Regular;20" halign="center" valign="center" backgroundColor="#20000000" zPosition="5" transparent="1" />
@@ -397,10 +398,10 @@ class Calendar(Screen):
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="295,695" size="155,7" alphatest="blend" zPosition="5" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="515,695" size="155,7" alphatest="blend" zPosition="5" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="730,695" size="155,7" alphatest="blend" zPosition="5" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="930,685" size="50,24" alphatest="blend" zPosition="5" scale="1" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="997,685" size="50,24" alphatest="blend" zPosition="5" scale="1" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1059,685" size="50,24" alphatest="on" zPosition="5" scale="1" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1121,685" size="50,24" alphatest="on" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="985,685" size="50,24" alphatest="blend" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="1037,685" size="50,24" alphatest="blend" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="1089,685" size="50,24" alphatest="on" zPosition="5" scale="1" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="1141,685" size="50,24" alphatest="on" zPosition="5" scale="1" />
         </screen>"""
 
     def __init__(self, session):
@@ -544,14 +545,13 @@ class Calendar(Screen):
         ])
 
         # ADD DATABASE CONVERSION OPTIONS
+        menu.extend([
+            (_("Database Converter"), self.database_converter),  # NUOVO!
+        ])
         if self.database_format == "legacy":
             menu.append((_("Convert to vCard format"), self.convert_to_vcard))
         else:
             menu.append((_("Convert to legacy format"), self.convert_to_legacy))
-
-        menu.extend([
-            (_("Database Converter"), self.database_converter),  # NUOVO!
-        ])
 
         # ADD UPDATER
         menu.extend([
@@ -2148,10 +2148,10 @@ class settingCalendar(Setup):
     def __init__(self, session, parent=None):
         Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
         self.parent = parent
-    
+
     def keySave(self):
         Setup.keySave(self)
-        
+
         if self.parent:
             old_format = self.parent.database_format
             new_format = config.plugins.calendar.database_format.value

@@ -528,10 +528,10 @@ class VCardFileImporter:
         """Check if contact already exists - OPTIMIZED VERSION"""
         # Normalize new contact
         new_norm = VCardFileImporter.normalize_contact_data(contact_data)
-        
+
         if not new_norm['FN']:
             return False
-        
+
         # Pre-calculate normalized existing contacts ONCE
         if not hasattr(birthday_manager, '_normalized_contacts_cache'):
             birthday_manager._normalized_contacts_cache = []
@@ -539,7 +539,7 @@ class VCardFileImporter:
                 birthday_manager._normalized_contacts_cache.append(
                     VCardFileImporter.normalize_contact_data(contact)
                 )
-        
+
         # Search in cache
         for existing_norm in birthday_manager._normalized_contacts_cache:
             if new_norm['FN'] == existing_norm['FN']:
@@ -547,19 +547,19 @@ class VCardFileImporter:
                 if new_norm['BDAY'] and existing_norm['BDAY'] and \
                    new_norm['BDAY'] == existing_norm['BDAY']:
                     return True
-                
+
                 if new_norm['TEL'] and existing_norm['TEL'] and \
                    new_norm['TEL'] == existing_norm['TEL']:
                     return True
-                
+
                 if new_norm['EMAIL'] and existing_norm['EMAIL'] and \
                    new_norm['EMAIL'] == existing_norm['EMAIL']:
                     return True
-                
+
                 # If names match but no other info, assume duplicate
                 if not new_norm['BDAY'] and not new_norm['TEL'] and not new_norm['EMAIL']:
                     return True
-        
+
         return False
 
     @staticmethod
@@ -983,13 +983,19 @@ class ImportProgressScreen(Screen):
             ["CalendarActions"],
             {
                 "red": self.cancel_import,
-                "exit": self.close,
-
+                "cancel": self.on_exit_pressed,
             }, -1
         )
 
         # Start import thread after screen is shown
         self.onShown.append(self.start_import)
+
+    def on_exit_pressed(self):
+        """Exit button management"""
+        if self["key_red"].getText() == _("Close"):
+            self.close(True)
+        else:
+            self.close(False)
 
     def start_import(self):
         """Start import process"""
@@ -1047,7 +1053,7 @@ class ImportProgressScreen(Screen):
         """Import completed"""
         print("[ImportProgress] Import completed: imported={0}, skipped={1}, errors={2}".format(
             imported, skipped, errors))
-        
+
         # Clear normalization cache
         if hasattr(self.birthday_manager, '_normalized_contacts_cache'):
             del self.birthday_manager._normalized_contacts_cache
@@ -1127,7 +1133,7 @@ class ImportProgressScreen(Screen):
         # Ensure thread is stopped
         if self.import_thread and self.import_thread.is_alive():
             self.import_thread.cancelled = True
-            self.import_thread.join(1.0)  # Wait max 1 second
+            self.import_thread.join(1.0)
 
         Screen.close(self, result)
 
