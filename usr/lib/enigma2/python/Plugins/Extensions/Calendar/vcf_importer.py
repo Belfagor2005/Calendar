@@ -95,7 +95,7 @@ class VCardImporter(Screen):
     if (getDesktop(0).size().width() >= 1920):
         skin = """
             <screen name="VCardImporter" position="center,center" size="1200,800" title="Import vCard" flags="wfNoBorder">
-                <widget name="filelist" position="10,20" size="1170,600" itemHeight="30" font="Regular;24" scrollbarMode="showNever" />
+                <widget name="filelist" position="10,20" size="1170,600" itemHeight="50" font="Regular;24" scrollbarMode="showNever" />
                 <widget name="status" position="12,641" size="1170,64" font="Regular;24" />
                 <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="50,768" size="230,10" alphatest="blend" />
                 <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="364,769" size="230,10" alphatest="blend" />
@@ -110,7 +110,7 @@ class VCardImporter(Screen):
     else:
         skin = """
             <screen name="VCardImporter" position="center,center" size="850,600" title="Import vCard" flags="wfNoBorder">
-                <widget name="filelist" position="10,10" size="818,450" itemHeight="30" font="Regular;24" scrollbarMode="showNever" />
+                <widget name="filelist" position="10,10" size="818,450" itemHeight="50" font="Regular;24" scrollbarMode="showNever" />
                 <widget name="status" position="12,471" size="818,64" font="Regular;24" />
                 <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="35,571" size="150,10" alphatest="blend" />
                 <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="213,572" size="150,10" alphatest="blend" />
@@ -157,10 +157,23 @@ class VCardImporter(Screen):
         print("[VCardImporter] Initialization complete")
 
     def ok(self):
-        """OK - select file"""
+        """OK - select file or enter directory"""
         selection = self["filelist"].getSelection()
-        if selection and not selection[1]:  # selection[1] = True if directory
-            filename = selection[0]
+        if not selection:
+            return
+
+        filename = selection[0]
+        is_directory = selection[1]
+
+        if is_directory:
+            # is directory:
+            self["filelist"].descent()
+            # show current directory
+            current_dir = self["filelist"].getCurrentDirectory()
+            if current_dir:
+                dir_name = basename(current_dir.rstrip('/'))
+                self["status"].setText(_("Directory: {0}").format(dir_name))
+        else:
             self["status"].setText(_("Selected: {0}").format(filename))
             self.do_import()
 
