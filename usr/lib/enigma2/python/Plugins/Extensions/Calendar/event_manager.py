@@ -13,6 +13,8 @@ MAIN FEATURES:
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
 • Database format converter (Legacy ↔ vCard)
+• Phone and email formatters for Calendar Planner
+• Maintains consistent formatting across import, display, and storage
 
 NEW IN v1.6:
 vCard EXPORT to /tmp/calendar.vcf
@@ -83,6 +85,7 @@ from datetime import datetime, timedelta
 from enigma import eTimer, eServiceReference, eServiceCenter
 from Components.config import config
 from Screens.MessageBox import MessageBox
+from Screens.InfoBar import InfoBar
 
 from . import _, PLUGIN_PATH
 
@@ -965,7 +968,6 @@ class EventManager:
             service = service_handler.uniqueService(service_ref)
             if service:
                 # This is the correct way to play a service in Enigma2
-                from Screens.InfoBar import InfoBar
                 infoBarInstance = InfoBar.instance
 
                 if infoBarInstance and hasattr(infoBarInstance, 'session'):

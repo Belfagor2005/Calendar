@@ -13,6 +13,8 @@ MAIN FEATURES:
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
 • Database format converter (Legacy ↔ vCard)
+• Phone and email formatters for Calendar Planner
+• Maintains consistent formatting across import, display, and storage
 
 NEW IN v1.6:
 vCard EXPORT to /tmp/calendar.vcf
@@ -85,7 +87,6 @@ from Screens.MessageBox import MessageBox
 from Screens.Setup import Setup
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Components.ActionMap import ActionMap  # , HelpableActionMap
-from Components.MenuList import MenuList
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.config import (
@@ -99,10 +100,12 @@ from skin import parseColor
 
 from . import _, PLUGIN_PATH, PLUGIN_VERSION, PLUGIN_ICON
 from .events_view import EventsView
+from .event_manager import EventManager
 from .birthday_manager import BirthdayManager
 from .contacts_view import ContactsView
 from .birthday_dialog import BirthdayDialog
 from .database_converter import DatabaseConverter, auto_convert_database
+from .formatters import format_field_display, MenuDialog
 
 
 def init_calendar_config():
@@ -165,36 +168,6 @@ def init_calendar_config():
 
 DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
 init_calendar_config()
-
-
-class MenuDialog(Screen):
-    skin = """
-    <screen name="MenuDialog" position="center,center" size="600,720" title="Edit Settings" flags="wfNoBorder">
-        <widget name="menu" position="5,0" size="600,720" itemHeight="40" font="Regular;32" scrollbarMode="showOnDemand" />
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_ok.png" position="355,680" size="75,40" alphatest="on" zPosition="5" />
-    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_updown.png" position="430,680" size="75,36" alphatest="blend" zPosition="5" />
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_leftright.png" position="505,680" size="75,36" alphatest="blend" zPosition="5" />
-    </screen>
-    """
-
-    def __init__(self, session, menu):
-        Screen.__init__(self, session)
-        self["menu"] = MenuList(menu)
-        self["actions"] = ActionMap(
-            ["OkCancelActions"],
-            {
-                "ok": self.ok,
-                "cancel": self.cancel,
-            }, -1
-        )
-
-    def ok(self):
-        selection = self["menu"].getCurrent()
-        if selection:
-            self.close(selection)
-
-    def cancel(self):
-        self.close(None)
 
 
 class Calendar(Screen):
@@ -415,15 +388,13 @@ class Calendar(Screen):
         self.selected_day = self.day
 
         if config.plugins.calendar.events_enabled.value:
-            from .event_manager import EventManager
             self.event_manager = EventManager(session)
         else:
             self.event_manager = None
 
         self.language = config.osd.language.value.split("_")[0].strip()
-        self.path = PLUGIN_PATH
 
-        self.birthday_manager = BirthdayManager(PLUGIN_PATH)
+        self.birthday_manager = BirthdayManager()
         print("[Calendar] BirthdayManager initialized, contacts: {0}".format(
             len(self.birthday_manager.contacts)))
 
@@ -597,7 +568,7 @@ class Calendar(Screen):
         """Load data from file - UNIFIED PARSER that reads any format"""
         if self.database_format == "vcard":
             file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-                self.path,
+                PLUGIN_PATH,
                 self.language,
                 self.year,
                 self.month,
@@ -605,7 +576,7 @@ class Calendar(Screen):
             )
         else:
             file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                self.path,
+                PLUGIN_PATH,
                 self.language,
                 self.year,
                 self.month,
@@ -792,7 +763,7 @@ class Calendar(Screen):
     def _save_legacy_data(self):
         """Save data to unified file in legacy format"""
         file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            self.path,
+            PLUGIN_PATH,
             self.language,
             self.year,
             self.month,
@@ -870,7 +841,7 @@ class Calendar(Screen):
     def _save_vcard_data(self):
         """Save in vCard format"""
         file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-            self.path,
+            PLUGIN_PATH,
             self.language,
             self.year,
             self.month,
@@ -970,9 +941,27 @@ class Calendar(Screen):
         )
 
     def show_contacts(self):
-        """Show contacts list"""
+        """Show contacts list - WITH PROPER REFRESH"""
+
+        def contacts_closed_callback(changes_made):
+            print("[Calendar] ContactsView closed, changes_made:", changes_made)
+
+            if changes_made:
+                print("[Calendar] Refreshing calendar after contacts changes")
+                self.birthday_manager.load_all_contacts()
+
+                if hasattr(self, 'original_cell_states'):
+                    self.original_cell_states = {}
+
+                self._paint_calendar()
+                self.load_data()
+
+                print("[Calendar] Calendar fully refreshed")
+            else:
+                print("[Calendar] No changes in contacts")
+
         self.session.openWithCallback(
-            self.contact_updated_callback,
+            contacts_closed_callback,
             ContactsView,
             self.birthday_manager
         )
@@ -992,7 +981,7 @@ class Calendar(Screen):
             day_contacts = self.birthday_manager.get_contacts_for_date(date_str)
 
             if day_contacts:
-                contacts_text = _("CONTACTS WITH BIRTHDAYS TODAY:\n")
+                contacts_text = _("CONTACTS WITH BIRTHDAYS TODAY:\n\n")
 
                 for contact in day_contacts:
                     name = contact.get('FN', 'Unknown')
@@ -1000,29 +989,31 @@ class Calendar(Screen):
                     phone = contact.get('TEL', '')
                     email = contact.get('EMAIL', '')
 
-                    contact_line = "- {0}".format(name)
+                    contact_line = "• {0}".format(name)
                     if age:
                         contact_line += " ({0})".format(age)
+
                     if phone:
-                        contact_line += " - {0}".format(phone)
+                        phone_display = format_field_display(phone)
+                        contact_line += "\n  Tel: {0}".format(phone_display)
+
                     if email:
-                        contact_line += " - {0}".format(email)
+                        email_display = format_field_display(email)
+                        contact_line += "\n  Email: {0}".format(email_display)
 
-                    contacts_text += contact_line + "\n"
+                    contacts_text += contact_line + "\n\n"
 
-                # Add to description
                 current_desc = self["description"].getText()
+
                 if _("CONTACTS WITH BIRTHDAYS TODAY:") in current_desc:
-                    # Remove existing contacts section
                     parts = current_desc.split(_("CONTACTS WITH BIRTHDAYS TODAY:"))
                     current_desc = parts[0].rstrip()
 
-                # Add new contacts section
                 separator = "\n" + "-" * 40 + "\n"
                 self["description"].setText(current_desc + separator + contacts_text.rstrip())
 
         except Exception as e:
-            print("[Calendar] Error displaying contacts: {}".format(e))
+            print("[Calendar] Error displaying contacts: {0}".format(e))
 
     def auto_convert_database(self):
         """Auto-convert database based on configuration"""
@@ -1033,7 +1024,6 @@ class Calendar(Screen):
                 config.plugins.calendar.auto_convert.value))
 
             converted = auto_convert_database(
-                self.path,
                 self.language,
                 self.database_format
             )
@@ -1145,13 +1135,8 @@ class Calendar(Screen):
         """Perform export with specified sort method"""
         try:
             from .vcf_importer import export_contacts_to_vcf
-
             export_path = "/tmp/calendar.vcf"
-
-            # Mostra stato
             self["status"].setText(_("Exporting contacts..."))
-
-            # Export con ordinamento
             count = export_contacts_to_vcf(self.birthday_manager, export_path, sort_method)
 
             if count > 0:
@@ -1190,11 +1175,11 @@ class Calendar(Screen):
     def database_converter(self):
         """Open database converter dialog"""
         try:
-            print("[Calendar DEBUG] Plugin path: {0}".format(self.path))
+            print("[Calendar DEBUG] Plugin path: {0}".format(PLUGIN_PATH))
             print("[Calendar DEBUG] Language: {0}".format(self.language))
 
-            legacy_path = join(self.path, "base", self.language, "day")
-            vcard_path = join(self.path, "base", "vcard", self.language)
+            legacy_path = join(PLUGIN_PATH, "base", self.language, "day")
+            vcard_path = join(PLUGIN_PATH, "base", "vcard", self.language)
 
             print("[Calendar DEBUG] Legacy path exists: {0} -> {1}".format(
                 legacy_path, exists(legacy_path)))
@@ -1203,7 +1188,6 @@ class Calendar(Screen):
 
             self.session.open(
                 DatabaseConverter,
-                self.path,
                 self.language
             )
         except Exception as e:
@@ -1218,17 +1202,16 @@ class Calendar(Screen):
 
     def contact_updated_callback(self, result=None):
         """Callback after contact operations"""
-        print("[Calendar DEBUG] Contact callback called with result: {}".format(result))
-        if result:
-            if DEBUG:
-                print("[Calendar] Contact operation successful, refreshing calendar...")
+        print("[Calendar DEBUG] Contact callback called with result: {0}".format(result))
 
-            self.birthday_manager.load_all_contacts()
-            self._paint_calendar()
-            self.load_data()
+        self.birthday_manager.load_all_contacts()
+        self._paint_calendar()
+        self.load_data()
+
+        if result:
+            print("[Calendar] Contact operation successful")
         else:
-            if DEBUG:
-                print("[Calendar] Contact operation cancelled or no changes")
+            print("[Calendar] Contact operation cancelled or no changes")
 
     def new_date(self):
         """
@@ -1334,7 +1317,7 @@ class Calendar(Screen):
         """Remove the date and clear all fields"""
         if self.database_format == "vcard":
             file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-                self.path,
+                PLUGIN_PATH,
                 self.language,
                 self.year,
                 self.month,
@@ -1342,7 +1325,7 @@ class Calendar(Screen):
             )
         else:
             file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                self.path,
+                PLUGIN_PATH,
                 self.language,
                 self.year,
                 self.month,
@@ -1372,7 +1355,7 @@ class Calendar(Screen):
         """Delete the data file for the selected date"""
         if self.database_format == "vcard":
             file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-                self.path,
+                PLUGIN_PATH,
                 self.language,
                 self.year,
                 self.month,
@@ -1380,7 +1363,7 @@ class Calendar(Screen):
             )
         else:
             file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                self.path,
+                PLUGIN_PATH,
                 self.language,
                 self.year,
                 self.month,
@@ -1544,7 +1527,6 @@ class Calendar(Screen):
             # This should never happen if events_enabled = True
             # But initialize it for safety
             try:
-                from .event_manager import EventManager
                 self.event_manager = EventManager(self.session)
                 if DEBUG:
                     print("[Calendar] EventManager initialized on-demand")
@@ -1664,7 +1646,6 @@ class Calendar(Screen):
             self.session.openWithCallback(
                 self.import_holidays_callback,
                 HolidaysImportScreen,
-                PLUGIN_PATH=self.path,
                 language=self.language
             )
 
@@ -1835,7 +1816,7 @@ class Calendar(Screen):
             # Use correct path based on format
             if self.database_format == "vcard":
                 file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-                    self.path,
+                    PLUGIN_PATH,
                     language,
                     year,
                     month,
@@ -1843,7 +1824,7 @@ class Calendar(Screen):
                 )
             else:
                 file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                    self.path,
+                    PLUGIN_PATH,
                     language,
                     year,
                     month,

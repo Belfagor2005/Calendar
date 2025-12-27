@@ -19,14 +19,12 @@ import re
 import subprocess
 from xml.etree import ElementTree as ET
 
-# ===== CONFIGURAZIONE =====
 PLUGIN_NAME = "Calendar"
 PLUGIN_DIR = os.path.dirname(os.path.abspath(__file__))
 LOCALE_DIR = os.path.join(PLUGIN_DIR, "locale")
 POT_FILE = os.path.join(LOCALE_DIR, "{}.pot".format(PLUGIN_NAME))
 
 
-# ===== 1. ESTRAI STRINGHE DA setup.xml =====
 def extract_xml_strings():
     """Extract all strings from setup.xml"""
     xml_file = os.path.join(PLUGIN_DIR, "setup.xml")
@@ -72,7 +70,6 @@ def extract_xml_strings():
     return unique
 
 
-# ===== 2. ESTRAI STRINGHE DA FILE PYTHON (usando xgettext) =====
 def extract_python_strings():
     """Extract strings from all .py files using xgettext"""
     py_strings = []
@@ -132,7 +129,6 @@ def extract_python_strings():
         return []
 
 
-# ===== 3. CREA/MODIFICA IL FILE .POT =====
 def update_pot_file(xml_strings, py_strings):
     """Create or update the final .pot file"""
 
@@ -198,7 +194,6 @@ def update_pot_file(xml_strings, py_strings):
     return len(all_strings)
 
 
-# ===== 4. AGGIORNA I FILE .PO ESISTENTI =====
 def update_po_files():
     """Update all .po files with new strings"""
 
@@ -243,7 +238,6 @@ def update_po_files():
                     print("  ✗ ERROR creating file for: {}".format(lang_dir))
 
 
-# ===== 5. COMPILA I FILE .MO =====
 def compile_mo_files():
     """Compile all .po files into .mo"""
 

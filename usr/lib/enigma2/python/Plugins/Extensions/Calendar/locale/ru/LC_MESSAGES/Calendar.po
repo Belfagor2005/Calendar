@@ -65,9 +65,6 @@ msgstr "Синий"
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
 msgstr ""
 
-msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
-msgstr ""
-
 #, fuzzy
 msgid "Calendar"
 msgstr "Календарь-планер"
@@ -144,6 +141,9 @@ msgstr ""
 #, fuzzy
 msgid "Contact '{0}' deleted successfully"
 msgstr "Обновление успешно завершено!"
+
+msgid "Contacts directory not found"
+msgstr ""
 
 msgid "Contacts: {0} (Search: '{1}')"
 msgstr ""
@@ -235,8 +235,18 @@ msgstr "Декабрь"
 msgid "Delete"
 msgstr "Удалить"
 
+msgid "Delete ALL contacts"
+msgstr ""
+
 msgid "Delete File"
 msgstr "Удалить файл"
+
+#, fuzzy
+msgid "Delete: {0}"
+msgstr "Удалить"
+
+msgid "Deleted {0} contacts from database"
+msgstr ""
 
 msgid "Description"
 msgstr "Описание"
@@ -304,6 +314,10 @@ msgstr "Ошибка сохранения данных"
 
 msgid "Error deleting contact '{0}'"
 msgstr ""
+
+#, fuzzy
+msgid "Error deleting database: {0}"
+msgstr "Ошибка сохранения данных"
 
 msgid "Error exporting vCard: {0}"
 msgstr ""
@@ -499,8 +513,15 @@ msgstr "Новая дата"
 msgid "Next Field"
 msgstr ""
 
+msgid "No contact files found"
+msgstr ""
+
 msgid "No contact selected"
 msgstr ""
+
+#, fuzzy
+msgid "No contacts found in database"
+msgstr "Нет файла в базе данных..."
 
 msgid "No file in database..."
 msgstr "Нет файла в базе данных..."

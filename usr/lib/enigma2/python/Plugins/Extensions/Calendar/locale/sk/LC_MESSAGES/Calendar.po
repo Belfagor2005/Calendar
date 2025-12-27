@@ -65,9 +65,6 @@ msgstr "Studená modrá"
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
 msgstr ""
 
-msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
-msgstr ""
-
 #, fuzzy
 msgid "Calendar"
 msgstr "Plánovač kalendárov"
@@ -144,6 +141,9 @@ msgstr ""
 #, fuzzy
 msgid "Contact '{0}' deleted successfully"
 msgstr "Aktualizácia bola úspešne dokončená!"
+
+msgid "Contacts directory not found"
+msgstr ""
 
 msgid "Contacts: {0} (Search: '{1}')"
 msgstr ""
@@ -235,8 +235,18 @@ msgstr "December"
 msgid "Delete"
 msgstr "Odstrániť"
 
+msgid "Delete ALL contacts"
+msgstr ""
+
 msgid "Delete File"
 msgstr "Vymazať súbor"
+
+#, fuzzy
+msgid "Delete: {0}"
+msgstr "Odstrániť"
+
+msgid "Deleted {0} contacts from database"
+msgstr ""
 
 msgid "Description"
 msgstr "Popis"
@@ -304,6 +314,10 @@ msgstr "Chyba pri ukladaní údajov"
 
 msgid "Error deleting contact '{0}'"
 msgstr ""
+
+#, fuzzy
+msgid "Error deleting database: {0}"
+msgstr "Chyba pri ukladaní údajov"
 
 msgid "Error exporting vCard: {0}"
 msgstr ""
@@ -499,8 +513,15 @@ msgstr "Nový dátum"
 msgid "Next Field"
 msgstr ""
 
+msgid "No contact files found"
+msgstr ""
+
 msgid "No contact selected"
 msgstr ""
+
+#, fuzzy
+msgid "No contacts found in database"
+msgstr "Žiadny súbor v databáze..."
 
 msgid "No file in database..."
 msgstr "Žiadny súbor v databáze..."

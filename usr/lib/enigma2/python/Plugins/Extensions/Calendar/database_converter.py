@@ -13,6 +13,8 @@ MAIN FEATURES:
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
 • Database format converter (Legacy ↔ vCard)
+• Phone and email formatters for Calendar Planner
+• Maintains consistent formatting across import, display, and storage
 
 NEW IN v1.6:
 vCard EXPORT to /tmp/calendar.vcf
@@ -119,10 +121,9 @@ class DatabaseConverter(Screen):
             </screen>
         """
 
-    def __init__(self, session, plugin_path, language):
+    def __init__(self, session, language):
         Screen.__init__(self, session)
         self.session = session
-        self.plugin_path = plugin_path
         self.language = language
 
         self["title"] = Label(_("Database Converter"))
@@ -144,7 +145,7 @@ class DatabaseConverter(Screen):
             }, -1
         )
 
-        self.converter = Converter(plugin_path, language)
+        self.converter = Converter(language)
         self.update_status()
 
     def update_status(self):
@@ -295,13 +296,12 @@ class Converter:
         'ORG': 'monthpeople'            # Alternative mapping
     }
 
-    def __init__(self, plugin_path, language):
-        self.plugin_path = plugin_path
+    def __init__(self, language):
         self.language = language
 
         # Define paths
-        self.legacy_path = join(plugin_path, "base", language, "day")
-        self.vcard_path = join(plugin_path, "base", "vcard", language)
+        self.legacy_path = join(PLUGIN_PATH, "base", language, "day")
+        self.vcard_path = join(PLUGIN_PATH, "base", "vcard", language)
 
         # Ensure directories exist
         self._ensure_directories()
@@ -572,7 +572,7 @@ class Converter:
         if backup_name is None:
             backup_name = "backup_" + datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        backup_path = join(self.plugin_path, "backups", backup_name)
+        backup_path = join(PLUGIN_PATH, "backups", backup_name)
 
         try:
             # Create backup directory
@@ -634,7 +634,7 @@ class Converter:
             return False
 
 
-def auto_convert_database(plugin_path, language, target_format="vcard"):
+def auto_convert_database(language, target_format="vcard"):
     """
     Auto-convert database based on configuration
 
@@ -643,7 +643,7 @@ def auto_convert_database(plugin_path, language, target_format="vcard"):
         language: Current language
         target_format: Target format ("vcard" or "legacy")
     """
-    converter = Converter(plugin_path, language)
+    converter = Converter(language)
 
     if target_format == "vcard":
         # Check if conversion is needed
@@ -674,46 +674,3 @@ def auto_convert_database(plugin_path, language, target_format="vcard"):
             return True
 
     return False
-
-
-def check_database_consistency(plugin_path, language):
-    """
-    Check database consistency between formats
-
-    Args:
-        plugin_path: Plugin installation path
-        language: Current language
-
-    Returns:
-        Dictionary with consistency information
-    """
-    converter = Converter(plugin_path, language)
-
-    legacy_files = set()
-    vcard_files = set()
-
-    # Get legacy files
-    if exists(converter.legacy_path):
-        for f in listdir(converter.legacy_path):
-            if f.endswith(".txt") and len(f) == 12:
-                legacy_files.add(f)
-
-    # Get vcard files
-    if exists(converter.vcard_path):
-        for f in listdir(converter.vcard_path):
-            if f.endswith(".txt") and len(f) == 12:
-                vcard_files.add(f)
-
-    # Find differences
-    only_in_legacy = legacy_files - vcard_files
-    only_in_vcard = vcard_files - legacy_files
-    in_both = legacy_files & vcard_files
-
-    return {
-        'legacy_count': len(legacy_files),
-        'vcard_count': len(vcard_files),
-        'only_in_legacy': list(only_in_legacy),
-        'only_in_vcard': list(only_in_vcard),
-        'in_both': len(in_both),
-        'consistent': len(only_in_legacy) == 0 and len(only_in_vcard) == 0
-    }

@@ -13,6 +13,8 @@ MAIN FEATURES:
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
 • Database format converter (Legacy ↔ vCard)
+• Phone and email formatters for Calendar Planner
+• Maintains consistent formatting across import, display, and storage
 
 NEW IN v1.6:
 vCard EXPORT to /tmp/calendar.vcf
@@ -72,7 +74,7 @@ Credits: Sirius0103 (original), Lululla (modifications)
 Homepage: www.linuxsat-support.com
 ###########################################################
 """
-
+from __future__ import print_function
 from datetime import datetime, timedelta
 from json import loads
 from os import makedirs, listdir
@@ -139,9 +141,8 @@ COUNTRY_LANGUAGE_MAP = {
 
 
 class HolidaysManager:
-    def __init__(self, plugin_path=None, language="it"):
+    def __init__(self, language="it"):
         """Use the filesystem instead of the SQL database"""
-        self.plugin_path = plugin_path or PLUGIN_PATH
         self.language = language
         self.holidays_data = {}
 
@@ -174,7 +175,7 @@ class HolidaysManager:
         holidays = []
 
         file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            self.plugin_path,
+            PLUGIN_PATH,
             self.language,
             year,
             month,
@@ -210,7 +211,7 @@ class HolidaysManager:
             day = check_date.day
 
             file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                self.plugin_path,
+                PLUGIN_PATH,
                 self.language,
                 year,
                 month,
@@ -303,7 +304,7 @@ class HolidaysManager:
         if not country_code:
             return 0
 
-        base_path = self.plugin_path + "base/" + self.language + "/day/"
+        base_path = PLUGIN_PATH + "base/" + self.language + "/day/"
         if not exists(base_path):
             return 0
 
@@ -387,7 +388,7 @@ class HolidaysManager:
 
             # Build file path
             file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                self.plugin_path,
+                PLUGIN_PATH,
                 self.language,
                 year,
                 month,
@@ -516,19 +517,15 @@ class HolidaysImportScreen(Screen):
             </screen>
         """
 
-    def __init__(self, session, plugin_path=None, language=None):
+    def __init__(self, session, language=None):
         Screen.__init__(self, session)
         self.session = session
 
         # Use the master calendar values
-        if plugin_path is None:
-            from . import PLUGIN_PATH as pp
-            plugin_path = pp
-
         if language is None:
             language = config.osd.language.value.split("_")[0].strip()
 
-        self.manager = HolidaysManager(plugin_path, language)
+        self.manager = HolidaysManager(language)
 
         self["country_list"] = MenuList([])
         self["status_label"] = Label("Select a country to import")
@@ -615,9 +612,9 @@ class HolidaysImportScreen(Screen):
         Screen.close(self, result)
 
 
-def clear_holidays_database(plugin_path, language):
+def clear_holidays_database(language):
     """Clears all 'holiday:' fields from data files"""
-    base_path = join(plugin_path, "base", language, "day")
+    base_path = join(PLUGIN_PATH, "base", language, "day")
 
     if not exists(base_path):
         return 0, "Directory not found: {0}".format(base_path)
@@ -662,7 +659,7 @@ def clear_holidays_dialog(session):
         language = config.osd.language.value.split("_")[0].strip()
 
         session.openWithCallback(
-            lambda result: execute_clear_holidays(result, session, PLUGIN_PATH, language),
+            lambda result: execute_clear_holidays(result, session, language),
             MessageBox,
             _("Clear ALL holiday entries from all date files?"),
             MessageBox.TYPE_YESNO
@@ -672,28 +669,27 @@ def clear_holidays_dialog(session):
         session.open(MessageBox, "Error: " + str(e), MessageBox.TYPE_ERROR)
 
 
-def execute_clear_holidays(result, session, plugin_path, language):
+def execute_clear_holidays(result, session, language):
     """Executes clearing after confirmation"""
     if result:
-        cleared_count, message = clear_holidays_database(plugin_path, language)
+        cleared_count, message = clear_holidays_database(language)
         session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
 
 def show_holidays_today(session):
     """Show today's holidays from the filesystem"""
     try:
-        plugin_path_val = PLUGIN_PATH
         language = config.osd.language.value.split("_")[0].strip()
         today = datetime.now()
         if DEBUG:
             print("[Holidays DEBUG] Today: {0}".format(today.strftime('%Y-%m-%d')))
             print("[Holidays DEBUG] Language: {0}".format(language))
 
-        manager = HolidaysManager(plugin_path_val, language)
+        manager = HolidaysManager(language)
 
         # DEBUG: Check the file path
         file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            plugin_path_val,
+            PLUGIN_PATH,
             language,
             today.year,
             today.month,
@@ -736,9 +732,8 @@ def show_holidays_today(session):
 def show_upcoming_holidays(session, days=30):
     """Show upcoming holidays from the text files"""
     try:
-        plugin_path_val = PLUGIN_PATH
         language = config.osd.language.value.split("_")[0].strip()
-        manager = HolidaysManager(plugin_path_val, language)
+        manager = HolidaysManager(language)
         holidays = manager.get_upcoming_holidays(days)
         if holidays:
             message = "UPCOMING HOLIDAYS (next {0} days):\n\n".format(days)

@@ -13,6 +13,8 @@ MAIN FEATURES:
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
 • Database format converter (Legacy ↔ vCard)
+• Phone and email formatters for Calendar Planner
+• Maintains consistent formatting across import, display, and storage
 
 NEW IN v1.6:
 vCard EXPORT to /tmp/calendar.vcf

@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 14:38+0100\n"
-"PO-Revision-Date: 2025-12-26 18:52+0200\n"
+"PO-Revision-Date: 2025-12-22 14:38+0100\n"
 "Last-Translator: \n"
 "Language-Team: giorbak\n"
 "Language: el\n"
@@ -31,8 +31,9 @@ msgstr "Ενεργό:"
 msgid "Add"
 msgstr "Προσθήκη"
 
+#, fuzzy
 msgid "Add Contact"
-msgstr "Προσθήκη επαφής"
+msgstr "Προσθήκη συμβάντος"
 
 msgid "Add Event"
 msgstr "Προσθήκη συμβάντος"
@@ -47,28 +48,26 @@ msgid "August"
 msgstr "Αύγουστος"
 
 msgid "Auto-convert to vCard"
-msgstr "Αυτόματη μετατροπή σε vCard"
+msgstr ""
 
 msgid "Automatically convert legacy files to vCard format on first use"
-msgstr "Αυτόματη μετατροπή των παλαιών αρχείων σε μορφή vCard κατά την πρώτη χρήση"
+msgstr ""
 
 msgid "Back"
 msgstr "Πίσω"
 
 msgid "Birthday (YYYY-MM-DD)"
-msgstr "Ημερομηνία γέννησης (ΕΕΕΕ-ΜΜ-ΗΗ)"
+msgstr ""
 
 msgid "Blue"
-msgstr "Μπλε"
+msgstr ""
 
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
-msgstr "ΕΠΑΦΕΣ ΜΕ ΓΕΝΕΘΛΙΑ ΣΗΜΕΡΑ:"
+msgstr ""
 
-msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
-msgstr "ΕΠΑΦΕΣ ΜΕ ΓΕΝΕΘΛΙΑ ΣΗΜΕΡΑ:\n"
-
+#, fuzzy
 msgid "Calendar"
-msgstr "Calendar"
+msgstr "Calendar Planner"
 
 msgid "Calendar Planner"
 msgstr "Calendar Planner"
@@ -76,35 +75,39 @@ msgstr "Calendar Planner"
 msgid "Calendar Planner v.%s"
 msgstr "Calendar Planner v.%s"
 
+#, fuzzy
 msgid "Calendar Planner | Ready"
-msgstr "Calendar Planner | Έτοιμο"
+msgstr "Calendar Planner"
 
+#, fuzzy
 msgid "Calendar Settings"
-msgstr "Ρυθμίσεις ημερολογίου"
+msgstr "Calendar"
 
+#, fuzzy
 msgid "Calendar with events and notifications"
 msgstr "Ημερολόγιο με συμβάντα και ειδοποιήσεις"
 
 msgid "Cancel"
 msgstr "Άκυρο"
 
+#, fuzzy
 msgid "Cancelling..."
-msgstr "Άκυρο..."
+msgstr "Άκυρο"
 
 msgid "Cannot delete: Contact has no ID"
-msgstr "Δεν είναι δυνατή η διαγραφή: Η επαφή δεν έχει αναγνωριστικό"
+msgstr ""
 
 msgid "Categories (comma separated)"
-msgstr "Κατηγορίες (διαχωρισμένες με κόμμα)"
+msgstr ""
 
 msgid "Check for Updates"
-msgstr "Έλεγχος για ενημερώσεις"
+msgstr ""
 
 msgid "Checking for updates..."
-msgstr "Έλεγχος για ενημερώσεις..."
+msgstr ""
 
 msgid "Choose between legacy text files or standard vCard format"
-msgstr "Επιλογή μεταξύ παλαιών αρχείων κειμένου ή τυπικής μορφής vCard"
+msgstr ""
 
 msgid "Cleanup past events"
 msgstr "Εκκαθάριση παλαιών συμβάντων"
@@ -113,7 +116,7 @@ msgid "Clear ALL holiday entries from all date files?"
 msgstr "Εκκαθάριση ΟΛΩΝ των καταχωρήσεων αργιών από όλα τα αρχεία ημερομηνιών;"
 
 msgid "Clear All"
-msgstr "Εκκαθάριση όλων"
+msgstr ""
 
 msgid "Clear Holiday Database"
 msgstr "Εκκαθάριση βάσης δεδομένων αργιών"
@@ -121,83 +124,92 @@ msgstr "Εκκαθάριση βάσης δεδομένων αργιών"
 msgid "Close"
 msgstr "Κλείσιμο"
 
+#, fuzzy
 msgid "Color days with holidays"
-msgstr "Χρωματισμός των ημερών με αργίες"
+msgstr "Εμφάνιση σημερινών αργιών"
 
+#, fuzzy
 msgid "Color for days with events"
-msgstr "Χρώμα για τις ημέρες με συμβάντα"
+msgstr "Εμφάνιση σημερινών αργιών"
 
+#, fuzzy
 msgid "Color for holiday days"
-msgstr "Χρώμα για τις ημέρες αργιών"
+msgstr "Εμφάνιση σημερινών αργιών"
 
 msgid "Completed"
-msgstr "Ολοκληρώθηκε"
+msgstr ""
 
 msgid "Contact '{0}' deleted successfully"
-msgstr "Η επαφή '{0}' διαγράφηκε με επιτυχία"
+msgstr ""
+
+msgid "CONTACTS WITH BIRTHDAYS TODAY:\n\n"
+msgstr ""
+
+msgid "Contacts directory not found"
+msgstr ""
 
 msgid "Contacts: {0} (Search: '{1}')"
-msgstr "Επαφές: {0} (Αναζήτηση: '{1}')"
+msgstr ""
 
 msgid "Contacts: {0} ({1})"
-msgstr "Επαφές: {0} ({1})"
+msgstr ""
 
 msgid "Conversion completed successfully!"
-msgstr "Η μετατροπή ολοκληρώθηκε με επιτυχία!"
+msgstr ""
 
 msgid "Convert all existing data to vCard format?"
-msgstr "Να γίνει μετατροπή όλων των υπαρχόντων δεδομένων σε μορφή vCard;"
+msgstr ""
 
 msgid "Convert to Legacy"
-msgstr "Μετατρ. σε παλαιά"
+msgstr ""
 
 msgid "Convert to legacy format"
-msgstr "Μετατροπή σε παλαιά μορφή"
+msgstr ""
 
 msgid "Convert to vCard"
-msgstr "Μετατρ. σε vCard"
+msgstr ""
 
 msgid "Convert to vCard format"
-msgstr "Μετατροπή σε μορφή vCard"
+msgstr ""
 
 msgid "Converted: {0} files, Errors: {1}"
-msgstr "Μετατράπηκαν: {0} αρχεία, Σφάλματα: {1}"
+msgstr ""
 
 msgid "Converting to Legacy..."
-msgstr "Μετατροπή σε παλαιά μορφή..."
+msgstr ""
 
 msgid "Converting to vCard..."
-msgstr "Μετατροπή σε vCard..."
+msgstr ""
 
 msgid "Converting: {0} ({1}/{2})"
-msgstr "Μετατροπή: {0} ({1}/{2})"
+msgstr ""
 
 msgid "Could not check for updates. Check internet connection."
-msgstr "Δεν ήταν δυνατός ο έλεγχος για ενημερώσεις. Ελέγξτε τη σύνδεση στο διαδίκτυο."
+msgstr ""
 
 msgid "Could not check for updates: %s"
-msgstr "Δεν ήταν δυνατός ο έλεγχος για ενημερώσεις: %s"
+msgstr ""
 
 msgid "Current format: {0}"
-msgstr "Τρέχουσα μορφή: {0}"
+msgstr ""
 
 msgid "Database Converter"
-msgstr "Μετατροπέας βάσης δεδομένων"
+msgstr ""
 
 msgid "Database Statistics"
-msgstr "Στατιστικά βάσης δεδομένων"
+msgstr ""
 
 msgid "Database converted to vCard format"
-msgstr "Η βάση δεδομένων μετατράπηκε σε μορφή vCard"
+msgstr ""
 
 msgid "Database converter error: {0}"
-msgstr "Σφάλμα μετατροπέα βάσης δεδομένων: {0}"
+msgstr ""
 
 msgid "Database format"
-msgstr "Μορφή βάσης δεδομένων"
+msgstr ""
 
 msgid "Database has been automatically converted to {0} format."
-msgstr "Η βάση δεδομένων μετατράπηκε αυτόματα σε μορφή {0}."
+msgstr ""
 
 msgid "Date"
 msgstr "Ημερομηνία"
@@ -205,8 +217,9 @@ msgstr "Ημερομηνία"
 msgid "Date People"
 msgstr "Άτομα ανά ημερομηνία"
 
+#, fuzzy
 msgid "Date People:"
-msgstr "Άτομα ανά ημερομηνία:"
+msgstr "Άτομα ανά ημερομηνία: "
 
 msgid "Date:"
 msgstr "Ημερομηνία:"
@@ -223,8 +236,18 @@ msgstr "Δεκέμβριος"
 msgid "Delete"
 msgstr "Διαγραφή"
 
+msgid "Delete ALL contacts"
+msgstr ""
+
 msgid "Delete File"
 msgstr "Διαγραφή αρχείου"
+
+#, fuzzy
+msgid "Delete: {0}"
+msgstr "Διαγραφή"
+
+msgid "Deleted {0} contacts from database"
+msgstr ""
 
 msgid "Description"
 msgstr "Περιγραφή"
@@ -233,13 +256,14 @@ msgid "Description:"
 msgstr "Περιγραφή:"
 
 msgid "E:{0}"
-msgstr "E:{0}"
+msgstr ""
 
 msgid "Edit"
 msgstr "Επεξεργασία"
 
+#, fuzzy
 msgid "Edit Contact"
-msgstr "Επεξεργασία επαφής"
+msgstr "Επεξεργασία ημερομηνίας"
 
 msgid "Edit Date"
 msgstr "Επεξεργασία ημερομηνίας"
@@ -259,92 +283,105 @@ msgstr "Επεξεργασία ατόμων ανά μήνα"
 msgid "Edit Sign"
 msgstr "Επεξεργασία υπογραφής"
 
+#, fuzzy
 msgid "Edit: {0}"
-msgstr "Επεξεργασία: {0}"
+msgstr "Επεξεργασία"
 
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "Enable debug mode"
-msgstr "Ενεργοποίηση λειτουργίας αποσφαλμάτωσης"
+msgstr ""
 
 msgid "Enable event management with date/time"
-msgstr "Ενεργοποίηση της διαχείρισης συμβάντων με ημερομηνία/ώρα"
+msgstr ""
 
 msgid "Enable event system"
-msgstr "Ενεργοποίηση συστήματος συμβάντων"
+msgstr ""
 
 msgid "Enable holiday coloring"
-msgstr "Ενεργοποίηση χρωματισμού αργιών"
+msgstr ""
 
 msgid "Enable notifications"
-msgstr "Ενεργοποίηση ειδοποιήσεων"
+msgstr ""
 
+#, fuzzy
 msgid "Enter"
-msgstr "Εισαγωγή"
+msgstr "Εισάγετε "
 
+#, fuzzy
 msgid "Error deleting contact"
-msgstr "Σφάλμα διαγραφής επαφής"
+msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 
 msgid "Error deleting contact '{0}'"
-msgstr "Σφάλμα διαγραφής επαφής '{0}'"
+msgstr ""
+
+#, fuzzy
+msgid "Error deleting database: {0}"
+msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 
 msgid "Error exporting vCard: {0}"
-msgstr "Σφάλμα εξαγωγής vCard: {0}"
+msgstr ""
 
 msgid "Error opening event dialog"
 msgstr "Σφάλμα κατά το άνοιγμα του παραθύρου συμβάντος"
 
+#, fuzzy
 msgid "Error saving contact"
-msgstr "Σφάλμα αποθήκευσης επαφής"
+msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 
 msgid "Error saving data"
 msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 
+#, fuzzy
 msgid "Error: {0}"
-msgstr "Σφάλμα: {0}"
+msgstr "Επεξεργασία"
 
 msgid "Errors: {0}"
-msgstr "Σφάλματα: {0}"
+msgstr ""
 
+#, fuzzy
 msgid "Event"
-msgstr "Συμβάν"
+msgstr "Προσθήκη συμβάντος"
 
+#, fuzzy
 msgid "Event color"
-msgstr "Χρώμα συμβάντων"
+msgstr "Συμβάν"
 
 msgid "Event system is disabled. Enable it in settings."
 msgstr "Το σύστημα συμβάντων είναι απενεργοποιημένο. Ενεργοποιήστε το στις ρυθμίσεις."
 
+#, fuzzy
 msgid "Export error: {0}"
-msgstr "Σφάλμα εξαγωγής: {0}"
+msgstr "Εισαγωγή"
 
 msgid "Export failed or no contacts to export"
-msgstr "Η εξαγωγή απέτυχε ή δεν υπάρχουν επαφές προς εξαγωγή"
+msgstr ""
 
 msgid "Export vCard File"
-msgstr "Εξαγωγή αρχείου vCard"
+msgstr ""
 
+#, fuzzy
 msgid "Exporting contacts..."
-msgstr "Εξαγωγή επαφών..."
+msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 
 msgid "Failed to create backup. Update cancelled."
-msgstr "Αποτυχία δημιουργίας αντιγράφου ασφαλείας. Η ενημέρωση ακυρώθηκε."
+msgstr ""
 
 msgid "Failed to start import"
-msgstr "Αποτυχία εκκίνησης εισαγωγής"
+msgstr ""
 
 msgid "February"
 msgstr "Φεβρουάριος"
 
 msgid "Field {0}/{1}: {2}"
-msgstr "Πεδίο {0}/{1}: {2}"
+msgstr ""
 
 msgid "File not found!"
 msgstr "Το αρχείο δεν βρέθηκε!"
 
 msgid "File: {0}"
-msgstr "Αρχείο: {0}"
+msgstr ""
 
 msgid "Files is Empty..."
 msgstr "Τα αρχεία είναι κενά..."
@@ -353,19 +390,21 @@ msgid "Fri"
 msgstr "Παρ"
 
 msgid "Green"
-msgstr "Πράσινο"
+msgstr ""
 
 msgid "Holiday"
 msgstr "Αργίες"
 
+#, fuzzy
 msgid "Holiday color"
-msgstr "Χρώμα αργιών"
+msgstr "Αργία: "
 
+#, fuzzy
 msgid "Holiday:"
-msgstr "Αργία:"
+msgstr "Αργίες"
 
 msgid "I:{0}"
-msgstr "I:{0}"
+msgstr ""
 
 msgid "Import"
 msgstr "Εισαγωγή"
@@ -377,31 +416,33 @@ msgid "Import Holidays"
 msgstr "Εισαγωγή αργιών"
 
 msgid "Import completed - Sorting contacts..."
-msgstr "Η εισαγωγή ολοκληρώθηκε – Ταξινόμηση επαφών..."
+msgstr ""
 
+#, fuzzy
 msgid "Import completed!"
-msgstr "Η εισαγωγή ολοκληρώθηκε!"
+msgstr "Εισαγωγή αργιών"
 
 msgid "Import error: {0}"
-msgstr "Σφάλμα εισαγωγής: {0}"
+msgstr ""
 
 msgid "Import vCard File"
-msgstr "Εισαγωγή αρχείου vCard"
+msgstr ""
 
+#, fuzzy
 msgid "Imported: {0}"
-msgstr "Εισήχθησαν: {0}"
+msgstr "Εισαγωγή"
 
 msgid "Imported: {0} contacts"
-msgstr "Εισήχθησαν: {0} επαφές"
+msgstr ""
 
 msgid "Importing vCard File"
-msgstr "Εισαγωγή αρχείου vCard"
+msgstr ""
 
 msgid "Initializing..."
-msgstr "Αρχικοποίηση..."
+msgstr ""
 
 msgid "Invalid birthday format. Use YYYY-MM-DD"
-msgstr "Μη έγκυρη μορφή ημερομηνίας γέννησης. Χρησιμοποιήστε ΕΕΕΕ-ΜΜ-ΗΗ"
+msgstr ""
 
 msgid "January"
 msgstr "Ιανουάριος"
@@ -413,22 +454,23 @@ msgid "June"
 msgstr "Ιούνιος"
 
 msgid "Language: {0}"
-msgstr "Γλώσσα: {0}"
+msgstr ""
 
 msgid "Legacy files: {0}"
-msgstr "Αρχεία παλαιάς μορφής: {0}"
+msgstr ""
 
 msgid "Legacy format (text files)"
-msgstr "Παλαιά μορφή (αρχεία κειμένου)"
+msgstr ""
 
 msgid "Legacy: {0}"
-msgstr "Παλαιά μορφή: {0}"
+msgstr ""
 
 msgid "Legacy: {0} files | vCard: {1} files"
-msgstr "Παλαιά μορφή: {0} αρχεία | vCard: {1} αρχεία"
+msgstr ""
 
+#, fuzzy
 msgid "Manage Contacts"
-msgstr "Διαχείριση επαφών"
+msgstr "Διαχείριση συμβάντων"
 
 msgid "Manage Events"
 msgstr "Διαχείριση συμβάντων"
@@ -440,7 +482,7 @@ msgid "May"
 msgstr "Μάιος"
 
 msgid "Modified: {0}"
-msgstr "Τροποποιήθηκε: {0}"
+msgstr ""
 
 msgid "Mon"
 msgstr "Δευ"
@@ -454,57 +496,67 @@ msgstr "Μήνας -"
 msgid "Month People"
 msgstr "Άτομα ανά μήνα"
 
+#, fuzzy
 msgid "Month People:"
-msgstr "Άτομα ανά μήνα:"
+msgstr "Άτομα ανά μήνα: "
 
 msgid "Name"
-msgstr "Όνομα"
+msgstr ""
 
 msgid "Name is required"
-msgstr "Το όνομα είναι υποχρεωτικό"
+msgstr ""
 
 msgid "New Date"
 msgstr "Νέα ημερομηνία"
 
 msgid "Next Field"
-msgstr "Επόμενο πεδίο"
+msgstr ""
+
+msgid "No contact files found"
+msgstr ""
 
 msgid "No contact selected"
-msgstr "Δεν έχει επιλεγεί επαφή"
+msgstr ""
+
+#, fuzzy
+msgid "No contacts found in database"
+msgstr "Δεν υπάρχει αρχείο στη βάση δεδομένων..."
 
 msgid "No file in database..."
 msgstr "Δεν υπάρχει αρχείο στη βάση δεδομένων..."
 
 msgid "No file selected"
-msgstr "Δεν έχει επιλεγεί αρχείο"
+msgstr ""
 
 msgid "No legacy files found"
-msgstr "Δεν βρέθηκαν αρχεία παλαιάς μορφής"
+msgstr ""
 
 msgid "No legacy files found to convert"
-msgstr "Δεν βρέθηκαν αρχεία παλαιάς μορφής προς μετατροπή"
+msgstr ""
 
 msgid "No past events to remove"
 msgstr "Δεν υπάρχουν παλαιά συμβάντα προς αφαίρεση"
 
 msgid "No sorting (original order)"
-msgstr "Χωρίς ταξινόμηση (αρχική σειρά)"
+msgstr ""
 
 msgid "No sound"
 msgstr "Χωρίς ήχο"
 
 msgid "No vCard files found"
-msgstr "Δεν βρέθηκαν αρχεία vCard"
+msgstr ""
 
 msgid "No vCard files found to convert"
-msgstr "Δεν βρέθηκαν αρχεία vCard προς μετατροπή"
+msgstr ""
 
 msgid "Notes"
-msgstr "Σημειώσεις"
+msgstr ""
 
+#, fuzzy
 msgid "Notification sound type"
-msgstr "Τύπος ήχου ειδοποίησης"
+msgstr "Ήχος ειδοποίησης"
 
+#, fuzzy
 msgid "Notification tone"
 msgstr "Ήχος ειδοποίησης"
 
@@ -521,46 +573,49 @@ msgid "October"
 msgstr "Οκτώβριος"
 
 msgid "Orange"
-msgstr "Πορτοκαλί"
+msgstr ""
 
 msgid "Paths:"
-msgstr "Διαδρομές:"
+msgstr ""
 
 msgid "Phone"
-msgstr "Τηλέφωνο"
+msgstr ""
 
+#, fuzzy
 msgid "Play a sound when event notification appears"
-msgstr "Αναπαραγωγή ήχου όταν εμφανίζεται ειδοποίηση συμβάντος"
+msgstr "Ημερολόγιο με συμβάντα και ειδοποιήσεις"
 
+#, fuzzy
 msgid "Play sound with notifications"
-msgstr "Αναπαραγωγή ήχου με τις ειδοποιήσεις"
+msgstr "Ημερολόγιο με συμβάντα και ειδοποιήσεις"
 
 msgid "Please restart Enigma2 manually."
-msgstr "Παρακαλώ επανεκκινήστε το Enigma2 χειροκίνητα."
+msgstr ""
 
 msgid "Plugin is up to date"
-msgstr "Το πρόσθετο είναι ενημερωμένο"
+msgstr ""
 
 msgid "Press GREEN to import"
-msgstr "Πατήστε το ΠΡΑΣΙΝΟ για εισαγωγή"
+msgstr ""
 
 msgid "Press TEXT to search"
-msgstr "Πατήστε TEXT για αναζήτηση"
+msgstr ""
 
 msgid "Progress: {0}%"
-msgstr "Πρόοδος: {0}%"
+msgstr ""
 
 msgid "Ready"
-msgstr "Έτοιμο"
+msgstr ""
 
+#, fuzzy
 msgid "Red"
-msgstr "Κόκκινο"
+msgstr "Τετ"
 
 msgid "Refresh"
-msgstr "Ανανέωση"
+msgstr ""
 
 msgid "Refreshed"
-msgstr "Ανανεώθηκε"
+msgstr ""
 
 msgid "Remove"
 msgstr "Αφαίρεση"
@@ -578,7 +633,7 @@ msgid "Repeat:"
 msgstr "Επανάληψη:"
 
 msgid "S:{0}"
-msgstr "S:{0}"
+msgstr ""
 
 msgid "SCHEDULED EVENTS:"
 msgstr "ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΑ ΣΥΜΒΑΝΤΑ:"
@@ -589,20 +644,22 @@ msgstr "Σαβ"
 msgid "Save"
 msgstr "Αποθήκευση"
 
+#, fuzzy
 msgid "Search contacts"
-msgstr "Αναζήτηση επαφών"
+msgstr "Διαχείριση συμβάντων"
 
+#, fuzzy
 msgid "Search:"
-msgstr "Αναζήτηση:"
+msgstr "Μάρτιος"
 
 msgid "Select a file, not a folder"
-msgstr "Επιλέξτε αρχείο, όχι φάκελο"
+msgstr ""
 
 msgid "Select vCard file to import"
-msgstr "Επιλέξτε αρχείο vCard για εισαγωγή"
+msgstr ""
 
 msgid "Selected: {0}"
-msgstr "Επιλέχθηκαν: {0}"
+msgstr ""
 
 msgid "September"
 msgstr "Σεπτέμβριος"
@@ -611,79 +668,82 @@ msgid "Short beep"
 msgstr "Σύντομο μπιπ"
 
 msgid "Show 'H' marker on holiday days"
-msgstr "Εμφάνιση δείκτη 'H' στις ημέρες αργιών"
+msgstr ""
 
 msgid "Show Calendar in main information menu"
-msgstr "Εμφάνιση του ημερολογίου στο κύριο μενού πληροφοριών"
+msgstr ""
 
 msgid "Show Calendar in menu"
-msgstr "Εμφάνιση ημερολογίου στο μενού"
+msgstr ""
 
+#, fuzzy
 msgid "Show Today's Holidays"
-msgstr "Εμφάνιση σημερινών αργιών"
+msgstr "Εμφάνιση επερχόμενων αργιών"
 
 msgid "Show Upcoming Holidays"
 msgstr "Εμφάνιση επερχόμενων αργιών"
 
 msgid "Show debug messages in console/log"
-msgstr "Εμφάνιση μηνυμάτων αποσφαλμάτωσης στην κονσόλα/αρχείο καταγραφής"
+msgstr ""
 
 msgid "Show event indicators"
-msgstr "Εμφάνιση ενδείξεων συμβάντων"
+msgstr ""
 
+#, fuzzy
 msgid "Show holiday indicators"
-msgstr "Εμφάνιση ενδείξεων αργιών"
+msgstr "Εμφάνιση σημερινών αργιών"
 
 msgid "Show markers on days with events"
-msgstr "Εμφάνιση δεικτών στις ημέρες με συμβάντα"
+msgstr ""
 
 msgid "Show notifications for upcoming events"
-msgstr "Εμφάνιση ειδοποιήσεων για επερχόμενα συμβάντα"
+msgstr ""
 
 msgid "Sign"
 msgstr "Υπογραφή"
 
+#, fuzzy
 msgid "Sign:"
-msgstr "Υπογραφή:"
+msgstr "Ζώδιο: "
 
 msgid "Size: {0:.1f} MB"
-msgstr "Μέγεθος: {0:.1f} MB"
+msgstr ""
 
 msgid "Skipped: {0}"
-msgstr "Παραλείφθηκαν: {0}"
+msgstr ""
 
 msgid "Skipped: {0} (duplicates)"
-msgstr "Παραλείφθηκαν: {0} (διπλότυπα)"
+msgstr ""
 
 msgid "Sort"
-msgstr "Ταξινόμηση"
+msgstr ""
 
 msgid "Sort by birthday (month/day)"
-msgstr "Ταξινόμηση κατά ημερομηνία γέννησης (μήνας/ημέρα)"
+msgstr ""
 
 msgid "Sort by category"
-msgstr "Ταξινόμηση κατά κατηγορία"
+msgstr ""
 
 msgid "Sort by name (alphabetical)"
-msgstr "Ταξινόμηση κατά όνομα (αλφαβητικά)"
+msgstr ""
 
 msgid "Sorted by birthday"
-msgstr "Ταξινομημένα κατά ημερομηνία γέννησης"
+msgstr ""
 
 msgid "Sorted by category"
-msgstr "Ταξινομημένα κατά κατηγορία"
+msgstr ""
 
 msgid "Sorted by name"
-msgstr "Ταξινομημένα κατά όνομα"
+msgstr ""
 
 msgid "Sorted by: Birthday"
-msgstr "Ταξινόμηση κατά: Ημερομηνία γέννησης"
+msgstr ""
 
 msgid "Sorted by: Category"
-msgstr "Ταξινόμηση κατά: Κατηγορία"
+msgstr ""
 
 msgid "Sorted by: Name"
-msgstr "Ταξινόμηση κατά: Όνομα"
+msgstr ""
 
 msgid "Sun"
 msgstr "Κυρ"
@@ -707,100 +767,101 @@ msgid "Title:"
 msgstr "Τίτλος:"
 
 msgid "Total: {0}"
-msgstr "Σύνολο: {0}"
+msgstr ""
 
 msgid "Tue"
 msgstr "Τρι"
 
+#, fuzzy
 msgid "Type of sound to play with notifications"
-msgstr "Τύπος ήχου που θα αναπαράγεται με τις ειδοποιήσεις"
+msgstr "Ημερολόγιο με συμβάντα και ειδοποιήσεις"
 
 msgid "Update available!"
-msgstr "Διαθέσιμη ενημέρωση!"
+msgstr ""
 
 msgid "Update cancelled"
-msgstr "Η ενημέρωση ακυρώθηκε"
+msgstr ""
 
 msgid "Update check error"
-msgstr "Σφάλμα ελέγχου ενημερώσεων"
+msgstr ""
 
 msgid "Update check failed"
-msgstr "Ο έλεγχος ενημερώσεων απέτυχε"
+msgstr ""
 
 msgid "Update completed successfully!"
-msgstr "Η ενημέρωση ολοκληρώθηκε με επιτυχία!"
+msgstr ""
 
 msgid "Update error: %s"
-msgstr "Σφάλμα ενημέρωσης: %s"
+msgstr ""
 
 msgid "Update failed"
-msgstr "Η ενημέρωση απέτυχε"
+msgstr ""
 
 msgid "Update failed and backup restore also failed!"
-msgstr "Η ενημέρωση απέτυχε και η επαναφορά από το αντίγραφο ασφαλείας επίσης απέτυχε!"
+msgstr ""
 
 msgid "Update failed. Restored from backup."
-msgstr "Η ενημέρωση απέτυχε. Έγινε επαναφορά από το αντίγραφο ασφαλείας."
+msgstr ""
 
 msgid "Update successful!"
-msgstr "Η ενημέρωση ολοκληρώθηκε με επιτυχία!"
+msgstr ""
 
 msgid "Updating plugin... Please wait"
-msgstr "Ενημέρωση προσθέτου... Παρακαλώ περιμένετε"
+msgstr ""
 
 msgid "Using legacy database format"
-msgstr "Χρήση παλαιάς μορφής βάσης δεδομένων"
+msgstr ""
 
 msgid "View"
-msgstr "Προβολή"
+msgstr ""
 
 msgid "Waiting for thread to stop..."
-msgstr "Αναμονή για τερματισμό του νήματος..."
+msgstr ""
 
 msgid "Wed"
 msgstr "Τετ"
 
 msgid "White"
-msgstr "Λευκό"
+msgstr ""
 
 msgid "Yellow"
-msgstr "Κίτρινο"
+msgstr ""
 
 msgid "You have the latest version of Calendar."
-msgstr "Έχετε την πιο πρόσφατη έκδοση του Calendar."
+msgstr ""
 
 msgid "no"
 msgstr "όχι"
 
 msgid "not sorted"
-msgstr "μη ταξινομημένα"
+msgstr ""
 
 msgid "sorted by birthday"
-msgstr "ταξινομημένα κατά ημερομηνία γέννησης"
+msgstr ""
 
 msgid "sorted by category"
-msgstr "ταξινομημένα κατά κατηγορία"
+msgstr ""
 
 msgid "sorted by name"
-msgstr "ταξινομημένα κατά όνομα"
+msgstr ""
 
 msgid "vCard files: {0}"
-msgstr "Αρχεία vCard: {0}"
+msgstr ""
 
 msgid "vCard format (standard)"
-msgstr "Μορφή vCard (τυπική)"
+msgstr ""
 
 msgid "vCard import feature not available: {0}"
-msgstr "Η δυνατότητα εισαγωγής vCard δεν είναι διαθέσιμη: {0}"
+msgstr ""
 
 msgid "vCard: {0}"
-msgstr "vCard: {0}"
+msgstr ""
 
 msgid "yes"
 msgstr "ναι"
 
 msgid "{0}"
-msgstr "{0}"
+msgstr ""
 
 #~ msgid "Exit"
 #~ msgstr "Έξοδος"

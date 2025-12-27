@@ -13,6 +13,8 @@ MAIN FEATURES:
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
 • Database format converter (Legacy ↔ vCard)
+• Phone and email formatters for Calendar Planner
+• Maintains consistent formatting across import, display, and storage
 
 NEW IN v1.6:
 vCard EXPORT to /tmp/calendar.vcf
@@ -77,14 +79,13 @@ import time
 from os import makedirs, listdir, remove
 from datetime import datetime
 from os.path import exists, join
-
+from . import PLUGIN_PATH
 
 class BirthdayManager:
     """Manages contacts and birthdays in vCard-like format"""
 
-    def __init__(self, plugin_path):
-        self.plugin_path = plugin_path
-        self.contacts_path = join(plugin_path, "base", "contacts")
+    def __init__(self):
+        self.contacts_path = join(PLUGIN_PATH, "base", "contacts")
         self.contacts = []
         self._ensure_directories()
         self.load_all_contacts()
@@ -198,6 +199,10 @@ class BirthdayManager:
                     # Check if birthday matches (ignore year)
                     bday_date = datetime.strptime(bday, "%Y-%m-%d")
                     if bday_date.month == target_date.month and bday_date.day == target_date.day:
+                        if 'TEL' in contact and contact['TEL']:
+                            tel = contact['TEL']
+                            if '|' in tel and ' | ' not in tel:
+                                contact['TEL'] = tel.replace('|', ' | ')
                         results.append(contact)
                 except ValueError:
                     # Invalid date format
@@ -205,7 +210,7 @@ class BirthdayManager:
 
             return results
         except Exception as e:
-            print("[BirthdayManager] Error getting contacts for date: {}".format(e))
+            print("[BirthdayManager] Error getting contacts for date: {0}".format(e))
             return []
 
     def load_all_contacts(self):
@@ -228,7 +233,7 @@ class BirthdayManager:
         print("[BirthdayManager] Loaded {0} contacts (sorted)".format(len(self.contacts)))
 
     def load_contact(self, contact_id):
-        """Load single contact from file"""
+        """Load single contact from file - CLEAN phone numbers"""
         filepath = join(self.contacts_path, contact_id + ".txt")
 
         if not exists(filepath):
@@ -238,7 +243,7 @@ class BirthdayManager:
             'id': contact_id,
             'FN': '',           # Formatted Name
             'BDAY': '',         # Birthday (YYYY-MM-DD)
-            'TEL': '',          # Telephone
+            'TEL': '',          # Telephone - will be cleaned
             'EMAIL': '',        # Email
             'ADR': '',          # Address
             'ORG': '',          # Organization
@@ -262,6 +267,17 @@ class BirthdayManager:
                     key, value = line.split(":", 1)
                     key = key.strip()
                     if key in contact:
+                        if key == 'TEL' and value:
+                            value = value.strip()
+                            value = value.replace(' | ', '|').replace(' |', '|').replace('| ', '|')
+                            value = ' '.join(value.split())
+                            value = value.replace(' ', '')
+                        elif key == 'EMAIL' and value:
+                            value = value.strip()
+                            value = value.replace(' | ', '|').replace(' |', '|').replace('| ', '|')
+                            value = ' '.join(value.split())
+                            value = value.replace(' ', '')
+
                         contact[key] = value.strip()
 
             return contact

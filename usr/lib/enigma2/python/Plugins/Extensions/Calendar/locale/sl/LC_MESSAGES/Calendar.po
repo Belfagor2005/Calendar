@@ -63,9 +63,6 @@ msgstr ""
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
 msgstr ""
 
-msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
-msgstr ""
-
 #, fuzzy
 msgid "Calendar"
 msgstr "Nastavenia TV záhrady"
@@ -140,6 +137,9 @@ msgstr ""
 #, fuzzy
 msgid "Contact '{0}' deleted successfully"
 msgstr "Aktualizácia bola úspešne dokončená!"
+
+msgid "Contacts directory not found"
+msgstr ""
 
 msgid "Contacts: {0} (Search: '{1}')"
 msgstr ""
@@ -230,7 +230,17 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+msgid "Delete ALL contacts"
+msgstr ""
+
 msgid "Delete File"
+msgstr ""
+
+#, fuzzy
+msgid "Delete: {0}"
+msgstr "Vybrať"
+
+msgid "Deleted {0} contacts from database"
 msgstr ""
 
 msgid "Description"
@@ -297,6 +307,10 @@ msgstr "Chyba pri načítavaní krajín"
 
 msgid "Error deleting contact '{0}'"
 msgstr ""
+
+#, fuzzy
+msgid "Error deleting database: {0}"
+msgstr "Chyba pri načítavaní krajín"
 
 msgid "Error exporting vCard: {0}"
 msgstr ""
@@ -493,8 +507,16 @@ msgid "Next Field"
 msgstr ""
 
 #, fuzzy
+msgid "No contact files found"
+msgstr "Nenašli sa žiadne platné adresy URL streamu"
+
+#, fuzzy
 msgid "No contact selected"
 msgstr "Nie je vybratá žiadna krajina"
+
+#, fuzzy
+msgid "No contacts found in database"
+msgstr "V databáze sa nenašli žiadne platné kanály"
 
 msgid "No file in database..."
 msgstr ""
@@ -1335,9 +1357,6 @@ msgstr ""
 
 #~ msgid "No stream URL available"
 #~ msgstr "Nie je k dispozícii žiadna URL adresa streamu"
-
-#~ msgid "No valid channels found in database"
-#~ msgstr "V databáze sa nenašli žiadne platné kanály"
 
 #~ msgid "OFF"
 #~ msgstr "Vypnúť"

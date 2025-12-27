@@ -13,6 +13,8 @@ MAIN FEATURES:
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
 • Database format converter (Legacy ↔ vCard)
+• Phone and email formatters for Calendar Planner
+• Maintains consistent formatting across import, display, and storage
 
 NEW IN v1.6:
 vCard EXPORT to /tmp/calendar.vcf
@@ -74,6 +76,7 @@ Homepage: www.linuxsat-support.com
 """
 from __future__ import print_function
 from Screens.MessageBox import MessageBox
+from enigma import quitMainloop
 
 from .updater import PluginUpdater
 from . import _
@@ -184,7 +187,6 @@ class UpdateManager:
         print("Restart Enigma2 confirmation: %s" % result)
         if result:
             try:
-                from enigma import quitMainloop
                 quitMainloop(3)  # 3 = Restart Enigma2
                 print("Enigma2 restart initiated")
             except Exception as e:

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 14:37+0100\n"
-"PO-Revision-Date: 2025-12-26 15:43+0100\n"
+"PO-Revision-Date: 2025-12-27 16:37+0100\n"
 "Last-Translator: \n"
 "Language-Team: <sirius.al@rambler.ru>\n"
 "Language: it\n"
@@ -20,6 +20,9 @@ msgstr ""
 
 msgid ".............."
 msgstr ""
+
+msgid "CONTACTS WITH BIRTHDAYS TODAY:\n\n"
+msgstr "CONTATTI CON COMPLEANNI OGGI:\n\n"
 
 msgid "Active"
 msgstr "Attivo"
@@ -62,9 +65,6 @@ msgstr "Blu"
 
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
 msgstr "CONTATTI CON COMPLEANNI OGGI:"
-
-msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
-msgstr "CONTATTI CON COMPLEANNI OGGI:\n"
 
 msgid "Calendar"
 msgstr "Calendario"
@@ -134,6 +134,9 @@ msgstr "Completato"
 
 msgid "Contact '{0}' deleted successfully"
 msgstr "Contatto '{0}' eliminato con successo"
+
+msgid "Contacts directory not found"
+msgstr "Rubrica dei contatti non trovata"
 
 msgid "Contacts: {0} (Search: '{1}')"
 msgstr "Contatti: {0} (Cerca: '{1}')"
@@ -222,8 +225,17 @@ msgstr "Dicembre"
 msgid "Delete"
 msgstr "Elimina"
 
+msgid "Delete ALL contacts"
+msgstr "Elimina TUTTI i contatti"
+
 msgid "Delete File"
 msgstr "Elimina File"
+
+msgid "Delete: {0}"
+msgstr "Elimina: {0}"
+
+msgid "Deleted {0} contacts from database"
+msgstr "Eliminati {0} contatti dal database"
 
 msgid "Description"
 msgstr "Descrizione"
@@ -287,6 +299,9 @@ msgstr "Errore durante l'eliminazione del contatto"
 
 msgid "Error deleting contact '{0}'"
 msgstr "Errore durante l'eliminazione del contatto '{0}'"
+
+msgid "Error deleting database: {0}"
+msgstr "Errore durante l'eliminazione del database: {0}"
 
 msgid "Error exporting vCard: {0}"
 msgstr "Errore durante esportazione vCard: '{0}'"
@@ -468,8 +483,14 @@ msgstr "Nuovi Dati"
 msgid "Next Field"
 msgstr "Campo successivo"
 
+msgid "No contact files found"
+msgstr "Nessun file di contatto trovato"
+
 msgid "No contact selected"
 msgstr "Nessun contatto selezionato"
+
+msgid "No contacts found in database"
+msgstr "Nessun contatto trovato in database"
 
 msgid "No file in database..."
 msgstr "Nessun file nel database..."
@@ -823,6 +844,9 @@ msgstr "{0}"
 #~ "Aggiornare ora?\n"
 #~ "\n"
 #~ "(Si consiglia di effettuare prima un backup)"
+
+#~ msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
+#~ msgstr "CONTATTI CON COMPLEANNI OGGI:\n"
 
 #~ msgid ""
 #~ "Calendar\n"

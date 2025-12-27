@@ -13,6 +13,8 @@ MAIN FEATURES:
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
 • Database format converter (Legacy ↔ vCard)
+• Phone and email formatters for Calendar Planner
+• Maintains consistent formatting across import, display, and storage
 
 NEW IN v1.6:
 vCard EXPORT to /tmp/calendar.vcf
@@ -76,7 +78,7 @@ from __future__ import print_function
 import time
 from datetime import datetime
 from enigma import eTimer, getDesktop
-from re import split, IGNORECASE, search
+from re import split, IGNORECASE, search, sub
 from os.path import basename, exists, getsize, join, getmtime
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -86,6 +88,7 @@ from Components.ActionMap import ActionMap
 from Components.ProgressBar import ProgressBar
 
 from . import _
+from .formatters import parse_vcard_phone, parse_vcard_email, clean_field_storage
 
 
 class VCardImporter(Screen):
@@ -701,21 +704,23 @@ class VCardFileImporter:
 
     @staticmethod
     def parse_vcard_block(block):
-        """Parse single vCard block into contact data"""
+        """Parse a single vCard block into contact data – FIX spacing issue"""
         contact = {
             'FN': '',           # Formatted Name
             'BDAY': '',         # Birthday
-            'TEL': '',          # Telephone
+            'TEL': '',          # Telephone – will be cleaned
             'EMAIL': '',        # Email
             'ADR': '',          # Address
             'ORG': '',          # Organization
             'TITLE': '',        # Title
-            'CATEGORIES': '',   # Categories/Tags
+            'CATEGORIES': '',   # Categories / Tags
             'NOTE': '',         # Notes
             'URL': '',          # Website
         }
 
         lines = block.split('\n')
+        phones = []      # Store multiple phone numbers
+        emails = []      # Store multiple email addresses
 
         for line in lines:
             line = line.strip()
@@ -725,7 +730,7 @@ class VCardFileImporter:
             if line.upper() == 'END:VCARD':
                 break
 
-            # Handle multi-line values
+            # Skip continuation lines
             if line.startswith(' ') or line.startswith('\t'):
                 continue
 
@@ -744,77 +749,182 @@ class VCardFileImporter:
 
                 if prop_base == 'FN':
                     contact['FN'] = value
+
                 elif prop_base == 'N':
-                    # Structured Name: Last;First;Middle;Prefix;Suffix
+                    # Structured Name
                     name_parts = value.split(';')
                     if len(name_parts) >= 2:
                         last_name = name_parts[0] if name_parts[0] else ''
                         first_name = name_parts[1] if name_parts[1] else ''
-                        if first_name and last_name:
-                            contact['FN'] = first_name + " " + last_name
-                        elif first_name:
-                            contact['FN'] = first_name
-                        elif last_name:
-                            contact['FN'] = last_name
+                        if not contact['FN']:
+                            if first_name and last_name:
+                                contact['FN'] = first_name + " " + last_name
+                            elif first_name:
+                                contact['FN'] = first_name
+                            elif last_name:
+                                contact['FN'] = last_name
+
                 elif prop_base == 'TEL':
-                    # Clean phone number
-                    clean_tel = ''.join(c for c in value if c.isdigit() or c == '+')
+                    # Use specialized vCard parser
+                    clean_tel = parse_vcard_phone(value)
                     if clean_tel:
-                        if contact['TEL']:
-                            contact['TEL'] += " | " + clean_tel
-                        else:
-                            contact['TEL'] = clean_tel
+                        phones.append(clean_tel)
+
                 elif prop_base == 'EMAIL':
                     if value and '@' in value:
-                        if contact['EMAIL']:
-                            contact['EMAIL'] += " | " + value
-                        else:
-                            contact['EMAIL'] = value
+                        clean_email = parse_vcard_email(value)
+                        emails.append(clean_email)
+
                 elif prop_base == 'ORG':
                     if value and value != ';':
                         contact['ORG'] = value
+
                 elif prop_base == 'TITLE':
                     if value:
                         contact['TITLE'] = value
+
                 elif prop_base == 'CATEGORIES':
                     if value:
                         cats = value.split(',')
                         clean_cats = [c.strip() for c in cats if c.strip()]
                         if clean_cats:
                             contact['CATEGORIES'] = ', '.join(clean_cats)
+
                 elif prop_base == 'NOTE':
                     if value:
                         contact['NOTE'] = value
+
                 elif prop_base == 'URL':
                     if value and ('http://' in value.lower() or 'https://' in value.lower()):
                         contact['URL'] = value
+
                 elif prop_base == 'BDAY':
                     bday = VCardFileImporter.parse_birthday(value)
                     if bday:
                         contact['BDAY'] = bday
 
-            except Exception:
+            except Exception as e:
+                print("[VCardImporter] Error parsing line: {0} - {1}".format(
+                    line[:50] if line else "empty", str(e)))
                 continue
+
+        # Format numbers using "|" as separator (NO spaces) for storage
+        if phones:
+            contact['TEL'] = '|'.join(phones)
+
+        if emails:
+            contact['EMAIL'] = '|'.join(emails)
+
+        # Apply Google Contacts–specific fixes
+        contact = VCardFileImporter.fix_google_contacts(contact)
 
         return contact if contact['FN'] else None
 
     @staticmethod
+    def fix_google_contacts(contact):
+        """Apply fixes for Google Contacts specific issues"""
+        if not contact:
+            return contact
+
+        # 1. Fix NOTE field - remove "File As:" references
+        if 'NOTE' in contact and contact['NOTE']:
+            note = contact['NOTE']
+
+            # Remove "File As\:" or "File As:" patterns
+            note = sub(r'File As[\\:]?\s*', '', note)
+
+            # Remove trailing/leading whitespace
+            note = note.strip()
+
+            # If note is now empty or just contains the name, clear it
+            if not note or note == contact.get('FN', ''):
+                contact['NOTE'] = ''
+            else:
+                contact['NOTE'] = note
+
+        # 2. Fix ORGANIZATION field
+        if 'ORG' in contact and contact['ORG']:
+            org = contact['ORG'].strip()
+            # Remove single semicolons or commas
+            if org in [';', ',', ';;', ',,', ';,', ',;']:
+                contact['ORG'] = ''
+            else:
+                contact['ORG'] = org
+
+        # 3. Clean up CATEGORIES field
+        if 'CATEGORIES' in contact and contact['CATEGORIES']:
+            categories = contact['CATEGORIES'].strip()
+            # Remove empty categories
+            cats = [c.strip() for c in categories.split(',') if c.strip()]
+            if cats:
+                contact['CATEGORIES'] = ', '.join(cats)
+            else:
+                contact['CATEGORIES'] = ''
+
+        # 4. Clean up NAME field
+        if 'FN' in contact and contact['FN']:
+            name = contact['FN'].strip()
+            # Remove extra spaces
+            name = ' '.join(name.split())
+            contact['FN'] = name
+
+        # 5. Clean up BIRTHDAY field
+        if 'BDAY' in contact and contact['BDAY']:
+            bday = contact['BDAY'].strip()
+            # Ensure proper format
+            try:
+                datetime.strptime(bday, "%Y-%m-%d")
+                contact['BDAY'] = bday
+            except ValueError:
+                # Try to fix if not in correct format
+                fixed = VCardFileImporter.parse_birthday(bday)
+                if fixed:
+                    contact['BDAY'] = fixed
+                else:
+                    contact['BDAY'] = ''
+
+        # 6. Clean emails
+        if 'TEL' in contact and contact['TEL']:
+            contact['TEL'] = clean_field_storage(contact['TEL'])
+
+        # 7. Clean emails
+        if 'EMAIL' in contact and contact['EMAIL']:
+            contact['EMAIL'] = clean_field_storage(contact['EMAIL'])
+
+        return contact
+
+    @staticmethod
     def parse_birthday(value):
-        """Parse birthday in various formats"""
+        """Parse birthday in various formats - ENHANCED for Google Contacts"""
         if not value:
             return ''
 
-        # Remove time part if present
-        value = value.split('T')[0].split(' ')[0]
+        # Remove time part if present (Google doesn't use time in BDAY)
+        value = value.split('T')[0].split(' ')[0].strip()
 
-        # Try different date formats
+        # Try Google's preferred format first: YYYYMMDD
+        try:
+            # Check if it's 8 digits (YYYYMMDD)
+            if len(value) == 8 and value.isdigit():
+                year = int(value[0:4])
+                month = int(value[4:6])
+                day = int(value[6:8])
+
+                # Validate date
+                if 1900 <= year <= 2100 and 1 <= month <= 12 and 1 <= day <= 31:
+                    return "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
+        except:
+            pass
+
+        # Try other common formats
         formats = [
-            '%Y%m%d',        # 19900515
-            '%Y-%m-%d',      # 1990-05-15
-            '%d-%m-%Y',      # 15-05-1990
+            '%Y%m%d',        # 19900515 (Google)
+            '%Y-%m-%d',      # 1990-05-15 (standard)
+            '%d-%m-%Y',      # 15-05-1990 (european)
             '%d/%m/%Y',      # 15/05/1990
-            '%m/%d/%Y',      # 05/15/1990
+            '%m/%d/%Y',      # 05/15/1990 (US)
             '%d.%m.%Y',      # 15.05.1990
+            '%Y/%m/%d',      # 1990/05/15
         ]
 
         for fmt in formats:
@@ -824,18 +934,47 @@ class VCardFileImporter:
             except ValueError:
                 continue
 
-        # If still not parsed, try to extract year-month-day patterns
-        year_match = search(r'(\d{4})[/\-\.](\d{1,2})[/\-\.](\d{1,2})', value)
-        if year_match:
+        # Try regex extraction
+        # Pattern for YYYYMMDD without separators
+        match = search(r'(\d{4})(\d{2})(\d{2})', value)
+        if match:
             try:
-                year = int(year_match.group(1))
-                month = int(year_match.group(2))
-                day = int(year_match.group(3))
-                return "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
+                year = int(match.group(1))
+                month = int(match.group(2))
+                day = int(match.group(3))
+                if 1900 <= year <= 2100 and 1 <= month <= 12 and 1 <= day <= 31:
+                    return "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
             except:
                 pass
 
-        return ''
+        # Pattern with separators
+        patterns = [
+            r'(\d{4})[/\-\.](\d{1,2})[/\-\.](\d{1,2})',  # YYYY-MM-DD
+            r'(\d{1,2})[/\-\.](\d{1,2})[/\-\.](\d{4})',  # DD-MM-YYYY
+        ]
+
+        for pattern in patterns:
+            match = search(pattern, value)
+            if match:
+                try:
+                    groups = match.groups()
+                    if len(groups) == 3:
+                        # Try to determine format by year position
+                        if len(groups[0]) == 4:  # YYYY-MM-DD
+                            year = int(groups[0])
+                            month = int(groups[1])
+                            day = int(groups[2])
+                        else:  # DD-MM-YYYY
+                            day = int(groups[0])
+                            month = int(groups[1])
+                            year = int(groups[2])
+
+                        if 1900 <= year <= 2100 and 1 <= month <= 12 and 1 <= day <= 31:
+                            return "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
+                except:
+                    continue
+
+        return ''  # Could not parse
 
     @staticmethod
     def is_same_person(contact1, contact2):
@@ -1147,6 +1286,125 @@ def quick_import_vcard(birthday_manager, filepath):
     return importer.import_file(filepath)
 
 
+def export_contacts_to_vcf(birthday_manager, output_path="/tmp/calendar.vcf", sort_by='name'):
+    """Export contacts with sorting options - USES SAME TAGS AS IMPORT"""
+    try:
+        contacts = birthday_manager.contacts
+
+        if not contacts:
+            print("[VCardExport] No contacts found")
+            return 0
+
+        # Apply sorting
+        if sort_by == 'name':
+            # Sort alphabetically by name
+            contacts = sorted(contacts, key=lambda x: x.get('FN', '').lower())
+        elif sort_by == 'birthday':
+            # Sort by birthday month/day
+            def birthday_key(contact):
+                bday = contact.get('BDAY', '')
+                if bday:
+                    try:
+                        bday_date = datetime.strptime(bday, "%Y-%m-%d")
+                        # Sort by month and day
+                        return (bday_date.month, bday_date.day, contact.get('FN', '').lower())
+                    except:
+                        return (13, 32, contact.get('FN', '').lower())
+                return (13, 32, contact.get('FN', '').lower())
+            contacts = sorted(contacts, key=birthday_key)
+        elif sort_by == 'category':
+            # Sort by category
+            contacts = sorted(contacts, key=lambda x: x.get('CATEGORIES', '').lower())
+
+        print("[VCardExport] Exporting {0} contacts ({1}) to {2}".format(
+            len(contacts), sort_by, output_path))
+
+        count = 0
+        with open(output_path, 'w', encoding='utf-8') as f:
+            for contact in contacts:
+                # Skip contacts without name
+                name = contact.get('FN', '').strip()
+                if not name:
+                    continue
+
+                f.write("BEGIN:VCARD\n")
+                f.write("VERSION:3.0\n")
+
+                # *** ALL THE SAME TAGS AS IMPORT ***
+                # 1. FN - Formatted Name (REQUIRED)
+                f.write("FN:{0}\n".format(name))
+
+                # 2. N - Structured Name (for Google compatibility)
+                # Create structured name from FN
+                name_parts = name.split(' ', 1)
+                if len(name_parts) == 2:
+                    # Assume "FirstName LastName"
+                    f.write("N:{1};{0};;;\n".format(name_parts[0], name_parts[1]))
+                else:
+                    # Single name
+                    f.write("N:{0};;;;\n".format(name))
+
+                # 3. BDAY - Birthday (same format as import: YYYY-MM-DD)
+                bday = contact.get('BDAY', '').strip()
+                if bday:
+                    f.write("BDAY:{0}\n".format(bday))
+
+                # 4. TEL - Telephone (use | separator like import)
+                tel = contact.get('TEL', '').strip()
+                if tel:
+                    # IMPORTANT: keep | separator format
+                    f.write("TEL:{0}\n".format(tel))
+
+                # 5. EMAIL - Email (use | separator like import)
+                email = contact.get('EMAIL', '').strip()
+                if email:
+                    f.write("EMAIL:{0}\n".format(email))
+
+                # 6. ADR - Address
+                adr = contact.get('ADR', '').strip()
+                if adr:
+                    f.write("ADR:{0}\n".format(adr))
+
+                # 7. ORG - Organization
+                org = contact.get('ORG', '').strip()
+                if org:
+                    f.write("ORG:{0}\n".format(org))
+
+                # 8. TITLE - Job Title / Position
+                title = contact.get('TITLE', '').strip()
+                if title:
+                    f.write("TITLE:{0}\n".format(title))
+
+                # 9. CATEGORIES - Categories / Tags
+                categories = contact.get('CATEGORIES', '').strip()
+                if categories:
+                    f.write("CATEGORIES:{0}\n".format(categories))
+
+                # 10. NOTE - Notes
+                note = contact.get('NOTE', '').strip()
+                if note:
+                    # Replace newlines with \n for vCard compatibility
+                    note = note.replace('\n', '\\n')
+                    f.write("NOTE:{0}\n".format(note))
+
+                # 11. URL - Website
+                url = contact.get('URL', '').strip()
+                if url:
+                    f.write("URL:{0}\n".format(url))
+
+                f.write("END:VCARD\n\n")
+                count += 1
+
+        print("[VCardExport] Successfully exported {0} contacts".format(count))
+        return count
+
+    except Exception as e:
+        print("[VCardExport] Error: {0}".format(str(e)))
+        import traceback
+        traceback.print_exc()
+        return 0
+
+
 def export_vcard_file(self):
     """Export all contacts to vCard file in /tmp"""
     try:
@@ -1221,92 +1479,6 @@ def export_vcard_file(self):
         )
 
 
-def export_contacts_to_vcf(birthday_manager, output_path="/tmp/calendar.vcf", sort_by='name'):
-    """Export contacts with sorting options"""
-    try:
-        contacts = birthday_manager.contacts
-
-        if not contacts:
-            print("[VCardExport] No contacts found")
-            return 0
-
-        # Apply sorting
-        if sort_by == 'name':
-            # Sort alphabetically by name
-            contacts = sorted(contacts, key=lambda x: x.get('FN', '').lower())
-        elif sort_by == 'birthday':
-            # Sort by birthday month/day
-            def birthday_key(contact):
-                bday = contact.get('BDAY', '')
-                if bday:
-                    try:
-                        from datetime import datetime
-                        bday_date = datetime.strptime(bday, "%Y-%m-%d")
-                        # Sort by month and day
-                        return (bday_date.month, bday_date.day, contact.get('FN', '').lower())
-                    except:
-                        return (13, 32, contact.get('FN', '').lower())
-                return (13, 32, contact.get('FN', '').lower())
-            contacts = sorted(contacts, key=birthday_key)
-        elif sort_by == 'category':
-            # Sort by category
-            contacts = sorted(contacts, key=lambda x: x.get('CATEGORIES', '').lower())
-        # else: no sorting
-
-        print("[VCardExport] Exporting {0} contacts ({1}) to {2}".format(
-            len(contacts), sort_by, output_path))
-
-        count = 0
-        with open(output_path, 'w') as f:
-            # Header
-            f.write("# vCard export from Calendar Planner\n")
-            f.write("# Generated: {0}\n".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-            f.write("# Total contacts: {0}\n".format(len(contacts)))
-            f.write("# Sorted by: {0}\n\n".format(sort_by))
-
-            for contact in contacts:
-                # Skip contacts without name
-                name = contact.get('FN', '').strip()
-                if not name:
-                    continue
-
-                f.write("BEGIN:VCARD\n")
-                f.write("VERSION:3.0\n")
-
-                # Fields in consistent order
-                fields = [
-                    ('FN', contact.get('FN', '')),
-                    ('BDAY', contact.get('BDAY', '')),
-                    ('TEL', contact.get('TEL', '')),
-                    ('EMAIL', contact.get('EMAIL', '')),
-                    ('ORG', contact.get('ORG', '')),
-                    ('CATEGORIES', contact.get('CATEGORIES', '')),
-                    ('NOTE', contact.get('NOTE', '')),
-                    ('URL', contact.get('URL', '')),
-                    ('TITLE', contact.get('TITLE', '')),
-                    ('ADR', contact.get('ADR', ''))
-                ]
-
-                for key, value in fields:
-                    if value and str(value).strip():
-                        # Handle multi-line notes
-                        if key == 'NOTE':
-                            value = str(value).replace('\n', '\\n')
-                        f.write("{0}:{1}\n".format(key, value))
-
-                f.write("END:VCARD\n\n")
-                count += 1
-
-        print("[VCardExport] Successfully exported {0} contacts".format(count))
-        return count
-
-    except Exception as e:
-        print("[VCardExport] Error: {0}".format(str(e)))
-        import traceback
-        traceback.print_exc()
-        return 0
-
-
 def export_contacts_to_vcard(birthday_manager, output_file):
     """
     Export all contacts to vCard file
@@ -1314,10 +1486,6 @@ def export_contacts_to_vcard(birthday_manager, output_file):
     contacts = birthday_manager.contacts
 
     with open(output_file, 'w', encoding='utf-8') as f:
-        f.write("# vCard export from Calendar Plugin\n")
-        f.write("# Generated: {}\n".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-        f.write("# Total contacts: {}\n\n".format(len(contacts)))
-
         for contact in contacts:
             f.write("BEGIN:VCARD\n")
             f.write("VERSION:3.0\n")

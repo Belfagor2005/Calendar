@@ -63,9 +63,6 @@ msgstr ""
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
 msgstr ""
 
-msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
-msgstr ""
-
 #, fuzzy
 msgid "Calendar"
 msgstr "Configura Calendario"
@@ -134,6 +131,9 @@ msgid "Completed"
 msgstr ""
 
 msgid "Contact '{0}' deleted successfully"
+msgstr ""
+
+msgid "Contacts directory not found"
 msgstr ""
 
 msgid "Contacts: {0} (Search: '{1}')"
@@ -223,7 +223,16 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+msgid "Delete ALL contacts"
+msgstr ""
+
 msgid "Delete File"
+msgstr ""
+
+msgid "Delete: {0}"
+msgstr ""
+
+msgid "Deleted {0} contacts from database"
 msgstr ""
 
 msgid "Description"
@@ -287,6 +296,9 @@ msgid "Error deleting contact"
 msgstr ""
 
 msgid "Error deleting contact '{0}'"
+msgstr ""
+
+msgid "Error deleting database: {0}"
 msgstr ""
 
 msgid "Error exporting vCard: {0}"
@@ -469,7 +481,13 @@ msgstr ""
 msgid "Next Field"
 msgstr ""
 
+msgid "No contact files found"
+msgstr ""
+
 msgid "No contact selected"
+msgstr ""
+
+msgid "No contacts found in database"
 msgstr ""
 
 msgid "No file in database..."
