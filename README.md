@@ -1,5 +1,5 @@
 ![](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)
-[![Version](https://img.shields.io/badge/Version-1.6-blue.svg)](https://github.com/Belfagor2005/Calendar)
+[![Version](https://img.shields.io/badge/Version-1.7-blue.svg)](https://github.com/Belfagor2005/Calendar)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-2.7%2B%203.X%2B-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -7,7 +7,7 @@
 
 # Calendar Planner for Enigma2
 
-A comprehensive calendar plugin for Enigma2-based receivers with event management, holiday import system, notifications, and audio alerts.
+A comprehensive calendar plugin for Enigma2-based receivers with event management, holiday import system, notifications, audio alerts, **ICS import support**, and contact management.
 
 ## ✨ Features
 
@@ -43,6 +43,13 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Duplicate detection**: during import
 - **vCard export**: to `/tmp/calendar.vcf`
 
+### ICS Calendar Import System
+- **ICS Event Management**: Browse, edit, delete imported events from .ics files
+- **ICS Events Browser**: Similar to contacts browser with CH+/CH- navigation
+- **ICS Event Editor**: Full-screen dialog like contact editor
+- **ICS File Archive**: Store imported .ics files in `/base/ics` directory
+- **Duplicate Detection**: Smart cache for fast duplicate checking of imported events
+- **Enhanced Search**: Search in events titles, descriptions, dates
 ### Holiday Import & Management System
 - **Automatic Coloring**: Holiday days are automatically colored on the calendar
 - **Country Support**: Italy, Germany, France, UK, USA, Spain, and many more

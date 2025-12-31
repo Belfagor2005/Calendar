@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.6                      #
+#  Calendar Planner for Enigma2 v1.7                      #
 #  Created by: Lululla (based on Sirius0103)              #
 ###########################################################
 
@@ -12,17 +11,18 @@ MAIN FEATURES:
 • Event system with smart notifications & audio alerts
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
-• Database format converter (Legacy ↔ vCard)
+• ICS/Google Calendar import with event management
+• Database format converter (Legacy ↔ vCard ↔ ICS)
 • Phone and email formatters for Calendar Planner
 • Maintains consistent formatting across import, display, and storage
 
-NEW IN v1.6:
-vCard EXPORT to /tmp/calendar.vcf
-Database converter with progress tracking
-Auto-conversion option in settings
-Contact sorting in export (name/birthday/category)
-Optimized import performance
-Fixed holiday cache refresh
+NEW IN v1.7:
+ICS EVENT MANAGEMENT - Browse, edit, delete imported events
+ICS EVENTS BROWSER - Similar to contacts browser with CH+/CH- navigation
+ICS EVENT EDITOR - Full-screen dialog like contact editor
+ICS FILE ARCHIVE - Store imported .ics files in /base/ics
+DUPLICATE DETECTION - Smart cache for fast duplicate checking
+ENHANCED SEARCH - Search in events titles, descriptions, dates
 
 KEY CONTROLS - MAIN:
 OK    - Main menu (Events/Holidays/Contacts/Import/Export/Converter)
@@ -33,20 +33,32 @@ BLUE  - Next day
 0     - Event management
 MENU  - Configuration
 
-EXPORT VCARD:
-• Export contacts to /tmp/calendar.vcf
-• Sorting: name, birthday, or category
-• vCard 3.0 format compatible
-• Progress tracking
+KEY CONTROLS - ICS BROWSER:
+OK    - Edit selected event
+RED   - Add new event
+GREEN - Edit event
+YELLOW- Delete event (single/all)
+BLUE  - Change sorting (date/title/category)
+CH+   - Next event
+CH-   - Previous event
+TEXT  - Search events
 
-DATABASE CONVERTER:
-• Convert Legacy ↔ vCard formats
-• Automatic backup creation
-• Progress & statistics display
-• Auto-conversion option
+ICS MANAGEMENT:
+• Import Google Calendar .ics files
+• Browse imported ICS files in archive
+• View and edit individual ICS events
+• Delete events (single or all)
+• Search events by title/description/date
+• Filter events by category/labels
+• Archive original .ics files for re-import
+
+DATABASE FORMATS:
+• Legacy format (text files)
+• vCard format (standard contacts)
+• ICS format (Google Calendar compatible)
 
 CONFIGURATION:
-• Database format (Legacy/vCard)
+• Database format (Legacy/vCard/ICS)
 • Auto-convert option
 • Export sorting preference
 • Event/holiday colors & indicators
@@ -54,9 +66,9 @@ CONFIGURATION:
 
 TECHNICAL:
 • Python 2.7+ compatible
-• Multi-threaded vCard import
-• Smart cache system
-• File-based storage
+• Multi-threaded vCard/ICS import
+• Smart cache system for duplicates
+• File-based storage with backup
 • Configurable via setup.xml
 
 VERSION HISTORY:
@@ -67,11 +79,12 @@ v1.3 - Code rewrite
 v1.4 - Bug fixes
 v1.5 - vCard import
 v1.6 - vCard export & converter
+v1.7 - ICS event management & browser
 
-Last Updated: 2025-12-26
-Status: Stable with complete vCard support
+Last Updated: 2025-12-27
+Status: Stable with complete vCard & ICS support
 Credits: Sirius0103 (original), Lululla (modifications)
-Homepage: www.linuxsat-support.com
+Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """
 from __future__ import print_function
@@ -89,8 +102,10 @@ from Screens.InfoBar import InfoBar
 
 from . import _, PLUGIN_PATH
 
-events_json = join(PLUGIN_PATH, "events.json")
-sounds_dir = join(PLUGIN_PATH, "sounds")
+DATA_PATH = join(PLUGIN_PATH, "base")
+EVENTS_JSON = join(DATA_PATH, "events.json")
+SOUNDS_DIR = join(PLUGIN_PATH, "sounds")
+
 DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
 
 
@@ -335,8 +350,8 @@ class EventManager:
 
     def __init__(self, session, events_file=None):
         self.session = session
-        self.events_file = events_file or events_json
-        self.sound_dir = sounds_dir
+        self.events_file = events_file or EVENTS_JSON
+        self.sound_dir = SOUNDS_DIR
 
         self.events = []
 
@@ -372,10 +387,12 @@ class EventManager:
                 with open(self.events_file, 'r', encoding='utf-8') as f:
                     data = load(f)
                     self.events = [Event.from_dict(event_data) for event_data in data]
-                print("[EventManager] Loaded {0} events".format(len(self.events)))
+                if DEBUG:
+                    print("[EventManager] Loaded {0} events".format(len(self.events)))
             else:
                 self.events = []
-                print("[EventManager] No event file found, creating empty list")
+                if DEBUG:
+                    print("[EventManager] No event file found, creating empty list")
         except Exception as e:
             print("[EventManager] Error loading events: {0}".format(e))
             self.events = []
@@ -401,7 +418,8 @@ class EventManager:
             with open(self.events_file, 'w', encoding='utf-8') as f:
                 dump([event.to_dict() for event in self.events], f,
                      indent=2, ensure_ascii=False)
-            print("[EventManager] Saved {0} events".format(len(self.events)))
+            if DEBUG:
+                print("[EventManager] Saved {0} events".format(len(self.events)))
             return True
         except Exception as e:
             print("[EventManager] Error saving events: {0}".format(e))
@@ -411,7 +429,8 @@ class EventManager:
         """Add a new event"""
         self.events.append(event)
         self.save_events()
-        print("[EventManager] Event added: {0}".format(event.title))
+        if DEBUG:
+            print("[EventManager] Event added: {0}".format(event.title))
         return event.id
 
     def update_event(self, event_id, **kwargs):
@@ -428,7 +447,8 @@ class EventManager:
                 event.update_labels()
 
                 self.save_events()
-                print("[EventManager] Event updated: {0}".format(event.title))
+                if DEBUG:
+                    print("[EventManager] Event updated: {0}".format(event.title))
                 return True
         return False
 
@@ -436,7 +456,8 @@ class EventManager:
         """Delete an event"""
         self.events = [event for event in self.events if event.id != event_id]
         self.save_events()
-        print("[EventManager] Event deleted: {0}".format(event_id))
+        if DEBUG:
+            print("[EventManager] Event deleted: {0}".format(event_id))
         return True
 
     def get_event(self, event_id):
@@ -607,8 +628,8 @@ class EventManager:
                 else:
                     print("[EventManager DEBUG]   No next occurrence found")
 
-                print("[EventManager DEBUG]   ---")
             if DEBUG:
+                print("[EventManager DEBUG]   ---")
                 print("[EventManager DEBUG] Summary: {0} events checked, {1} skipped".format(
                     events_checked, events_skipped))
                 print("[EventManager DEBUG] Notified events count: {0}".format(len(self.notified_events)))
@@ -642,8 +663,9 @@ class EventManager:
             if event_dt:
                 # If the event is more than 1 day past, remove it
                 if (now - event_dt) > timedelta(days=1):
-                    print("[EventManager] Removing past event: {0} ({1})".format(
-                        event.title, event.date))
+                    if DEBUG:
+                        print("[EventManager] Removing past event: {0} ({1})".format(
+                            event.title, event.date))
                     removed_count += 1
                     continue
 
@@ -654,9 +676,161 @@ class EventManager:
         if removed_count > 0:
             self.events = events_to_keep
             self.save_events()
-            print("[EventManager] Cleaned up {0} past events".format(removed_count))
+            if DEBUG:
+                print("[EventManager] Cleaned up {0} past events".format(removed_count))
 
         return removed_count
+
+    def cleanup_duplicate_events_with_dialog(self, session, callback=None):
+        """Clean up duplicates with user dialog"""
+        from Screens.MessageBox import MessageBox
+
+        def do_cleanup(result):
+            if result:
+                cleaned = self.cleanup_duplicate_events()
+                message = _("Cleaned {0} duplicate events").format(cleaned) if cleaned > 0 else _("No duplicates found")
+                session.open(MessageBox, message, MessageBox.TYPE_INFO)
+                if callback:
+                    callback()
+
+        session.openWithCallback(
+            do_cleanup,
+            MessageBox,
+            _("Clean up duplicate events?\n\nThis will remove exact duplicates from your events list."),
+            MessageBox.TYPE_YESNO
+        )
+
+    def cleanup_duplicate_events(self):
+        """Remove duplicate events from the list"""
+        try:
+            if not self.events:
+                if DEBUG:
+                    print("[EventManager] No events to cleanup")
+                return 0
+            if DEBUG:
+                print("[EventManager] === STARTING DUPLICATE CLEANUP ===")
+                print("[EventManager] Total events before: %d" % len(self.events))
+
+            # DEBUG: Print all events
+            if DEBUG:
+                print("\n[EventManager] DEBUG - All events:")
+            for i, event in enumerate(self.events):
+                print("[%d] '%s' - %s %s" % (i, event.title, event.date, event.time))
+
+            # Keep track of unique events
+            unique_events = []
+            seen_keys = set()
+            removed_count = 0
+
+            for event in self.events:
+                # Create unique key for this event
+                key = self._get_event_key(event)
+                if DEBUG:
+                    print("\n[EventManager] Checking: '%s'" % event.title)
+                    print("[EventManager] Key: '%s'" % key)
+
+                if key in seen_keys:
+                    # Duplicate found - remove it
+                    if DEBUG:
+                        print("[EventManager] DUPLICATE FOUND! Removing: %s" % event.title)
+                    removed_count += 1
+                    continue
+
+                # Not a duplicate - keep it
+                seen_keys.add(key)
+                unique_events.append(event)
+                if DEBUG:
+                    print("[EventManager] Added to unique list")
+
+            # Update events if duplicates were found
+            if removed_count > 0:
+                self.events = unique_events
+                self.save_events()
+                if DEBUG:
+                    print("\n[EventManager] Cleanup completed: removed %d duplicates" % removed_count)
+                    print("[EventManager] Total events after: %d" % len(self.events))
+            else:
+                print("\n[EventManager] No duplicates found")
+            if DEBUG:
+                print("[EventManager] === CLEANUP FINISHED ===\n")
+            return removed_count
+
+        except Exception as e:
+            print("[EventManager] Error in cleanup_duplicate_events: %s" % str(e))
+            import traceback
+            traceback.print_exc()
+            return 0
+
+    def _get_event_key(self, event):
+        """Create unique key for event deduplication"""
+        # Normalize the title
+        if hasattr(self, '_normalize_event_title'):
+            norm_title = self._normalize_event_title(event.title)
+        else:
+            # Fallback simple normalization
+            norm_title = event.title.lower().strip() if event.title else ""
+
+        key_parts = [
+            norm_title,
+            event.date if event.date else "",
+            event.time if event.time else "00:00"
+        ]
+
+        return "|".join(key_parts)
+
+    def _normalize_event_title(self, title):
+        """Normalize event title for comparison"""
+        if not title:
+            return ""
+
+        # Lowercase
+        normalized = title.lower()
+
+        # Remove extra spaces
+        normalized = " ".join(normalized.split())
+
+        # Remove common suffixes
+        suffixes = [
+            ' - birthday', ' - compleanno', "'s birthday",
+            ' - geburtstag', ' - anniversaire', ' - cumpleaños',
+            ' birthday', ' compleanno'
+        ]
+
+        for suffix in suffixes:
+            if normalized.endswith(suffix):
+                normalized = normalized[:-len(suffix)].strip()
+
+        return normalized
+
+    def _is_birthday_event(self, event):
+        """Check if event is a birthday"""
+        if not event.title:
+            return False
+
+        title_lower = event.title.lower()
+        birthday_keywords = ['birthday', 'compleanno', 'geburtstag', 'anniversaire', 'cumpleaños']
+
+        return any(keyword in title_lower for keyword in birthday_keywords)
+
+    def _extract_name_from_birthday(self, title):
+        """Extract name from birthday title"""
+        import re
+
+        # Remove common birthday suffixes
+        patterns = [
+            r'\s*-\s*birthday\s*$',
+            r'\s*-\s*compleanno\s*$',
+            r"'s\s+birthday\s*$",
+            r'\s*-\s*geburtstag\s*$',
+            r'\s*-\s*anniversaire\s*$',
+            r'\s*-\s*cumpleaños\s*$'
+        ]
+
+        clean_title = title.strip()
+        for pattern in patterns:
+            clean_title = re.sub(pattern, '', clean_title, flags=re.IGNORECASE)
+
+        return clean_title.strip()
 
     def _execute_cleanup(self, result):
         """Execute cleanup after confirmation"""
@@ -747,7 +921,7 @@ class EventManager:
                 # 10-second timer (notification duration)
                 notification_timer = eTimer()
                 try:
-                    notification_timer_conn = notification_timer.timeout.connect(stop_sound_when_notification_ends)
+                    notification_timer.timeout.connect(stop_sound_when_notification_ends)
                 except AttributeError:
                     notification_timer.callback.append(stop_sound_when_notification_ends)
                 notification_timer.start(10000, True)  # 10 seconds
@@ -778,7 +952,7 @@ class EventManager:
 
             # Try different possible sound directories
             sound_dir = None
-            for test_dir in [PLUGIN_PATH + "sounds/", PLUGIN_PATH + "sound/", sounds_dir]:
+            for test_dir in [PLUGIN_PATH + "sounds/", PLUGIN_PATH + "sound/", SOUNDS_DIR]:
                 if exists(test_dir):
                     sound_dir = test_dir
                     break
@@ -872,7 +1046,7 @@ class EventManager:
             # Create and start the timer
             stop_timer = eTimer()
             try:
-                stop_timer_conn = stop_timer.timeout.connect(stop_and_restore_tv)
+                stop_timer.timeout.connect(stop_and_restore_tv)
             except AttributeError:
                 stop_timer.callback.append(stop_and_restore_tv)
             stop_timer.start(10000, True)  # 10 seconds
@@ -932,7 +1106,8 @@ class EventManager:
                             # Still playing, check again in 1 second
                             check_timer.start(1000, True)
                         else:
-                            print("[EventManager] Audio playback finished")
+                            if DEBUG:
+                                print("[EventManager] Audio playback finished")
                             # Try to restore previous service if any
                             try:
                                 # This would restore TV/radio if it was playing
@@ -945,7 +1120,7 @@ class EventManager:
 
             check_timer = eTimer()
             try:
-                check_timer_conn = check_timer.timeout.connect(check_if_playing)
+                check_timer.timeout.connect(check_if_playing)
             except AttributeError:
                 check_timer.callback.append(check_if_playing)
             check_timer.start(1000, True)  # Check after 1 second
@@ -980,8 +1155,8 @@ class EventManager:
                     # Monitor playback to auto-remove when done
                     self._monitor_playback(infoBarInstance.session.nav, sound_path)
                     return True
-
-            print("[EventManager] Could not get service instance")
+            if DEBUG:
+                print("[EventManager] Could not get service instance")
             return False
 
         except Exception as e:
@@ -1012,7 +1187,8 @@ class EventManager:
                 )
 
                 if result.returncode == 0:
-                    print("[EventManager] Played via {0}".format(cmd[0]))
+                    if DEBUG:
+                        print("[EventManager] Played via {0}".format(cmd[0]))
                     return True
 
             except subprocess.TimeoutExpired:
@@ -1041,7 +1217,8 @@ class EventManager:
 
             result = subprocess.run(cmd, capture_output=True, timeout=3)
             if result.returncode == 0:
-                print("[EventManager] Played via GStreamer")
+                if DEBUG:
+                    print("[EventManager] Played via GStreamer")
                 return True
 
         except Exception as e:

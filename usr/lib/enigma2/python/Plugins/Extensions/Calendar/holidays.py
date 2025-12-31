@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.6                      #
+#  Calendar Planner for Enigma2 v1.7                      #
 #  Created by: Lululla (based on Sirius0103)              #
 ###########################################################
 
@@ -12,17 +11,18 @@ MAIN FEATURES:
 • Event system with smart notifications & audio alerts
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
-• Database format converter (Legacy ↔ vCard)
+• ICS/Google Calendar import with event management
+• Database format converter (Legacy ↔ vCard ↔ ICS)
 • Phone and email formatters for Calendar Planner
 • Maintains consistent formatting across import, display, and storage
 
-NEW IN v1.6:
-vCard EXPORT to /tmp/calendar.vcf
-Database converter with progress tracking
-Auto-conversion option in settings
-Contact sorting in export (name/birthday/category)
-Optimized import performance
-Fixed holiday cache refresh
+NEW IN v1.7:
+ICS EVENT MANAGEMENT - Browse, edit, delete imported events
+ICS EVENTS BROWSER - Similar to contacts browser with CH+/CH- navigation
+ICS EVENT EDITOR - Full-screen dialog like contact editor
+ICS FILE ARCHIVE - Store imported .ics files in /base/ics
+DUPLICATE DETECTION - Smart cache for fast duplicate checking
+ENHANCED SEARCH - Search in events titles, descriptions, dates
 
 KEY CONTROLS - MAIN:
 OK    - Main menu (Events/Holidays/Contacts/Import/Export/Converter)
@@ -33,20 +33,32 @@ BLUE  - Next day
 0     - Event management
 MENU  - Configuration
 
-EXPORT VCARD:
-• Export contacts to /tmp/calendar.vcf
-• Sorting: name, birthday, or category
-• vCard 3.0 format compatible
-• Progress tracking
+KEY CONTROLS - ICS BROWSER:
+OK    - Edit selected event
+RED   - Add new event
+GREEN - Edit event
+YELLOW- Delete event (single/all)
+BLUE  - Change sorting (date/title/category)
+CH+   - Next event
+CH-   - Previous event
+TEXT  - Search events
 
-DATABASE CONVERTER:
-• Convert Legacy ↔ vCard formats
-• Automatic backup creation
-• Progress & statistics display
-• Auto-conversion option
+ICS MANAGEMENT:
+• Import Google Calendar .ics files
+• Browse imported ICS files in archive
+• View and edit individual ICS events
+• Delete events (single or all)
+• Search events by title/description/date
+• Filter events by category/labels
+• Archive original .ics files for re-import
+
+DATABASE FORMATS:
+• Legacy format (text files)
+• vCard format (standard contacts)
+• ICS format (Google Calendar compatible)
 
 CONFIGURATION:
-• Database format (Legacy/vCard)
+• Database format (Legacy/vCard/ICS)
 • Auto-convert option
 • Export sorting preference
 • Event/holiday colors & indicators
@@ -54,9 +66,9 @@ CONFIGURATION:
 
 TECHNICAL:
 • Python 2.7+ compatible
-• Multi-threaded vCard import
-• Smart cache system
-• File-based storage
+• Multi-threaded vCard/ICS import
+• Smart cache system for duplicates
+• File-based storage with backup
 • Configurable via setup.xml
 
 VERSION HISTORY:
@@ -67,11 +79,12 @@ v1.3 - Code rewrite
 v1.4 - Bug fixes
 v1.5 - vCard import
 v1.6 - vCard export & converter
+v1.7 - ICS event management & browser
 
-Last Updated: 2025-12-26
-Status: Stable with complete vCard support
+Last Updated: 2025-12-27
+Status: Stable with complete vCard & ICS support
 Credits: Sirius0103 (original), Lululla (modifications)
-Homepage: www.linuxsat-support.com
+Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """
 from __future__ import print_function
@@ -84,24 +97,25 @@ from sys import version_info
 
 if version_info[0] >= 3:
     from urllib.request import urlopen
-    # from urllib.error import URLError
 else:
     from urllib2 import urlopen
-    # from urllib2 import URLError
 
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.ScrollLabel import ScrollLabel
 from Components.config import config
-
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
 from . import _, PLUGIN_PATH
 
-DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
+DATA_PATH = join(PLUGIN_PATH, "base")
+HOLIDAYS_PATH = join(DATA_PATH, "holidays")
 
+
+DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
+# DEBUG = True
 
 # Country/Language Map
 COUNTRY_LANGUAGE_MAP = {
@@ -145,6 +159,14 @@ class HolidaysManager:
         """Use the filesystem instead of the SQL database"""
         self.language = language
         self.holidays_data = {}
+        self.holidays_dir = join(HOLIDAYS_PATH, language, "day")
+        if not exists(self.holidays_dir):
+            try:
+                makedirs(self.holidays_dir, exist_ok=True)
+                if DEBUG:
+                    print("[Holidays] Created directory: {0}".format(self.holidays_dir))
+            except Exception as e:
+                print("[Holidays] Error creating directory: {0}".format(str(e)))
 
     def _get_country_code(self, country_name):
         """Country code"""
@@ -174,34 +196,53 @@ class HolidaysManager:
 
         holidays = []
 
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            PLUGIN_PATH,
+        file_path = "{0}/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+            HOLIDAYS_PATH,
             self.language,
             year,
             month,
             day
         )
 
+        if DEBUG:
+            print("[Holidays DEBUG] Looking for holiday file: {0}".format(file_path))
+            print("[Holidays DEBUG] File exists: {0}".format(exists(file_path)))
+
         if exists(file_path):
             try:
                 with open(file_path, 'r') as f:
                     content = f.read()
+
+                if DEBUG:
+                    print("[Holidays DEBUG] File content:\n{0}".format(content[:200]))
 
                 # Parse holiday field
                 for line in content.split('\n'):
                     line = line.strip()
                     if line.startswith('holiday:'):
                         holiday_text = line.split(':', 1)[1].strip()
-                        if holiday_text and holiday_text != "None":
+                        if holiday_text and holiday_text.lower() != "none":
                             holidays.append(holiday_text)
+                            if DEBUG:
+                                print("[Holidays DEBUG] Found holiday: {0}".format(holiday_text))
             except Exception as e:
                 print("[Holidays] Error reading file: " + str(e))
+        else:
+            if DEBUG:
+                print("[Holidays DEBUG] No holiday file found for today")
 
         return holidays
 
     def get_upcoming_holidays(self, days=30):
         """Upcoming holidays from the filesystem"""
+        if DEBUG:
+            print("[Holidays DEBUG] get_upcoming_holidays - language:", self.language)
+            print("[Holidays DEBUG] days parameter:", days)
+
         today = datetime.now()
+        if DEBUG:
+            print("[Holidays DEBUG] Today:", today.strftime('%Y-%m-%d'))
+
         holidays_list = []
 
         for i in range(days):
@@ -210,36 +251,54 @@ class HolidaysManager:
             month = check_date.month
             day = check_date.day
 
-            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                PLUGIN_PATH,
+            file_path = "{0}/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+                HOLIDAYS_PATH,
                 self.language,
                 year,
                 month,
                 day
             )
+            if DEBUG:
+                print("[Holidays DEBUG] Checking {0}-{1:02d}-{2:02d}: {3}".format(
+                    year, month, day, "EXISTS" if exists(file_path) else "NOT FOUND"))
 
             if exists(file_path):
                 try:
                     with open(file_path, 'r') as f:
                         content = f.read()
 
-                    # Parse holiday field
-                    for line in content.split('\n'):
-                        line = line.strip()
-                        if line.startswith('holiday:'):
-                            holiday_text = line.split(':', 1)[1].strip()
-                            if holiday_text and holiday_text != "None":
-                                date_str = check_date.strftime('%Y-%m-%d')
-                                holidays_list.append((date_str, holiday_text))
+                    if 'holiday:' in content:
+                        if DEBUG:
+                            print("[Holidays DEBUG] File contains 'holiday:' field")
+                        # Parse holiday field
+                        for line in content.split('\n'):
+                            line = line.strip()
+                            if line.startswith('holiday:'):
+                                holiday_text = line.split(':', 1)[1].strip()
+                                if holiday_text and holiday_text.lower() != "none":
+                                    date_str = check_date.strftime('%Y-%m-%d')
+                                    holidays_list.append((date_str, holiday_text))
+                                    print("[Holidays DEBUG] Found holiday: {0} -> {1}".format(
+                                        date_str, holiday_text[:50]))
+                                break
+                    else:
+                        print("[Holidays DEBUG] File does NOT contain 'holiday:' field")
+
                 except Exception as e:
                     print("[Holidays] Error reading file: " + str(e))
-
+        if DEBUG:
+            print("[Holidays DEBUG] Returning {0} holidays".format(len(holidays_list)))
         return holidays_list
 
     def import_from_holidata(self, country, language, year=None):
         """Import holidays from Holidata.net - CLEAN BEFORE IMPORT"""
         if year is None:
             year = datetime.now().year
+            # year = [2026]
+
+        if DEBUG:
+            print("[Holidays] Starting import for {0} ({1}), year: {2}".format(
+                country, language, year))
 
         # 1. FIRST clean all holidays of this country for this year
         cleaned = self._clean_country_holidays(country, year)
@@ -287,34 +346,47 @@ class HolidaysManager:
                         continue
 
             if not holidays:
+                if DEBUG:
+                    print("[Holidays] No holidays found in data")
                 return False, "No holidays found in data"
 
-            # 3. Save new holidays
-            saved = self._save_to_calendar_files(country, holidays, year)
+            if DEBUG:
+                print("[Holidays] Found {0} holidays to import".format(len(holidays)))
+
+            # 3. Save new holidays to holidays directory
+            saved = self._save_to_holiday_files(country, holidays, year)
+
+            if DEBUG:
+                print("[Holidays] Saved {0} holiday files".format(saved))
+
             return True, "Cleaned {0} old holidays, imported {1} new holidays, saved {2} files".format(
                 cleaned, len(holidays), saved)
 
         except Exception as e:
             print("[Holidays] ERROR: " + str(e))
+            import traceback
+            traceback.print_exc()
             return False, "Error: " + str(e)
 
     def _clean_country_holidays(self, country, year):
         """Remove ALL holidays of a specific country for a specific year"""
-        country_code = self._get_country_code(country)
-        if not country_code:
-            return 0
+        if DEBUG:
+            print("[Holidays] Cleaning holidays for {0}, year {1}".format(country, year))
 
-        base_path = PLUGIN_PATH + "base/" + self.language + "/day/"
+        # Usa il percorso holidays
+        base_path = self.holidays_dir
+
         if not exists(base_path):
+            if DEBUG:
+                print("[Holidays] Holidays directory doesn't exist: {0}".format(base_path))
             return 0
 
-        import os
         cleaned_count = 0
 
         # Check all files for the specified year
-        for filename in os.listdir(base_path):
+        for filename in listdir(base_path):
             if filename.endswith(".txt") and filename.startswith(str(year)):
-                file_path = os.path.join(base_path, filename)
+                file_path = join(base_path, filename)
 
                 try:
                     with open(file_path, 'r') as f:
@@ -329,11 +401,13 @@ class HolidaysManager:
                             if line.strip().startswith('holiday:'):
                                 existing = line.split(':', 1)[1].strip()
 
-                                if existing and existing != "None":
+                                if existing and existing.lower() != "none":
                                     # Remove ALL holidays (clean slate for this country/year)
                                     # We'll remove everything because we're importing fresh data
                                     new_lines.append('holiday: ')
                                     cleaned_count += 1
+                                    if DEBUG:
+                                        print("[Holidays] Cleared holiday from {0}".format(filename))
                                 else:
                                     new_lines.append(line)
                             else:
@@ -347,12 +421,15 @@ class HolidaysManager:
                 except Exception as e:
                     print("[Holidays] Error cleaning file {0}: {1}".format(filename, str(e)))
 
+        if DEBUG:
+            print("[Holidays] Total cleaned: {0}".format(cleaned_count))
+
         return cleaned_count
 
-    def _save_to_calendar_files(self, country, holidays, year=None):
-        """Save holidays to Calendar text files - SIMPLIFIED VERSION"""
+    def _save_to_holiday_files(self, country, holidays, year=None):
+        """Save holidays to Holidays directory - SEPARATE from calendar data"""
         if DEBUG:
-            print("[Holidays] DEBUG: Saving holidays for " + country)
+            print("[Holidays] Saving holidays to holidays directory for " + country)
 
         saved_count = 0
 
@@ -386,9 +463,9 @@ class HolidaysManager:
             except:
                 continue
 
-            # Build file path
-            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                PLUGIN_PATH,
+            # Build file path in holidays directory
+            file_path = "{0}/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+                HOLIDAYS_PATH,
                 self.language,
                 year,
                 month,
@@ -400,7 +477,10 @@ class HolidaysManager:
             if not exists(directory):
                 try:
                     makedirs(directory, exist_ok=True)
-                except:
+                    if DEBUG:
+                        print("[Holidays] Created directory: {0}".format(directory))
+                except Exception as e:
+                    print("[Holidays] Error creating directory: {0}".format(str(e)))
                     continue
 
             # Prepare holiday text
@@ -423,7 +503,7 @@ class HolidaysManager:
                         if line.strip().startswith('holiday:'):
                             existing = line.split(':', 1)[1].strip()
 
-                            if existing and existing != "None":
+                            if existing and existing.lower() != "none":
                                 # Check if this holiday already exists
                                 if holiday_text not in existing:
                                     # Add new holiday to existing ones
@@ -481,6 +561,10 @@ class HolidaysManager:
 
                 saved_count += 1
 
+                if DEBUG:
+                    print("[Holidays] Saved holiday: {0}-{1:02d}-{2:02d} = {3}".format(
+                        year, month, day, holiday_text[:50]))
+
             except Exception as e:
                 print("[Holidays] ERROR saving file {0}: {1}".format(file_path, str(e)))
 
@@ -490,7 +574,7 @@ class HolidaysManager:
 class HolidaysImportScreen(Screen):
     if version_info[0] >= 3:
         skin = """
-            <screen position="center,center" size="1180,650" title="Importa Festività" flags="wfNoBorder">
+            <screen position="center,center" size="1180,650" title="Import Holidays" flags="wfNoBorder">
                 <widget name="country_list" position="13,76" size="691,480" itemHeight="45" font="Regular;34" scrollbarMode="showNever" />
                 <widget name="status_label" position="11,10" size="1163,60" font="Regular;34" foregroundColor="#00ffcc33" backgroundColor="background" />
                 <widget name="log_text" position="714,83" size="447,502" font="Regular;26" />
@@ -504,7 +588,7 @@ class HolidaysImportScreen(Screen):
         """
     else:
         skin = """
-            <screen position="center,center" size="1180,650" title="Importa Festività" flags="wfNoBorder">
+            <screen position="center,center" size="1180,650" title="Import Holidays" flags="wfNoBorder">
                 <widget name="country_list" position="13,76" size="691,500" itemHeight="30" scrollbarMode="showNever" />
                 <widget name="status_label" position="11,10" size="1163,60" font="Regular;34" foregroundColor="#00ffcc33" backgroundColor="background" />
                 <widget name="log_text" position="714,83" size="447,502" font="Regular;26" />
@@ -614,7 +698,7 @@ class HolidaysImportScreen(Screen):
 
 def clear_holidays_database(language):
     """Clears all 'holiday:' fields from data files"""
-    base_path = join(PLUGIN_PATH, "base", language, "day")
+    base_path = join(HOLIDAYS_PATH, language, "day")
 
     if not exists(base_path):
         return 0, "Directory not found: {0}".format(base_path)
@@ -688,8 +772,8 @@ def show_holidays_today(session):
         manager = HolidaysManager(language)
 
         # DEBUG: Check the file path
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            PLUGIN_PATH,
+        file_path = "{0}/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+            HOLIDAYS_PATH,
             language,
             today.year,
             today.month,
@@ -733,8 +817,32 @@ def show_upcoming_holidays(session, days=30):
     """Show upcoming holidays from the text files"""
     try:
         language = config.osd.language.value.split("_")[0].strip()
+        if DEBUG:
+            print("[Holidays DEBUG] show_upcoming_holidays - language:", language)
+            print("[Holidays DEBUG] Full language config:", config.osd.language.value)
+
         manager = HolidaysManager(language)
+        if DEBUG:
+            print("[Holidays DEBUG] Holidays directory:", manager.holidays_dir)
+        if exists(manager.holidays_dir):
+            files = listdir(manager.holidays_dir)
+            if DEBUG:
+                print("[Holidays DEBUG] Number of files in directory:", len(files))
+            if files:
+                print("[Holidays DEBUG] First 5 files:", files[:5])
+        else:
+            print("[Holidays DEBUG] Directory does not exist!")
+
+            base_dir = join(HOLIDAYS_PATH)
+            if exists(base_dir):
+                subdirs = listdir(base_dir)
+                if DEBUG:
+                    print("[Holidays DEBUG] Available language directories:", subdirs)
+
         holidays = manager.get_upcoming_holidays(days)
+        if DEBUG:
+            print("[Holidays DEBUG] Total holidays found:", len(holidays))
+
         if holidays:
             message = "UPCOMING HOLIDAYS (next {0} days):\n\n".format(days)
             for date_str, holiday in holidays:
@@ -757,7 +865,6 @@ def show_upcoming_holidays(session, days=30):
             def __init__(self, session, text):
                 Screen.__init__(self, session)
                 self["holidays_text"] = ScrollLabel(text)
-                # self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ColorActions"], {
                 self["actions"] = ActionMap(["CalendarActions"], {
                     "up": self.scroll_up,
                     "down": self.scroll_down,

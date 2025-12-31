@@ -3,17 +3,15 @@
 
 """
 ###########################################################
-#                                                         #
-#  Created by: Lululla                                    #
-#                                                         #
-#  CREDITS:                                               #
-#  • Original Calendar plugin: Lululla                    #
-#  • Event system & modifications: Lululla                #
-#  Last Updated: 2025-12-25                               #
-#  Status: Stable with all systems integrated             #
+#  Calendar Planner for Enigma2                           #
+#  Created by: Lululla (based on Sirius0103)              #
+###########################################################
+Last Updated: 2025-12-26
+Status: Stable with complete vCard support
+Credits: Sirius0103 (original), Lululla (modifications)
+Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """
-
 import os
 import re
 import subprocess
@@ -282,7 +280,6 @@ def main():
     print("COMPLETED: {} strings in the catalog".format(total))
     print("You can now use PoEdit on Windows without issues!")
     print("=" * 50)
-
 
 
 if __name__ == "__main__":

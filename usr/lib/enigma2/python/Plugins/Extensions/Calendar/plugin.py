@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.6                      #
+#  Calendar Planner for Enigma2 v1.7                      #
 #  Created by: Lululla (based on Sirius0103)              #
 ###########################################################
 
@@ -12,17 +11,18 @@ MAIN FEATURES:
 • Event system with smart notifications & audio alerts
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
-• Database format converter (Legacy ↔ vCard)
+• ICS/Google Calendar import with event management
+• Database format converter (Legacy ↔ vCard ↔ ICS)
 • Phone and email formatters for Calendar Planner
 • Maintains consistent formatting across import, display, and storage
 
-NEW IN v1.6:
-vCard EXPORT to /tmp/calendar.vcf
-Database converter with progress tracking
-Auto-conversion option in settings
-Contact sorting in export (name/birthday/category)
-Optimized import performance
-Fixed holiday cache refresh
+NEW IN v1.7:
+ICS EVENT MANAGEMENT - Browse, edit, delete imported events
+ICS EVENTS BROWSER - Similar to contacts browser with CH+/CH- navigation
+ICS EVENT EDITOR - Full-screen dialog like contact editor
+ICS FILE ARCHIVE - Store imported .ics files in /base/ics
+DUPLICATE DETECTION - Smart cache for fast duplicate checking
+ENHANCED SEARCH - Search in events titles, descriptions, dates
 
 KEY CONTROLS - MAIN:
 OK    - Main menu (Events/Holidays/Contacts/Import/Export/Converter)
@@ -33,20 +33,32 @@ BLUE  - Next day
 0     - Event management
 MENU  - Configuration
 
-EXPORT VCARD:
-• Export contacts to /tmp/calendar.vcf
-• Sorting: name, birthday, or category
-• vCard 3.0 format compatible
-• Progress tracking
+KEY CONTROLS - ICS BROWSER:
+OK    - Edit selected event
+RED   - Add new event
+GREEN - Edit event
+YELLOW- Delete event (single/all)
+BLUE  - Change sorting (date/title/category)
+CH+   - Next event
+CH-   - Previous event
+TEXT  - Search events
 
-DATABASE CONVERTER:
-• Convert Legacy ↔ vCard formats
-• Automatic backup creation
-• Progress & statistics display
-• Auto-conversion option
+ICS MANAGEMENT:
+• Import Google Calendar .ics files
+• Browse imported ICS files in archive
+• View and edit individual ICS events
+• Delete events (single or all)
+• Search events by title/description/date
+• Filter events by category/labels
+• Archive original .ics files for re-import
+
+DATABASE FORMATS:
+• Legacy format (text files)
+• vCard format (standard contacts)
+• ICS format (Google Calendar compatible)
 
 CONFIGURATION:
-• Database format (Legacy/vCard)
+• Database format (Legacy/vCard/ICS)
 • Auto-convert option
 • Export sorting preference
 • Event/holiday colors & indicators
@@ -54,9 +66,9 @@ CONFIGURATION:
 
 TECHNICAL:
 • Python 2.7+ compatible
-• Multi-threaded vCard import
-• Smart cache system
-• File-based storage
+• Multi-threaded vCard/ICS import
+• Smart cache system for duplicates
+• File-based storage with backup
 • Configurable via setup.xml
 
 VERSION HISTORY:
@@ -67,19 +79,22 @@ v1.3 - Code rewrite
 v1.4 - Bug fixes
 v1.5 - vCard import
 v1.6 - vCard export & converter
+v1.7 - ICS event management & browser
 
-Last Updated: 2025-12-26
-Status: Stable with complete vCard support
+Last Updated: 2025-12-27
+Status: Stable with complete vCard & ICS support
 Credits: Sirius0103 (original), Lululla (modifications)
-Homepage: www.linuxsat-support.com
+Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """
 from __future__ import print_function
+import glob
+import shutil
 import datetime
-from time import localtime
-from os import remove, makedirs
-from os.path import exists, dirname, join
-
+from time import localtime, time, strftime
+# from datetime import datetime
+from os import remove, makedirs, listdir
+from os.path import exists, dirname, join, basename, getmtime, getsize
 from enigma import getDesktop
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
@@ -88,24 +103,62 @@ from Screens.Setup import Setup
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Components.ActionMap import ActionMap  # , HelpableActionMap
 from Components.Label import Label
-from Components.Sources.StaticText import StaticText
 from Components.config import (
     config,
     ConfigSubsection,
     ConfigSelection,
     ConfigYesNo,
+    ConfigText
 )
-from enigma import eTimer
+# from enigma import eTimer
 from skin import parseColor
 
 from . import _, PLUGIN_PATH, PLUGIN_VERSION, PLUGIN_ICON
-from .events_view import EventsView
-from .event_manager import EventManager
+from .birthday_dialog import BirthdayDialog
 from .birthday_manager import BirthdayManager
 from .contacts_view import ContactsView
-from .birthday_dialog import BirthdayDialog
-from .database_converter import DatabaseConverter, auto_convert_database
-from .formatters import format_field_display, MenuDialog
+from .event_dialog import EventDialog
+from .event_manager import EventManager
+from .events_view import EventsView
+from .holidays import HolidaysImportScreen
+from .holidays import clear_holidays_dialog
+from .holidays import show_holidays_today
+from .holidays import show_upcoming_holidays as holidays_upcoming
+from .ics_browser import ICSBrowser
+from .ics_events_view import ICSEventsView
+from .ics_importer import ICSImporter
+from .vcf_importer import VCardImporter, export_contacts_to_vcf
+from .formatters import (
+    format_field_display,
+    MenuDialog,
+    create_export_directory,
+    generate_export_filename,
+    get_export_locations
+)
+
+DATA_PATH = join(PLUGIN_PATH, "base")
+CONTACTS_PATH = join(DATA_PATH, "contacts")
+VCARDS_PATH = join(DATA_PATH, "vcard")
+ICS_BASE_PATH = join(DATA_PATH, "ics")
+HOLIDAYS_PATH = join(DATA_PATH, "holidays")
+
+DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
+# DEBUG = True
+
+
+def ensure_directories():
+    for path in [DATA_PATH, ICS_BASE_PATH, CONTACTS_PATH, VCARDS_PATH, HOLIDAYS_PATH]:
+        if not exists(path):
+            makedirs(path)
+            print("[Calendar] Created directory:", path)
+
+    for lang in ["it", "en", "de", "fr", "es"]:
+        lang_holiday_path = join(HOLIDAYS_PATH, lang, "day")
+        if not exists(lang_holiday_path):
+            makedirs(lang_holiday_path, exist_ok=True)
+
+
+ensure_directories()
 
 
 def init_calendar_config():
@@ -119,16 +172,31 @@ def init_calendar_config():
     config.plugins.calendar.events_enabled = ConfigYesNo(default=True)
     config.plugins.calendar.events_notifications = ConfigYesNo(default=True)
     config.plugins.calendar.events_show_indicators = ConfigYesNo(default=True)
+    """
+    # config.plugins.calendar.events_color = ConfigSelection(
+        # choices=[
+            # ("blue", _("Blue")),
+            # ("red", _("Red")),
+            # ("green", _("Green")),
+            # ("orange", _("Orange")),
+            # ("yellow", _("Yellow")),
+            # ("white", _("White")),
+            # ("#00FFFF", _("Cyan")),
+        # ],
+        # default="#00FFFF"
+    # )
+    """
     config.plugins.calendar.events_color = ConfigSelection(
         choices=[
-            ("blue", _("Blue")),
-            ("red", _("Red")),
-            ("green", _("Green")),
-            ("orange", _("Orange")),
-            ("yellow", _("Yellow")),
-            ("white", _("White")),
+            ("#0000FF", _("Blue")),
+            ("#FF0000", _("Red")),
+            ("#00FF00", _("Green")),
+            ("#FFA500", _("Orange")),
+            ("#FFFF00", _("Yellow")),
+            ("#FFFFFF", _("White")),
+            ("#00FFFF", _("Cyan")),  # cyan in hexadecimal
         ],
-        default="cyan"  # cyan as default
+        default="#00FFFF"  # cyan in hexadecimal
     )
     config.plugins.calendar.events_play_sound = ConfigYesNo(default=True)
     config.plugins.calendar.events_sound_type = ConfigSelection(
@@ -142,16 +210,30 @@ def init_calendar_config():
     )
     config.plugins.calendar.holidays_enabled = ConfigYesNo(default=True)
     config.plugins.calendar.holidays_show_indicators = ConfigYesNo(default=True)
+    """
+    # config.plugins.calendar.holidays_color = ConfigSelection(
+        # choices=[
+            # ("blue", _("Blue")),
+            # ("red", _("Red")),
+            # ("green", _("Green")),
+            # ("orange", _("Orange")),
+            # ("yellow", _("Yellow")),
+            # ("white", _("White")),
+            # ("cyan", _("Cyan")),
+        # ],
+        # default="blue"  # blue as default
+    """
     config.plugins.calendar.holidays_color = ConfigSelection(
         choices=[
-            ("blue", _("Blue")),
-            ("red", _("Red")),
-            ("green", _("Green")),
-            ("orange", _("Orange")),
-            ("yellow", _("Yellow")),
-            ("white", _("White")),
+            ("#0000FF", _("Blue")),
+            ("#FF0000", _("Red")),
+            ("#00FF00", _("Green")),
+            ("#FFA500", _("Orange")),
+            ("#FFFF00", _("Yellow")),
+            ("#FFFFFF", _("White")),
+            ("#00FFFF", _("Cyan")),
         ],
-        default="blue"  # blue as default
+        default="#0000FF"  # blue in esadecimale
     )
     config.plugins.calendar.debug_enabled = ConfigYesNo(default=False)
 
@@ -159,11 +241,33 @@ def init_calendar_config():
     config.plugins.calendar.database_format = ConfigSelection(
         choices=[
             ("legacy", _("Legacy format (text files)")),
-            ("vcard", _("vCard format (standard)"))
+            ("vcard", _("vCard format (standard)")),
+            ("ics", _("ICS format (google calendar)")),
         ],
         default="legacy"
     )
-    config.plugins.calendar.auto_convert = ConfigYesNo(default=True)
+    # config.plugins.calendar.auto_convert = ConfigYesNo(default=True)
+
+    # EXPORT SETTINGS
+
+    try:
+        export_locations = get_export_locations()
+        if not export_locations:
+            export_locations = [("/tmp/", _("Temporary Storage (/tmp)"))]
+    except:
+        export_locations = [("/tmp/", _("Temporary Storage (/tmp)"))]
+
+    config.plugins.calendar.export_location = ConfigSelection(
+        choices=export_locations,
+        default=export_locations[0][0]
+    )
+
+    config.plugins.calendar.export_subdir = ConfigText(
+        default="Calendar_Export",
+        fixed_size=False
+    )
+
+    config.plugins.calendar.export_add_timestamp = ConfigYesNo(default=True)
 
 
 DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
@@ -395,13 +499,15 @@ class Calendar(Screen):
         self.language = config.osd.language.value.split("_")[0].strip()
 
         self.birthday_manager = BirthdayManager()
-        print("[Calendar] BirthdayManager initialized, contacts: {0}".format(
-            len(self.birthday_manager.contacts)))
+        if DEBUG:
+            print("[Calendar] BirthdayManager initialized, contacts: {0}".format(
+                len(self.birthday_manager.contacts)))
 
         # Force reload to be sure
         self.birthday_manager.load_all_contacts()
-        print("[Calendar] Contacts after reload: {0}".format(
-            len(self.birthday_manager.contacts)))
+        if DEBUG:
+            print("[Calendar] Contacts after reload: {0}".format(
+                len(self.birthday_manager.contacts)))
 
         self.database_format = config.plugins.calendar.database_format.value
 
@@ -411,9 +517,6 @@ class Calendar(Screen):
 
         self.holiday_cache = {}
         self.cells_by_day = {}
-
-        if config.plugins.calendar.auto_convert.value:
-            self.auto_convert_database()
 
         # Create all UI elements
         for x in range(6):
@@ -432,7 +535,6 @@ class Calendar(Screen):
                 self['w' + str(x)] = Label(weekname[x])
             self['d' + str(x)] = Label()
 
-        self["Title"] = StaticText(_("Calendar Planner v.%s") % PLUGIN_VERSION)
         self["key_red"] = Label(_("Month -"))
         self["key_green"] = Label(_("Month +"))
         self["key_yellow"] = Label(_("Day -"))
@@ -488,48 +590,132 @@ class Calendar(Screen):
     def key_ok(self):
         """Open main menu with conditional event options"""
         menu = [
+            (_("--- PERSONAL DATA ---"), None),  # Separator
             (_("New Date"), self.new_date),
             (_("Edit Date"), self.edit_all_fields),
             (_("Remove Date"), self.remove_date),
             (_("Delete File"), self.delete_file),
+        ]
 
+        # --- CONTACTS SECTION ---
+        menu.extend([
+            (_("--- CONTACTS ---"), None),  # Separator
             (_("Manage Contacts"), self.show_contacts),
             (_("Add Contact"), self.add_contact),
             (_("Import vCard File"), self.import_vcard_file),
             (_("Export vCard File"), self.export_vcard_file),
-        ]
+            (_("Import ICS Contacts Google Calendar (.ics)"), self.import_ics_contacts),
+        ])
 
-        # ADD EVENT OPTIONS ONLY IF ENABLED
+        # --- EVENTS SECTION (if enabled) ---
         if config.plugins.calendar.events_enabled.value and self.event_manager:
             menu.extend([
+                (_("--- EVENTS ---"), None),  # Separator
                 (_("Manage Events"), self.show_events),
                 (_("Add Event"), self.add_event),
+                (_("Import Google Calendar (.ics)"), self.import_ics_file),
+                (_("Manage ICS Files"), self.manage_ics_files),
                 (_("Cleanup past events"), self.cleanup_past_events),
+                (_("Delete ALL events"), self.clear_all_events),
+            ])
+        elif config.plugins.calendar.events_enabled.value:
+            menu.extend([
+                (_("--- EVENTS ---"), None),
+                (_("Import Google Calendar (.ics)"), self.import_ics_file),
+                (_("Manage ICS Files"), self.manage_ics_files),
             ])
 
-        # ADD HOLIDAYS
+        # --- HOLIDAYS SECTION ---
         menu.extend([
+            (_("--- HOLIDAYS ---"), None),  # Separator
             (_("Import Holidays"), self.import_holidays),
             (_("Show Today's Holidays"), self.show_today_holidays),
             (_("Show Upcoming Holidays"), self.show_upcoming_holidays),
-            (_("Clear Holiday Database"), self.clear_holiday_database),
+            (_("Clear Holiday Database"), self.clear_holidays_database),
         ])
 
-        # ADD DATABASE CONVERSION OPTIONS
+        # --- DATABASE SECTION ---
         menu.extend([
-            (_("Database Converter"), self.database_converter),  # NUOVO!
+            (_("--- DATABASE ---"), None),  # Separator
         ])
         if self.database_format == "legacy":
             menu.append((_("Convert to vCard format"), self.convert_to_vcard))
-        else:
-            menu.append((_("Convert to legacy format"), self.convert_to_legacy))
+            menu.append((_("Convert to ICS format"), self.convert_to_ics))
+            menu.append((_("Export All to ICS File"), self.export_all_to_ics))
 
-        # ADD UPDATER
+        elif self.database_format == "vcard":
+            menu.append((_("Convert to legacy format"), self.convert_to_legacy))
+            menu.append((_("Convert to ICS format"), self.convert_to_ics))
+            menu.append((_("Export All to ICS File"), self.export_all_to_ics))
+
+        else:  # ICS format
+            menu.append((_("Convert to legacy format"), self.convert_to_legacy))
+            menu.append((_("Convert to vCard format"), self.convert_to_vcard))
+            menu.append((_("Export All to ICS File"), self.export_all_to_ics))
+
+        # --- SYSTEM SECTION ---
         menu.extend([
+            (_("--- SYSTEM ---"), None),  # Separator
+            (_("Cleanup duplicate events"), self.cleanup_duplicate_events),
             (_("Check for Updates"), self.check_for_updates),
+            # (_("--- DEBUG ---"), None),
+            # (_("Debug Holiday Loading"), self.debug_holiday_loading),
         ])
 
         self.session.openWithCallback(self.menu_callback, MenuDialog, menu)
+
+    """
+    def debug_holiday_loading(self):
+        print("[Calendar] === DEBUG HOLIDAY LOADING ===")
+        print("[Calendar] Current date: %d-%02d-%02d" % (self.year, self.month, self.day))
+        print("[Calendar] Language: %s" % self.language)
+
+        # Check directory
+        holiday_dir = "%s/%s/day" % (HOLIDAYS_PATH, self.language)
+        print("[Calendar] Holiday directory: %s" % holiday_dir)
+        print("[Calendar] Directory exists: %s" % exists(holiday_dir))
+
+        # List files in directory
+        files = glob.glob("%s/*.txt" % holiday_dir)
+        print("[Calendar] Found %d holiday files" % len(files))
+
+        # Check specific file for today
+        test_file = "%s/%s/day/%d%02d%02d.txt" % (
+            HOLIDAYS_PATH,
+            self.language,
+            self.year,
+            self.month,
+            self.day
+        )
+        print("[Calendar] Test file: %s" % test_file)
+        print("[Calendar] Test file exists: %s" % exists(test_file))
+
+        if exists(test_file):
+            try:
+                with open(test_file, 'r') as f:
+                    content = f.read()
+                print("[Calendar] File content:")
+                print(content)
+            except Exception as e:
+                print("[Calendar] Error reading file: %s" % str(e))
+
+        # Force reload
+        print("[Calendar] Forcing holiday cache reload...")
+        cache_key = (self.year, self.month)
+        if cache_key in self.holiday_cache:
+            del self.holiday_cache[cache_key]
+
+        # Load holidays
+        holidays = self._load_month_holidays(self.year, self.month)
+        print("[Calendar] Found %d holidays for this month" % len(holidays))
+
+        # Show message
+        self.session.open(
+            MessageBox,
+            _("Debug completed. Check logs."),
+            MessageBox.TYPE_INFO
+        )
+    """
 
     def check_for_updates(self):
         """Check for plugin updates"""
@@ -565,62 +751,117 @@ class Calendar(Screen):
         self["monthpeople"].setText("")
 
     def load_data(self):
-        """Load data from file - UNIFIED PARSER that reads any format"""
+        """Load data from file - supports all formats"""
+        # First try to load from current database format
+        if DEBUG:
+            print("[Calendar] === LOAD DATA START ===")
+            print("[Calendar] Date: %d-%02d-%02d" % (self.year, self.month, self.day))
         if self.database_format == "vcard":
-            file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-                PLUGIN_PATH,
+            file_path = "%s/%s/%d%02d%02d.txt" % (
+                VCARDS_PATH,
                 self.language,
                 self.year,
                 self.month,
                 self.day
             )
-        else:
-            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                PLUGIN_PATH,
+        elif self.database_format == "ics":
+            file_path = "%s/%s/day/%d%02d%02d.txt" % (
+                ICS_BASE_PATH,
+                self.language,
+                self.year,
+                self.month,
+                self.day
+            )
+        else:  # legacy
+            file_path = "%s/%s/day/%d%02d%02d.txt" % (
+                DATA_PATH,
                 self.language,
                 self.year,
                 self.month,
                 self.day
             )
 
-        default_date = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
+        default_date = "%d-%02d-%02d" % (self.year, self.month, self.day)
 
+        # FIRST: Check holiday file (priority)
+        holiday_file_path = "%s/%s/day/%d%02d%02d.txt" % (
+            HOLIDAYS_PATH,
+            self.language,
+            self.year,
+            self.month,
+            self.day
+        )
+
+        holiday_text = ""
+        if exists(holiday_file_path):
+            try:
+                with open(holiday_file_path, "r") as f:
+                    content = f.read()
+
+                # Extract holiday from holiday file
+                for line in content.split('\n'):
+                    line = line.strip()
+                    if line.startswith('holiday:'):
+                        holiday_value = line.split(':', 1)[1].strip()
+                        if holiday_value and holiday_value.lower() != "none":
+                            holiday_text = holiday_value
+                            break
+
+                if DEBUG:
+                    print("[Calendar] Found holiday in holiday file: %s" % holiday_text)
+            except Exception as e:
+                print("[Calendar] Error reading holiday file: %s" % str(e))
+
+        # SECOND: Load main data
         if exists(file_path):
             try:
                 with open(file_path, "r") as f:
                     lines = f.readlines()
 
-                # Parse file content with unified parser
-                data = self._parse_file_content(lines, self.database_format)
+                # Parse based on format
+                if self.database_format == "ics":
+                    data = self._parse_ics_content(lines)
+                else:
+                    data = self._parse_file_content(lines, self.database_format)
 
-                # Display data with correct mapping
+                # Display data
                 self._display_parsed_data(data, default_date)
 
+                # OVERRIDE holiday field with holiday from holiday file (if exists)
+                if holiday_text:
+                    self["holiday"].setText(_("Holiday: ") + holiday_text)
+                    if DEBUG:
+                        print("[Calendar] Overriding holiday field with: %s" % holiday_text)
+
             except Exception as e:
-                print("[Calendar] Error loading data: {0}".format(str(e)))
-                # In case of error, show at least the default date
+                print("[Calendar] Error loading data: %s" % str(e))
                 self._load_default_data(default_date)
                 self.clear_other_fields()
         else:
             if DEBUG:
-                print("[Calendar] File not found: {0}".format(file_path))
+                print("[Calendar] File not found: %s" % file_path)
+
+            # Show holiday even if no main file exists
             self._load_default_data(default_date)
             self.clear_other_fields()
 
+            if holiday_text:
+                self["holiday"].setText(_("Holiday: ") + holiday_text)
+                if DEBUG:
+                    print("[Calendar] Showing holiday only: %s" % holiday_text)
+
         self.add_contacts_to_display()
-
         # Add events if enabled
         if self.event_manager:
             self.add_events_to_description()
 
-        # Add events if enabled
-        if self.event_manager:
-            self.add_events_to_description()
+        if DEBUG:
+            print("[Calendar] Holiday field after load: %s" % self["holiday"].getText())
+            print("[Calendar] === LOAD DATA END ===")
 
     def _parse_file_content(self, lines, format_type):
         """
         Unified parser that reads any format and returns standardized data
-
         Mapping CORRECTED:
         Legacy → vCard
         date: → DATE:
@@ -659,15 +900,13 @@ class Calendar(Screen):
         """Display parsed data with correct labels"""
         # Determine which fields to use based on format
         if self.database_format == "vcard":
-            # vCard format mapping
             date_val = data.get("DATE:", data.get("BDAY:", default_date))
             datepeople_val = data.get("FN:", "")
             sign_val = data.get("CATEGORIES:", "")
-            holiday_val = data.get("holiday:", data.get("NOTE:", ""))  # holiday: stays first priority
+            holiday_val = data.get("holiday:", data.get("NOTE:", ""))
             description_val = data.get("NOTE:", data.get("DESCRIPTION:", ""))
             monthpeople_val = data.get("CONTACTS:", data.get("ORG:", ""))
         else:
-            # Legacy format
             date_val = data.get("date", default_date)
             datepeople_val = data.get("datepeople", "")
             sign_val = data.get("sign", "")
@@ -688,10 +927,33 @@ class Calendar(Screen):
         else:
             self["sign"].setText("")
 
+        # IMPORTANT: Always show holiday if it exists
         if holiday_val and holiday_val != "None":
             self["holiday"].setText(_("Holiday: ") + holiday_val)
         else:
-            self["holiday"].setText("")
+            # Check holiday file again as fallback
+            holiday_file_path = "%s/%s/day/%d%02d%02d.txt" % (
+                HOLIDAYS_PATH,
+                self.language,
+                self.year,
+                self.month,
+                self.day
+            )
+            if exists(holiday_file_path):
+                try:
+                    with open(holiday_file_path, "r") as f:
+                        content = f.read()
+                    for line in content.split('\n'):
+                        line = line.strip()
+                        if line.startswith('holiday:'):
+                            holiday_value = line.split(':', 1)[1].strip()
+                            if holiday_value and holiday_value.lower() != "none":
+                                self["holiday"].setText(_("Holiday: ") + holiday_value)
+                                break
+                except:
+                    pass
+            else:
+                self["holiday"].setText("")
 
         self["description"].setText(description_val)
 
@@ -718,7 +980,7 @@ class Calendar(Screen):
                 config.plugins.calendar.database_format.save()
                 self.database_format = "vcard"
                 self._paint_calendar()
-                self.load_data()
+
                 self.session.open(
                     MessageBox,
                     _("Database converted to vCard format"),
@@ -738,7 +1000,7 @@ class Calendar(Screen):
         config.plugins.calendar.database_format.save()
         self.database_format = "legacy"
         self._paint_calendar()
-        self.load_data()
+
         self.session.open(
             MessageBox,
             _("Using legacy database format"),
@@ -754,16 +1016,20 @@ class Calendar(Screen):
         self["monthpeople"].setText("")
 
     def save_data(self):
-        """Save data to file - supports both formats"""
+        """Save data to file - supports all formats"""
         if self.database_format == "vcard":
             self._save_vcard_data()
+
+        elif self.database_format == "ics":
+            self._save_ics_data()
+
         else:
             self._save_legacy_data()
 
     def _save_legacy_data(self):
         """Save data to unified file in legacy format"""
-        file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-            PLUGIN_PATH,
+        file_path = "{0}/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+            DATA_PATH,
             self.language,
             self.year,
             self.month,
@@ -840,8 +1106,8 @@ class Calendar(Screen):
 
     def _save_vcard_data(self):
         """Save in vCard format"""
-        file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-            PLUGIN_PATH,
+        file_path = "{0}/{1}/{2}{3:02d}{4:02d}.txt".format(
+            VCARDS_PATH,
             self.language,
             self.year,
             self.month,
@@ -898,7 +1164,8 @@ class Calendar(Screen):
             with open(file_path, "w") as f:
                 f.write(contact_data)
 
-            print("[Calendar] vCard data saved to: {0}".format(file_path))
+            if DEBUG:
+                print("[Calendar] vCard data saved to: {0}".format(file_path))
 
         except Exception as e:
             print("[Calendar] Error saving vCard data: {0}".format(str(e)))
@@ -944,19 +1211,21 @@ class Calendar(Screen):
         """Show contacts list - WITH PROPER REFRESH"""
 
         def contacts_closed_callback(changes_made):
-            print("[Calendar] ContactsView closed, changes_made:", changes_made)
+            if DEBUG:
+                print("[Calendar] ContactsView closed, changes_made:", changes_made)
 
             if changes_made:
-                print("[Calendar] Refreshing calendar after contacts changes")
+                if DEBUG:
+                    print("[Calendar] Refreshing calendar after contacts changes")
                 self.birthday_manager.load_all_contacts()
 
                 if hasattr(self, 'original_cell_states'):
                     self.original_cell_states = {}
 
                 self._paint_calendar()
-                self.load_data()
 
-                print("[Calendar] Calendar fully refreshed")
+                if DEBUG:
+                    print("[Calendar] Calendar fully refreshed")
             else:
                 print("[Calendar] No changes in contacts")
 
@@ -1015,47 +1284,12 @@ class Calendar(Screen):
         except Exception as e:
             print("[Calendar] Error displaying contacts: {0}".format(e))
 
-    def auto_convert_database(self):
-        """Auto-convert database based on configuration"""
-        try:
-            print("[Calendar] Checking for auto-conversion...")
-            print("[Calendar] Current format: {0}".format(self.database_format))
-            print("[Calendar] Auto-convert enabled: {0}".format(
-                config.plugins.calendar.auto_convert.value))
-
-            converted = auto_convert_database(
-                self.language,
-                self.database_format
-            )
-
-            if converted:
-                print("[Calendar] Database auto-converted successfully")
-                # Ricarica i dati dopo la conversione
-                self._paint_calendar()
-                self.load_data()
-
-                # Mostra messaggio all'utente
-                self.session.open(
-                    MessageBox,
-                    _("Database has been automatically converted to {0} format.").format(
-                        self.database_format),
-                    MessageBox.TYPE_INFO,
-                    timeout=5
-                )
-            else:
-                print("[Calendar] No conversion needed")
-
-        except Exception as e:
-            print("[Calendar] Auto-convert error: {0}".format(str(e)))
-            # Non mostrare errore all'utente, è solo un'opzione automatica
-
     def _calculate_age(self, bday_str):
         """Calculate age from birthday string"""
         if not bday_str:
             return ""
 
         try:
-            from datetime import datetime
             birth_date = datetime.strptime(bday_str, "%Y-%m-%d")
             today = datetime.now()
 
@@ -1073,10 +1307,9 @@ class Calendar(Screen):
         print("[Calendar] DEBUG: Starting vCard import function")
 
         try:
-            from .vcf_importer import VCardImporter
-            print("[Calendar] DEBUG: VCardImporter imported successfully")
-
-            print("[Calendar] DEBUG: Opening VCardImporter screen")
+            if DEBUG:
+                print("[Calendar] DEBUG: VCardImporter imported successfully")
+                print("[Calendar] DEBUG: Opening VCardImporter screen")
             self.session.open(
                 VCardImporter,
                 self.birthday_manager
@@ -1100,7 +1333,6 @@ class Calendar(Screen):
     def export_vcard_file(self):
         """Export all contacts to vCard file in /tmp"""
         try:
-            # Prima controlla se ci sono contatti
             if len(self.birthday_manager.contacts) == 0:
                 self.session.open(
                     MessageBox,
@@ -1109,7 +1341,6 @@ class Calendar(Screen):
                 )
                 return
 
-            # Menu per scegliere l'ordinamento
             menu = [
                 (_("Sort by name (alphabetical)"), lambda: self.do_export('name')),
                 (_("Sort by birthday (month/day)"), lambda: self.do_export('birthday')),
@@ -1134,7 +1365,6 @@ class Calendar(Screen):
     def do_export(self, sort_method='name'):
         """Perform export with specified sort method"""
         try:
-            from .vcf_importer import export_contacts_to_vcf
             export_path = "/tmp/calendar.vcf"
             self["status"].setText(_("Exporting contacts..."))
             count = export_contacts_to_vcf(self.birthday_manager, export_path, sort_method)
@@ -1172,41 +1402,1687 @@ class Calendar(Screen):
                 MessageBox.TYPE_ERROR
             )
 
-    def database_converter(self):
-        """Open database converter dialog"""
+    def _parse_ics_content(self, content):
+        """Parse ICS format content"""
+        data = {
+            "date": "",
+            "datepeople": "",
+            "sign": "",
+            "holiday": "",
+            "description": "",
+            "monthpeople": ""
+        }
+
         try:
-            print("[Calendar DEBUG] Plugin path: {0}".format(PLUGIN_PATH))
-            print("[Calendar DEBUG] Language: {0}".format(self.language))
+            lines = content.split("\n")
+            in_event = False
 
-            legacy_path = join(PLUGIN_PATH, "base", self.language, "day")
-            vcard_path = join(PLUGIN_PATH, "base", "vcard", self.language)
+            for line in lines:
+                line = line.strip()
 
-            print("[Calendar DEBUG] Legacy path exists: {0} -> {1}".format(
-                legacy_path, exists(legacy_path)))
-            print("[Calendar DEBUG] vCard path exists: {0} -> {1}".format(
-                vcard_path, exists(vcard_path)))
+                if line == "BEGIN:VEVENT":
+                    in_event = True
+                elif line == "END:VEVENT":
+                    in_event = False
+                elif in_event and ":" in line:
+                    key, value = line.split(":", 1)
 
-            self.session.open(
-                DatabaseConverter,
-                self.language
+                    if key == "SUMMARY":
+                        data["datepeople"] = value
+                    elif key == "CATEGORIES":
+                        data["sign"] = value
+                    elif key == "COMMENT" and "Holiday:" in value:
+                        data["holiday"] = value.replace("Holiday: ", "")
+                    elif key == "DESCRIPTION":
+                        # Restore newlines
+                        data["description"] = value.replace("\\n", "\n")
+                    elif key == "CONTACTS":
+                        data["monthpeople"] = value
+
+            # Date comes from filename / current context
+            data["date"] = "{0}-{1:02d}-{2:02d}".format(
+                self.year, self.month, self.day
             )
+
         except Exception as e:
-            print("[Calendar] Error opening database converter: {0}".format(str(e)))
-            import traceback
-            traceback.print_exc()
+            print("[Calendar] Error parsing ICS: {0}".format(str(e)))
+
+        return data
+
+    def import_ics_contacts(self):
+        """Import ICS file as contacts (birthdays)"""
+        if self.event_manager is None:
+            try:
+                self.event_manager = EventManager(self.session)
+            except Exception as e:
+                print("[Calendar] Error initializing EventManager for ICS contacts:", e)
+                self.session.open(
+                    MessageBox,
+                    _("Cannot initialize event system: {0}").format(str(e)),
+                    MessageBox.TYPE_ERROR
+                )
+                return
+
+        self.session.openWithCallback(
+            self.ics_contacts_callback,
+            ICSImporter,
+            self.event_manager
+        )
+
+    def ics_contacts_callback(self, result=None):
+        """Recall after importing ICS contacts"""
+        if result:
+            if hasattr(self, 'birthday_manager'):
+                self.birthday_manager.load_contacts()
+
             self.session.open(
                 MessageBox,
-                _("Database converter error: {0}").format(str(e)),
+                _("Contacts imported from ICS file!"),
+                MessageBox.TYPE_INFO
+            )
+
+    def import_ics_file(self):
+        """Import events from Google Calendar .ics file"""
+        if DEBUG:
+            print("[Calendar DEBUG] import_ics_file() called")
+
+        # 1. Check if event system is enabled
+        if not config.plugins.calendar.events_enabled.value:
+            self.session.open(
+                MessageBox,
+                _("Event system is disabled. Enable it in settings first."),
+                MessageBox.TYPE_INFO
+            )
+            return
+
+        # 2. Initialize EventManager if not exists
+        if self.event_manager is None:
+            try:
+                self.event_manager = EventManager(self.session)
+                if DEBUG:
+                    print("[Calendar DEBUG] EventManager initialized for .ics import")
+            except Exception as e:
+                print("[Calendar] Error initializing EventManager for .ics import:", e)
+                self.session.open(
+                    MessageBox,
+                    _("Cannot initialize event system: {0}").format(str(e)),
+                    MessageBox.TYPE_ERROR
+                )
+                return
+
+        # 3. Open ICS importer screen - PASSIAMO L'ISTANZA
+        try:
+            if DEBUG:
+                print("[Calendar DEBUG] Opening ICSImporter...")
+                print("[Calendar DEBUG] Passing event_manager instance type:", type(self.event_manager))
+
+            self.session.open(
+                ICSImporter,
+                self.event_manager
+            )
+        except ImportError as e:
+            print("[Calendar] ICS import feature not available:", e)
+            self.session.open(
+                MessageBox,
+                _("ICS import feature not yet available: {0}").format(str(e)),
+                MessageBox.TYPE_INFO
+            )
+        except Exception as e:
+            print("[Calendar] Error opening ICSImporter:", e)
+            self.session.open(
+                MessageBox,
+                _("Error opening ICS importer: {0}").format(str(e)),
                 MessageBox.TYPE_ERROR
             )
 
+    def _save_ics_data(self):
+        """Save data in ICS format"""
+        file_path = "{0}/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+            ICS_BASE_PATH,
+            self.language,
+            self.year,
+            self.month,
+            self.day
+        )
+
+        directory = dirname(file_path)
+        if not exists(directory):
+            try:
+                makedirs(directory)
+                if DEBUG:
+                    print("[Calendar] Created ICS directory: {0}".format(directory))
+            except Exception as e:
+                print("[Calendar] Error creating ICS directory: {0}".format(str(e)))
+
+        try:
+            # Get current values
+            # date_text = self._clean_field_text(self["date"].getText())
+            datepeople_text = self._clean_field_text(
+                self["datepeople"].getText(), "Date People: "
+            )
+            sign_text = self._clean_field_text(self["sign"].getText(), "Sign: ")
+            holiday_text = self._clean_field_text(
+                self["holiday"].getText(), "Holiday: "
+            )
+            description_text = self._clean_field_text(self["description"].getText())
+            monthpeople_text = self._clean_field_text(
+                self["monthpeople"].getText(), "Month People: "
+            )
+
+            # Remove scheduled events from description
+            if _("SCHEDULED EVENTS:") in description_text:
+                parts = description_text.split(_("SCHEDULED EVENTS:"))
+                description_text = parts[0].rstrip()
+
+            # Create ICS content
+            ics_content = self._create_ics_content(
+                date="{0}-{1:02d}-{2:02d}".format(
+                    self.year, self.month, self.day
+                ),
+                title=datepeople_text,
+                categories=sign_text,
+                holiday=holiday_text,
+                description=description_text,
+                contacts=monthpeople_text
+            )
+
+            with open(file_path, "w") as f:
+                f.write(ics_content)
+
+            if DEBUG:
+                print("[Calendar] ICS data saved to: {0}".format(file_path))
+
+        except Exception as e:
+            print("[Calendar] Error saving ICS data: {0}".format(str(e)))
+            self.session.open(
+                MessageBox,
+                _("Error saving ICS data"),
+                MessageBox.TYPE_ERROR
+            )
+
+    def _create_ics_content(self, date, title, categories, holiday, description, contacts):
+        """Create ICS formatted content"""
+
+        # Date format YYYYMMDD
+        date_yyyymmdd = date.replace("-", "")
+
+        lines = []
+        lines.append("BEGIN:VCALENDAR")
+        lines.append("VERSION:2.0")
+        lines.append("PRODID:-//Calendar Plugin//EN")
+
+        # Main event
+        lines.append("BEGIN:VEVENT")
+        lines.append("DTSTART;VALUE=DATE:" + date_yyyymmdd)
+        lines.append("DTEND;VALUE=DATE:" + date_yyyymmdd)
+
+        if title:
+            lines.append("SUMMARY:" + title)
+
+        if categories:
+            lines.append("CATEGORIES:" + categories)
+
+        if holiday:
+            lines.append("COMMENT:Holiday: " + holiday)
+
+        if description:
+            # Escape newlines for ICS format
+            desc_escaped = description.replace("\n", "\\n")
+            lines.append("DESCRIPTION:" + desc_escaped)
+
+        if contacts:
+            lines.append("CONTACTS:" + contacts)
+
+        # Unique UID
+        import hashlib
+        uid_content = "{0}-{1}-{2}".format(
+            date,
+            title,
+            hashlib.md5(description.encode("utf-8")).hexdigest()[:8]
+        )
+        lines.append("UID:" + uid_content)
+
+        lines.append("END:VEVENT")
+        lines.append("END:VCALENDAR")
+
+        return "\n".join(lines)
+
+    def _create_ics_structure(self):
+        """Create ICS directory structure"""
+        # ics_base = join(PLUGIN_PATH, "base/ics")
+        ics_lang_dir = join(ICS_BASE_PATH, self.language, "day")
+
+        # Create all required directories
+        for path in [ICS_BASE_PATH, join(ICS_BASE_PATH, self.language), ics_lang_dir]:
+            if not exists(path):
+                makedirs(path)
+                if DEBUG:
+                    print("[Calendar] Created ICS directory: " + path)
+
+    def _convert_existing_data_to_ics(self):
+        """Convert existing data to ICS format"""
+        try:
+            # Determine source database format (legacy or vcard)
+            source_format = "legacy"  # Or load from previous config
+
+            # Source path
+            if source_format == "vcard":
+                source_base = join(VCARDS_PATH, self.language)
+            else:
+                source_base = join(DATA_PATH, self.language, "day")
+
+            # Destination ICS path
+            dest_base = join(ICS_BASE_PATH, self.language, "day")
+
+            # Find all .txt files in source database
+            source_files = glob.glob(join(source_base, "*.txt"))
+
+            converted_count = 0
+
+            for source_file in source_files:
+                try:
+                    # Extract date from filename (YYYYMMDD.txt)
+                    filename = basename(source_file)
+                    if len(filename) == 12 and filename.endswith(".txt"):
+                        date_str = filename[:-4]
+
+                        # Read source file
+                        with open(source_file, "r") as f:
+                            content = f.read()
+
+                        # Convert to ICS format
+                        ics_content = self._convert_to_ics_format(
+                            content, source_format, date_str
+                        )
+
+                        if ics_content:
+                            # Save ICS file
+                            dest_file = join(dest_base, filename)
+                            with open(dest_file, "w") as f:
+                                f.write(ics_content)
+
+                            converted_count += 1
+                            if DEBUG:
+                                print("[Calendar] Converted {} to ICS format".format(filename))
+
+                except Exception as e:
+                    print("[Calendar] Error converting {}: {}".format(source_file, str(e)))
+            if DEBUG:
+                print("[Calendar] Converted {} files to ICS format".format(converted_count))
+            return converted_count > 0
+
+        except Exception as e:
+            print("[Calendar] Error in ICS conversion: " + str(e))
+            return False
+
+    def _convert_to_ics_format(self, content, source_format, date_str):
+        """Convert content to ICS format - improved version"""
+        """
+        if len(date_str) == 8:
+            date_iso = "{}-{}-{}".format(date_str[0:4], date_str[4:6], date_str[6:8])
+        else:
+            date_iso = date_str
+        """
+        title = ""
+        categories = ""
+        holiday = ""
+        note = ""
+        contacts = ""
+
+        if source_format == "vcard":
+            lines = content.split("\n")
+            data = {}
+
+            for line in lines:
+                if ":" in line:
+                    key, value = line.split(":", 1)
+                    data[key.strip()] = value.strip()
+
+            title = data.get("FN", "")
+            categories = data.get("CATEGORIES", "")
+            holiday = data.get("holiday", "")
+            note = data.get("NOTE", "")
+            contacts = data.get("CONTACTS", "")
+
+        else:
+            lines = content.split("\n")
+            data = {}
+            current_section = None
+
+            for line in lines:
+                line = line.strip()
+                if line.startswith("[") and line.endswith("]"):
+                    current_section = line[1:-1]
+                elif ":" in line and current_section:
+                    key, value = line.split(":", 1)
+                    data[current_section + "_" + key.strip()] = value.strip()
+
+            title = data.get("day_datepeople", "")
+            categories = data.get("day_sign", "")
+            holiday = data.get("day_holiday", "")
+            note = data.get("day_description", "")
+            contacts = data.get("month_monthpeople", "")
+
+        ics_lines = []
+        ics_lines.append("BEGIN:VCALENDAR")
+        ics_lines.append("VERSION:2.0")
+        ics_lines.append("PRODID:-//Calendar Plugin//EN")
+        ics_lines.append("BEGIN:VEVENT")
+        ics_lines.append("DTSTART;VALUE=DATE:" + date_str)
+        ics_lines.append("DTEND;VALUE=DATE:" + date_str)
+
+        if title:
+            ics_lines.append("SUMMARY:" + title)
+
+        if categories:
+            ics_lines.append("CATEGORIES:" + categories)
+
+        if holiday:
+            ics_lines.append("COMMENT:Holiday: " + holiday)
+
+        if note:
+            note = note.replace("\n", "\\n")
+            ics_lines.append("DESCRIPTION:" + note)
+
+        if contacts:
+            ics_lines.append("CONTACTS:" + contacts)
+
+        import hashlib
+        uid_base = date_str + (title or "") + (note or "")
+        uid_hash = hashlib.md5(uid_base.encode()).hexdigest()[:8]
+        ics_lines.append("UID:{}-{}".format(date_str, uid_hash))
+        ics_lines.append("END:VEVENT")
+        ics_lines.append("END:VCALENDAR")
+
+        return "\n".join(ics_lines)
+
+    def manage_ics_files(self):
+        """Manage imported ICS files - browser and operations"""
+
+        def ics_menu_callback(choice):
+            if choice is None:
+                return
+
+            action = choice[1]
+
+            if action == "browser":
+                try:
+                    self.session.open(ICSBrowser)
+                except Exception as e:
+                    print("[Calendar] ERROR opening ICSBrowser:", str(e))
+                    self.session.open(
+                        MessageBox,
+                        _("Error opening ICS browser: %s") % str(e),
+                        MessageBox.TYPE_ERROR
+                    )
+
+            elif action == "view_events":
+                if self.event_manager:
+                    self.session.openWithCallback(
+                        lambda result: None,
+                        ICSEventsView,
+                        self.event_manager
+                    )
+                else:
+                    self.session.open(
+                        MessageBox,
+                        _("Event system is not enabled"),
+                        MessageBox.TYPE_INFO
+                    )
+
+            elif action == "cleanup":
+                self.session.openWithCallback(
+                    self.cleanup_ics_callback,
+                    MessageBox,
+                    _("Delete ICS files older than 30 days?"),
+                    MessageBox.TYPE_YESNO
+                )
+
+            elif action == "stats":
+                self.show_ics_stats()
+
+        # Updated menu
+        menu = [
+            (_("Browse ICS Files"), "browser"),
+            (_("Manage ICS Events"), "view_events"),
+            (_("Cleanup Old Files"), "cleanup"),
+            (_("Show Statistics"), "stats"),
+        ]
+
+        self.session.openWithCallback(
+            ics_menu_callback,
+            MenuDialog,
+            menu,
+        )
+
+    def cleanup_duplicate_events(self):
+        """Clean up duplicate events manually - UI WRAPPER ONLY"""
+        if not self.event_manager:
+            self.session.open(
+                MessageBox,
+                _("Event system is not enabled"),
+                MessageBox.TYPE_INFO
+            )
+            return
+
+        self.event_manager.cleanup_duplicate_events_with_dialog(self.session, self._paint_calendar)
+
+    def cleanup_ics_callback(self, result=None):
+        """Callback for ICS cleanup"""
+        if result:
+            cleaned = self._cleanup_old_ics_files()
+            self.session.open(
+                MessageBox,
+                _("Cleaned {0} old ICS files").format(cleaned),
+                MessageBox.TYPE_INFO
+            )
+
+    def _cleanup_old_ics_files(self, days_old=30):
+        """Delete ICS files older than the specified number of days"""
+        try:
+            if not exists(ICS_BASE_PATH):
+                return 0
+
+            cutoff_time = time() - (days_old * 24 * 60 * 60)
+            deleted_count = 0
+
+            for filename in listdir(ICS_BASE_PATH):
+                if filename.endswith(".ics"):
+                    filepath = join(ICS_BASE_PATH, filename)
+                    file_time = getmtime(filepath)
+
+                    if file_time < cutoff_time:
+                        remove(filepath)
+                        deleted_count += 1
+                        if DEBUG:
+                            print("[Calendar] Deleted old ICS file: {0}".format(filename))
+
+            return deleted_count
+
+        except Exception as e:
+            print("[Calendar] Error cleaning up ICS files: {0}".format(str(e)))
+            return 0
+
+    def show_ics_stats(self):
+        """Show ICS files statistics - COMPATIBLE VERSION"""
+        try:
+            if not exists(ICS_BASE_PATH):
+                stats_text = _("No ICS directory found")
+            else:
+                files = glob.glob(join(ICS_BASE_PATH, "*.ics"))
+                total_size = sum(getsize(f) for f in files) / 1024.0  # KB
+
+                if files:
+                    oldest = min(files, key=getmtime)
+                    newest = max(files, key=getmtime)
+
+                    oldest_date = strftime("%Y-%m-%d", localtime(getmtime(oldest)))
+                    newest_date = strftime("%Y-%m-%d", localtime(getmtime(newest)))
+
+                    stats_text = _("ICS Files Statistics:\n\n")
+                    stats_text += _("Total files: {0}\n").format(len(files))
+                    stats_text += _("Total size: {0:.1f} KB\n").format(total_size)
+                    stats_text += _("Oldest file: {0}\n").format(oldest_date)
+                    stats_text += _("Newest file: {0}").format(newest_date)
+                else:
+                    stats_text = _("No ICS files found")
+
+            self.session.open(
+                MessageBox,
+                stats_text,
+                MessageBox.TYPE_INFO
+            )
+
+        except Exception as e:
+            print("[Calendar] Error showing ICS stats:", str(e))
+            self.session.open(
+                MessageBox,
+                _("Error getting ICS statistics"),
+                MessageBox.TYPE_ERROR
+            )
+
+    def convert_to_ics(self):
+        """Convert current database to ICS format for Google Calendar export"""
+
+        def do_conversion(result):
+            if not result:
+                return
+
+            try:
+                converted_count = 0
+
+                # Create ICS directory structure
+                self._create_ics_directory()
+
+                # Convert based on current format
+                if self.database_format == "vcard":
+                    converted_count = self._convert_vcard_to_ics()
+                else:  # legacy
+                    converted_count = self._convert_legacy_to_ics()
+
+                if converted_count > 0:
+                    # Update database format
+                    config.plugins.calendar.database_format.value = "ics"
+                    config.plugins.calendar.database_format.save()
+                    self.database_format = "ics"
+
+                    # Refresh calendar
+                    self._paint_calendar()
+
+                    self.session.open(
+                        MessageBox,
+                        _("Successfully converted {0} entries to ICS format").format(converted_count),
+                        MessageBox.TYPE_INFO
+                    )
+                else:
+                    self.session.open(
+                        MessageBox,
+                        _("No data found to convert"),
+                        MessageBox.TYPE_INFO
+                    )
+
+            except Exception as e:
+                print("[Calendar] ICS conversion error:", str(e))
+                self.session.open(
+                    MessageBox,
+                    _("Conversion error: {0}").format(str(e)),
+                    MessageBox.TYPE_ERROR
+                )
+
+        self.session.openWithCallback(
+            do_conversion,
+            MessageBox,
+            _("Convert database to ICS format?\n\n"
+              "This will create .ics compatible files that can be:\n"
+              "• Imported into Google Calendar\n"
+              "• Shared with other calendar apps\n"
+              "• Backed up externally\n\n"
+              "Original files will be kept unchanged."),
+            MessageBox.TYPE_YESNO
+        )
+
+    def _create_ics_directory(self):
+        """Create ICS directory structure"""
+        ics_lang_dir = join(ICS_BASE_PATH, self.language, "day")
+
+        for path in [ICS_BASE_PATH, join(ICS_BASE_PATH, self.language), ics_lang_dir]:
+            if not exists(path):
+                makedirs(path, exist_ok=True)
+                if DEBUG:
+                    print("[Calendar] Created ICS directory:", path)
+
+    def _convert_legacy_to_ics(self):
+        """Convert legacy format files to ICS"""
+        try:
+            source_dir = join(DATA_PATH, self.language, "day")
+            dest_dir = join(ICS_BASE_PATH, self.language, "day")
+
+            if not exists(source_dir):
+                print("[Calendar] No legacy directory found:", source_dir)
+                return 0
+
+            converted = 0
+            for filepath in glob.glob(join(source_dir, "*.txt")):
+                filename = basename(filepath)
+
+                # Check if it's a date file (YYYYMMDD.txt)
+                if len(filename) != 12 or not filename.endswith(".txt"):
+                    continue
+
+                try:
+                    # Read legacy file
+                    with open(filepath, 'r') as f:
+                        content = f.read()
+
+                    # Parse legacy format
+                    data = self._parse_legacy_content(content)
+
+                    # Create ICS content
+                    ics_content = self._create_ics_from_legacy(data, filename[:-4])
+
+                    if ics_content:
+                        # Save ICS file
+                        dest_file = join(dest_dir, filename)
+                        with open(dest_file, 'w') as f:
+                            f.write(ics_content)
+
+                        converted += 1
+                        if DEBUG:
+                            print("[Calendar] Converted to ICS:", filename)
+
+                except Exception as e:
+                    print("[Calendar] Error converting {}: {}".format(filename, str(e)))
+                    continue
+
+            return converted
+
+        except Exception as e:
+            print("[Calendar] Legacy to ICS conversion error:", str(e))
+            return 0
+
+    def _convert_vcard_to_ics(self):
+        """Convert vCard format files to ICS"""
+        try:
+            source_dir = join(VCARDS_PATH, self.language)
+            dest_dir = join(ICS_BASE_PATH, self.language, "day")
+
+            if not exists(source_dir):
+                print("[Calendar] No vCard directory found:", source_dir)
+                return 0
+
+            converted = 0
+            for filepath in glob.glob(join(source_dir, "*.txt")):
+                filename = basename(filepath)
+
+                # Check if it's a date file (YYYYMMDD.txt)
+                if len(filename) != 12 or not filename.endswith(".txt"):
+                    continue
+
+                try:
+                    # Read vCard file
+                    with open(filepath, 'r') as f:
+                        content = f.read()
+
+                    # Parse vCard format
+                    data = self._parse_vcard_content(content)
+
+                    # Create ICS content
+                    ics_content = self._create_ics_from_vcard(data, filename[:-4])
+
+                    if ics_content:
+                        # Save ICS file
+                        dest_file = join(dest_dir, filename)
+                        with open(dest_file, 'w') as f:
+                            f.write(ics_content)
+
+                        converted += 1
+                        if DEBUG:
+                            print("[Calendar] Converted vCard to ICS:", filename)
+
+                except Exception as e:
+                    print("[Calendar] Error converting {}: {}".format(filename, str(e)))
+                    continue
+
+            return converted
+
+        except Exception as e:
+            print("[Calendar] vCard to ICS conversion error:", str(e))
+            return 0
+
+    def _parse_legacy_content(self, content):
+        """Parse legacy format content"""
+        data = {}
+        current_section = None
+
+        for line in content.split('\n'):
+            line = line.strip()
+
+            if line == "[day]":
+                current_section = "day"
+            elif line == "[month]":
+                current_section = "month"
+            elif line.startswith("[") and line.endswith("]"):
+                current_section = line[1:-1]
+            elif ":" in line and current_section:
+                key, value = line.split(":", 1)
+                key = key.strip()
+
+                if current_section == "month":
+                    data["month_" + key] = value.strip()
+                else:
+                    data[key] = value.strip()
+
+        return data
+
+    def _parse_vcard_content(self, content):
+        """Parse vCard-like content"""
+        data = {}
+        current_section = None
+
+        for line in content.split('\n'):
+            line = line.strip()
+
+            if line == "[contact]":
+                current_section = "contact"
+            elif line.startswith("[") and line.endswith("]"):
+                current_section = line[1:-1]
+            elif ":" in line and current_section:
+                key, value = line.split(":", 1)
+                data[key.strip()] = value.strip()
+
+        return data
+
+    def _create_ics_from_legacy(self, data, date_yyyymmdd):
+        """Create ICS content from legacy data"""
+        # Extract data
+        title = data.get("datepeople", "")
+        categories = data.get("sign", "")
+        holiday = data.get("holiday", "")
+        description = data.get("description", "")
+        contacts = data.get("month_monthpeople", "")
+
+        return self._generate_ics_content(date_yyyymmdd, title, categories, holiday, description, contacts)
+
+    def _create_ics_from_vcard(self, data, date_yyyymmdd):
+        """Create ICS content from vCard data"""
+        # Extract data with vCard keys
+        title = data.get("FN", "")
+        categories = data.get("CATEGORIES", "")
+        holiday = data.get("holiday", "")
+        description = data.get("NOTE", data.get("DESCRIPTION", ""))
+        contacts = data.get("CONTACTS", data.get("ORG", ""))
+
+        return self._generate_ics_content(date_yyyymmdd, title, categories, holiday, description, contacts)
+
+    def _generate_ics_content(self, date_yyyymmdd, title, categories, holiday, description, contacts):
+        """Generate ICS formatted content"""
+        if not title and not description and not holiday:
+            return None
+
+        # Format date for ICS (YYYYMMDD)
+        if len(date_yyyymmdd) != 8:
+            return None
+
+        lines = []
+        lines.append("BEGIN:VCALENDAR")
+        lines.append("VERSION:2.0")
+        lines.append("PRODID:-//Calendar Planner//EN")
+        lines.append("BEGIN:VEVENT")
+        lines.append("DTSTART;VALUE=DATE:{}".format(date_yyyymmdd))
+        lines.append("DTEND;VALUE=DATE:{}".format(date_yyyymmdd))
+
+        if title:
+            lines.append("SUMMARY:{}".format(title))
+
+        if categories:
+            lines.append("CATEGORIES:{}".format(categories))
+
+        if holiday:
+            lines.append("COMMENT:Holiday: {}".format(holiday))
+
+        if description:
+            # Escape newlines for ICS
+            desc_escaped = description.replace("\n", "\\n")
+            lines.append("DESCRIPTION:{}".format(desc_escaped))
+
+        if contacts:
+            lines.append("CONTACTS:{}".format(contacts))
+
+        # Generate UID
+        import hashlib
+        uid_base = date_yyyymmdd + (title or "") + (description or "")
+        uid_hash = hashlib.md5(uid_base.encode()).hexdigest()[:8]
+        lines.append("UID:{}-{}".format(date_yyyymmdd, uid_hash))
+
+        lines.append("END:VEVENT")
+        lines.append("END:VCALENDAR")
+
+        return "\n".join(lines)
+
+    def _convert_ics_to_legacy(self):
+        """Converti da formato ICS a legacy"""
+        try:
+            source_dir = join(ICS_BASE_PATH, self.language, "day")
+            dest_dir = join(DATA_PATH, self.language, "day")
+
+            if not exists(source_dir):
+                print("[Calendar] No ICS directory found:", source_dir)
+                return 0
+
+            converted = 0
+
+            for filepath in glob.glob(join(source_dir, "*.txt")):
+                filename = basename(filepath)
+
+                # Check if it's a date file (YYYYMMDD.txt)
+                if len(filename) != 12 or not filename.endswith(".txt"):
+                    continue
+
+                try:
+                    # Read ICS file
+                    with open(filepath, 'r') as f:
+                        content = f.read()
+
+                    # Parse ICS format
+                    data = self._parse_ics_to_legacy(content)
+
+                    if data:
+                        # Create legacy content
+                        legacy_content = self._create_legacy_from_ics(data)
+
+                        # Save legacy file
+                        dest_file = join(dest_dir, filename)
+                        with open(dest_file, 'w') as f:
+                            f.write(legacy_content)
+
+                        converted += 1
+                        if DEBUG:
+                            print("[Calendar] Converted ICS to legacy:", filename)
+
+                except Exception as e:
+                    print("[Calendar] Error converting {}: {}".format(filename, str(e)))
+                    continue
+
+            return converted
+
+        except Exception as e:
+            print("[Calendar] ICS to legacy conversion error:", str(e))
+            return 0
+
+    def _convert_ics_to_vcard(self):
+        """Converti da formato ICS a vCard"""
+        try:
+            source_dir = join(ICS_BASE_PATH, self.language, "day")
+            dest_dir = join(VCARDS_PATH, self.language)
+
+            if not exists(source_dir):
+                print("[Calendar] No ICS directory found:", source_dir)
+                return 0
+
+            converted = 0
+
+            for filepath in glob.glob(join(source_dir, "*.txt")):
+                filename = basename(filepath)
+
+                # Check if it's a date file (YYYYMMDD.txt)
+                if len(filename) != 12 or not filename.endswith(".txt"):
+                    continue
+
+                try:
+                    # Read ICS file
+                    with open(filepath, 'r') as f:
+                        content = f.read()
+
+                    # Parse ICS format
+                    data = self._parse_ics_to_vcard(content)
+
+                    if data:
+                        # Create vCard content
+                        vcard_content = self._create_vcard_from_ics(data)
+
+                        # Save vCard file
+                        dest_file = join(dest_dir, filename)
+                        with open(dest_file, 'w') as f:
+                            f.write(vcard_content)
+
+                        converted += 1
+                        if DEBUG:
+                            print("[Calendar] Converted ICS to vCard:", filename)
+
+                except Exception as e:
+                    print("[Calendar] Error converting {}: {}".format(filename, str(e)))
+                    continue
+
+            return converted
+
+        except Exception as e:
+            print("[Calendar] ICS to vCard conversion error:", str(e))
+            return 0
+
+    def _parse_ics_to_legacy(self, content):
+        """Parse ICS content to legacy format data"""
+        data = {}
+
+        try:
+            lines = content.split('\n')
+            in_event = False
+
+            for line in lines:
+                line = line.strip()
+
+                if line == "BEGIN:VEVENT":
+                    in_event = True
+                elif line == "END:VEVENT":
+                    in_event = False
+                elif in_event and ":" in line:
+                    key, value = line.split(":", 1)
+                    key = key.strip()
+
+                    if key == "SUMMARY":
+                        data["datepeople"] = value
+                    elif key == "CATEGORIES":
+                        data["sign"] = value
+                    elif key == "COMMENT" and "Holiday:" in value:
+                        data["holiday"] = value.replace("Holiday: ", "")
+                    elif key == "DESCRIPTION":
+                        # Restore newlines
+                        data["description"] = value.replace("\\n", "\n")
+                    elif key == "CONTACTS":
+                        data["monthpeople"] = value
+
+            return data
+
+        except Exception as e:
+            print("[Calendar] Error parsing ICS to legacy:", str(e))
+            return None
+
+    def _parse_ics_to_vcard(self, content):
+        """Parse ICS content to vCard format data"""
+        data = {}
+
+        try:
+            lines = content.split('\n')
+            in_event = False
+
+            for line in lines:
+                line = line.strip()
+
+                if line == "BEGIN:VEVENT":
+                    in_event = True
+                elif line == "END:VEVENT":
+                    in_event = False
+                elif in_event and ":" in line:
+                    key, value = line.split(":", 1)
+                    key = key.strip()
+
+                    if key == "SUMMARY":
+                        data["FN"] = value
+                    elif key == "CATEGORIES":
+                        data["CATEGORIES"] = value
+                    elif key == "COMMENT" and "Holiday:" in value:
+                        data["holiday"] = value.replace("Holiday: ", "")
+                    elif key == "DESCRIPTION":
+                        # Restore newlines
+                        data["NOTE"] = value.replace("\\n", "\n")
+                    elif key == "CONTACTS":
+                        data["CONTACTS"] = value
+
+            return data
+
+        except Exception as e:
+            print("[Calendar] Error parsing ICS to vCard:", str(e))
+            return None
+
+    def _create_legacy_from_ics(self, data):
+        """Create legacy format content from ICS data"""
+        try:
+            title = data.get("datepeople", "")
+            categories = data.get("sign", "")
+            holiday = data.get("holiday", "")
+            description = data.get("description", "")
+            contacts = data.get("monthpeople", "")
+
+            # Create legacy format content
+            legacy_content = (
+                "[day]\n"
+                "date: {date}\n"
+                "datepeople: {title}\n"
+                "sign: {categories}\n"
+                "holiday: {holiday}\n"
+                "description: {description}\n\n"
+                "[month]\n"
+                "monthpeople: {contacts}\n"
+            ).format(
+                date="{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day),
+                title=title,
+                categories=categories,
+                holiday=holiday,
+                description=description,
+                contacts=contacts
+            )
+
+            return legacy_content
+
+        except Exception as e:
+            print("[Calendar] Error creating legacy from ICS:", str(e))
+            return None
+
+    def _create_vcard_from_ics(self, data):
+        """Create vCard format content from ICS data"""
+        try:
+            title = data.get("FN", "")
+            categories = data.get("CATEGORIES", "")
+            holiday = data.get("holiday", "")
+            description = data.get("NOTE", "")
+            contacts = data.get("CONTACTS", "")
+
+            # Create vCard format content
+            vcard_content = (
+                "[contact]\n"
+                "DATE: {date}\n"
+                "FN: {title}\n"
+                "CATEGORIES: {categories}\n"
+                "holiday: {holiday}\n"
+                "NOTE: {description}\n"
+                "CONTACTS: {contacts}\n"
+            ).format(
+                date="{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day),
+                title=title,
+                categories=categories,
+                holiday=holiday,
+                description=description,
+                contacts=contacts
+            )
+
+            return vcard_content
+
+        except Exception as e:
+            print("[Calendar] Error creating vCard from ICS:", str(e))
+            return None
+
+    def _convert_to_ics_event(self, content, date_yyyymmdd):
+        """Convert database content to ICS event lines"""
+        try:
+            if DEBUG:
+                print("[Calendar DEBUG] _convert_to_ics_event START")
+                print("[Calendar DEBUG] Date:", date_yyyymmdd)
+                print("[Calendar DEBUG] Content preview:", content[:100])
+
+            # Parse content based on current format
+            if self.database_format == "vcard":
+                if DEBUG:
+                    print("[Calendar DEBUG] Parsing as vcard format")
+                data = self._parse_vcard_content(content)
+                title = data.get("FN", "")
+                categories = data.get("CATEGORIES", "")
+                holiday = data.get("holiday", "")
+                description = data.get("NOTE", "")
+            elif self.database_format == "legacy":
+                if DEBUG:
+                    print("[Calendar DEBUG] Parsing as legacy format")
+                data = self._parse_legacy_content(content)
+                title = data.get("datepeople", "")
+                categories = data.get("sign", "")
+                holiday = data.get("holiday", "")
+                description = data.get("description", "")
+            else:  # ics
+                if DEBUG:
+                    print("[Calendar DEBUG] Parsing as ICS format")
+                data = self._parse_ics_to_legacy(content)
+                title = data.get("datepeople", "")
+                categories = data.get("sign", "")
+                holiday = data.get("holiday", "")
+                description = data.get("description", "")
+            if DEBUG:
+                print("[Calendar DEBUG] Parsed data:")
+                print("[Calendar DEBUG]   Title:", title)
+                print("[Calendar DEBUG]   Categories:", categories)
+                print("[Calendar DEBUG]   Holiday:", holiday)
+                print("[Calendar DEBUG]   Description length:", len(description) if description else 0)
+
+            # Skip empty entries
+            if not title and not description and not holiday:
+                if DEBUG:
+                    print("[Calendar DEBUG] Skipping - all fields empty")
+                return None
+
+            # Generate ICS event
+            event_lines = []
+            event_lines.append("BEGIN:VEVENT")
+            event_lines.append("DTSTART;VALUE=DATE:{}".format(date_yyyymmdd))
+            event_lines.append("DTEND;VALUE=DATE:{}".format(date_yyyymmdd))
+
+            if title:
+                event_lines.append("SUMMARY:{}".format(title))
+
+            if categories:
+                event_lines.append("CATEGORIES:{}".format(categories))
+
+            if holiday:
+                event_lines.append("COMMENT:Holiday: {}".format(holiday))
+
+            if description:
+                desc_escaped = description.replace("\n", "\\n")
+                event_lines.append("DESCRIPTION:{}".format(desc_escaped))
+
+            # Generate UID
+            import hashlib
+            uid_base = date_yyyymmdd + (title or "") + (description or "")
+            uid_hash = hashlib.md5(uid_base.encode()).hexdigest()[:8]
+            event_lines.append("UID:{}-{}".format(date_yyyymmdd, uid_hash))
+
+            event_lines.append("END:VEVENT")
+            if DEBUG:
+                print("[Calendar DEBUG] Event lines:", len(event_lines))
+                print("[Calendar DEBUG] === _convert_to_ics_event END ===")
+
+            return event_lines
+
+        except Exception as e:
+            print("[Calendar DEBUG] Convert to ICS event error:", str(e))
+            import traceback
+            traceback.print_exc()
+            return None
+
+    def export_all_to_ics(self):
+        """Export all database to single ICS file for Google Calendar"""
+
+        def get_export_path():
+            """Get export path based on configuration"""
+
+            # Get base path from configuration
+            base_path = config.plugins.calendar.export_location.value
+            subdir = config.plugins.calendar.export_subdir.value
+            add_timestamp = config.plugins.calendar.export_add_timestamp.value
+
+            # Create export directory
+            export_dir = create_export_directory(base_path, subdir)
+
+            # Generate filename
+            filename = generate_export_filename("calendar_export", add_timestamp)
+
+            return join(export_dir, filename)
+
+        def do_export(result):
+            if not result:
+                return
+
+            try:
+                # Get export path
+                ics_file = get_export_path()
+                print("[Calendar] Exporting to:", ics_file)
+
+                # Create ICS file
+                events_count = self._create_complete_ics_file(ics_file)
+
+                if events_count > 0:
+                    message = _(
+                        "Export completed successfully!\n\n"
+                        "File: {0}\n"
+                        "Events exported: {1}\n\n"
+                        "The file can be imported into Google Calendar,\n"
+                        "Outlook, or other calendar applications."
+                    ).format(ics_file, events_count)
+
+                    self.session.open(
+                        MessageBox,
+                        message,
+                        MessageBox.TYPE_INFO
+                    )
+                else:
+                    self.session.open(
+                        MessageBox,
+                        _("No data to export"),
+                        MessageBox.TYPE_INFO
+                    )
+
+            except Exception as e:
+                print("[Calendar] Export error:", str(e))
+                self.session.open(
+                    MessageBox,
+                    _("Export error: {0}").format(str(e)),
+                    MessageBox.TYPE_ERROR
+                )
+
+        self.session.openWithCallback(
+            do_export,
+            MessageBox,
+            _("Export all calendar data to ICS file?\n\n"
+              "This will export:\n"
+              "• All events from the event system\n"
+              "• Contact birthdays\n"
+              "• Calendar entries\n\n"
+              "The file will be saved in:\n{0}/{1}").format(
+                config.plugins.calendar.export_location.value,
+                config.plugins.calendar.export_subdir.value),
+            MessageBox.TYPE_YESNO
+        )
+
+    def _add_contacts_to_ics(self, ics_lines):
+        """Add contact birthdays to ICS lines"""
+        try:
+            contacts_path = join(CONTACTS_PATH)
+            if DEBUG:
+                print("[Calendar] Contacts path: " + contacts_path)
+                print("[Calendar] Contacts path exists: " + str(exists(contacts_path)))
+
+            if not exists(contacts_path):
+                return 0
+
+            contacts_files = listdir(contacts_path)
+            if DEBUG:
+                print("[Calendar] Total contact files: " + str(len(contacts_files)))
+
+            birthday_count = 0
+
+            for filename in contacts_files:
+                if filename.endswith(".txt"):
+                    filepath = join(contacts_path, filename)
+                    try:
+                        with open(filepath, 'r') as f:
+                            content = f.read()
+
+                        # Parse contact data
+                        lines = content.split('\n')
+                        contact_data = {}
+                        for line in lines:
+                            line = line.strip()
+                            if ':' in line:
+                                key, value = line.split(':', 1)
+                                contact_data[key.strip()] = value.strip()
+
+                        # Check for birthday
+                        name = contact_data.get('FN', '')
+                        birthday = contact_data.get('BDAY', '')
+                        if DEBUG:
+                            print("[Calendar] Processing contact: " + name + ", BDAY: " + birthday)
+
+                        if name and birthday and len(birthday) == 10:  # YYYY-MM-DD
+                            # Create birthday event
+                            bday_lines = []
+                            bday_lines.append("BEGIN:VEVENT")
+                            bday_lines.append("SUMMARY:" + name + " - Birthday")
+                            bday_lines.append("DTSTART;VALUE=DATE:" + birthday.replace('-', ''))
+                            bday_lines.append("DTEND;VALUE=DATE:" + birthday.replace('-', ''))
+                            bday_lines.append("RRULE:FREQ=YEARLY")
+
+                            # Add contact info
+                            description = ""
+                            phone = contact_data.get('TEL', '')
+                            email = contact_data.get('EMAIL', '')
+
+                            if phone:
+                                description += "Phone: " + phone.replace('|', ', ') + "\\n"
+                            if email:
+                                description += "Email: " + email.replace('|', ', ') + "\\n"
+
+                            if description:
+                                bday_lines.append("DESCRIPTION:" + description)
+
+                            # Generate UID
+                            import hashlib
+                            uid_base = "birthday-" + birthday + "-" + name
+                            uid_hash = hashlib.md5(uid_base.encode()).hexdigest()[:8]
+                            bday_lines.append("UID:" + uid_hash)
+
+                            bday_lines.append("END:VEVENT")
+
+                            # Add to ICS lines
+                            ics_lines.extend(bday_lines)
+                            birthday_count += 1
+                            if DEBUG:
+                                print("[Calendar] Added birthday for: " + name)
+
+                    except Exception as e:
+                        print("[Calendar] Error processing contact " + filename + ": " + str(e))
+                        continue
+            if DEBUG:
+                print("[Calendar] Total birthdays added: " + str(birthday_count))
+            return birthday_count
+
+        except Exception as e:
+            print("[Calendar] Error adding contacts to ICS: " + str(e))
+            import traceback
+            traceback.print_exc()
+            return 0
+
+    def _create_complete_ics_file(self, output_path):
+        """Create a complete ICS file with all database entries"""
+        try:
+            if DEBUG:
+                print("[Calendar] === _create_complete_ics_file START ===")
+
+            ics_lines = []
+            ics_lines.append("BEGIN:VCALENDAR")
+            ics_lines.append("VERSION:2.0")
+            ics_lines.append("PRODID:-//Calendar Planner v{0}//EN".format(PLUGIN_VERSION))
+            ics_lines.append("CALSCALE:GREGORIAN")
+            ics_lines.append("METHOD:PUBLISH")
+
+            events_count = 0
+            duplicate_count = 0
+
+            # Usa il duplicate checker
+            from .duplicate_checker import DuplicateChecker
+
+            # Cache per eventi già processati
+            processed_events = set()
+
+            # 1. Add events from events.json
+            if hasattr(self, 'event_manager') and self.event_manager:
+                if DEBUG:
+                    print("[Calendar] Adding events from events.json")
+                try:
+                    events_file = join(DATA_PATH, "events.json")
+                    if exists(events_file):
+                        with open(events_file, 'r') as f:
+                            import json
+                            events_data = json.load(f)
+
+                        for event_data in events_data:
+                            try:
+                                # Controlla se è un duplicato usando DuplicateChecker
+                                if DuplicateChecker.check_event_duplicate(self.event_manager, event_data)[0]:
+                                    duplicate_count += 1
+                                    continue
+
+                                event_lines = self._create_ics_event_from_json(event_data)
+                                if event_lines:
+                                    ics_lines.extend(event_lines)
+                                    events_count += 1
+                                    # Aggiungi all'evento processato
+                                    self._add_to_processed_events(processed_events, event_lines)
+                            except Exception as e:
+                                print("[Calendar] Error converting event: " + str(e))
+                                continue
+                except Exception as e:
+                    print("[Calendar] Error reading events.json: " + str(e))
+
+            # 2. Add contact birthdays
+            if DEBUG:
+                print("[Calendar] Adding contact birthdays")
+            birthday_count, birthday_duplicates = self._add_contacts_to_ics_with_dedup(ics_lines, processed_events)
+            events_count += birthday_count
+            duplicate_count += birthday_duplicates
+            if DEBUG:
+                print("[Calendar] Added " + str(birthday_count) + " birthdays, " + str(birthday_duplicates) + " duplicates skipped")
+
+            # 3. Add events from imported ICS files
+            if DEBUG:
+                print("[Calendar] Adding imported ICS files")
+            ics_count, ics_duplicates = self._add_imported_ics_files_with_dedup(ics_lines, processed_events)
+            events_count += ics_count
+            duplicate_count += ics_duplicates
+            if DEBUG:
+                print("[Calendar] Added " + str(ics_count) + " events from ICS files, " + str(ics_duplicates) + " duplicates skipped")
+
+            ics_lines.append("END:VCALENDAR")
+
+            # Write to file
+            if DEBUG:
+                print("[Calendar] Writing to file, total events: " + str(events_count))
+                print("[Calendar] Duplicates skipped: " + str(duplicate_count))
+            with open(output_path, 'w') as f:
+                f.write("\n".join(ics_lines))
+            if DEBUG:
+                print("[Calendar] File created: " + output_path)
+                print("[Calendar] === _create_complete_ics_file END ===")
+
+            return events_count
+
+        except Exception as e:
+            print("[Calendar] Complete ICS file error: " + str(e))
+            import traceback
+            traceback.print_exc()
+            return 0
+
+    def _add_to_processed_events(self, processed_set, event_lines):
+        """Add event to processed set for deduplication"""
+        key_parts = []
+        for line in event_lines:
+            if line.startswith("SUMMARY:"):
+                key_parts.append(line[8:].strip().lower())
+            elif line.startswith("DTSTART;"):
+                # Extract data from DTSTART;VALUE=DATE:YYYYMMDD
+                if ':' in line:
+                    date_part = line.split(':')[-1]
+                    if len(date_part) >= 8:
+                        key_parts.append(date_part[:8])
+        key = "|".join(key_parts)
+        if key:
+            processed_set.add(key)
+
+    def _add_contacts_to_ics_with_dedup(self, ics_lines, processed_events):
+        """Add contact birthdays with deduplication"""
+        try:
+            contacts_path = join(CONTACTS_PATH)
+            if DEBUG:
+                print("[Calendar] Contacts path: " + contacts_path)
+
+            if not exists(contacts_path):
+                return 0, 0
+
+            contacts_files = listdir(contacts_path)
+            if DEBUG:
+                print("[Calendar] Total contact files: " + str(len(contacts_files)))
+
+            birthday_count = 0
+            duplicate_count = 0
+
+            for filename in contacts_files:
+                if filename.endswith(".txt"):
+                    filepath = join(contacts_path, filename)
+                    try:
+                        with open(filepath, 'r') as f:
+                            content = f.read()
+
+                        # Parse contact data
+                        lines = content.split('\n')
+                        contact_data = {}
+                        for line in lines:
+                            line = line.strip()
+                            if ':' in line:
+                                key, value = line.split(':', 1)
+                                contact_data[key.strip()] = value.strip()
+
+                        # Check for birthday
+                        name = contact_data.get('FN', '')
+                        birthday = contact_data.get('BDAY', '')
+
+                        if name and birthday and len(birthday) == 10:  # YYYY-MM-DD
+                            # Controlla se è già stato processato
+                            event_key = "{}|{}".format(name.lower(), birthday.replace('-', ''))
+                            if event_key in processed_events:
+                                duplicate_count += 1
+                                continue
+
+                            # Create birthday event
+                            bday_lines = []
+                            bday_lines.append("BEGIN:VEVENT")
+                            bday_lines.append("SUMMARY:" + name + " - Birthday")
+                            bday_lines.append("DTSTART;VALUE=DATE:" + birthday.replace('-', ''))
+                            bday_lines.append("DTEND;VALUE=DATE:" + birthday.replace('-', ''))
+                            bday_lines.append("RRULE:FREQ=YEARLY")
+
+                            # Add contact info
+                            description = ""
+                            phone = contact_data.get('TEL', '')
+                            email = contact_data.get('EMAIL', '')
+
+                            if phone:
+                                description += "Phone: " + phone.replace('|', ', ') + "\\n"
+                            if email:
+                                description += "Email: " + email.replace('|', ', ') + "\\n"
+
+                            if description:
+                                bday_lines.append("DESCRIPTION:" + description)
+
+                            # Generate UID
+                            import hashlib
+                            uid_base = "birthday-" + birthday + "-" + name
+                            uid_hash = hashlib.md5(uid_base.encode()).hexdigest()[:8]
+                            bday_lines.append("UID:" + uid_hash)
+
+                            bday_lines.append("END:VEVENT")
+
+                            # Add to ICS lines
+                            ics_lines.extend(bday_lines)
+                            birthday_count += 1
+                            processed_events.add(event_key)
+
+                    except Exception as e:
+                        print("[Calendar] Error processing contact " + filename + ": " + str(e))
+                        continue
+            if DEBUG:
+                print("[Calendar] Total birthdays added: " + str(birthday_count))
+            return birthday_count, duplicate_count
+
+        except Exception as e:
+            print("[Calendar] Error adding contacts to ICS: " + str(e))
+            import traceback
+            traceback.print_exc()
+            return 0, 0
+
+    def _add_imported_ics_files_with_dedup(self, ics_lines, processed_events):
+        """Add events from imported ICS files with deduplication"""
+        try:
+            ics_files = []
+            # Search for ICS files in multiple directories
+            possible_paths = [
+                join(ICS_BASE_PATH),    # Raw imported files
+                join(DATA_PATH, "ics")  # Old directory
+            ]
+
+            for base_path in possible_paths:
+                if exists(base_path):
+                    for filename in listdir(base_path):
+                        if filename.lower().endswith('.ics'):
+                            ics_files.append(join(base_path, filename))
+            if DEBUG:
+                print("[Calendar] Found ICS files: %d" % len(ics_files))
+
+            events_count = 0
+            duplicate_count = 0
+
+            for ics_file in ics_files:
+                try:
+                    with open(ics_file, 'r') as f:
+                        content = f.read()
+
+                    # Extract all VEVENT blocks
+                    import re
+                    vevent_blocks = re.split(r'BEGIN:VEVENT\s*', content, flags=re.IGNORECASE)
+
+                    for block in vevent_blocks:
+                        if not block.strip() or 'END:VEVENT' not in block.upper():
+                            continue
+
+                        title = ''
+                        date_str = ''
+
+                        for line in block.split('\n'):
+                            line = line.strip()
+                            if line.upper().startswith('SUMMARY:'):
+                                title = line[8:].strip()
+                            elif line.upper().startswith('DTSTART;'):
+                                if ':' in line:
+                                    dt_value = line.split(':')[-1]
+                                    if len(dt_value) >= 8:
+                                        date_str = dt_value[:8]  # YYYYMMDD
+
+                        if title and date_str:
+                            # Check for duplicates
+                            event_key = "%s|%s" % (title.lower(), date_str)
+                            if event_key in processed_events:
+                                duplicate_count += 1
+                                continue
+
+                            # Add the entire VEVENT block
+                            ics_lines.append("BEGIN:VEVENT")
+                            for line in block.split('\n'):
+                                line = line.strip()
+                                if line and 'END:VEVENT' not in line.upper():
+                                    ics_lines.append(line)
+                            ics_lines.append("END:VEVENT")
+
+                            events_count += 1
+                            processed_events.add(event_key)
+
+                except Exception as e:
+                    from os.path import basename
+                    print("[Calendar] Error processing ICS file %s: %s" % (basename(ics_file), str(e)))
+                    continue
+
+            return events_count, duplicate_count
+
+        except Exception as e:
+            print("[Calendar] Error adding imported ICS files: %s" % str(e))
+            import traceback
+            traceback.print_exc()
+            return 0, 0
+
+    def _create_ics_event_from_json(self, event_data):
+        """Create ICS event lines from JSON event data"""
+        try:
+            # Extract event data
+            title = event_data.get('title', '')
+            date_str = event_data.get('date', '')
+            time_str = event_data.get('time', '00:00')
+            description = event_data.get('description', '')
+            repeat = event_data.get('repeat', '')
+            enabled = event_data.get('enabled', True)
+
+            if not title or not date_str:
+                return None
+
+            # Skip disabled events
+            if not enabled:
+                return None
+
+            # Format date for ICS
+            date_parts = date_str.split('-')
+            if len(date_parts) != 3:
+                return None
+
+            year = date_parts[0]
+            month = date_parts[1]
+            day = date_parts[2]
+
+            # Combine date and time
+            dtstart = year + month + day + "T" + time_str.replace(':', '') + "00"
+
+            event_lines = []
+            event_lines.append("BEGIN:VEVENT")
+            event_lines.append("SUMMARY:" + title)
+            event_lines.append("DTSTART:" + dtstart)
+
+            # Calculate end time (1 hour duration by default)
+            event_lines.append("DTEND:" + dtstart[:-4] + "0100")  # +1 hour
+
+            if description:
+                # Escape newlines for ICS
+                desc_escaped = description.replace("\n", "\\n")
+                event_lines.append("DESCRIPTION:" + desc_escaped)
+
+            # Add repeat rules if applicable
+            if repeat == "daily":
+                event_lines.append("RRULE:FREQ=DAILY")
+            elif repeat == "weekly":
+                event_lines.append("RRULE:FREQ=WEEKLY")
+            elif repeat == "monthly":
+                event_lines.append("RRULE:FREQ=MONTHLY")
+            elif repeat == "yearly":
+                event_lines.append("RRULE:FREQ=YEARLY")
+
+            # Add categories/labels if present
+            labels = event_data.get('labels', [])
+            if labels:
+                event_lines.append("CATEGORIES:" + ",".join(labels))
+
+            # Generate UID
+            import hashlib
+            uid_base = date_str + time_str + title
+            uid_hash = hashlib.md5(uid_base.encode()).hexdigest()[:8]
+            event_lines.append("UID:event-" + uid_hash)
+
+            event_lines.append("END:VEVENT")
+
+            return event_lines
+
+        except Exception as e:
+            print("[Calendar] Error creating ICS from JSON: " + str(e))
+            return None
+
+    def _get_current_database_dir(self):
+        """Get current database directory based on format"""
+        if self.database_format == "vcard":
+            path = join(VCARDS_PATH, self.language)
+        elif self.database_format == "ics":
+            path = join(ICS_BASE_PATH, self.language, "day")
+        else:  # legacy
+            path = join(DATA_PATH, self.language, "day")
+
+        # Write debug log
+        if DEBUG:
+            try:
+                with open("/tmp/calendar_export_debug.log", "a") as f:
+                    f.write("\n_get_current_database_dir:\n")
+                    f.write("  Format: %s\n" % self.database_format)
+                    f.write("  Language: %s\n" % self.language)
+                    f.write("  Path: %s\n" % path)
+                    f.write("  Exists: %s\n" % exists(path))
+            except:
+                pass
+
+        return path
+
     def contact_updated_callback(self, result=None):
         """Callback after contact operations"""
-        print("[Calendar DEBUG] Contact callback called with result: {0}".format(result))
+        if DEBUG:
+            print("[Calendar DEBUG] Contact callback called with result: {0}".format(result))
 
         self.birthday_manager.load_all_contacts()
         self._paint_calendar()
-        self.load_data()
 
         if result:
             print("[Calendar] Contact operation successful")
@@ -1316,16 +3192,16 @@ class Calendar(Screen):
     def remove_date(self):
         """Remove the date and clear all fields"""
         if self.database_format == "vcard":
-            file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-                PLUGIN_PATH,
+            file_path = "{0}/{1}/{2}{3:02d}{4:02d}.txt".format(
+                VCARDS_PATH,
                 self.language,
                 self.year,
                 self.month,
                 self.day
             )
         else:
-            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                PLUGIN_PATH,
+            file_path = "{0}/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+                DATA_PATH,
                 self.language,
                 self.year,
                 self.month,
@@ -1354,16 +3230,16 @@ class Calendar(Screen):
     def delete_file(self):
         """Delete the data file for the selected date"""
         if self.database_format == "vcard":
-            file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-                PLUGIN_PATH,
+            file_path = "{0}/{1}/{2}{3:02d}{4:02d}.txt".format(
+                VCARDS_PATH,
                 self.language,
                 self.year,
                 self.month,
                 self.day
             )
         else:
-            file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                PLUGIN_PATH,
+            file_path = "{0}/{1}/day/{2}{3:02d}{4:02d}.txt".format(
+                DATA_PATH,
                 self.language,
                 self.year,
                 self.month,
@@ -1443,6 +3319,9 @@ class Calendar(Screen):
         # Load holidays for the current month into cache
         if config.plugins.calendar.holidays_enabled.value:
             current_month_holidays = self._load_month_holidays(self.year, self.month)
+            if DEBUG:
+                print("[Calendar] Month %d-%02d has %d holiday days" % (
+                    self.year, self.month, len(current_month_holidays)))
         else:
             current_month_holidays = {}
 
@@ -1477,6 +3356,10 @@ class Calendar(Screen):
                             if config.plugins.calendar.holidays_show_indicators.value:
                                 current_text = self['d' + str(x)].getText()
                                 self['d' + str(x)].setText(current_text + " H")
+
+                            if DEBUG:
+                                print("[Calendar] Coloring day %d as holiday: %s" % (
+                                    i, current_month_holidays[i]))
 
                     # Check for events (priority 2 - only if not a holiday)
                     has_events = False
@@ -1542,7 +3425,7 @@ class Calendar(Screen):
             if result:
                 print("[Calendar] Event changes detected, refreshing...")
             self._paint_calendar()
-            self.load_data()
+
             if DEBUG:
                 print("[Calendar] Calendar refreshed after event changes")
 
@@ -1557,7 +3440,6 @@ class Calendar(Screen):
         """Callback after adding event"""
         if result:
             self._paint_calendar()
-            self.load_data()
 
     def add_event(self):
         """Add new event - with safety check"""
@@ -1570,7 +3452,6 @@ class Calendar(Screen):
             return
 
         try:
-            from .event_dialog import EventDialog
             date_str = "{0}-{1:02d}-{2:02d}".format(
                 self.year,
                 self.month,
@@ -1610,37 +3491,110 @@ class Calendar(Screen):
             message = _("Removed {0} past events").format(removed)
             # Refresh the calendar
             self._paint_calendar()
-            self.load_data()
+
         else:
             message = _("No past events to remove")
 
         self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
-    def clear_holiday_cache(self):
+    def clear_all_events(self):
+        """Delete ALL events with confirmation"""
+
+        def confirmed(result):
+            if result:
+                self._do_clear_all_events()
+
+        self.session.openWithCallback(
+            confirmed,
+            MessageBox,
+            _("Delete ALL events?\n\nThis will permanently delete all your personal events.\nThis action cannot be undone!"),
+            MessageBox.TYPE_YESNO
+        )
+
+    def _do_clear_all_events(self):
+        """Actually delete all events"""
+        try:
+            events_file = join(DATA_PATH, "events.json")
+
+            if not exists(events_file):
+                self.session.open(
+                    MessageBox,
+                    _("No events database found"),
+                    MessageBox.TYPE_INFO
+                )
+                return
+
+            # Backup before deleting
+            backup_file = events_file + ".backup." + str(int(time()))
+            shutil.copy2(events_file, backup_file)
+
+            if DEBUG:
+                print("[Calendar] Backup created: {0}".format(backup_file))
+
+            # Delete all events (create empty array)
+            with open(events_file, "w") as f:
+                f.write("[]")
+
+            # Reload events into the manager
+            if self.event_manager:
+                self.event_manager.load_events()
+                if DEBUG:
+                    print("[Calendar] Events reloaded, total: {0}".format(
+                        len(self.event_manager.events)))
+
+            self.session.open(
+                MessageBox,
+                _("All events have been deleted.\n\nBackup saved as:\n{0}".format(
+                    basename(backup_file))),
+                MessageBox.TYPE_INFO
+            )
+
+            # Repaint the calendar to remove event indicators
+            self._paint_calendar()
+
+            if DEBUG:
+                print("[Calendar] All events cleared successfully")
+
+        except Exception as e:
+            print("[Calendar] Error clearing events:", e)
+            import traceback
+            traceback.print_exc()
+
+            self.session.open(
+                MessageBox,
+                _("Error deleting events:\n{0}".format(str(e))),
+                MessageBox.TYPE_ERROR
+            )
+
+    def clear_holidays_cache(self):
         """Clear holiday cache (call after importing new holidays)"""
         self.holiday_cache = {}
 
     def import_holidays_callback(self, result=None):
         """Callback after importing holidays"""
+        if DEBUG:
+            print("[Calendar] Holidays import callback triggered")
 
-        def refresh_after_import():
-            self.clear_holiday_cache()
-            self._paint_calendar()
-            self.load_data()
-            if DEBUG:
-                print("[Calendar] Calendar refreshed after import operation")
+        # Force clear cache for current month
+        cache_key = (self.year, self.month)
+        if cache_key in self.holiday_cache:
+            del self.holiday_cache[cache_key]
 
-        self.refresh_timer = eTimer()
-        try:
-            self.refresh_timer_conn = self.refresh_timer.timeout.connect(refresh_after_import)
-        except AttributeError:
-            self.refresh_timer.callback.append(refresh_after_import)
-        self.refresh_timer.start(2000, True)
+        # Clear ALL holiday cache for safety
+        self.holiday_cache = {}
+
+        if DEBUG:
+            print("[Calendar] Holiday cache cleared")
+
+        # Repaint the calendar
+        self._paint_calendar()
+
+        # Show quick message
+        self["status"].setText(_("Holidays imported"))
 
     def import_holidays(self):
         """Import holidays from Holidata.net"""
         try:
-            from .holidays import HolidaysImportScreen
             if DEBUG:
                 print("DEBUG: Opening HolidaysImportScreen")
             self.session.openWithCallback(
@@ -1660,7 +3614,6 @@ class Calendar(Screen):
     def show_today_holidays(self):
         """Show today's holidays"""
         try:
-            from .holidays import show_holidays_today
             show_holidays_today(self.session)
         except Exception as e:
             print("Show holidays error: " + str(e))
@@ -1673,7 +3626,6 @@ class Calendar(Screen):
     def show_upcoming_holidays(self):
         """Show upcoming holidays"""
         try:
-            from .holidays import show_upcoming_holidays as holidays_upcoming
             holidays_upcoming(self.session, days=30)
         except Exception as e:
             print("Show upcoming holidays error: " + str(e))
@@ -1683,33 +3635,9 @@ class Calendar(Screen):
                 MessageBox.TYPE_ERROR
             )
 
-    def clear_holiday_database(self):
-        """Clears all holiday fields from files"""
-        try:
-            from .holidays import clear_holidays_dialog
-            clear_holidays_dialog(self.session)
-
-            def refresh_calendar():
-                self.clear_holiday_cache()
-                self._paint_calendar()
-                self.load_data()
-                if DEBUG:
-                    print("[Calendar] Calendar refreshed after holiday database clearing")
-
-            self.refresh_timer = eTimer()
-            try:
-                self.refresh_timer_conn = self.refresh_timer.timeout.connect(refresh_calendar)
-            except AttributeError:
-                self.refresh_timer.callback.append(refresh_calendar)
-            self.refresh_timer.start(2000, True)
-
-        except Exception as e:
-            print("Clear holidays error: " + str(e))
-            self.session.open(
-                MessageBox,
-                "Error: " + str(e),
-                MessageBox.TYPE_ERROR
-            )
+    def clear_holidays_database(self):
+        """Action for menu - call function from holidays.py"""
+        clear_holidays_dialog(self.session)
 
     def navigate_to_next_field(self):
         """
@@ -1804,36 +3732,40 @@ class Calendar(Screen):
         """Load holidays for a specific month into cache"""
         cache_key = (year, month)
 
+        if DEBUG:
+            print("[Calendar DEBUG] === LOAD MONTH HOLIDAYS START ===")
+            print("[Calendar DEBUG] Loading: %d-%02d" % (year, month))
+            print("[Calendar DEBUG] Language: %s" % self.language)
+
         # Return if already in cache
         if cache_key in self.holiday_cache:
+            if DEBUG:
+                print("[Calendar DEBUG] Using cached data")
             return self.holiday_cache[cache_key]
 
         month_holidays = {}
-        language = config.osd.language.value.split("_")[0].strip()
+        language = self.language
 
-        # Iterate through possible days in month (1-31)
+        # First check holiday directory
+        holiday_dir = "%s/%s/day" % (HOLIDAYS_PATH, language)
+        if DEBUG:
+            print("[Calendar DEBUG] Holiday directory: %s" % holiday_dir)
+            print("[Calendar DEBUG] Directory exists: %s" % exists(holiday_dir))
+
+        # Iterate through days
         for day in range(1, 32):
-            # Use correct path based on format
-            if self.database_format == "vcard":
-                file_path = "{0}base/vcard/{1}/{2}{3:02d}{4:02d}.txt".format(
-                    PLUGIN_PATH,
-                    language,
-                    year,
-                    month,
-                    day
-                )
-            else:
-                file_path = "{0}base/{1}/day/{2}{3:02d}{4:02d}.txt".format(
-                    PLUGIN_PATH,
-                    language,
-                    year,
-                    month,
-                    day
-                )
+            # Check holiday file first
+            holiday_file = "%s/%s/day/%d%02d%02d.txt" % (
+                HOLIDAYS_PATH,
+                language,
+                year,
+                month,
+                day
+            )
 
-            if exists(file_path):
+            if exists(holiday_file):
                 try:
-                    with open(file_path, 'r') as f:
+                    with open(holiday_file, 'r') as f:
                         content = f.read()
 
                     # Parse holiday field
@@ -1841,19 +3773,27 @@ class Calendar(Screen):
                         line = line.strip()
                         if line.startswith('holiday:'):
                             holiday_value = line.split(':', 1)[1].strip()
-                            if holiday_value and holiday_value != "None":
+                            if holiday_value and holiday_value.lower() != "none":
                                 month_holidays[day] = holiday_value
-                                break  # Found holiday, move to next day
+                                if DEBUG:
+                                    print("[Calendar DEBUG] Found holiday in holiday file: day %d = %s" % (
+                                        day, holiday_value[:30]))
+                            break
                 except Exception as e:
-                    print("[Calendar] Error reading holiday file {0}: {1}".format(file_path, str(e)))
+                    print("[Calendar] Error reading holiday file: %s" % str(e))
 
         # Store in cache
         self.holiday_cache[cache_key] = month_holidays
+
+        if DEBUG:
+            print("[Calendar DEBUG] Total holidays found: %d" % len(month_holidays))
+            print("[Calendar DEBUG] === LOAD MONTH HOLIDAYS END ===")
+
         return month_holidays
 
     def _highlight_selected_day(self, day):
         """Highlight selected day with blue background and white text"""
-        # controlla se questo giorno è OGGI (stesso anno, mese e giorno)
+        # check if this day is TODAY (same year, month and day)
         current_time = localtime()
         is_today = (day == current_time[2] and
                     self.year == current_time[0] and
@@ -1861,7 +3801,7 @@ class Calendar(Screen):
 
         # First, restore the original color of the previously selected day (if any and not today)
         if hasattr(self, 'previous_selected_day') and self.previous_selected_day:
-            # MODIFICA: controlla se il previous_selected_day era oggi
+            # check if the previous_selected_day was today
             was_today = (self.previous_selected_day == current_time[2] and
                          self.year == current_time[0] and
                          self.month == current_time[1])
@@ -2104,7 +4044,6 @@ class Calendar(Screen):
         def config_closed_callback(result=None):
             self.holiday_cache = {}
             self._paint_calendar()
-            self.load_data()
 
         self.session.openWithCallback(config_closed_callback, settingCalendar)
 
@@ -2113,7 +4052,7 @@ class Calendar(Screen):
             "Calendar Planner v.%s\n"
             "Developer: on base plugin from Sirius0103 Rewrite Code by Lululla\n"
             "Homepage: www.corvoboys.org\n\n"
-            "Homepage: www.linuxsat-support.com\n\n"
+            "Homepage: www.corvoboys.org www.linuxsat-support.com\n\n"
             "Homepage: www.gisclub.tv\n\n"
         ) % PLUGIN_VERSION
         self.session.open(MessageBox, info_text, MessageBox.TYPE_INFO)
@@ -2137,22 +4076,15 @@ class settingCalendar(Setup):
             old_format = self.parent.database_format
             new_format = config.plugins.calendar.database_format.value
             if old_format != new_format:
-                print("[settingCalendar] Database format changed: {0} -> {1}".format(
-                    old_format, new_format))
+                if DEBUG:
+                    print("[settingCalendar] Database format changed: {0} -> {1}".format(
+                        old_format, new_format))
 
-                if config.plugins.calendar.auto_convert.value:
-                    print("[settingCalendar] Auto-converting database...")
-                    self.parent.auto_convert_database()
+                # if config.plugins.calendar.auto_convert.value:
+                    # if DEBUG:
+                    #   print("[settingCalendar] Auto-converting database...")
+                    # self.parent.auto_convert_database()
         self.close()
-
-
-# class settingCalendar(Setup):
-    # def __init__(self, session, parent=None):
-        # Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
-        # self.parent = parent
-
-    # def keySave(self):
-        # Setup.keySave(self)
 
 
 def mainMenu(menuid):

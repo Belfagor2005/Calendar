@@ -1,9 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.6                      #
+#  Calendar Planner for Enigma2 v1.7                      #
 #  Created by: Lululla (based on Sirius0103)              #
 ###########################################################
 
@@ -12,15 +11,18 @@ MAIN FEATURES:
 • Event system with smart notifications & audio alerts
 • Holiday import for 30+ countries with auto-coloring
 • vCard import/export with contact management
-• Database format converter (Legacy ↔ vCard)
+• ICS/Google Calendar import with event management
+• Database format converter (Legacy ↔ vCard ↔ ICS)
+• Phone and email formatters for Calendar Planner
+• Maintains consistent formatting across import, display, and storage
 
-NEW IN v1.6:
-vCard EXPORT to /tmp/calendar.vcf
-Database converter with progress tracking
-Auto-conversion option in settings
-Contact sorting in export (name/birthday/category)
-Optimized import performance
-Fixed holiday cache refresh
+NEW IN v1.7:
+ICS EVENT MANAGEMENT - Browse, edit, delete imported events
+ICS EVENTS BROWSER - Similar to contacts browser with CH+/CH- navigation
+ICS EVENT EDITOR - Full-screen dialog like contact editor
+ICS FILE ARCHIVE - Store imported .ics files in /base/ics
+DUPLICATE DETECTION - Smart cache for fast duplicate checking
+ENHANCED SEARCH - Search in events titles, descriptions, dates
 
 KEY CONTROLS - MAIN:
 OK    - Main menu (Events/Holidays/Contacts/Import/Export/Converter)
@@ -31,20 +33,32 @@ BLUE  - Next day
 0     - Event management
 MENU  - Configuration
 
-EXPORT VCARD:
-• Export contacts to /tmp/calendar.vcf
-• Sorting: name, birthday, or category
-• vCard 3.0 format compatible
-• Progress tracking
+KEY CONTROLS - ICS BROWSER:
+OK    - Edit selected event
+RED   - Add new event
+GREEN - Edit event
+YELLOW- Delete event (single/all)
+BLUE  - Change sorting (date/title/category)
+CH+   - Next event
+CH-   - Previous event
+TEXT  - Search events
 
-DATABASE CONVERTER:
-• Convert Legacy ↔ vCard formats
-• Automatic backup creation
-• Progress & statistics display
-• Auto-conversion option
+ICS MANAGEMENT:
+• Import Google Calendar .ics files
+• Browse imported ICS files in archive
+• View and edit individual ICS events
+• Delete events (single or all)
+• Search events by title/description/date
+• Filter events by category/labels
+• Archive original .ics files for re-import
+
+DATABASE FORMATS:
+• Legacy format (text files)
+• vCard format (standard contacts)
+• ICS format (Google Calendar compatible)
 
 CONFIGURATION:
-• Database format (Legacy/vCard)
+• Database format (Legacy/vCard/ICS)
 • Auto-convert option
 • Export sorting preference
 • Event/holiday colors & indicators
@@ -52,9 +66,9 @@ CONFIGURATION:
 
 TECHNICAL:
 • Python 2.7+ compatible
-• Multi-threaded vCard import
-• Smart cache system
-• File-based storage
+• Multi-threaded vCard/ICS import
+• Smart cache system for duplicates
+• File-based storage with backup
 • Configurable via setup.xml
 
 VERSION HISTORY:
@@ -65,14 +79,14 @@ v1.3 - Code rewrite
 v1.4 - Bug fixes
 v1.5 - vCard import
 v1.6 - vCard export & converter
+v1.7 - ICS event management & browser
 
-Last Updated: 2025-12-26
-Status: Stable with complete vCard support
+Last Updated: 2025-12-27
+Status: Stable with complete vCard & ICS support
 Credits: Sirius0103 (original), Lululla (modifications)
-Homepage: www.linuxsat-support.com
+Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """
-
 from __future__ import print_function
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.Language import language
@@ -81,7 +95,7 @@ from os import environ
 import gettext
 
 PLUGIN_NAME = "Calendar"
-PLUGIN_VERSION = "1.6"
+PLUGIN_VERSION = "1.7"
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format(PLUGIN_NAME))
 PLUGIN_ICON = resolveFilename(SCOPE_PLUGINS, "Extensions/Calendar/plugin.png")
 USER_AGENT = "Calendar-Enigma2-Updater/%s" % PLUGIN_VERSION

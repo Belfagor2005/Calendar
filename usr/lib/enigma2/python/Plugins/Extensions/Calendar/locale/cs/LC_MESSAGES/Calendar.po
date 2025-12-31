@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 15:10+0100\n"
-"PO-Revision-Date: 2025-12-22 15:11+0100\n"
+"PO-Revision-Date: 2025-12-31 17:34+0100\n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: <ekekaz@gmail.com>\n"
 "Language: cs\n"
@@ -16,8 +16,32 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "(truncated)"
+msgstr ""
+
+msgid "--- CONTACTS ---"
+msgstr ""
+
+msgid "--- DATABASE ---"
+msgstr ""
+
+msgid "--- EVENTS ---"
+msgstr ""
+
+msgid "--- HOLIDAYS ---"
+msgstr ""
+
+msgid "--- PERSONAL DATA ---"
+msgstr ""
+
+msgid "--- SYSTEM ---"
+msgstr ""
+
 msgid "..."
 msgstr "..."
+
+msgid "... and {} more\n"
+msgstr ""
 
 msgid ".............."
 msgstr ".............."
@@ -31,12 +55,17 @@ msgstr "Aktivní:"
 msgid "Add"
 msgstr "Přidat"
 
-#, fuzzy
 msgid "Add Contact"
-msgstr "Přidat událost"
+msgstr ""
 
 msgid "Add Event"
 msgstr "Přidat událost"
+
+msgid "Add date and time to exported filenames"
+msgstr ""
+
+msgid "Add timestamp to filename"
+msgstr ""
 
 msgid "Alert sound"
 msgstr "Zvuk upozornění"
@@ -47,53 +76,49 @@ msgstr "Duben"
 msgid "August"
 msgstr "Srpen"
 
-msgid "Auto-convert to vCard"
-msgstr ""
-
-msgid "Automatically convert legacy files to vCard format on first use"
-msgstr ""
-
 msgid "Back"
 msgstr "Zpět"
 
 msgid "Birthday (YYYY-MM-DD)"
 msgstr ""
 
+msgid "Birthdays: {0}"
+msgstr ""
+
 msgid "Blue"
 msgstr "Modrá"
+
+msgid "Browse ICS Files"
+msgstr ""
 
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
 msgstr ""
 
-#, fuzzy
 msgid "Calendar"
-msgstr "Plánovač kalendářů"
+msgstr ""
 
 msgid "Calendar Planner"
 msgstr "Plánovač kalendářů"
 
-msgid "Calendar Planner v.%s"
-msgstr "Plánovač kalendářů verze %s"
-
 msgid "Calendar Planner | Ready"
 msgstr "Plánovač kalendářů | Připraveno"
 
-#, fuzzy
 msgid "Calendar Settings"
-msgstr "Kalendář"
+msgstr ""
 
-#, fuzzy
 msgid "Calendar with events and notifications"
-msgstr "Kalendář s událostmi a oznámeními"
+msgstr ""
 
 msgid "Cancel"
 msgstr "Zrušit"
 
-#, fuzzy
 msgid "Cancelling..."
-msgstr "Zrušit"
+msgstr ""
 
 msgid "Cannot delete: Contact has no ID"
+msgstr ""
+
+msgid "Cannot initialize event system: {0}"
 msgstr ""
 
 msgid "Categories (comma separated)"
@@ -106,6 +131,21 @@ msgid "Checking for updates..."
 msgstr "Kontrola aktualizací..."
 
 msgid "Choose between legacy text files or standard vCard format"
+msgstr ""
+
+msgid "Choose where to save exported files"
+msgstr ""
+
+msgid "Cleaned {0} duplicate events"
+msgstr ""
+
+msgid "Cleaned {0} old ICS files"
+msgstr ""
+
+msgid "Cleanup Old Files"
+msgstr ""
+
+msgid "Cleanup duplicate events"
 msgstr ""
 
 msgid "Cleanup past events"
@@ -123,26 +163,25 @@ msgstr "Vymazat databázi dovolených"
 msgid "Close"
 msgstr "Zavřít"
 
-#, fuzzy
 msgid "Color days with holidays"
-msgstr "Zobrazit dnešní svátky"
+msgstr ""
 
-#, fuzzy
 msgid "Color for days with events"
-msgstr "Zobrazit dnešní svátky"
+msgstr ""
 
-#, fuzzy
 msgid "Color for holiday days"
-msgstr "Zobrazit dnešní svátky"
+msgstr ""
 
 msgid "Completed"
 msgstr ""
 
-#, fuzzy
 msgid "Contact '{0}' deleted successfully"
-msgstr "Aktualizace byla úspěšně dokončena!"
+msgstr ""
 
 msgid "Contacts directory not found"
+msgstr ""
+
+msgid "Contacts imported from ICS file!"
 msgstr ""
 
 msgid "Contacts: {0} (Search: '{1}')"
@@ -151,11 +190,16 @@ msgstr ""
 msgid "Contacts: {0} ({1})"
 msgstr ""
 
-#, fuzzy
 msgid "Conversion completed successfully!"
-msgstr "Aktualizace byla úspěšně dokončena!"
+msgstr ""
+
+msgid "Conversion error: {0}"
+msgstr ""
 
 msgid "Convert all existing data to vCard format?"
+msgstr ""
+
+msgid "Convert to ICS format"
 msgstr ""
 
 msgid "Convert to Legacy"
@@ -188,8 +232,14 @@ msgstr "Nepodařilo se zkontrolovat aktualizace. Zkontrolujte připojení k inte
 msgid "Could not check for updates: %s"
 msgstr "Nepodařilo se zkontrolovat aktualizace: %s"
 
+msgid "Could not read file"
+msgstr ""
+
 msgid "Current format: {0}"
 msgstr ""
+
+msgid "Cyan"
+msgstr "Azurová"
 
 msgid "Database Converter"
 msgstr ""
@@ -200,25 +250,23 @@ msgstr ""
 msgid "Database converted to vCard format"
 msgstr ""
 
-#, fuzzy
-msgid "Database converter error: {0}"
-msgstr "Chyba aktualizace: %s"
-
 msgid "Database format"
-msgstr ""
-
-msgid "Database has been automatically converted to {0} format."
 msgstr ""
 
 msgid "Date"
 msgstr "Datum"
 
+msgid "Date (YYYY-MM-DD)"
+msgstr ""
+
 msgid "Date People"
 msgstr "Rande s lidmi"
 
-#, fuzzy
 msgid "Date People:"
-msgstr "Setkání s lidmi: "
+msgstr ""
+
+msgid "Date range: {0} to {1}"
+msgstr ""
 
 msgid "Date:"
 msgstr "Datum:"
@@ -235,15 +283,32 @@ msgstr "Prosinec"
 msgid "Delete"
 msgstr "Smazat"
 
+msgid "Delete ALL ICS events"
+msgstr ""
+
 msgid "Delete ALL contacts"
+msgstr ""
+
+msgid "Delete ALL events"
 msgstr ""
 
 msgid "Delete File"
 msgstr "Smazat soubor"
 
-#, fuzzy
+msgid "Delete ICS files older than 30 days?"
+msgstr ""
+
+msgid "Delete file"
+msgstr ""
+
+msgid "Delete {0}?"
+msgstr ""
+
 msgid "Delete: {0}"
-msgstr "Smazat"
+msgstr ""
+
+msgid "Deleted {0} ICS events"
+msgstr ""
 
 msgid "Deleted {0} contacts from database"
 msgstr ""
@@ -254,15 +319,23 @@ msgstr "Popis"
 msgid "Description:"
 msgstr "Popis:"
 
+msgid "Directory: {0}"
+msgstr ""
+
+msgid "Disk"
+msgstr ""
+
+msgid "Duplicates cleaned: %d"
+msgstr ""
+
 msgid "E:{0}"
 msgstr ""
 
 msgid "Edit"
 msgstr "Upravit"
 
-#, fuzzy
 msgid "Edit Contact"
-msgstr "Editovat datum"
+msgstr ""
 
 msgid "Edit Date"
 msgstr "Editovat datum"
@@ -276,15 +349,17 @@ msgstr "Upravit popis"
 msgid "Edit Holiday"
 msgstr "Upravit dovolenou"
 
+msgid "Edit ICS Event"
+msgstr ""
+
 msgid "Edit Month People"
 msgstr "Upravit měsíc Osoby"
 
 msgid "Edit Sign"
 msgstr "Upravit znamení"
 
-#, fuzzy
 msgid "Edit: {0}"
-msgstr "Upravit"
+msgstr ""
 
 msgid "Email"
 msgstr ""
@@ -304,66 +379,92 @@ msgstr ""
 msgid "Enable notifications"
 msgstr ""
 
-#, fuzzy
 msgid "Enter"
-msgstr "Zadejte "
+msgstr ""
 
-#, fuzzy
 msgid "Error deleting contact"
-msgstr "Chyba při ukládání dat"
+msgstr ""
 
 msgid "Error deleting contact '{0}'"
 msgstr ""
 
-#, fuzzy
 msgid "Error deleting database: {0}"
-msgstr "Chyba při ukládání dat"
+msgstr ""
 
-msgid "Error exporting vCard: {0}"
+msgid "Error getting ICS statistics"
+msgstr ""
+
+msgid "Error opening ICS browser: %s"
+msgstr ""
+
+msgid "Error opening ICS importer: {0}"
 msgstr ""
 
 msgid "Error opening event dialog"
 msgstr "Chyba při otevírání dialogového okna události"
 
-#, fuzzy
+msgid "Error saving ICS data"
+msgstr ""
+
 msgid "Error saving contact"
-msgstr "Chyba při ukládání dat"
+msgstr ""
 
 msgid "Error saving data"
 msgstr "Chyba při ukládání dat"
 
-#, fuzzy
 msgid "Error: {0}"
-msgstr "Chyba: %s"
+msgstr ""
 
-#, fuzzy
+msgid "Errors: %d"
+msgstr ""
+
 msgid "Errors: {0}"
-msgstr "Chyba: %s"
+msgstr ""
 
-#, fuzzy
 msgid "Event"
-msgstr "Přidat událost"
+msgstr ""
 
-#, fuzzy
+msgid "Event '{0}' deleted successfully"
+msgstr ""
+
 msgid "Event color"
-msgstr "Událost"
+msgstr ""
+
+msgid "Event system is disabled. Enable it in settings first."
+msgstr ""
 
 msgid "Event system is disabled. Enable it in settings."
 msgstr "Systém událostí je vypnutý. Povolte ho v nastavení."
 
-#, fuzzy
+msgid "Event system is not enabled"
+msgstr ""
+
+msgid "Events found: {0}"
+msgstr ""
+
+msgid "Events imported successfully"
+msgstr ""
+
+msgid "Export All to ICS File"
+msgstr ""
+
 msgid "Export error: {0}"
-msgstr "Chyba aktualizace: %s"
+msgstr ""
 
 msgid "Export failed or no contacts to export"
+msgstr ""
+
+msgid "Export location"
+msgstr ""
+
+msgid "Export subdirectory"
 msgstr ""
 
 msgid "Export vCard File"
 msgstr ""
 
-#, fuzzy
 msgid "Exporting contacts..."
-msgstr "Chyba při ukládání dat"
+msgstr ""
 
 msgid "Failed to create backup. Update cancelled."
 msgstr "Vytvoření zálohy se nezdařilo. Aktualizace zrušena."
@@ -377,8 +478,17 @@ msgstr "Únor"
 msgid "Field {0}/{1}: {2}"
 msgstr ""
 
+msgid "File deleted"
+msgstr ""
+
 msgid "File not found!"
 msgstr "Soubor nenalezen!"
+
+msgid "File re-imported successfully"
+msgstr ""
+
+msgid "File re-imported. Found {0} potential duplicates."
+msgstr ""
 
 msgid "File: {0}"
 msgstr ""
@@ -386,24 +496,43 @@ msgstr ""
 msgid "Files is Empty..."
 msgstr "Soubory jsou prázdné..."
 
+msgid "Found {0} ICS files"
+msgstr ""
+
 msgid "Fri"
 msgstr "Pá"
 
 msgid "Green"
 msgstr "Zelený"
 
+msgid "Hard Disk"
+msgstr ""
+
 msgid "Holiday"
 msgstr "Svátek"
 
-#, fuzzy
 msgid "Holiday color"
-msgstr "Svátek: "
+msgstr ""
 
-#, fuzzy
 msgid "Holiday:"
-msgstr "Svátek"
+msgstr ""
+
+msgid "Holidays imported"
+msgstr ""
 
 msgid "I:{0}"
+msgstr ""
+
+msgid "ICS Events: {0} (Search: '{1}')"
+msgstr ""
+
+msgid "ICS Events: {0} ({1})"
+msgstr ""
+
+msgid "ICS format (google calendar)"
+msgstr ""
+
+msgid "ICS import feature not yet available: {0}"
 msgstr ""
 
 msgid "Import"
@@ -412,28 +541,49 @@ msgstr "Import"
 msgid "Import All"
 msgstr "Importovat vše"
 
+msgid "Import Google Calendar (.ics)"
+msgstr ""
+
 msgid "Import Holidays"
 msgstr "Dovoz svátků"
+
+msgid "Import ICS Contacts Google Calendar (.ics)"
+msgstr ""
+
+msgid "Import completed"
+msgstr ""
 
 msgid "Import completed - Sorting contacts..."
 msgstr ""
 
-#, fuzzy
 msgid "Import completed!"
-msgstr "Dovoz svátků"
+msgstr ""
 
-#, fuzzy
+msgid "Import completed. Ready."
+msgstr ""
+
 msgid "Import error: {0}"
-msgstr "Chyba aktualizace: %s"
+msgstr ""
+
+msgid "Import events to calendar"
+msgstr ""
 
 msgid "Import vCard File"
 msgstr ""
 
-#, fuzzy
+msgid "Imported ICS Files"
+msgstr ""
+
+msgid "Imported: %d"
+msgstr ""
+
 msgid "Imported: {0}"
-msgstr "Import"
+msgstr ""
 
 msgid "Imported: {0} contacts"
+msgstr ""
+
+msgid "Importing iCalendar File"
 msgstr ""
 
 msgid "Importing vCard File"
@@ -445,6 +595,12 @@ msgstr ""
 msgid "Invalid birthday format. Use YYYY-MM-DD"
 msgstr ""
 
+msgid "Invalid date format. Use YYYY-MM-DD"
+msgstr ""
+
+msgid "Invalid time format. Use HH:MM"
+msgstr ""
+
 msgid "January"
 msgstr "Leden"
 
@@ -453,6 +609,9 @@ msgstr "Červenec"
 
 msgid "June"
 msgstr "Červen"
+
+msgid "Labels (comma separated)"
+msgstr ""
 
 msgid "Language: {0}"
 msgstr ""
@@ -469,12 +628,17 @@ msgstr ""
 msgid "Legacy: {0} files | vCard: {1} files"
 msgstr ""
 
-#, fuzzy
 msgid "Manage Contacts"
-msgstr "Spravovat události"
+msgstr ""
 
 msgid "Manage Events"
 msgstr "Spravovat události"
+
+msgid "Manage ICS Events"
+msgstr ""
+
+msgid "Manage ICS Files"
+msgstr ""
 
 msgid "March"
 msgstr "Březen"
@@ -497,9 +661,8 @@ msgstr "Měsíc -"
 msgid "Month People"
 msgstr "Měsíční lidé"
 
-#, fuzzy
 msgid "Month People:"
-msgstr "Lidé měsíce: "
+msgstr ""
 
 msgid "Name"
 msgstr ""
@@ -507,10 +670,28 @@ msgstr ""
 msgid "Name is required"
 msgstr ""
 
+msgid "Network Share"
+msgstr ""
+
 msgid "New Date"
 msgstr "Nové datum"
 
+msgid "Newest file: {0}"
+msgstr ""
+
 msgid "Next Field"
+msgstr ""
+
+msgid "No ICS directory found"
+msgstr ""
+
+msgid "No ICS events found"
+msgstr ""
+
+msgid "No ICS files found"
+msgstr ""
+
+msgid "No ICS files in archive"
 msgstr ""
 
 msgid "No contact files found"
@@ -519,9 +700,23 @@ msgstr ""
 msgid "No contact selected"
 msgstr ""
 
-#, fuzzy
 msgid "No contacts found in database"
-msgstr "Žádný soubor v databázi..."
+msgstr ""
+
+msgid "No data found to convert"
+msgstr ""
+
+msgid "No data to export"
+msgstr ""
+
+msgid "No duplicates found"
+msgstr ""
+
+msgid "No event selected"
+msgstr ""
+
+msgid "No events database found"
+msgstr ""
 
 msgid "No file in database..."
 msgstr "Žádný soubor v databázi..."
@@ -553,13 +748,11 @@ msgstr ""
 msgid "Notes"
 msgstr ""
 
-#, fuzzy
 msgid "Notification sound type"
-msgstr "Tón oznámení"
+msgstr ""
 
-#, fuzzy
 msgid "Notification tone"
-msgstr "Tón oznámení"
+msgstr ""
 
 msgid "Notify"
 msgstr "Obavijestiti"
@@ -573,8 +766,14 @@ msgstr "Listopad"
 msgid "October"
 msgstr "Říjen"
 
+msgid "Oldest file: {0}\n"
+msgstr ""
+
 msgid "Orange"
 msgstr "Oranžová"
+
+msgid "P:{0}/{1}"
+msgstr ""
 
 msgid "Paths:"
 msgstr ""
@@ -582,13 +781,11 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#, fuzzy
 msgid "Play a sound when event notification appears"
-msgstr "Kalendář s událostmi a oznámeními"
+msgstr ""
 
-#, fuzzy
 msgid "Play sound with notifications"
-msgstr "Kalendář s událostmi a oznámeními"
+msgstr ""
 
 msgid "Please restart Enigma2 manually."
 msgstr "Restartujte prosím Enigmu2 ručně."
@@ -602,7 +799,13 @@ msgstr ""
 msgid "Press TEXT to search"
 msgstr ""
 
+msgid "Preview file content"
+msgstr ""
+
 msgid "Progress: {0}%"
+msgstr ""
+
+msgid "Re-import"
 msgstr ""
 
 msgid "Ready"
@@ -629,8 +832,14 @@ msgstr "Odstraněno {0} minulých událostí"
 msgid "Repeat"
 msgstr "Opakovat"
 
+msgid "Repeat (none/daily/weekly/monthly/yearly)"
+msgstr ""
+
 msgid "Repeat:"
 msgstr "Opakovat:"
+
+msgid "Repeat: {0}"
+msgstr ""
 
 msgid "S:{0}"
 msgstr ""
@@ -644,13 +853,17 @@ msgstr "So"
 msgid "Save"
 msgstr "Uložit"
 
-#, fuzzy
 msgid "Search contacts"
-msgstr "Spravovat události"
+msgstr ""
 
-#, fuzzy
+msgid "Search events"
+msgstr ""
+
 msgid "Search:"
-msgstr "Březen"
+msgstr ""
+
+msgid "Select .ics file to import"
+msgstr ""
 
 msgid "Select a file, not a folder"
 msgstr ""
@@ -676,9 +889,11 @@ msgstr ""
 msgid "Show Calendar in menu"
 msgstr ""
 
-#, fuzzy
+msgid "Show Statistics"
+msgstr ""
+
 msgid "Show Today's Holidays"
-msgstr "Zobrazit nadcházející svátky"
+msgstr ""
 
 msgid "Show Upcoming Holidays"
 msgstr "Zobrazit nadcházející svátky"
@@ -689,9 +904,11 @@ msgstr ""
 msgid "Show event indicators"
 msgstr ""
 
-#, fuzzy
+msgid "Show event statistics"
+msgstr ""
+
 msgid "Show holiday indicators"
-msgstr "Zobrazit dnešní svátky"
+msgstr ""
 
 msgid "Show markers on days with events"
 msgstr ""
@@ -702,11 +919,19 @@ msgstr ""
 msgid "Sign"
 msgstr "Znamení"
 
-#, fuzzy
 msgid "Sign:"
-msgstr "Znamení: "
+msgstr ""
+
+msgid "Size: {0:.1f} KB"
+msgstr ""
 
 msgid "Size: {0:.1f} MB"
+msgstr ""
+
+msgid "Skipped (duplicates): {}\n"
+msgstr ""
+
+msgid "Skipped: %d"
 msgstr ""
 
 msgid "Skipped: {0}"
@@ -733,7 +958,13 @@ msgstr ""
 msgid "Sorted by category"
 msgstr ""
 
+msgid "Sorted by date"
+msgstr ""
+
 msgid "Sorted by name"
+msgstr ""
+
+msgid "Sorted by title"
 msgstr ""
 
 msgid "Sorted by: Birthday"
@@ -742,17 +973,41 @@ msgstr ""
 msgid "Sorted by: Category"
 msgstr ""
 
+msgid "Sorted by: Date"
+msgstr ""
+
 msgid "Sorted by: Name"
+msgstr ""
+
+msgid "Sorted by: Title"
+msgstr ""
+
+msgid "Subdirectory name for exports (created automatically)"
+msgstr ""
+
+msgid "Successfully converted {0} entries to ICS format"
+msgstr ""
+
+msgid "Successfully imported: {}\n"
 msgstr ""
 
 msgid "Sun"
 msgstr "Ne"
+
+msgid "Tags: {0}"
+msgstr ""
+
+msgid "Temporary Storage (/tmp)"
+msgstr ""
 
 msgid "Thu"
 msgstr "Čt"
 
 msgid "Time"
 msgstr "Čas"
+
+msgid "Time (HH:MM)"
+msgstr ""
 
 msgid "Time:"
 msgstr "Čas:"
@@ -763,8 +1018,26 @@ msgstr "Nadpis"
 msgid "Title and date are required!"
 msgstr "Název a datum jsou povinné!"
 
+msgid "Title is required"
+msgstr ""
+
 msgid "Title:"
 msgstr "Název:"
+
+msgid "Total events: {0}"
+msgstr ""
+
+msgid "Total files: {0}\n"
+msgstr ""
+
+msgid "Total processed: {}\n"
+msgstr ""
+
+msgid "Total size: {0:.1f} KB\n"
+msgstr ""
+
+msgid "Total: %d"
+msgstr ""
 
 msgid "Total: {0}"
 msgstr ""
@@ -772,9 +1045,14 @@ msgstr ""
 msgid "Tue"
 msgstr "Út"
 
-#, fuzzy
 msgid "Type of sound to play with notifications"
-msgstr "Kalendář s událostmi a oznámeními"
+msgstr ""
+
+msgid "U:{0}"
+msgstr ""
+
+msgid "USB Drive"
+msgstr ""
 
 msgid "Update available!"
 msgstr ""
@@ -811,6 +1089,9 @@ msgstr "Aktualizace selhala. Obnoveno ze zálohy."
 
 msgid "Update successful!"
 msgstr "Aktualizace úspěšná!"
+
+msgid "Updated: {0}"
+msgstr ""
 
 msgid "Updating plugin... Please wait"
 msgstr "Aktualizace pluginu... Čekejte prosím"
@@ -892,11 +1173,8 @@ msgstr ""
 #~ "\n"
 #~ "(Doporučuje se nejprve zálohovat)"
 
-#~ msgid "Cyan"
-#~ msgstr "Azurová"
-
-#~ msgid "Error: %s"
-#~ msgstr "Chyba: %s"
+#~ msgid "Calendar Planner v.%s"
+#~ msgstr "Plánovač kalendářů verze %s"
 
 #~ msgid "Exit"
 #~ msgstr "Odejít"

@@ -1,10 +1,11 @@
 <setupxml>
 	<setup key="settingCalendar" title="Calendar Settings">
-		<!-- Database Format -->
+		<!-- Database Format		-->
 		<item level="0" text="Database format" description="Choose between legacy text files or standard vCard format">config.plugins.calendar.database_format</item>
-		<if conditional="config.plugins.calendar.database_format.value == 'legacy'">
+		<!--
+ 		<if conditional="config.plugins.calendar.database_format.value == 'legacy'">
 			<item level="0" text="Auto-convert to vCard" description="Automatically convert legacy files to vCard format on first use">config.plugins.calendar.auto_convert</item>
-		</if>
+		</if> -->
 		<!-- Display Settings -->
 		<item level="0" text="Show Calendar in menu" description="Show Calendar in main information menu">config.plugins.calendar.menu</item>
 		<!-- Event System -->
@@ -26,6 +27,10 @@
 			<item level="0" text="Show holiday indicators" description="Show 'H' marker on holiday days">config.plugins.calendar.holidays_show_indicators</item>
 			<item level="0" text="Holiday color" description="Color for holiday days">config.plugins.calendar.holidays_color</item>
 		</if>
+		<!-- Export Settings -->
+		<item level="0" text="Export location" description="Choose where to save exported files">config.plugins.calendar.export_location</item>
+		<item level="0" text="Export subdirectory" description="Subdirectory name for exports (created automatically)">config.plugins.calendar.export_subdir</item>
+		<item level="0" text="Add timestamp to filename" description="Add date and time to exported filenames">config.plugins.calendar.export_add_timestamp</item>
 		<!-- Debug Settings -->
 		<item level="0" text="Enable debug mode" description="Show debug messages in console/log">config.plugins.calendar.debug_enabled</item>
 	</setup>
