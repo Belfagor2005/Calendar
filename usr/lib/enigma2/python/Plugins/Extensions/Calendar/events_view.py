@@ -6,82 +6,7 @@
 #  Created by: Lululla (based on Sirius0103)              #
 ###########################################################
 
-MAIN FEATURES:
-• Calendar with color-coded days (events/holidays/today)
-• Event system with smart notifications & audio alerts
-• Holiday import for 30+ countries with auto-coloring
-• vCard import/export with contact management
-• ICS/Google Calendar import with event management
-• Database format converter (Legacy ↔ vCard ↔ ICS)
-• Phone and email formatters for Calendar Planner
-• Maintains consistent formatting across import, display, and storage
-
-NEW IN v1.7:
-ICS EVENT MANAGEMENT - Browse, edit, delete imported events
-ICS EVENTS BROWSER - Similar to contacts browser with CH+/CH- navigation
-ICS EVENT EDITOR - Full-screen dialog like contact editor
-ICS FILE ARCHIVE - Store imported .ics files in /base/ics
-DUPLICATE DETECTION - Smart cache for fast duplicate checking
-ENHANCED SEARCH - Search in events titles, descriptions, dates
-
-KEY CONTROLS - MAIN:
-OK    - Main menu (Events/Holidays/Contacts/Import/Export/Converter)
-RED   - Previous month
-GREEN - Next month
-YELLOW- Previous day
-BLUE  - Next day
-0     - Event management
-MENU  - Configuration
-
-KEY CONTROLS - ICS BROWSER:
-OK    - Edit selected event
-RED   - Add new event
-GREEN - Edit event
-YELLOW- Delete event (single/all)
-BLUE  - Change sorting (date/title/category)
-CH+   - Next event
-CH-   - Previous event
-TEXT  - Search events
-
-ICS MANAGEMENT:
-• Import Google Calendar .ics files
-• Browse imported ICS files in archive
-• View and edit individual ICS events
-• Delete events (single or all)
-• Search events by title/description/date
-• Filter events by category/labels
-• Archive original .ics files for re-import
-
-DATABASE FORMATS:
-• Legacy format (text files)
-• vCard format (standard contacts)
-• ICS format (Google Calendar compatible)
-
-CONFIGURATION:
-• Database format (Legacy/vCard/ICS)
-• Auto-convert option
-• Export sorting preference
-• Event/holiday colors & indicators
-• Audio notification settings
-
-TECHNICAL:
-• Python 2.7+ compatible
-• Multi-threaded vCard/ICS import
-• Smart cache system for duplicates
-• File-based storage with backup
-• Configurable via setup.xml
-
-VERSION HISTORY:
-v1.0 - Basic calendar
-v1.1 - Event system
-v1.2 - Holiday import
-v1.3 - Code rewrite
-v1.4 - Bug fixes
-v1.5 - vCard import
-v1.6 - vCard export & converter
-v1.7 - ICS event management & browser
-
-Last Updated: 2025-12-27
+Last Updated: 2026-01-02
 Status: Stable with complete vCard & ICS support
 Credits: Sirius0103 (original), Lululla (modifications)
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -96,6 +21,7 @@ from Screens.Screen import Screen
 from enigma import getDesktop
 
 from . import _
+from .config_manager import get_default_event_time
 
 
 class EventsView(Screen):
@@ -132,11 +58,16 @@ class EventsView(Screen):
             <widget name="key_blue" position="595,545" size="150,25" font="Regular;20" halign="center" valign="center" />
         </screen>"""
 
-    def __init__(self, session, event_manager, date=None):
+    def __init__(self, session, event_manager, date=None, event=None, all_events=None, current_index=0):
         Screen.__init__(self, session)
         self.event_manager = event_manager
+        self.event = event
+        self.is_edit = event is not None
+        self.all_events = all_events or []
+        self.current_index = current_index
         self.date = date
         self.current_events = []
+        self.date = date
 
         self["date_label"] = Label("")
         self["events_list"] = MenuList([])
@@ -160,6 +91,10 @@ class EventsView(Screen):
                 "blue": self.close,
                 "up": self.up,
                 "down": self.down,
+                "pageUp": self.previous_page,
+                "pageDown": self.next_page,
+                "prevBouquet": self.previous_event,
+                "nextBouquet": self.next_event,
             }, -1
         )
 
@@ -182,8 +117,8 @@ class EventsView(Screen):
 
         # Prepare list for display
         event_list = []
-        for event in self.current_events:
-            time_str = event.time if event.time else "00:00"
+        for i, event in enumerate(self.current_events):
+            time_str = event.time if event.time else get_default_event_time()
             repeat_str = {
                 "none": "",
                 "daily": " [D]",
@@ -193,18 +128,30 @@ class EventsView(Screen):
             }.get(event.repeat, "")
 
             status = "✓" if event.enabled else "✗"
-            event_list.append("{0} {1} - {2}{3}".format(status, time_str, event.title, repeat_str))
+            event_list.append("{0}. {1} {2} - {3}{4}".format(
+                i + 1, status, time_str, event.title, repeat_str))
 
         self["events_list"].setList(event_list)
-
-        # Update details
         self.update_details()
 
     def update_details(self):
         """Update details of the selected event"""
         index = self["events_list"].getSelectedIndex()
+        total_events = len(self.current_events)
 
-        if 0 <= index < len(self.current_events):
+        if total_events > 0:
+            pos_text = "Event {0}/{1}".format(index + 1, total_events)
+            if self.date:
+                date_str = "{0}-{1:02d}-{2:02d}".format(
+                    self.date.year,
+                    self.date.month,
+                    self.date.day
+                )
+                self["date_label"].setText("Events for {0} ({1})".format(date_str, pos_text))
+            else:
+                self["date_label"].setText("Upcoming events (7 days) - {0}".format(pos_text))
+
+        if 0 <= index < total_events:
             event = self.current_events[index]
             details = []
 
@@ -228,13 +175,95 @@ class EventsView(Screen):
             self["event_details"].setText("")
 
     def up(self):
-        """Move selection up"""
-        self["events_list"].up()
+        """Move selection up - WITH WRAP AROUND"""
+        current_idx = self["events_list"].getSelectedIndex()
+        total_events = len(self.current_events)
+
+        if total_events == 0:
+            return
+
+        if current_idx > 0:
+            new_idx = current_idx - 1
+        else:
+            # Wrap around to last event
+            new_idx = total_events - 1
+
+        self["events_list"].moveToIndex(new_idx)
         self.update_details()
 
     def down(self):
-        """Move selection down"""
-        self["events_list"].down()
+        """Move selection down - WITH WRAP AROUND"""
+        current_idx = self["events_list"].getSelectedIndex()
+        total_events = len(self.current_events)
+
+        if total_events == 0:
+            return
+
+        if current_idx < total_events - 1:
+            new_idx = current_idx + 1
+        else:
+            # Wrap around to first event
+            new_idx = 0
+
+        self["events_list"].moveToIndex(new_idx)
+        self.update_details()
+
+    def previous_event(self):
+        """CH-: Move to previous event in list - WITH WRAP AROUND"""
+        current_idx = self["events_list"].getSelectedIndex()
+        total_events = len(self.current_events)
+
+        if total_events == 0:
+            return
+
+        if current_idx > 0:
+            new_idx = current_idx - 1
+        else:
+            # Wrap around to last event
+            new_idx = total_events - 1
+
+        self["events_list"].moveToIndex(new_idx)
+        self.update_details()
+
+    def next_event(self):
+        """CH+: Move to next event in list - WITH WRAP AROUND"""
+        current_idx = self["events_list"].getSelectedIndex()
+        total_events = len(self.current_events)
+
+        if total_events == 0:
+            return
+
+        if current_idx < total_events - 1:
+            new_idx = current_idx + 1
+        else:
+            # Wrap around to first event
+            new_idx = 0
+
+        self["events_list"].moveToIndex(new_idx)
+        self.update_details()
+
+    def previous_page(self):
+        """PAGE UP: Move up 5 events"""
+        current_idx = self["events_list"].getSelectedIndex()
+        total_events = len(self.current_events)
+
+        if total_events == 0:
+            return
+
+        new_idx = max(0, current_idx - 5)
+        self["events_list"].moveToIndex(new_idx)
+        self.update_details()
+
+    def next_page(self):
+        """PAGE DOWN: Move down 5 events"""
+        current_idx = self["events_list"].getSelectedIndex()
+        total_events = len(self.current_events)
+
+        if total_events == 0:
+            return
+
+        new_idx = min(total_events - 1, current_idx + 5)
+        self["events_list"].moveToIndex(new_idx)
         self.update_details()
 
     def add_event(self):
@@ -249,15 +278,35 @@ class EventsView(Screen):
             )
 
     def edit_event(self):
-        """Edit selected event"""
+        """Edit selected event - PASS ALL EVENTS, NOT JUST TODAY'S"""
         index = self["events_list"].getSelectedIndex()
         if 0 <= index < len(self.current_events):
             from .event_dialog import EventDialog
+
+            # Get ALL events from event manager
+            all_events = self.event_manager.events  # Tutti gli eventi
+
+            # Find the index of current event in all_events
+            current_event = self.current_events[index]
+            current_index_in_all = 0
+
+            for i, event in enumerate(all_events):
+                if event.id == current_event.id:
+                    current_index_in_all = i
+                    break
+            """
+            print("[EventsView.edit_event] Opening EventDialog with:")
+            print("  Current event:", current_event.title)
+            print("  Index in all_events:", current_index_in_all)
+            print("  Total events:", len(all_events))
+            """
             self.session.openWithCallback(
                 self.event_updated_callback,
                 EventDialog,
                 self.event_manager,
-                event=self.current_events[index]
+                event=current_event,
+                all_events=all_events,           # Passa TUTTI gli eventi
+                current_index=current_index_in_all  # Posizione nell'array completo
             )
 
     def delete_event(self):

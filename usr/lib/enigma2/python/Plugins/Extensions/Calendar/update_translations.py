@@ -17,6 +17,7 @@ import re
 import subprocess
 from xml.etree import ElementTree as ET
 
+
 PLUGIN_NAME = "Calendar"
 PLUGIN_DIR = os.path.dirname(os.path.abspath(__file__))
 LOCALE_DIR = os.path.join(PLUGIN_DIR, "locale")

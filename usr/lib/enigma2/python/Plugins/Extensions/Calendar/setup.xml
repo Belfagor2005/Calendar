@@ -1,16 +1,13 @@
 <setupxml>
 	<setup key="settingCalendar" title="Calendar Settings">
-		<!-- Database Format		-->
+		<!-- Database Format -->
 		<item level="0" text="Database format" description="Choose between legacy text files or standard vCard format">config.plugins.calendar.database_format</item>
-		<!--
- 		<if conditional="config.plugins.calendar.database_format.value == 'legacy'">
-			<item level="0" text="Auto-convert to vCard" description="Automatically convert legacy files to vCard format on first use">config.plugins.calendar.auto_convert</item>
-		</if> -->
-		<!-- Display Settings -->
-		<item level="0" text="Show Calendar in menu" description="Show Calendar in main information menu">config.plugins.calendar.menu</item>
 		<!-- Event System -->
 		<item level="0" text="Enable event system" description="Enable event management with date/time">config.plugins.calendar.events_enabled</item>
 		<if conditional="config.plugins.calendar.events_enabled.value">
+			<item level="0" text="Default event time" description="Default time for new events (HH:MM format)">config.plugins.calendar.default_event_time</item>
+
+			<item level="0" text="Default notification minutes" description="Default minutes before event to show notification">config.plugins.calendar.default_notify_minutes</item>
 			<item level="0" text="Enable notifications" description="Show notifications for upcoming events">config.plugins.calendar.events_notifications</item>
 			<if conditional="config.plugins.calendar.events_notifications.value">
 				<item level="0" text="Play sound with notifications" description="Play a sound when event notification appears">config.plugins.calendar.events_play_sound</item>
@@ -28,6 +25,7 @@
 			<item level="0" text="Holiday color" description="Color for holiday days">config.plugins.calendar.holidays_color</item>
 		</if>
 		<!-- Export Settings -->
+		<item level="0" text="Export format" description="Default format for exported files">config.plugins.calendar.export_format</item>
 		<item level="0" text="Export location" description="Choose where to save exported files">config.plugins.calendar.export_location</item>
 		<item level="0" text="Export subdirectory" description="Subdirectory name for exports (created automatically)">config.plugins.calendar.export_subdir</item>
 		<item level="0" text="Add timestamp to filename" description="Add date and time to exported filenames">config.plugins.calendar.export_add_timestamp</item>

@@ -7,16 +7,16 @@
 -->
 <keymap>
 	<map context="CalendarActions">
-		<key id="KEY_0" mapto="0" flags="m" />
-		<key id="KEY_1" mapto="1" flags="m" />
-		<key id="KEY_2" mapto="2" flags="m" />
-		<key id="KEY_3" mapto="3" flags="m" />
-		<key id="KEY_4" mapto="4" flags="m" />
-		<key id="KEY_5" mapto="5" flags="m" />
-		<key id="KEY_6" mapto="6" flags="m" />
-		<key id="KEY_7" mapto="7" flags="m" />
-		<key id="KEY_8" mapto="8" flags="m" />
-		<key id="KEY_9" mapto="9" flags="m" />
+		<key id="KEY_0" mapto="0" flags="m"/>
+		<key id="KEY_1" mapto="1" flags="m"/>
+		<key id="KEY_2" mapto="2" flags="m"/>
+		<key id="KEY_3" mapto="3" flags="m"/>
+		<key id="KEY_4" mapto="4" flags="m"/>
+		<key id="KEY_5" mapto="5" flags="m"/>
+		<key id="KEY_6" mapto="6" flags="m"/>
+		<key id="KEY_7" mapto="7" flags="m"/>
+		<key id="KEY_8" mapto="8" flags="m"/>
+		<key id="KEY_9" mapto="9" flags="m"/>
 		<key id="KEY_BLUE" mapto="blue" flags="b"/>
 		<key id="KEY_BLUE" mapto="blueRepeated" flags="l"/>
 		<key id="KEY_DOWN" mapto="down" flags="m"/>
@@ -33,8 +33,8 @@
 		<key id="KEY_LEFT" mapto="leftRepeated" flags="r"/>
 		<key id="KEY_MENU" mapto="menu" flags="m"/>
 		<key id="KEY_NEXT" mapto="moveDown" flags="m"/>
-		<key id="KEY_CHANNELUP" mapto="nextBouquet" flags="m" />
-		<key id="KEY_CHANNELDOWN" mapto="prevBouquet" flags="m" />
+		<key id="KEY_CHANNELUP" mapto="nextBouquet" flags="m"/>
+		<key id="KEY_CHANNELDOWN" mapto="prevBouquet" flags="m"/>
 		<key id="KEY_OK" mapto="ok" flags="m"/>
 		<key id="KEY_PAGEDOWN" mapto="pageDown" flags="b"/>
 		<key id="KEY_PAGEDOWN" mapto="pageDown_long" flags="l"/>
@@ -45,7 +45,7 @@
 		<key id="KEY_RED" mapto="redRepeated" flags="l"/>
 		<key id="KEY_RIGHT" mapto="right" flags="m"/>
 		<key id="KEY_RIGHT" mapto="rightRepeated" flags="r"/>
-		<key id="KEY_TEXT" mapto="text" flags="m" />
+		<key id="KEY_TEXT" mapto="text" flags="m"/>
 		<key id="KEY_UP" mapto="up" flags="m"/>
 		<key id="KEY_UP" mapto="upRepeated" flags="r"/>
 		<key id="KEY_UP" mapto="upUp" flags="b"/>

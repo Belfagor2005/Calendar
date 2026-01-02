@@ -6,82 +6,7 @@
 #  Created by: Lululla (based on Sirius0103)              #
 ###########################################################
 
-MAIN FEATURES:
-• Calendar with color-coded days (events/holidays/today)
-• Event system with smart notifications & audio alerts
-• Holiday import for 30+ countries with auto-coloring
-• vCard import/export with contact management
-• ICS/Google Calendar import with event management
-• Database format converter (Legacy ↔ vCard ↔ ICS)
-• Phone and email formatters for Calendar Planner
-• Maintains consistent formatting across import, display, and storage
-
-NEW IN v1.7:
-ICS EVENT MANAGEMENT - Browse, edit, delete imported events
-ICS EVENTS BROWSER - Similar to contacts browser with CH+/CH- navigation
-ICS EVENT EDITOR - Full-screen dialog like contact editor
-ICS FILE ARCHIVE - Store imported .ics files in /base/ics
-DUPLICATE DETECTION - Smart cache for fast duplicate checking
-ENHANCED SEARCH - Search in events titles, descriptions, dates
-
-KEY CONTROLS - MAIN:
-OK    - Main menu (Events/Holidays/Contacts/Import/Export/Converter)
-RED   - Previous month
-GREEN - Next month
-YELLOW- Previous day
-BLUE  - Next day
-0     - Event management
-MENU  - Configuration
-
-KEY CONTROLS - ICS BROWSER:
-OK    - Edit selected event
-RED   - Add new event
-GREEN - Edit event
-YELLOW- Delete event (single/all)
-BLUE  - Change sorting (date/title/category)
-CH+   - Next event
-CH-   - Previous event
-TEXT  - Search events
-
-ICS MANAGEMENT:
-• Import Google Calendar .ics files
-• Browse imported ICS files in archive
-• View and edit individual ICS events
-• Delete events (single or all)
-• Search events by title/description/date
-• Filter events by category/labels
-• Archive original .ics files for re-import
-
-DATABASE FORMATS:
-• Legacy format (text files)
-• vCard format (standard contacts)
-• ICS format (Google Calendar compatible)
-
-CONFIGURATION:
-• Database format (Legacy/vCard/ICS)
-• Auto-convert option
-• Export sorting preference
-• Event/holiday colors & indicators
-• Audio notification settings
-
-TECHNICAL:
-• Python 2.7+ compatible
-• Multi-threaded vCard/ICS import
-• Smart cache system for duplicates
-• File-based storage with backup
-• Configurable via setup.xml
-
-VERSION HISTORY:
-v1.0 - Basic calendar
-v1.1 - Event system
-v1.2 - Holiday import
-v1.3 - Code rewrite
-v1.4 - Bug fixes
-v1.5 - vCard import
-v1.6 - vCard export & converter
-v1.7 - ICS event management & browser
-
-Last Updated: 2025-12-27
+Last Updated: 2026-01-02
 Status: Stable with complete vCard & ICS support
 Credits: Sirius0103 (original), Lululla (modifications)
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -91,8 +16,8 @@ from __future__ import print_function
 import time
 import subprocess
 import shutil
-from os import makedirs
-from os.path import exists, dirname, join
+from os import makedirs, remove, rename, fsync, chmod
+from os.path import exists, dirname, join, getsize
 from json import load, dump
 from datetime import datetime, timedelta
 from enigma import eTimer, eServiceReference, eServiceCenter
@@ -101,12 +26,11 @@ from Screens.MessageBox import MessageBox
 from Screens.InfoBar import InfoBar
 
 from . import _, PLUGIN_PATH
+from .formatters import EVENTS_JSON, SOUNDS_DIR
+from .config_manager import get_debug, get_default_event_time, OLD_DEFAULT_EVENT_TIME, get_last_used_default_time
 
-DATA_PATH = join(PLUGIN_PATH, "base")
-EVENTS_JSON = join(DATA_PATH, "events.json")
-SOUNDS_DIR = join(PLUGIN_PATH, "sounds")
-
-DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
+global DEBUG
+DEBUG = get_debug()
 
 
 try:
@@ -373,6 +297,7 @@ class EventManager:
         except AttributeError:
             self.time_timer.callback.append(self.update_time)
 
+        self.converted_events_file = EVENTS_JSON + ".converted"
         self.load_events()
         self.start_monitoring()
 
@@ -381,21 +306,258 @@ class EventManager:
             init_notification_system(session)
 
     def load_events(self):
-        """Load events from JSON file"""
+        """Load events from JSON file - convert old times"""
         try:
-            if exists(self.events_file):
-                with open(self.events_file, 'r', encoding='utf-8') as f:
-                    data = load(f)
-                    self.events = [Event.from_dict(event_data) for event_data in data]
+            if DEBUG:
+                print("[EventManager] Loading events from: %s" % self.events_file)
+
+            if not exists(self.events_file):
                 if DEBUG:
-                    print("[EventManager] Loaded {0} events".format(len(self.events)))
-            else:
+                    print("[EventManager] No events file found")
                 self.events = []
+                return
+
+            current_default = get_default_event_time()
+            last_used = get_last_used_default_time()
+
+            if DEBUG:
+                print("[EventManager] Current default time: %s" % current_default)
+                print("[EventManager] Last used default time: %s" % last_used)
+                print("[EventManager] OLD_DEFAULT_EVENT_TIME: %s" % OLD_DEFAULT_EVENT_TIME)
+
+            # CHECK IF WE ALREADY CONVERTED THIS FILE
+            file_hash = self._get_file_hash()
+
+            if self._is_already_converted(file_hash, current_default):
                 if DEBUG:
-                    print("[EventManager] No event file found, creating empty list")
-        except Exception as e:
-            print("[EventManager] Error loading events: {0}".format(e))
+                    print("[EventManager] Events already converted to %s" % current_default)
+                # Load normally without conversion
+                with open(self.events_file, 'r') as f:
+                    data = load(f)
+                self.events = [Event.from_dict(item) for item in data]
+                return
+
+            with open(self.events_file, 'r') as f:
+                data = load(f)
+
+            if DEBUG:
+                print("[EventManager] Loaded %d events from file" % len(data))
+
+            converted_count = 0
             self.events = []
+            need_save = False
+
+            for item in data:
+                # Get time from event
+                event_time = item.get('time', current_default)
+                original_time = event_time
+
+                # Check if conversion is needed
+                convert_reason = None
+
+                # Convert from last used default time
+                if last_used and event_time == last_used and current_default != last_used:
+                    event_time = current_default
+                    converted_count += 1
+                    need_save = True
+                    convert_reason = "last_used_default"
+
+                # Convert from old hardcoded default (14:00)
+                elif event_time == OLD_DEFAULT_EVENT_TIME and current_default != OLD_DEFAULT_EVENT_TIME:
+                    event_time = current_default
+                    converted_count += 1
+                    need_save = True
+                    convert_reason = "old_hardcoded_default"
+
+                # Fix invalid time format
+                elif not event_time or len(event_time) != 5 or ':' not in event_time:
+                    event_time = current_default
+                    converted_count += 1
+                    need_save = True
+                    convert_reason = "invalid_format"
+
+                # Log conversion if debug enabled
+                if convert_reason and DEBUG:
+                    print("[EventManager] Converted '%s' from %s to %s (reason: %s)" % (
+                        item.get('title', 'N/A'), original_time, event_time, convert_reason))
+
+                # Create event object
+                event = create_event_from_data(
+                    title=item.get('title', ''),
+                    date=item.get('date', ''),
+                    event_time=event_time,
+                    description=item.get('description', ''),
+                    repeat=item.get('repeat', 'none'),
+                    notify_before=item.get('notify_before', 0),
+                    enabled=item.get('enabled', True)
+                )
+
+                event.id = item.get('id', int(time.time() * 1000))
+                event.created = item.get('created', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                event.labels = item.get('labels', [])
+
+                self.events.append(event)
+
+            if DEBUG:
+                print("[EventManager] Total events loaded: %d" % len(self.events))
+                print("[EventManager] Converted %d events" % converted_count)
+
+            # Save if any conversions were made
+            if need_save and converted_count > 0:
+                if DEBUG:
+                    print("[EventManager] Saving %d converted events to file" % converted_count)
+                self.save_events()
+
+                # MARK FILE AS CONVERTED
+                self._mark_as_converted(file_hash, current_default)
+
+                # Update last used default time after conversion
+                from .config_manager import update_last_used_default_time
+                update_last_used_default_time(current_default)
+                if DEBUG:
+                    print("[EventManager] Events updated to new default time: %s" % current_default)
+
+        except Exception as e:
+            print("[EventManager] Error loading events: %s" % str(e))
+            import traceback
+            traceback.print_exc()
+            self.events = []
+
+    def save_events(self):
+        """Save events to JSON file"""
+        try:
+            current_default = get_default_event_time()
+
+            if DEBUG:
+                print("[EventManager] Saving events, current default: %s" % current_default)
+                print("[EventManager] Number of events to save: %d" % len(self.events))
+
+            data = []
+            for event in self.events:
+                data.append({
+                    'id': event.id,
+                    'title': event.title,
+                    'description': event.description,
+                    'date': event.date,
+                    'time': event.time,  # Keep original time
+                    'repeat': event.repeat,
+                    'notify_before': event.notify_before,
+                    'enabled': event.enabled,
+                    'created': event.created,
+                    'labels': event.labels
+                })
+
+                if DEBUG:
+                    print("[EventManager]   Event '%s' time: %s" % (event.title, event.time))
+
+            # Create directory if missing
+            events_dir = dirname(self.events_file)
+            if not exists(events_dir):
+                try:
+                    makedirs(events_dir, 0o755)
+                    if DEBUG:
+                        print("[EventManager] Created directory: %s" % events_dir)
+                except Exception as e:
+                    print("[EventManager] Error creating directory: %s" % str(e))
+
+            # Save to temp file first
+            temp_file = self.events_file + ".tmp"
+            try:
+                with open(temp_file, 'w') as f:
+                    dump(data, f, indent=2)
+                    f.flush()
+                    fsync(f.fileno())
+
+                if DEBUG:
+                    print("[EventManager] Written to temp file: %s" % temp_file)
+
+                # Rename temp to final
+                if exists(self.events_file):
+                    remove(self.events_file)
+                rename(temp_file, self.events_file)
+
+                if DEBUG:
+                    print("[EventManager] File saved: %s" % self.events_file)
+                    print("[EventManager] Save completed successfully")
+
+                # Set file permissions
+                try:
+                    chmod(self.events_file, 0o644)
+                except Exception as e:
+                    print("[EventManager] Warning: Could not set permissions: %s" % str(e))
+                # Verify file
+                if DEBUG:
+                    if exists(self.events_file):
+                        file_size = getsize(self.events_file)
+                        print("[EventManager] File saved successfully, size:", file_size, "bytes")
+                        with open(self.events_file, 'r') as f:
+                            test_data = load(f)
+                            if test_data:
+                                print("[EventManager] First event time after save:", test_data[0].get('time', 'N/A'))
+                    else:
+                        print("[EventManager] ERROR: File not created!")
+            except Exception as e:
+                print("[EventManager] Error in file operations: %s" % str(e))
+                if exists(temp_file):
+                    remove(temp_file)
+                raise
+
+        except Exception as e:
+            print("[EventManager] Error saving events: %s" % str(e))
+            raise
+
+    def _get_file_hash(self):
+        """Get hash of events file for version tracking"""
+        try:
+            import hashlib
+            if not exists(self.events_file):
+                return "empty"
+
+            with open(self.events_file, 'rb') as f:
+                content = f.read()
+                return hashlib.md5(content).hexdigest()
+        except:
+            return "error"
+
+    def _is_already_converted(self, file_hash, target_time):
+        """Check if file was already converted to target time"""
+        try:
+            if not exists(self.converted_events_file):
+                return False
+
+            with open(self.converted_events_file, 'r') as f:
+                conversion_data = load(f)
+                if file_hash in conversion_data:
+                    return conversion_data[file_hash] == target_time
+        except:
+            pass
+
+    def _mark_as_converted(self, file_hash, target_time):
+        """Mark file as converted to specific time"""
+        try:
+            conversion_data = {}
+            if exists(self.converted_events_file):
+                try:
+                    with open(self.converted_events_file, 'r') as f:
+                        conversion_data = load(f)
+                except:
+                    conversion_data = {}
+
+            conversion_data[file_hash] = target_time
+            directory = dirname(self.converted_events_file)
+            if not exists(directory):
+                makedirs(directory)
+
+            with open(self.converted_events_file, 'w') as f:
+                dump(conversion_data, f, indent=2)
+
+            if DEBUG:
+                print("[EventManager] Successfully marked file as converted to: %s" % target_time)
+
+        except Exception as e:
+            print("[EventManager] Error marking conversion: %s" % str(e))
+            import traceback
+            traceback.print_exc()
 
     def start_monitoring(self):
         """Start event monitoring"""
@@ -408,22 +570,6 @@ class EventManager:
         """Stop event monitoring"""
         self.check_timer.stop()
         self.time_timer.stop()
-
-    def save_events(self):
-        """Save events to JSON file"""
-        try:
-            # Create directory if it doesn't exist
-            makedirs(dirname(self.events_file), exist_ok=True)
-
-            with open(self.events_file, 'w', encoding='utf-8') as f:
-                dump([event.to_dict() for event in self.events], f,
-                     indent=2, ensure_ascii=False)
-            if DEBUG:
-                print("[EventManager] Saved {0} events".format(len(self.events)))
-            return True
-        except Exception as e:
-            print("[EventManager] Error saving events: {0}".format(e))
-            return False
 
     def add_event(self, event):
         """Add a new event"""
@@ -536,6 +682,30 @@ class EventManager:
         # Sort by date/time
         result.sort(key=lambda x: x[0])
         return result
+
+    def convert_all_events_time(self, new_time=None):
+        """Force convert all events to new time"""
+        if new_time is None:
+            new_time = get_default_event_time()
+
+        if DEBUG:
+            print("[EventManager] FORCE converting all events to: %s" % new_time)
+
+        converted = 0
+        for event in self.events:
+            old_time = event.time
+            event.time = new_time
+            converted += 1
+            if DEBUG:
+                print("[EventManager]   %s: %s -> %s" % (event.title, old_time, new_time))
+
+        if converted > 0:
+            self.save_events()
+            # Update conversion tracking
+            file_hash = self._get_file_hash()
+            self._mark_as_converted(file_hash, new_time)
+
+        return converted
 
     def check_events(self):
         """Check events and show notifications if needed"""
@@ -773,7 +943,7 @@ class EventManager:
         key_parts = [
             norm_title,
             event.date if event.date else "",
-            event.time if event.time else "00:00"
+            event.time if event.time else get_default_event_time()
         ]
 
         return "|".join(key_parts)
@@ -887,7 +1057,7 @@ class EventManager:
                         self.sound_stop_timer = sound_stop_timer
 
             # Build message
-            time_str = event.time[:5] if event.time else "00:00"
+            time_str = event.time[:5] if event.time else get_default_event_time()
             message = "Event: {0}\nTime: {1}".format(event.title, time_str)
 
             if event.description:
@@ -1150,7 +1320,8 @@ class EventManager:
                     infoBarInstance.session.nav.stopService()
                     # Start playing the audio
                     infoBarInstance.session.nav.playService(service_ref)
-                    print("[EventManager] Playing audio via session.nav.playService")
+                    if DEBUG:
+                        print("[EventManager] Playing audio via session.nav.playService")
 
                     # Monitor playback to auto-remove when done
                     self._monitor_playback(infoBarInstance.session.nav, sound_path)
@@ -1244,7 +1415,7 @@ class EventManager:
 
 
 # Helper functions for Calendar integration
-def create_event_from_data(title, date, event_time="00:00", description="",
+def create_event_from_data(title, date, event_time=get_default_event_time(), description="",
                            repeat="none", notify_before=5, enabled=True):
     """Create new event from provided data"""
     return Event(

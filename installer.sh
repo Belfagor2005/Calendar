@@ -1,8 +1,8 @@
 #!/bin/bash
 ## setup command=wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/Calendar/main/installer.sh -O - | /bin/bash
 
-version='1.7'
-changelog="ICS EVENT MANAGEMENT\nICS EVENTS BROWSER\nICS EVENT EDITOR\nICS FILE ARCHIVE\nDUPLICATE DETECTION\nENHANCED SEARCH"
+version='1.8'
+changelog="UNIVERSAL WRAP-AROUND NAVIGATION \nINTELLIGENT EVENT TIME CONVERSION\nREAL-TIME POSITION DISPLAY \nJUMP TO TODAY\nAUTO-SAVE NAVIGATION\nUNIFIED INTERFACE\nADVANCED DUPLICATE DETECTION"
 
 TMPPATH=/tmp/Calendar-install
 FILEPATH=/tmp/Calendar-main.tar.gz

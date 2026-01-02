@@ -1,5 +1,5 @@
 ![](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)
-[![Version](https://img.shields.io/badge/Version-1.7-blue.svg)](https://github.com/Belfagor2005/Calendar)
+[![Version](https://img.shields.io/badge/Version-1.8-blue.svg)](https://github.com/Belfagor2005/Calendar)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-2.7%2B%203.X%2B-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -27,7 +27,8 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Event Settings**: Configurable notification duration, colors, and display options
 - **Automatic Monitoring**: Background event checking every 30 seconds
 - **Past Event Cleanup**: Automatic skipping of old non-recurring events to improve performance
-
+- **Intelligent Event Time Conversion**: Auto-converts existing events when default time changes
+- **Universal Navigation**: CH+/CH- wrap-around navigation in all event screens
 ### vCard Contact Management System
 - **vCard Import/Export**: Import thousands of contacts from .vcf files with progress tracking
 - **Contact Management**: Full contact database with birthday tracking and age calculation
@@ -42,6 +43,7 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Database format converter**: (Legacy ↔ vCard)
 - **Duplicate detection**: during import
 - **vCard export**: to `/tmp/calendar.vcf`
+- **Universal Navigation**: CH+/CH- wrap-around navigation in contact screens
 
 ### ICS Calendar Import System
 - **ICS Event Management**: Browse, edit, delete imported events from .ics files
@@ -50,6 +52,8 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **ICS File Archive**: Store imported .ics files in `/base/ics` directory
 - **Duplicate Detection**: Smart cache for fast duplicate checking of imported events
 - **Enhanced Search**: Search in events titles, descriptions, dates
+- **Universal Navigation**: CH+/CH- wrap-around navigation in ICS screens
+
 ### Holiday Import & Management System
 - **Automatic Coloring**: Holiday days are automatically colored on the calendar
 - **Country Support**: Italy, Germany, France, UK, USA, Spain, and many more
@@ -71,12 +75,108 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Service Restoration**: Intelligently restores previous TV/radio service after audio playback
 - **Configurable Sound**: Choose sound type or disable audio completely in settings
 
+### Universal Navigation System
+- **Wrap-around Navigation**: CH+/CH- navigation works in ALL screens (EventsView, EventDialog, ContactsView, ICSEventsView, ICSEventDialog, BirthdayDialog)
+- **Real-time Position Display**: Shows current position like "Edit Event (3/15)" or "Contacts: 5/20"
+- **Jump to Today**: BLUE button jumps to today's event from anywhere in the system
+- **Return to Start**: MENU button returns to the start position where navigation began
+- **Auto-save Navigation**: Changes automatically saved when navigating with CH+/CH-
+- **Page Navigation**: PAGE UP/DOWN to skip 5 items at a time in long lists
+- **Search Function**: TEXT button opens search dialog in all views
+- **Sorting Options**: BLUE button changes sorting (dates/title/category) where applicable
+- **Navigation Through Entire Database**: Not just today's events, but the ENTIRE event database
+
+## 🎮 Key Controls
+
+### Main Calendar
+- **OK**: Main menu (Events/Holidays/Contacts/Import/Export/Converter)
+- **RED**: Previous month
+- **GREEN**: Next month
+- **YELLOW**: Previous day
+- **BLUE**: Next day
+- **0**: Event management
+- **LEFT/RIGHT**: Previous/Next day
+- **UP/DOWN**: Previous/Next month
+- **MENU**: Configuration
+- **INFO/EPG**: About dialog
+
+### Universal Navigation Controls
+- **CH+**: Next item (wrap-around)
+- **CH-**: Previous item (wrap-around)
+- **UP/DOWN**: Standard navigation (wrap-around)
+- **PAGE UP/DOWN**: Jump 5 items
+- **BLUE**: Jump to TODAY'S item
+- **MENU**: Return to START position
+- **TEXT**: Open search dialog
+- **OK**: Edit selected item
+- **GREEN**: Save and close
+- **RED**: Cancel
+- **YELLOW**: Delete (when editing)
+
+### Event Dialog
+- **OK**: Edit current field
+- **RED**: Cancel
+- **GREEN**: Save event
+- **YELLOW**: Delete event (edit mode only)
+- **UP/DOWN**: Navigate between fields
+- **LEFT/RIGHT**: Change selection options
+
+### Events View
+- **OK**: Edit selected event
+- **RED**: Add new event
+- **GREEN**: Edit selected event
+- **YELLOW**: Delete selected event
+- **BLUE**: Back to calendar
+- **UP/DOWN**: Navigate event list
+
+### ICS Browser Specific
+- **OK**: Edit selected event
+- **RED**: Add new event
+- **GREEN**: Edit event
+- **YELLOW**: Delete event (single/all)
+- **BLUE**: Change sorting (date/title/category)
+- **CH+**: Next event
+- **CH-**: Previous event
+- **TEXT**: Search events
+
+### Contacts View
+- **OK**: Edit selected contact
+- **RED**: Add new contact
+- **GREEN**: Edit selected contact
+- **YELLOW**: Delete selected contact
+- **BLUE**: Toggle sort mode (Name/Birthday/Category)
+- **UP/DOWN**: Navigate contact list
+
+### vCard Import/Export
+- **OK**: Select file
+- **RED**: Cancel / Close
+- **GREEN**: Import selected file / Start export
+- **YELLOW**: View file info (size, contacts)
+- **BLUE**: Refresh file list / Toggle sort
+
+
+### Database Converter
+- **OK**: Show statistics
+- **RED**: Cancel
+- **GREEN**: Convert to vCard format
+- **BLUE**: Convert to legacy format
+
+### Birthday Dialog (Contact Editor)
+- **OK**: Edit current highlighted field
+- **RED**: Cancel
+- **GREEN**: Save contact
+- **YELLOW**: Next field
+- **BLUE**: Delete contact / Clear all fields
+- **UP/DOWN**: Navigate between fields
+- **Field Highlighting**: Current field highlighted with color background
+
 ## 📦 Installation
 
-1. Copy the entire `Calendar` plugin folder to your Enigma2 plugins directory:
-   ```
-   /usr/lib/enigma2/python/Plugins/Extensions/Calendar/
-   ```
+1. Instalaltion Mode: Telnet/Wget:
+
+```bash
+wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/Calendar/main/installer.sh -O - | /bin/bash
+```
 
 2. Ensure all required files are present:
    - `plugin.py` - Main plugin file
@@ -124,6 +224,14 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
   - **Cleanup Past Events**: Remove old non-recurring events
   - **Exit**: Close the plugin
 
+### Universal Navigation System
+- **CH+/CH-**: Navigate through items in any screen (wrap-around)
+- **BLUE**: Jump directly to today's event from anywhere
+- **MENU**: Return to the starting position where you began navigation
+- **PAGE UP/DOWN**: Skip 5 items at a time in long lists
+- **TEXT**: Open search dialog to find specific items
+- **Real-time Position**: Always see your current position (e.g., "Event 3/15")
+
 ### Event Management
 - Press **0** (zero key) from main calendar to access event management
 - **Add Event**: Create new events with date, time, and notification settings
@@ -135,6 +243,7 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
   - Weekly recurring events (same weekday)
   - Monthly recurring events (same day of month)
   - Yearly recurring events (same date annually)
+- **Navigation**: Use CH+/CH- to navigate through all events in the database
 
 ### Contact Management
 - **Contacts Menu**: Access from main menu to manage contacts
@@ -145,6 +254,22 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Search Contacts**: Search by name, phone, email, notes
 - **Birthday Tracking**: Contacts with birthdays automatically shown on calendar
 - **vCard Import**: Import thousands of contacts from .vcf files
+- **Navigation**: Use CH+/CH- to navigate through all contacts
+
+### ICS Event Management
+- **Import ICS**: Import events from Google Calendar .ics files
+- **Browse ICS Files**: View imported ICS files in archive
+- **Edit ICS Events**: Modify individual ICS events
+- **Delete Events**: Remove single or all ICS events
+- **Search**: Search events by title, description, date
+- **Filter**: Filter events by category/labels
+- **Navigation**: Use CH+/CH- to navigate through all ICS events
+
+### Event Time Conversion System
+- **Automatic Conversion**: When you change the default event time in settings, existing events are automatically converted
+- **Time Tracking**: System tracks the last configured default time
+- **Smart Conversion**: Converts events from both old fixed default (14:00) and last configured time
+- **Calendar Refresh**: Calendar automatically repaints with converted event times
 
 ### vCard Import Process
 1. Select **Import vCard** from main menu
@@ -178,18 +303,29 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 ## 📁 File Structure
 
 ```
-Calendar/
+★ Calendar/
 ├── plugin.py                      # Main plugin entry point
+├── config_manager.py              # Setup plugin Options
 ├── event_manager.py               # Event management core
 ├── event_dialog.py                # Event add/edit interface
 ├── events_view.py                 # Events browser
 ├── notification_system.py         # Notification display system
 ├── holidays.py                    # Holiday import and management
 ├── vcard_importer.py              # vCard import system
+├── vcf_importer.py                # vCard file importer
 ├── birthday_manager.py            # Contact management core
 ├── contacts_view.py               # Contacts browser
 ├── birthday_dialog.py             # Contact add/edit dialog
+├── formatters.py                  # Plugin utils
+├── ics_browser.py                 # Browser ICS Files
+├── ics_events_view.py             # ICS Events browser
+├── ics_event_dialog.py            # ICS Event editor
+├── ics_importer.py                # ICS import system
+├── ics_manager.py                 # ICS management core
 ├── database_converter.py          # Database format converter
+├── duplicate_checker.py           # Wrapper for check duplicate format converter
+├── update_manager.py              # Update management
+├── updater.py                     # Plugin updater
 ├── sounds/                        # Audio notification files
 │   ├── beep.wav                   # Short beep (low priority)
 │   ├── beep.mp3                   # MP3 version
@@ -198,10 +334,14 @@ Calendar/
 │   ├── alert.wav                  # Alert sound (high priority)
 │   └── alert.mp3                  # MP3 version
 ├── buttons/                       # UI button images
-├── base/                          # Data storage
-│   └── contacts/                  # Contact storage (.txt files)
-├── setup.xml                      # Plugin setup configuration
-└── events.json                    # Event database (JSON format)
+├── base/                          # Data storage & events.json
+│   ├── events.json                # Event database (JSON format)
+│   ├── contacts/                  # Contact storage
+│   ├── holidays/                  # holidays storage
+│   ├── vcards/                    # vcards storage
+│   └── ics/                       # ICS file archive
+├── keymap.xml                     # Plugin keymap configuration
+└── setup.xml                      # Plugin setup configuration                    
 ```
 
 ### Data File Formats
@@ -269,6 +409,7 @@ The plugin includes configuration options accessible through:
 - **Notifications**: Toggle event notifications
 - **Notification Duration**: Set how long notifications appear (3-15 seconds)
 - **Default Notification Time**: Minutes before event to notify (0-60)
+- **Default Event Time**: Default time for new events with auto-conversion
 - **Event Color**: Color for days with events on calendar
 - **Show Event Indicators**: Toggle visual indicators on calendar
 - **Holiday System**: Enable/disable holiday coloring
@@ -305,8 +446,15 @@ The plugin includes configuration options accessible through:
 - **File-based Storage**: Each contact stored in separate .txt file
 - **Automatic Backups**: Before database format conversion
 
-### Event Notification Logic
-- Background monitoring every 30 seconds
+### Event Management
+- **Background monitoring**: Every 30 seconds
+- **Intelligent Time Conversion**: Auto-converts events when default time changes
+- **Time Tracking**: Tracks last configured default time (LAST_USED_DEFAULT_TIME)
+- **Universal Navigation**: Wrap-around CH+/CH- navigation across all event screens
+- **Position Tracking**: Real-time position display in all interfaces
+- **Auto-save Navigation**: Automatic save when navigating between items
+
+### Notification Logic
 - Notifications shown within configurable time window
 - Each event notified only once per occurrence
 - Automatic skipping of past non-recurring events
@@ -331,11 +479,11 @@ The plugin includes configuration options accessible through:
 2. **BirthdayManager**: Contact management with vCard import/export
 3. **VCardImporter**: vCard file parser and importer with progress tracking
 4. **HolidaysManager**: Holiday import, caching, and display management
-5. **EventDialog**: User interface for event creation/editing
+5. **EventDialog**: User interface for event creation/editing with universal navigation
 6. **BirthdayDialog**: Contact add/edit interface with field highlighting
-7. **ContactsView**: Contact browser with sorting and search
+7. **ContactsView**: Contact browser with sorting, search, and universal navigation
 8. **DatabaseConverter**: Format conversion between Legacy and vCard
-9. **EventsView**: Browser for viewing and managing events
+9. **EventsView**: Browser for viewing and managing events with universal navigation
 10. **HolidaysImportScreen**: Interface for importing holidays by country
 11. **NotificationSystem**: Display system for visual alerts
 12. **AudioEngine**: Integrated sound playback using Enigma2 services
@@ -345,67 +493,6 @@ The plugin includes configuration options accessible through:
 - Enigma2 components: `eTimer`, `ActionMap`, `Screen`, `eServiceReference`
 - Custom notification system for visual alerts
 - Audio files (included in repository)
-
-## 🎮 Key Controls
-
-### Main Calendar
-- **OK**: Open main menu
-- **RED**: Previous month
-- **GREEN**: Next month
-- **YELLOW**: Previous day
-- **BLUE**: Next day
-- **0 (ZERO)**: Open event management
-- **LEFT/RIGHT**: Previous/Next day
-- **UP/DOWN**: Previous/Next month
-- **MENU**: Configuration
-- **INFO/EPG**: About dialog
-
-### Event Dialog
-- **OK**: Edit current field
-- **RED**: Cancel
-- **GREEN**: Save event
-- **YELLOW**: Delete event (edit mode only)
-- **UP/DOWN**: Navigate between fields
-- **LEFT/RIGHT**: Change selection options
-
-### Events View
-- **OK**: Edit selected event
-- **RED**: Add new event
-- **GREEN**: Edit selected event
-- **YELLOW**: Delete selected event
-- **BLUE**: Back to calendar
-- **UP/DOWN**: Navigate event list
-
-### Contacts View
-- **OK**: Edit selected contact
-- **RED**: Add new contact
-- **GREEN**: Edit selected contact
-- **YELLOW**: Delete selected contact
-- **BLUE**: Toggle sort mode (Name/Birthday/Category)
-- **UP/DOWN**: Navigate contact list
-
-### vCard Import/Export
-- **OK**: Select file
-- **RED**: Cancel / Close
-- **GREEN**: Import selected file / Start export
-- **YELLOW**: View file info (size, contacts)
-- **BLUE**: Refresh file list / Toggle sort
-
-
-### Database Converter
-- **OK**: Show statistics
-- **RED**: Cancel
-- **GREEN**: Convert to vCard format
-- **BLUE**: Convert to legacy format
-
-### Birthday Dialog (Contact Editor)
-- **OK**: Edit current highlighted field
-- **RED**: Cancel
-- **GREEN**: Save contact
-- **YELLOW**: Next field
-- **BLUE**: Delete contact / Clear all fields
-- **UP/DOWN**: Navigate between fields
-- **Field Highlighting**: Current field highlighted with color background
 
 ## 🐛 Troubleshooting
 ### Common Issues
@@ -458,6 +545,11 @@ The plugin includes configuration options accessible through:
    - Ensure all skin files are present
    - Check for Python errors in debug log
 
+10. **Navigation not working**:
+    - Verify CH+/CH- buttons are configured in your remote
+    - Check that universal navigation is enabled in all dialog classes
+    - Ensure position tracking variables are initialized
+
 ### Debug Mode
 Enable debug messages by checking the plugin logs:
 ```
@@ -475,6 +567,9 @@ tail -f /tmp/enigma2.log | grep Holidays
 
 # Audio system debug
 tail -f /tmp/enigma2.log | grep "Playing\|No sound file\|Audio"
+
+# Navigation debug
+tail -f /tmp/enigma2.log | grep "CH+\|CH-\|Navigation\|Position"
 
 # General plugin debug
 tail -f /tmp/enigma2.log | grep Calendar
@@ -515,21 +610,20 @@ tail -f /tmp/enigma2.log | grep Calendar
 - Enhanced navigation and user interface
 
 ### v1.5 
-- **NEW**: vCard import/export system for contacts
-- **NEW**: Complete contact management with birthday tracking
-- **NEW**: Contact browser with sorting by name, birthday, category
-- **NEW**: Multi-threaded vCard import with progress tracking
-- **NEW**: Database format converter (Legacy ↔ vCard)
-- **NEW**: Search function for contacts
-- **NEW**: Duplicate detection during vCard import
-- **NEW**: Birthday dialog with field highlighting
-- **NEW**: Contact storage in vCard-like format
-- **Improved**: Memory management for large contact imports
-- **Enhanced**: User interface for contact management
-- **Added**: Automatic backups before database conversion
-- **Fixed**: Various performance improvements and bug fixes
+- **vCard import/export system for contacts**
+- Complete contact management with birthday tracking
+- Contact browser with sorting by name, birthday, category
+- Multi-threaded vCard import with progress tracking
+- Database format converter (Legacy ↔ vCard)
+- Search function for contacts
+- Duplicate detection during vCard import
+- Birthday dialog with field highlighting
+- Contact storage in vCard-like format
+- Memory management for large contact imports
+- Enhanced user interface for contact management
+- Automatic backups before database conversion
 
-## v1.6
+### v1.6
 - **vCard Export**: Export contacts to `/tmp/calendar.vcf`
 - **Database Converter**: UI for format conversion
 - **Auto-conversion**: Automatic format conversion option
@@ -538,12 +632,23 @@ tail -f /tmp/enigma2.log | grep Calendar
 - **Performance**: Faster contact deduplication with cache
 - **UI**: Better progress bars and completion messages
 - **Config**: New database format settings
-- **Fixes**: Various bug fixes and stability improvements
-- **Fixed**: Database converter attribute error
-- **Fixed**: vCard export "no contacts" error
-- **Fixed**: Holiday cache refresh after config changes
-- **Fixed**: Import progress Cancel/Close button
-- **Fixed**: Contact sorting consistency
+
+### v1.7
+- **ICS Event Management**: Browse, edit, delete imported events
+- **ICS Events Browser**: Similar to contacts browser with navigation
+- **ICS Event Editor**: Full-screen dialog like contact editor
+- **ICS File Archive**: Store imported .ics files in `/base/ics`
+- **Duplicate Detection**: Smart cache for fast duplicate checking
+- **Enhanced Search**: Search in events titles, descriptions, dates
+
+### v1.8
+- **Universal Navigation System**: CH+/CH- wrap-around navigation in ALL screens
+- **Intelligent Event Time Conversion**: Auto-converts events when default time changes
+- **Real-time Position Display**: Shows current position in all interfaces
+- **Jump to Today**: BLUE button jumps to today's event from anywhere
+- **Auto-save Navigation**: Changes saved when navigating with CH+/CH-
+- **Page Navigation**: PAGE UP/DOWN to skip 5 items
+- **Unified Interface**: Same navigation across all dialogs and browsers
 
 ## 🤝 Contributing
 Contributions are welcome! Please ensure:
@@ -553,6 +658,7 @@ Contributions are welcome! Please ensure:
 - Audio files follow naming convention: `beep`, `notify`, `alert` with `.wav` or `.mp3` extension
 - Holiday data follows JSON Lines format compatible with Holidata.net
 - vCard import supports standard vCard 2.1/3.0 format
+- Navigation system maintains wrap-around functionality across all screens
 
 ## 📄 License
 
@@ -565,6 +671,7 @@ This plugin is open-source software. See the LICENSE file for details.
 - **vCard System & Contact Management**: Lululla
 - **Audio Notification System**: Integrated by Lululla
 - **Holiday Import System**: Integrated by Lululla
+- **ICS Import & Universal Navigation**: Lululla
 - **Homepage**: www.linuxsat-support.com - www.corvoboys.org - www.gisclub.tv
 
 ---
@@ -574,4 +681,5 @@ This plugin is open-source software. See the LICENSE file for details.
 *Holiday import requires internet connection to access Holidata.net*
 *vCard import requires .vcf or .vcard files in standard vCard format*
 *Contact management requires sufficient disk space for contact storage*
+*Universal navigation requires CH+/CH- buttons on your remote control*
 ```

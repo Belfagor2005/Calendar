@@ -6,98 +6,27 @@
 #  Created by: Lululla (based on Sirius0103)              #
 ###########################################################
 
-MAIN FEATURES:
-• Calendar with color-coded days (events/holidays/today)
-• Event system with smart notifications & audio alerts
-• Holiday import for 30+ countries with auto-coloring
-• vCard import/export with contact management
-• ICS/Google Calendar import with event management
-• Database format converter (Legacy ↔ vCard ↔ ICS)
-• Phone and email formatters for Calendar Planner
-• Maintains consistent formatting across import, display, and storage
-
-NEW IN v1.7:
-ICS EVENT MANAGEMENT - Browse, edit, delete imported events
-ICS EVENTS BROWSER - Similar to contacts browser with CH+/CH- navigation
-ICS EVENT EDITOR - Full-screen dialog like contact editor
-ICS FILE ARCHIVE - Store imported .ics files in /base/ics
-DUPLICATE DETECTION - Smart cache for fast duplicate checking
-ENHANCED SEARCH - Search in events titles, descriptions, dates
-
-KEY CONTROLS - MAIN:
-OK    - Main menu (Events/Holidays/Contacts/Import/Export/Converter)
-RED   - Previous month
-GREEN - Next month
-YELLOW- Previous day
-BLUE  - Next day
-0     - Event management
-MENU  - Configuration
-
-KEY CONTROLS - ICS BROWSER:
-OK    - Edit selected event
-RED   - Add new event
-GREEN - Edit event
-YELLOW- Delete event (single/all)
-BLUE  - Change sorting (date/title/category)
-CH+   - Next event
-CH-   - Previous event
-TEXT  - Search events
-
-ICS MANAGEMENT:
-• Import Google Calendar .ics files
-• Browse imported ICS files in archive
-• View and edit individual ICS events
-• Delete events (single or all)
-• Search events by title/description/date
-• Filter events by category/labels
-• Archive original .ics files for re-import
-
-DATABASE FORMATS:
-• Legacy format (text files)
-• vCard format (standard contacts)
-• ICS format (Google Calendar compatible)
-
-CONFIGURATION:
-• Database format (Legacy/vCard/ICS)
-• Auto-convert option
-• Export sorting preference
-• Event/holiday colors & indicators
-• Audio notification settings
-
-TECHNICAL:
-• Python 2.7+ compatible
-• Multi-threaded vCard/ICS import
-• Smart cache system for duplicates
-• File-based storage with backup
-• Configurable via setup.xml
-
-VERSION HISTORY:
-v1.0 - Basic calendar
-v1.1 - Event system
-v1.2 - Holiday import
-v1.3 - Code rewrite
-v1.4 - Bug fixes
-v1.5 - vCard import
-v1.6 - vCard export & converter
-v1.7 - ICS event management & browser
-
-Last Updated: 2025-12-27
+Last Updated: 2026-01-02
 Status: Stable with complete vCard & ICS support
 Credits: Sirius0103 (original), Lululla (modifications)
 Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """
 from __future__ import print_function
+
+from enigma import getDesktop
 from Screens.Screen import Screen
-from skin import parseColor
+from Screens.MessageBox import MessageBox
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Components.ActionMap import ActionMap
 from Components.Label import Label
-from Screens.MessageBox import MessageBox
-from enigma import getDesktop
+from skin import parseColor
 
 from . import _
+from .config_manager import get_default_event_time, get_debug
 from .event_manager import create_event_from_data
+
+DEBUG = get_debug()
 
 
 class EventDialog(Screen):
@@ -127,16 +56,20 @@ class EventDialog(Screen):
             <widget name="description_label" position="20,380" size="960,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="description_value" position="20,430" size="960,200" font="Regular;28" backgroundColor="#00808080" />
 
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="50,690" size="230,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="401,693" size="230,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="751,691" size="230,10" alphatest="blend" />
-            <widget name="key_red" position="51,650" size="230,40" font="Regular;28" halign="center" />
-            <widget name="key_green" position="400,650" size="230,40" font="Regular;28" halign="center" />
-            <widget name="key_yellow" position="750,650" size="230,40" font="Regular;28" halign="center" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="20,690" size="230,10" alphatest="blend" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="266,690" size="230,10" alphatest="blend" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="506,690" size="230,10" alphatest="blend" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="747,690" size="230,10" alphatest="blend" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="887,314" size="77,36" alphatest="on" zPosition="5" />
+
+            <widget name="key_red" position="21,650" size="230,40" font="Regular;28" halign="center" />
+            <widget name="key_green" position="265,650" size="230,40" font="Regular;28" halign="center" />
+            <widget name="key_yellow" position="505,650" size="230,40" font="Regular;28" halign="center" />
+            <widget name="key_blue" position="749,650" size="230,40" font="Regular;28" halign="center" />
         </screen>"""
     else:
         skin = """
-        <screen name="EventDialog" position="center,center" size="800,600" title="Event Management" flags="wfNoBorder">
+        <screen name="EventDialog" position="center,center" size="850,600" title="Event Management" flags="wfNoBorder">
             <widget name="title_label" position="20,20" size="760,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="title_value" position="20,55" size="760,35" font="Regular;20" backgroundColor="#00808080" />
 
@@ -155,15 +88,19 @@ class EventDialog(Screen):
             <widget name="enabled_label" position="280,200" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
             <widget name="enabled_value" position="280,235" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="description_label" position="20,290" size="760,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
-            <widget name="description_value" position="20,325" size="760,200" font="Regular;20" backgroundColor="#00808080" />
+            <widget name="description_label" position="20,290" size="815,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="description_value" position="20,325" size="815,200" font="Regular;20" backgroundColor="#00808080" />
 
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="45,586" size="200,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="308,587" size="200,10" alphatest="blend" />
-            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="568,587" size="200,10" alphatest="blend" />
-            <widget name="key_red" position="50,550" size="200,35" font="Regular;24" halign="center" />
-            <widget name="key_green" position="310,550" size="200,35" font="Regular;24" halign="center" />
-            <widget name="key_yellow" position="570,550" size="200,35" font="Regular;24" halign="center" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="10,586" size="200,10" alphatest="blend" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="223,587" size="200,10" alphatest="blend" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_yellow.png" position="430,587" size="200,10" alphatest="blend" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_blue.png" position="640,587" size="200,10" alphatest="blend" />
+            <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_menu.png" position="719,242" size="50,24" alphatest="on" zPosition="5" scale="1" />
+
+            <widget name="key_red" position="10,550" size="200,35" font="Regular;24" halign="center" />
+            <widget name="key_green" position="222,550" size="200,35" font="Regular;24" halign="center" />
+            <widget name="key_yellow" position="430,550" size="200,35" font="Regular;24" halign="center" />
+            <widget name="key_blue" position="640,550" size="200,35" font="Regular;20" halign="center" />
         </screen>"""
 
     def action_mapped(self, action):
@@ -188,11 +125,47 @@ class EventDialog(Screen):
         elif action == "right":
             self.next_option()
 
-    def __init__(self, session, event_manager, date=None, event=None):
+    def __init__(self, session, event_manager, date=None, event=None, all_events=None, current_index=0):
         Screen.__init__(self, session)
+        if DEBUG:
+            print("[EventDialog DEBUG]")
+            print("[EventDialog DEBUG] INIT called")
+            print("  all_events passed:", len(all_events) if all_events else 0)
+            print("  current_index:", current_index)
+            print("  event:", event.title if event else "None")
+            print("  Session:", session)
+            print("  Dialog active:", self.execing)
+            print("  Dialog shown:", self.shown)
+
+        if all_events:
+            title_text = _("Edit Event ({0}/{1})").format(current_index + 1, len(all_events))
+            self.setTitle(title_text)
+            if "title_label" in self:
+                self["title_label"].setText(title_text)
+        else:
+            self.setTitle(_("Edit Event"))
+            if "title_label" in self:
+                self["title_label"].setText(_("Edit Event"))
+
         self.event_manager = event_manager
         self.event = event
+        self.all_events = all_events or []
+        self.current_index = current_index
         self.is_edit = event is not None
+
+        self.initial_event_index = current_index
+        if DEBUG:
+            print("[EventDialog] Initial event index:", current_index)
+        self.today_event_index = -1
+        from datetime import datetime
+        today = datetime.now().strftime("%Y-%m-%d")
+
+        for i, ev in enumerate(self.all_events):
+            if ev.date == today:
+                self.today_event_index = i
+                if DEBUG:
+                    print("[EventDialog] Today's event found at index:", i)
+                break
 
         # Configuration
         self.repeat_options = [
@@ -218,7 +191,7 @@ class EventDialog(Screen):
         self["date_label"] = Label(_("Date:"))
         self["date_value"] = Label(date or "")
         self["time_label"] = Label(_("Time:"))
-        self["time_value"] = Label("00:00")
+        self["time_value"] = Label(get_default_event_time())
         self["repeat_label"] = Label(_("Repeat:"))
         self["repeat_value"] = Label("Do not repeat")
         self["notify_label"] = Label(_("Notify:"))
@@ -231,7 +204,7 @@ class EventDialog(Screen):
         self["key_red"] = Label(_("Cancel"))
         self["key_green"] = Label(_("Save"))
         self["key_yellow"] = Label(_("Delete") if self.is_edit else "")
-
+        self["key_blue"] = Label(_("Today"))
         self.fields = [
             ("title", _("Title"), self["title_value"]),
             ("date", _("Date"), self["date_value"]),
@@ -253,17 +226,24 @@ class EventDialog(Screen):
         self["actions"] = ActionMap(
             [
                 "CalendarActions",
+                "ChannelSelectBaseActions",
             ],
             {
-                "cancel": self.cancel,
                 "ok": self.edit_field,
+                "cancel": self.cancel,
                 "red": self.cancel,
                 "green": self.save,
                 "yellow": self.action_mapped,
+                "blue": self.jump_to_today,
+                "menu": self.jump_to_initial,
                 "up": self.prev_field,
                 "down": self.next_field,
                 "left": self.prev_option,
                 "right": self.next_option,
+                "prevBouquet": self.previous_event,
+                "nextBouquet": self.next_event,
+                "pageUp": self.page_up,
+                "pageDown": self.page_down,
             }, -1
         )
 
@@ -275,6 +255,19 @@ class EventDialog(Screen):
         """Evidenzia il primo campo all'apertura del dialog"""
         self.current_field_index = 0
         self.update_highlight()
+
+    def show(self):
+        """Override show method"""
+        Screen.show(self)
+        if DEBUG:
+            print("[EventDialog DEBUG] SHOW called")
+            print("  Dialog now active:", self.execing)
+
+    def hide(self):
+        """Override hide method"""
+        Screen.hide(self)
+        if DEBUG:
+            print("[EventDialog DEBUG] HIDE called")
 
     def load_event_data(self):
         """Load event data into fields"""
@@ -315,6 +308,19 @@ class EventDialog(Screen):
                 self["title_value"].setText(_("Event"))
             if not self["description_value"].getText():
                 self["description_value"].setText(_("Description"))
+            # Set default time from configuration
+            from .config_manager import get_default_event_time
+            default_time = get_default_event_time()
+            self["time_value"].setText(default_time)
+
+            # Set default notification minutes
+            from .config_manager import get_default_notify_minutes
+            default_notify = get_default_notify_minutes()
+            if default_notify > 0:
+                notify_text = str(default_notify) + " minutes before"
+            else:
+                notify_text = "At event time"
+            self["notify_value"].setText(notify_text)
 
     def edit_field(self):
         """Edit current field with placeholder handling"""
@@ -353,22 +359,249 @@ class EventDialog(Screen):
             text=current_text
         )
 
+    def jump_to_today(self):
+        """BLUE: Jump to today's event (if exists)"""
+        if DEBUG:
+            print("[EventDialog] jump_to_today - BLUE pressed")
+
+        if self.today_event_index == -1:
+            if DEBUG:
+                print("  No events for today")
+            self.session.open(
+                MessageBox,
+                _("No events for today"),
+                MessageBox.TYPE_INFO
+            )
+            return
+
+        if self.current_index == self.today_event_index:
+            if DEBUG:
+                print("  Already on today's event")
+            self.session.open(
+                MessageBox,
+                _("Already on today's event"),
+                MessageBox.TYPE_INFO,
+                timeout=2
+            )
+            return
+
+        # Save current changes
+        self._save_current_changes()
+
+        # Jump to today's event
+        if DEBUG:
+            print("  Jumping to today's event at index:", self.today_event_index)
+        self.current_index = self.today_event_index
+        self.event = self.all_events[self.current_index]
+
+        self.load_event_data()
+
+        # Update title
+        title_text = _("Edit Event ({0}/{1}) - Today").format(
+            self.current_index + 1,
+            len(self.all_events)
+        )
+        self.setTitle(title_text)
+        if "title_label" in self:
+            self["title_label"].setText(title_text)
+
+        # Reset to first field
+        self.current_field_index = 0
+        self.update_highlight()
+
+    def jump_to_initial(self):
+        """Jump back to the original event"""
+        if DEBUG:
+            print("[EventDialog] jump_to_initial")
+
+        if self.current_index == self.initial_event_index:
+            if DEBUG:
+                print("  Already on initial event")
+            return
+
+        # Save current changes
+        self._save_current_changes()
+
+        # Jump back
+        if DEBUG:
+            print("  Jumping back to initial event at index:", self.initial_event_index)
+        self.current_index = self.initial_event_index
+        self.event = self.all_events[self.current_index]
+
+        self.load_event_data()
+
+        # Update title
+        title_text = _("Edit Event ({0}/{1})").format(
+            self.current_index + 1,
+            len(self.all_events)
+        )
+        self.setTitle(title_text)
+        if "title_label" in self:
+            self["title_label"].setText(title_text)
+
+        # Reset to first field
+        self.current_field_index = 0
+        self.update_highlight()
+
     def prev_field(self):
         """Move to previous field"""
         self.current_field_index = (self.current_field_index - 1) % len(self.fields)
         self.update_highlight()
-        print("[EventDialog] Moved to field: {0}".format(self.fields[self.current_field_index][0]))
+        if DEBUG:
+            print("[EventDialog] Moved to field: {0}".format(self.fields[self.current_field_index][0]))
 
     def next_field(self):
         """Move to next field"""
         self.current_field_index = (self.current_field_index + 1) % len(self.fields)
         self.update_highlight()
-        print("[EventDialog] Moved to field: {0}".format(self.fields[self.current_field_index][0]))
+        if DEBUG:
+            print("[EventDialog] Moved to field: {0}".format(self.fields[self.current_field_index][0]))
+
+    def next_event(self):
+        """CH+: Move to next event in ALL events"""
+        if DEBUG:
+            print("[EventDialog] next_event - navigating ALL events")
+            print("  Total events:", len(self.all_events))
+
+        if not self.all_events or len(self.all_events) <= 1:
+            if DEBUG:
+                print("  Not enough events, returning")
+            return
+
+        # Save current changes BEFORE moving
+        self._save_current_changes()
+
+        # Go to next event WITH WRAP-AROUND
+        self.current_index = (self.current_index + 1) % len(self.all_events)
+
+        # Update form with new event data
+        self.event = self.all_events[self.current_index]
+        if DEBUG:
+            print("  New event:", self.event.title, "on", self.event.date)
+
+        self.load_event_data()
+
+        # Update title with position
+        title_text = _("Edit Event ({0}/{1})").format(
+            self.current_index + 1,
+            len(self.all_events)
+        )
+        self.setTitle(title_text)
+        if "title_label" in self:
+            self["title_label"].setText(title_text)
+
+        # Reset to first field
+        self.current_field_index = 0
+        self.update_highlight()
+
+    def previous_event(self):
+        """CH-: Move to previous event WITH AUTO-SAVE"""
+        if DEBUG:
+            print("[EventDialog] previous_event - START")
+            print("  all_events:", len(self.all_events) if self.all_events else 0)
+
+        if not self.all_events or len(self.all_events) <= 1:
+            if DEBUG:
+                print("  Not enough events, returning")
+            return
+
+        # Save current changes BEFORE moving
+        saved = self._save_current_changes()
+        if DEBUG:
+            print("  Save result:", saved)
+
+        # Go to previous event WITH WRAP-AROUND
+        old_index = self.current_index
+        self.current_index = (self.current_index - 1) % len(self.all_events)
+        if DEBUG:
+            print("  Index:", old_index, "->", self.current_index)
+
+        # Update form with new event data
+        self.event = self.all_events[self.current_index]
+        if DEBUG:
+            print("  New event title:", self.event.title if self.event else "None")
+
+        self.load_event_data()
+
+        # Update title with new position
+        title_text = _("Edit Event ({0}/{1})").format(
+            self.current_index + 1,
+            len(self.all_events)
+        )
+        if DEBUG:
+            print("  New title:", title_text)
+        self.setTitle(title_text)
+
+        if "title_label" in self:
+            if DEBUG:
+                print("  Updating title_label")
+            self["title_label"].setText(title_text)
+
+        # Reset to first field
+        self.current_field_index = 0
+        self.update_highlight()
+        if DEBUG:
+            print("[EventDialog] previous_event - END")
+
+    def page_up(self):
+        """PAGE UP: Skip 5 events backward"""
+        if DEBUG:
+            print("[EventDialog] page_up")
+        if not self.all_events or len(self.all_events) <= 1:
+            return
+
+        # Save current changes
+        self._save_current_changes()
+
+        # Skip 5 events backward WITH WRAP-AROUND
+        self.current_index = (self.current_index - 5) % len(self.all_events)
+
+        # Update form
+        self.event = self.all_events[self.current_index]
+        self.load_event_data()
+
+        # Update title
+        self.setTitle(_("Edit Event ({0}/{1})").format(
+            self.current_index + 1,
+            len(self.all_events)
+        ))
+
+        # Reset to first field
+        self.current_field_index = 0
+        self.update_highlight()
+
+    def page_down(self):
+        """PAGE DOWN: Skip 5 events forward"""
+        if DEBUG:
+            print("[EventDialog] page_down")
+        if not self.all_events or len(self.all_events) <= 1:
+            return
+
+        # Save current changes
+        self._save_current_changes()
+
+        # Skip 5 events forward WITH WRAP-AROUND
+        self.current_index = (self.current_index + 5) % len(self.all_events)
+
+        # Update form
+        self.event = self.all_events[self.current_index]
+        self.load_event_data()
+
+        # Update title
+        self.setTitle(_("Edit Event ({0}/{1})").format(
+            self.current_index + 1,
+            len(self.all_events)
+        ))
+
+        # Reset to first field
+        self.current_field_index = 0
+        self.update_highlight()
 
     def update_highlight(self):
         """Update current field highlight with better visibility"""
         current_field_name = self.fields[self.current_field_index][0]
-        print("[EventDialog] Highlighting field: {0}".format(current_field_name))
+        if DEBUG:
+            print("[EventDialog] Highlighting field: {0}".format(current_field_name))
         for i, (field_name, field_label, widget) in enumerate(self.fields):
             if i == self.current_field_index:
                 # Current field – intense highlight
@@ -396,6 +629,8 @@ class EventDialog(Screen):
 
     def prev_option(self):
         """Previous option for selection fields"""
+        if DEBUG:
+            print("[EventDialog] prev_option")
         field_name, _, widget = self.fields[self.current_field_index]
 
         if field_name == "repeat":
@@ -430,6 +665,8 @@ class EventDialog(Screen):
 
     def next_option(self):
         """Next option for selection fields"""
+        if DEBUG:
+            print("[EventDialog] next_option")
         field_name, _, widget = self.fields[self.current_field_index]
 
         if field_name == "repeat":
@@ -477,6 +714,41 @@ class EventDialog(Screen):
             return int(text.split()[0])
         except:
             return 5
+
+    def _save_current_changes(self):
+        """Save current form data to current event"""
+        if 0 <= self.current_index < len(self.all_events):
+            event = self.all_events[self.current_index]
+
+            # Get current form values
+            title = self["title_value"].getText().strip()
+            date = self["date_value"].getText().strip()
+            time = self["time_value"].getText().strip()
+
+            # Handle placeholders
+            if title == _("Event"):
+                title = ""
+            if not title or not date:
+                return False  # Can't save without required fields
+
+            # Update event from form
+            event.title = title
+            event.date = date
+            event.time = time
+            event.repeat = self.get_repeat_value()
+            event.notify_before = self.get_notify_value()
+            event.enabled = self.enabled
+
+            desc = self["description_value"].getText().strip()
+            if desc == _("Description"):
+                desc = ""
+            event.description = desc
+
+            # Save to disk
+            self.event_manager.save_events()
+            return True
+
+        return False
 
     def save(self):
         """Save event with placeholder handling"""

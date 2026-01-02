@@ -6,117 +6,42 @@
 #  Created by: Lululla (based on Sirius0103)              #
 ###########################################################
 
-MAIN FEATURES:
-• Calendar with color-coded days (events/holidays/today)
-• Event system with smart notifications & audio alerts
-• Holiday import for 30+ countries with auto-coloring
-• vCard import/export with contact management
-• ICS/Google Calendar import with event management
-• Database format converter (Legacy ↔ vCard ↔ ICS)
-• Phone and email formatters for Calendar Planner
-• Maintains consistent formatting across import, display, and storage
-
-NEW IN v1.7:
-ICS EVENT MANAGEMENT - Browse, edit, delete imported events
-ICS EVENTS BROWSER - Similar to contacts browser with CH+/CH- navigation
-ICS EVENT EDITOR - Full-screen dialog like contact editor
-ICS FILE ARCHIVE - Store imported .ics files in /base/ics
-DUPLICATE DETECTION - Smart cache for fast duplicate checking
-ENHANCED SEARCH - Search in events titles, descriptions, dates
-
-KEY CONTROLS - MAIN:
-OK    - Main menu (Events/Holidays/Contacts/Import/Export/Converter)
-RED   - Previous month
-GREEN - Next month
-YELLOW- Previous day
-BLUE  - Next day
-0     - Event management
-MENU  - Configuration
-
-KEY CONTROLS - ICS BROWSER:
-OK    - Edit selected event
-RED   - Add new event
-GREEN - Edit event
-YELLOW- Delete event (single/all)
-BLUE  - Change sorting (date/title/category)
-CH+   - Next event
-CH-   - Previous event
-TEXT  - Search events
-
-ICS MANAGEMENT:
-• Import Google Calendar .ics files
-• Browse imported ICS files in archive
-• View and edit individual ICS events
-• Delete events (single or all)
-• Search events by title/description/date
-• Filter events by category/labels
-• Archive original .ics files for re-import
-
-DATABASE FORMATS:
-• Legacy format (text files)
-• vCard format (standard contacts)
-• ICS format (Google Calendar compatible)
-
-CONFIGURATION:
-• Database format (Legacy/vCard/ICS)
-• Auto-convert option
-• Export sorting preference
-• Event/holiday colors & indicators
-• Audio notification settings
-
-TECHNICAL:
-• Python 2.7+ compatible
-• Multi-threaded vCard/ICS import
-• Smart cache system for duplicates
-• File-based storage with backup
-• Configurable via setup.xml
-
-VERSION HISTORY:
-v1.0 - Basic calendar
-v1.1 - Event system
-v1.2 - Holiday import
-v1.3 - Code rewrite
-v1.4 - Bug fixes
-v1.5 - vCard import
-v1.6 - vCard export & converter
-v1.7 - ICS event management & browser
-
-Last Updated: 2025-12-27
+Last Updated: 2026-01-02
 Status: Stable with complete vCard & ICS support
 Credits: Sirius0103 (original), Lululla (modifications)
 Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """
 from __future__ import print_function
+
 import time
 from datetime import datetime
-from enigma import eTimer, getDesktop
 from re import split, IGNORECASE, search, sub
 from os.path import basename, exists, getsize, join, getmtime
-from Screens.MessageBox import MessageBox
+
+from enigma import eTimer, getDesktop
 from Screens.Screen import Screen
-from Components.config import config
+from Screens.MessageBox import MessageBox
 from Components.Label import Label
 from Components.FileList import FileList
 from Components.ActionMap import ActionMap
 from Components.ProgressBar import ProgressBar
 
 from . import _
+from .config_manager import get_debug
 from .formatters import (
     parse_vcard_phone,
     parse_vcard_email,
-    clean_field_storage
+    clean_field_storage,
 )
 from .duplicate_checker import (
     DuplicateChecker,
-    # cleanup_duplicate_phones,
-    # cleanup_duplicate_emails,
-    run_complete_cleanup
+    run_complete_cleanup,
 )
-# cleaned_count = DuplicateChecker.cleanup_duplicate_phones(birthday_manager)
-# print("Puliti %d contatti" % cleaned_count)
 
-DEBUG = config.plugins.calendar.debug_enabled.value if hasattr(config.plugins, 'calendar') and hasattr(config.plugins.calendar, 'debug_enabled') else False
+
+global DEBUG
+DEBUG = get_debug()
 
 
 class VCardFileImporter:
@@ -489,6 +414,10 @@ class VCardFileImporter:
                 value = parts[1].strip()
                 prop_base = prop_full.split(';')[0].upper()
 
+                # DEBUG for BDAY field
+                if prop_base == 'BDAY' and DEBUG:
+                    print("[DEBUG parse_vcard_block] Found BDAY field: '{0}'".format(value))
+
                 if prop_base == 'FN':
                     contact['FN'] = value
 
@@ -541,9 +470,15 @@ class VCardFileImporter:
                         contact['URL'] = value
 
                 elif prop_base == 'BDAY':
+                    if DEBUG:
+                        print("[DEBUG vCard] RAW BDAY VALUE: '{0}'".format(value))
                     bday = VCardFileImporter.parse_birthday(value)
                     if bday:
                         contact['BDAY'] = bday
+                        if DEBUG:
+                            print("[DEBUG vCard] BDAY PARSED: '{0}' -> '{1}'".format(value, bday))
+                    else:
+                        print("[DEBUG vCard] BDAY FAILED: '{0}'".format(value))
 
             except Exception as e:
                 print("[VCardImporter] Error parsing line: {0} - {1}".format(
@@ -559,6 +494,10 @@ class VCardFileImporter:
 
         # Apply Google Contacts–specific fixes
         contact = VCardFileImporter.fix_google_contacts(contact)
+
+        if DEBUG and contact['FN']:
+            print("[DEBUG parse_vcard_block] Parsed contact: {0}, BDAY: {1}".format(
+                contact.get('FN', 'Unknown'), contact.get('BDAY', 'Empty')))
 
         return contact if contact['FN'] else None
 
@@ -637,34 +576,57 @@ class VCardFileImporter:
 
     @staticmethod
     def parse_birthday(value):
-        """Parse birthday in various formats - ENHANCED for Google Contacts"""
+        """Parse birthday in various formats - FIXED for 8-digit YYYYMMDD"""
         if not value:
             return ''
 
-        # Remove time part if present (Google doesn't use time in BDAY)
+        # Remove time part if present
         value = value.split('T')[0].split(' ')[0].strip()
+        if DEBUG:
+            print("[DEBUG parse_birthday] Processing: '{0}'".format(value))  # FORCE DEBUG
 
-        # Try Google's preferred format first: YYYYMMDD
-        try:
-            # Check if it's 8 digits (YYYYMMDD)
-            if len(value) == 8 and value.isdigit():
+        # ULTIMATE FIX: Direct brute-force for 8-digit YYYYMMDD
+        if len(value) == 8 and value.isdigit():
+            if DEBUG:
+                print("[DEBUG parse_birthday] 8-digit detected: {0}".format(value))
+            try:
                 year = int(value[0:4])
                 month = int(value[4:6])
                 day = int(value[6:8])
 
-                # Validate date
-                if 1900 <= year <= 2100 and 1 <= month <= 12 and 1 <= day <= 31:
-                    return "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
-        except:
-            pass
+                # Very basic validation - accept almost anything
+                if 1800 <= year <= 2100 and 1 <= month <= 12 and 1 <= day <= 31:
+                    result = "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
+                    if DEBUG:
+                        print("[DEBUG parse_birthday] SUCCESS: {0} -> {1}".format(value, result))
+                    return result
+                else:
+                    print("[DEBUG parse_birthday] Validation failed for: {0}".format(value))
+            except Exception as e:
+                print("[DEBUG parse_birthday] Error parsing {0}: {1}".format(value, str(e)))
 
-        # Try other common formats
+        # Try brute force extraction of YYYYMMDD pattern
+        # Pattern for exactly 8 consecutive digits
+        match = search(r'(\d{4})(\d{2})(\d{2})', value)
+        if match:
+            try:
+                year = int(match.group(1))
+                month = int(match.group(2))
+                day = int(match.group(3))
+                result = "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
+                if DEBUG:
+                    print("[DEBUG parse_birthday] Regex extracted: {0} -> {1}".format(value, result))
+                return result
+            except:
+                pass
+
+        # Try standard datetime parsing
         formats = [
-            '%Y%m%d',        # 19900515 (Google)
-            '%Y-%m-%d',      # 1990-05-15 (standard)
-            '%d-%m-%Y',      # 15-05-1990 (european)
+            '%Y%m%d',        # 19900515
+            '%Y-%m-%d',      # 1990-05-15
+            '%d-%m-%Y',      # 15-05-1990
             '%d/%m/%Y',      # 15/05/1990
-            '%m/%d/%Y',      # 05/15/1990 (US)
+            '%m/%d/%Y',      # 05/15/1990
             '%d.%m.%Y',      # 15.05.1990
             '%Y/%m/%d',      # 1990/05/15
         ]
@@ -672,51 +634,29 @@ class VCardFileImporter:
         for fmt in formats:
             try:
                 dt = datetime.strptime(value, fmt)
-                return dt.strftime('%Y-%m-%d')
+                result = dt.strftime('%Y-%m-%d')
+                if DEBUG:
+                    print("[DEBUG parse_birthday] Format '{0}' matched: {1} -> {2}".format(fmt, value, result))
+                return result
             except ValueError:
                 continue
 
-        # Try regex extraction
-        # Pattern for YYYYMMDD without separators
-        match = search(r'(\d{4})(\d{2})(\d{2})', value)
-        if match:
+        # Last resort: extract any 8-digit sequence
+        digits = ''.join([c for c in value if c.isdigit()])
+        if len(digits) >= 8:
             try:
-                year = int(match.group(1))
-                month = int(match.group(2))
-                day = int(match.group(3))
-                if 1900 <= year <= 2100 and 1 <= month <= 12 and 1 <= day <= 31:
-                    return "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
+                year = int(digits[0:4])
+                month = int(digits[4:6])
+                day = int(digits[6:8])
+                result = "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
+                if DEBUG:
+                    print("[DEBUG parse_birthday] Digit extraction: {0} -> {1}".format(value, result))
+                return result
             except:
                 pass
-
-        # Pattern with separators
-        patterns = [
-            r'(\d{4})[/\-\.](\d{1,2})[/\-\.](\d{1,2})',  # YYYY-MM-DD
-            r'(\d{1,2})[/\-\.](\d{1,2})[/\-\.](\d{4})',  # DD-MM-YYYY
-        ]
-
-        for pattern in patterns:
-            match = search(pattern, value)
-            if match:
-                try:
-                    groups = match.groups()
-                    if len(groups) == 3:
-                        # Try to determine format by year position
-                        if len(groups[0]) == 4:  # YYYY-MM-DD
-                            year = int(groups[0])
-                            month = int(groups[1])
-                            day = int(groups[2])
-                        else:  # DD-MM-YYYY
-                            day = int(groups[0])
-                            month = int(groups[1])
-                            year = int(groups[2])
-
-                        if 1900 <= year <= 2100 and 1 <= month <= 12 and 1 <= day <= 31:
-                            return "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
-                except:
-                    continue
-
-        return ''  # Could not parse
+        if DEBUG:
+            print("[DEBUG parse_birthday] FAILED to parse: {0}".format(value))
+        return ''
 
     @staticmethod
     def is_same_person(contact1, contact_data):
@@ -889,13 +829,14 @@ class VCardImporter(Screen):
     def __init__(self, session, birthday_manager):
         Screen.__init__(self, session)
         self.birthday_manager = birthday_manager
-        print("[VCardImporter] Initializing...")
+        if DEBUG:
+            print("[VCardImporter] Initializing...")
 
         start_path = "/tmp"
         if not exists(start_path):
             start_path = "/"
-
-        print("[VCardImporter] Start path: {0}".format(start_path))
+        if DEBUG:
+            print("[VCardImporter] Start path: {0}".format(start_path))
 
         matching_pattern = r".*\.(vcf|vcard)$"
         self["filelist"] = FileList(start_path, matchingPattern=matching_pattern)
@@ -915,8 +856,8 @@ class VCardImporter(Screen):
                 "ok": self.ok,
             }, -1
         )
-
-        print("[VCardImporter] Initialization complete")
+        if DEBUG:
+            print("[VCardImporter] Initialization complete")
 
     def ok(self):
         """OK - select file or enter directory"""
@@ -1033,7 +974,7 @@ class VCardImporter(Screen):
     def do_import(self):
         """Import selected file"""
         if DEBUG:
-            print("[VCardImporter] do_import() called - versione veloce")
+            print("[VCardImporter] do_import() called")
 
         selection = self["filelist"].getSelection()
         if not selection:
@@ -1058,7 +999,7 @@ class VCardImporter(Screen):
             )
             return
 
-        # Quick check if file is valid vCard (solo primi 1KB)
+        # Quick check if file is valid vCard
         try:
             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                 first_chunk = f.read(1024)
@@ -1394,6 +1335,7 @@ class ImportProgressScreen(Screen):
             {
                 "red": self.cancel_import,
                 "cancel": self.on_exit_pressed,
+                "ok": self.on_exit_pressed
             }, -1
         )
 
@@ -1474,8 +1416,6 @@ class ImportProgressScreen(Screen):
         # Update final status
         self["progress"].setValue(100)
         self["status"].setText(_("Completed"))
-
-        # CHANGE RED BUTTON TO "CLOSE"
         self["key_red"].setText(_("Close"))
 
         # Show result message after short delay
@@ -1507,18 +1447,16 @@ class ImportProgressScreen(Screen):
 
     def cancel_import(self):
         """Cancel import - becomes Close when finished"""
-        # If the import is completed, just close
         if self["key_red"].getText() == _("Close"):
             self.close(True)
             return
 
-        # Otherwise, the import is still running, so cancel it
         if self.import_thread and self.import_thread.is_alive():
             self.import_thread.cancelled = True
             self["status"].setText(_("Cancelling..."))
             self["details"].setText(_("Waiting for thread to stop..."))
 
-            # Wait for the thread to finish
+            # Wait for thread to finish
             def check_thread():
                 if not self.import_thread.is_alive():
                     self.close(False)

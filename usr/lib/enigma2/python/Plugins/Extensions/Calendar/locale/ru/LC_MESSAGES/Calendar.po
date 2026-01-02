@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 15:13+0100\n"
-"PO-Revision-Date: 2025-12-31 17:35+0100\n"
+"PO-Revision-Date: 2026-01-02 21:33+0100\n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: <ekekaz@gmail.com>\n"
 "Language: ru\n"
@@ -16,6 +16,9 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "(Search: '{0}')"
+msgstr ""
+
 msgid "(truncated)"
 msgstr ""
 
@@ -23,6 +26,9 @@ msgid "--- CONTACTS ---"
 msgstr ""
 
 msgid "--- DATABASE ---"
+msgstr ""
+
+msgid "--- DEBUG ---"
 msgstr ""
 
 msgid "--- EVENTS ---"
@@ -39,9 +45,6 @@ msgstr ""
 
 msgid "..."
 msgstr "..."
-
-msgid "... and {} more\n"
-msgstr ""
 
 msgid ".............."
 msgstr ".............."
@@ -70,6 +73,9 @@ msgstr ""
 msgid "Alert sound"
 msgstr "Звуковой сигнал тревоги"
 
+msgid "Already on today's event"
+msgstr ""
+
 msgid "April"
 msgstr "Апрель"
 
@@ -92,6 +98,9 @@ msgid "Browse ICS Files"
 msgstr ""
 
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
+msgstr ""
+
+msgid "CSV format"
 msgstr ""
 
 msgid "Calendar"
@@ -184,13 +193,10 @@ msgstr ""
 msgid "Contacts imported from ICS file!"
 msgstr ""
 
-msgid "Contacts: {0} (Search: '{1}')"
+msgid "Contacts: 0"
 msgstr ""
 
-msgid "Contacts: {0} ({1})"
-msgstr ""
-
-msgid "Conversion completed successfully!"
+msgid "Contacts: {0}/{1}"
 msgstr ""
 
 msgid "Conversion error: {0}"
@@ -202,28 +208,13 @@ msgstr ""
 msgid "Convert to ICS format"
 msgstr ""
 
-msgid "Convert to Legacy"
-msgstr ""
-
 msgid "Convert to legacy format"
-msgstr ""
-
-msgid "Convert to vCard"
 msgstr ""
 
 msgid "Convert to vCard format"
 msgstr ""
 
-msgid "Converted: {0} files, Errors: {1}"
-msgstr ""
-
-msgid "Converting to Legacy..."
-msgstr ""
-
-msgid "Converting to vCard..."
-msgstr ""
-
-msgid "Converting: {0} ({1}/{2})"
+msgid "Converted {0} events to {1}"
 msgstr ""
 
 msgid "Could not check for updates. Check internet connection."
@@ -235,17 +226,8 @@ msgstr "Не удалось проверить наличие обновлени
 msgid "Could not read file"
 msgstr ""
 
-msgid "Current format: {0}"
-msgstr ""
-
 msgid "Cyan"
 msgstr "Бирюзовый"
-
-msgid "Database Converter"
-msgstr ""
-
-msgid "Database Statistics"
-msgstr ""
 
 msgid "Database converted to vCard format"
 msgstr ""
@@ -277,8 +259,26 @@ msgstr "День +"
 msgid "Day -"
 msgstr "День -"
 
+msgid "Debug completed. Check logs."
+msgstr ""
+
 msgid "December"
 msgstr "Декабрь"
+
+msgid "Default event time"
+msgstr ""
+
+msgid "Default format for exported files"
+msgstr ""
+
+msgid "Default minutes before event to show notification"
+msgstr ""
+
+msgid "Default notification minutes"
+msgstr ""
+
+msgid "Default time for new events (HH:MM format)"
+msgstr ""
 
 msgid "Delete"
 msgstr "Удалить"
@@ -337,6 +337,9 @@ msgstr "Редактировать"
 msgid "Edit Contact"
 msgstr ""
 
+msgid "Edit Contact ({0}/{1})"
+msgstr ""
+
 msgid "Edit Date"
 msgstr "Изменить дату"
 
@@ -345,6 +348,15 @@ msgstr "Редактировать дату Люди"
 
 msgid "Edit Description"
 msgstr "Редактировать описание"
+
+msgid "Edit Event"
+msgstr ""
+
+msgid "Edit Event ({0}/{1})"
+msgstr ""
+
+msgid "Edit Event ({0}/{1}) - Today"
+msgstr ""
 
 msgid "Edit Holiday"
 msgstr "Редактировать отпуск"
@@ -412,6 +424,9 @@ msgstr ""
 msgid "Error saving data"
 msgstr "Ошибка сохранения данных"
 
+msgid "Error saving event"
+msgstr ""
+
 msgid "Error: {0}"
 msgstr ""
 
@@ -427,7 +442,13 @@ msgstr ""
 msgid "Event '{0}' deleted successfully"
 msgstr ""
 
+msgid "Event '{0}' saved successfully"
+msgstr ""
+
 msgid "Event color"
+msgstr ""
+
+msgid "Event manager not initialized"
 msgstr ""
 
 msgid "Event system is disabled. Enable it in settings first."
@@ -452,6 +473,9 @@ msgid "Export error: {0}"
 msgstr ""
 
 msgid "Export failed or no contacts to export"
+msgstr ""
+
+msgid "Export format"
 msgstr ""
 
 msgid "Export location"
@@ -508,6 +532,9 @@ msgstr "Зеленый"
 msgid "Hard Disk"
 msgstr ""
 
+msgid "Hard Disk (/media/hdd)"
+msgstr ""
+
 msgid "Holiday"
 msgstr "Праздник"
 
@@ -523,10 +550,13 @@ msgstr ""
 msgid "I:{0}"
 msgstr ""
 
-msgid "ICS Events: {0} (Search: '{1}')"
+msgid "ICS Events: 0"
 msgstr ""
 
-msgid "ICS Events: {0} ({1})"
+msgid "ICS Events: {0}/{1}"
+msgstr ""
+
+msgid "ICS format"
 msgstr ""
 
 msgid "ICS format (google calendar)"
@@ -613,19 +643,7 @@ msgstr "Июнь"
 msgid "Labels (comma separated)"
 msgstr ""
 
-msgid "Language: {0}"
-msgstr ""
-
-msgid "Legacy files: {0}"
-msgstr ""
-
 msgid "Legacy format (text files)"
-msgstr ""
-
-msgid "Legacy: {0}"
-msgstr ""
-
-msgid "Legacy: {0} files | vCard: {1} files"
 msgstr ""
 
 msgid "Manage Contacts"
@@ -718,16 +736,16 @@ msgstr ""
 msgid "No events database found"
 msgstr ""
 
+msgid "No events for today"
+msgstr ""
+
+msgid "No events to convert"
+msgstr ""
+
 msgid "No file in database..."
 msgstr "Нет файла в базе данных..."
 
 msgid "No file selected"
-msgstr ""
-
-msgid "No legacy files found"
-msgstr ""
-
-msgid "No legacy files found to convert"
 msgstr ""
 
 msgid "No past events to remove"
@@ -738,12 +756,6 @@ msgstr ""
 
 msgid "No sound"
 msgstr "Нет звука"
-
-msgid "No vCard files found"
-msgstr ""
-
-msgid "No vCard files found to convert"
-msgstr ""
 
 msgid "Notes"
 msgstr ""
@@ -773,9 +785,6 @@ msgid "Orange"
 msgstr "Оранжевый"
 
 msgid "P:{0}/{1}"
-msgstr ""
-
-msgid "Paths:"
 msgstr ""
 
 msgid "Phone"
@@ -808,9 +817,6 @@ msgstr ""
 msgid "Re-import"
 msgstr ""
 
-msgid "Ready"
-msgstr ""
-
 msgid "Red"
 msgstr "Красный"
 
@@ -839,6 +845,9 @@ msgid "Repeat:"
 msgstr "Повторять:"
 
 msgid "Repeat: {0}"
+msgstr ""
+
+msgid "Root Home (/home/root)"
 msgstr ""
 
 msgid "S:{0}"
@@ -883,12 +892,6 @@ msgstr "Короткий звуковой сигнал"
 msgid "Show 'H' marker on holiday days"
 msgstr ""
 
-msgid "Show Calendar in main information menu"
-msgstr ""
-
-msgid "Show Calendar in menu"
-msgstr ""
-
 msgid "Show Statistics"
 msgstr ""
 
@@ -926,9 +929,6 @@ msgid "Size: {0:.1f} KB"
 msgstr ""
 
 msgid "Size: {0:.1f} MB"
-msgstr ""
-
-msgid "Skipped (duplicates): {}\n"
 msgstr ""
 
 msgid "Skipped: %d"
@@ -988,9 +988,6 @@ msgstr ""
 msgid "Successfully converted {0} entries to ICS format"
 msgstr ""
 
-msgid "Successfully imported: {}\n"
-msgstr ""
-
 msgid "Sun"
 msgstr "Вс"
 
@@ -998,6 +995,27 @@ msgid "Tags: {0}"
 msgstr ""
 
 msgid "Temporary Storage (/tmp)"
+msgstr ""
+
+msgid "Test Debug Config"
+msgstr ""
+
+msgid "Test Event Time Conversion"
+msgstr ""
+
+msgid "Test Fix Event Now"
+msgstr ""
+
+msgid "Test Force Event Conversion Event Time"
+msgstr ""
+
+msgid "Test Force Save all Config"
+msgstr ""
+
+msgid "Test Holiday Loading"
+msgstr ""
+
+msgid "Text format"
 msgstr ""
 
 msgid "Thu"
@@ -1024,13 +1042,13 @@ msgstr ""
 msgid "Title:"
 msgstr "Заголовок:"
 
+msgid "Today"
+msgstr ""
+
 msgid "Total events: {0}"
 msgstr ""
 
 msgid "Total files: {0}\n"
-msgstr ""
-
-msgid "Total processed: {}\n"
 msgstr ""
 
 msgid "Total size: {0:.1f} KB\n"
@@ -1052,6 +1070,9 @@ msgid "U:{0}"
 msgstr ""
 
 msgid "USB Drive"
+msgstr ""
+
+msgid "USB Drive (/media/usb)"
 msgstr ""
 
 msgid "Update available!"
@@ -1115,9 +1136,6 @@ msgstr "Желтый"
 msgid "You have the latest version of Calendar."
 msgstr "У вас установлена последняя версия Календаря."
 
-msgid "no"
-msgstr "нет"
-
 msgid "not sorted"
 msgstr ""
 
@@ -1130,22 +1148,13 @@ msgstr ""
 msgid "sorted by name"
 msgstr ""
 
-msgid "vCard files: {0}"
+msgid "vCard format"
 msgstr ""
 
 msgid "vCard format (standard)"
 msgstr ""
 
 msgid "vCard import feature not available: {0}"
-msgstr ""
-
-msgid "vCard: {0}"
-msgstr ""
-
-msgid "yes"
-msgstr "да"
-
-msgid "{0}"
 msgstr ""
 
 #, python-format
@@ -1177,10 +1186,6 @@ msgstr ""
 #~ msgid "Exit"
 #~ msgstr "Выход"
 
-#, fuzzy
-#~ msgid "Holiday Settings"
-#~ msgstr "Праздничный день: "
-
 #~ msgid "Magenta"
 #~ msgstr "Пурпурный"
 
@@ -1189,3 +1194,9 @@ msgstr ""
 
 #~ msgid "TODAY'S EVENTS:"
 #~ msgstr "События сегодняшнего дня:"
+
+#~ msgid "no"
+#~ msgstr "нет"
+
+#~ msgid "yes"
+#~ msgstr "да"

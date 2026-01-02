@@ -168,43 +168,105 @@ def hide_current_notification():
 # =============================================================================
 
 """
-from .notification_system import init_notification_system, quick_notify, show_notification
 
-# 1. INITIALIZATION (in your main plugin class)
+GENERIC NOTIFICATION SYSTEM USAGE EXAMPLES
+
+1. INITIALIZATION (do this once in your main class)
+-----------------------------------------------------
+from .notification_system import init_notification_system
+
 class MyPlugin(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
-        # Initialize notification system once
+        # Initialize notification system
         init_notification_system(session)
 
-# 2. BASIC USAGE
-# Show 3-second notification
-show_notification("Processing completed!")
+2. BASIC NOTIFICATIONS
+----------------------
+from .notification_system import quick_notify, show_notification
 
-# Show 5-second notification
-show_notification("Download finished", 5000)
+# Short notification (3 seconds default)
+quick_notify("Operation completed")
 
-# Simplified version (seconds instead of milliseconds)
-quick_notify("File saved successfully")
+# Custom duration (5 seconds)
+quick_notify("Download finished", 5)
 
-# Longer notification
-quick_notify("Backup completed successfully", 5)
+# Milliseconds version
+show_notification("Processing...", 3000)  # 3 seconds
+show_notification("Please wait", 10000)   # 10 seconds
 
-# Hide manually if needed
-hide_current_notification()
-
-# 3. AFTER OPERATIONS
-def on_download_finished(self, success, filename):
+3. AFTER OPERATIONS
+-------------------
+def save_data_callback(self, success):
     if success:
-        quick_notify("Downloaded: {0}".format(filename))
+        quick_notify("Data saved successfully")
     else:
-        quick_notify("Download failed!", 5)
+        quick_notify("Save failed", 5)
 
-def on_processing_done(self, result):
-    quick_notify("Processed {0} files".format(result.file_count))
+def import_complete(self, item_count):
+    quick_notify("Imported {0} items".format(item_count), 4)
 
-# 4. ERROR NOTIFICATIONS
-def handle_error(self, error_message):
-    quick_notify("Error: {0}".format(error_message), 5)
+4. ERROR HANDLING
+-----------------
+def handle_exception(self, error):
+    quick_notify("Error: {0}".format(str(error)), 8)
 
+def validate_input(self, user_input):
+    if not user_input:
+        quick_notify("Input required", 3)
+        return False
+    return True
+
+5. STATUS UPDATES
+-----------------
+def long_operation(self):
+    quick_notify("Starting operation...", 2)
+    # Step 1
+    quick_notify("Processing step 1", 2)
+    # Step 2
+    quick_notify("Processing step 2", 2)
+    quick_notify("Operation complete", 5)
+
+6. HIDE NOTIFICATION
+--------------------
+from .notification_system import hide_current_notification
+
+def cancel_notification(self):
+    hide_current_notification()
+
+def temporary_message(self):
+    quick_notify("This will auto-hide in 10 seconds", 10)
+    # Cancel early if needed
+    hide_current_notification()
+
+7. MULTI-LINE MESSAGES
+----------------------
+message = "Update available\nVersion 2.0\nNew features added"
+quick_notify(message, 8)
+
+8. CONDITIONAL NOTIFICATIONS
+-----------------------------
+def check_system_status(self):
+    if self.is_connected:
+        quick_notify("Connected to server")
+    else:
+        quick_notify("Connection lost", 5)
+
+9. INLINE USAGE
+---------------
+# Direct usage without function
+from .notification_system import quick_notify
+
+def my_function():
+    result = process_data()
+    quick_notify("Processed {0} records".format(len(result)))
+    return result
+
+10. DEBUG NOTIFICATIONS
+-----------------------
+import sys
+
+def debug_info(self, variable):
+    if '--debug' in sys.argv:
+        quick_notify("Debug: {0}".format(variable), 3)
 """
