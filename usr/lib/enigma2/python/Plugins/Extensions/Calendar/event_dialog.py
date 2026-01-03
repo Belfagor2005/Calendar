@@ -203,7 +203,7 @@ class EventDialog(Screen):
         self["enabled_value"] = Label("Yes")
         self["description_label"] = Label(_("Description:"))
         self["description_value"] = Label(_("Description") if not (event and event.description) else "")
-         self["current_field_info"] = Label("")
+        self["current_field_info"] = Label("")
 
         self["key_red"] = Label(_("Cancel"))
         self["key_green"] = Label(_("Save"))
@@ -641,6 +641,7 @@ class EventDialog(Screen):
                     self.fields[self.current_field_index][1]
                 )
             )
+
     def prev_option(self):
         """Previous option for selection fields"""
         if DEBUG:
