@@ -6,7 +6,6 @@
 		<item level="0" text="Enable event system" description="Enable event management with date/time">config.plugins.calendar.events_enabled</item>
 		<if conditional="config.plugins.calendar.events_enabled.value">
 			<item level="0" text="Default event time" description="Default time for new events (HH:MM format)">config.plugins.calendar.default_event_time</item>
-
 			<item level="0" text="Default notification minutes" description="Default minutes before event to show notification">config.plugins.calendar.default_notify_minutes</item>
 			<item level="0" text="Enable notifications" description="Show notifications for upcoming events">config.plugins.calendar.events_notifications</item>
 			<if conditional="config.plugins.calendar.events_notifications.value">

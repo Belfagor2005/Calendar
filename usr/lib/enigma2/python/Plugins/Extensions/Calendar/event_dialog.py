@@ -35,26 +35,28 @@ class EventDialog(Screen):
     if (getDesktop(0).size().width() >= 1920):
         skin = """
         <screen name="EventDialog" position="center,center" size="1000,700" title="Event Management" flags="wfNoBorder">
-            <widget name="title_label" position="20,20" size="960,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="title_label" position="20,20" size="960,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="title_value" position="20,70" size="960,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="date_label" position="20,140" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="date_label" position="20,140" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="date_value" position="20,190" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="time_label" position="340,140" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="time_label" position="340,140" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="time_value" position="340,190" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="repeat_label" position="660,140" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="repeat_label" position="660,140" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="repeat_value" position="660,190" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="notify_label" position="20,260" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="notify_label" position="20,260" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="notify_value" position="20,310" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="enabled_label" position="340,260" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="enabled_label" position="340,260" size="300,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="enabled_value" position="340,310" size="300,50" font="Regular;28" backgroundColor="#00808080" />
 
-            <widget name="description_label" position="20,380" size="960,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="background" />
-            <widget name="description_value" position="20,430" size="960,200" font="Regular;28" backgroundColor="#00808080" />
+            <widget name="description_label" position="20,380" size="960,40" font="Regular;32" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
+            <widget name="description_value" position="20,430" size="960,179" font="Regular;28" backgroundColor="#00808080" />
+
+            <widget name="current_field_info" position="21,614" size="640,30" font="Regular;24" foregroundColor="#FFFF00" halign="center" />
 
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="20,690" size="230,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="266,690" size="230,10" alphatest="blend" />
@@ -70,26 +72,27 @@ class EventDialog(Screen):
     else:
         skin = """
         <screen name="EventDialog" position="center,center" size="850,600" title="Event Management" flags="wfNoBorder">
-            <widget name="title_label" position="20,20" size="760,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="title_label" position="20,20" size="760,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="title_value" position="20,55" size="760,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="date_label" position="20,110" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="date_label" position="20,110" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="date_value" position="20,145" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="time_label" position="280,110" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="time_label" position="280,110" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="time_value" position="280,145" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="repeat_label" position="540,110" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="repeat_label" position="540,110" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="repeat_value" position="540,145" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="notify_label" position="20,200" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="notify_label" position="20,200" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="notify_value" position="20,235" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="enabled_label" position="280,200" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="enabled_label" position="280,200" size="240,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="enabled_value" position="280,235" size="240,35" font="Regular;20" backgroundColor="#00808080" />
 
-            <widget name="description_label" position="20,290" size="815,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="background" />
-            <widget name="description_value" position="20,325" size="815,200" font="Regular;20" backgroundColor="#00808080" />
+            <widget name="description_label" position="20,290" size="815,30" font="Regular;24" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
+            <widget name="description_value" position="20,325" size="815,192" font="Regular;20" backgroundColor="#00808080" />
+            <widget name="current_field_info" position="20,517" size="484,30" font="Regular;20" foregroundColor="#FFFF00" halign="left" zPosition="1" />
 
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="10,586" size="200,10" alphatest="blend" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_green.png" position="223,587" size="200,10" alphatest="blend" />
@@ -200,6 +203,7 @@ class EventDialog(Screen):
         self["enabled_value"] = Label("Yes")
         self["description_label"] = Label(_("Description:"))
         self["description_value"] = Label(_("Description") if not (event and event.description) else "")
+         self["current_field_info"] = Label("")
 
         self["key_red"] = Label(_("Cancel"))
         self["key_green"] = Label(_("Save"))
@@ -627,6 +631,16 @@ class EventDialog(Screen):
                 widget.instance.setForegroundColor(parseColor("#FFFFFF"))
                 widget.instance.setBackgroundColor(parseColor("#00808080"))
 
+        if "current_field_info" in self and self["current_field_info"] is not None:
+            field_number = self.current_field_index + 1
+            total_fields = len(self.fields)
+            self["current_field_info"].setText(
+                _("Field {0}/{1}: {2}").format(
+                    field_number,
+                    total_fields,
+                    self.fields[self.current_field_index][1]
+                )
+            )
     def prev_option(self):
         """Previous option for selection fields"""
         if DEBUG:

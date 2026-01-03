@@ -1290,10 +1290,10 @@ class ImportProgressScreen(Screen):
         skin = """
         <screen name="ImportProgressScreen" position="50,20" size="1000,160" title="Importing vCard" flags="wfNoBorder">
             <widget name="title" position="10,5" size="981,36" font="Regular;32" halign="left" valign="center" />
-            <widget name="filename" position="10,45" size="585,50" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="filename" position="10,45" size="585,50" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="progress" position="10,100" size="585,50" />
-            <widget name="status" position="600,100" size="395,50" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="background" />
-            <widget name="details" position="600,45" size="395,55" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="status" position="600,100" size="395,50" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
+            <widget name="details" position="600,45" size="395,55" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="721,30" size="150,10" alphatest="blend" />
             <widget name="key_red" position="721,5" size="150,25" font="Regular;20" halign="center" valign="center" />
         </screen>
@@ -1302,10 +1302,10 @@ class ImportProgressScreen(Screen):
         skin = """
         <screen name="ImportProgressScreen" position="50,20" size="800,300" title="Importing vCard" flags="wfNoBorder">
             <widget name="title" position="10,10" size="780,40" font="Regular;32" halign="center" valign="center" />
-            <widget name="filename" position="10,60" size="780,30" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="filename" position="10,60" size="780,30" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <widget name="progress" position="10,95" size="780,20" />
-            <widget name="status" position="10,120" size="780,30" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="background" />
-            <widget name="details" position="10,155" size="780,72" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="background" />
+            <widget name="status" position="10,120" size="780,30" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
+            <widget name="details" position="10,155" size="780,72" font="Regular;24" halign="center" valign="center" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/key_red.png" position="35,261" size="150,10" alphatest="blend" />
             <widget name="key_red" position="35,235" size="150,25" font="Regular;20" halign="center" valign="center" />
         </screen>

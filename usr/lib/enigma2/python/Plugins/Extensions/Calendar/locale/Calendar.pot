@@ -1,19 +1,23 @@
 #, fuzzy
-
-
-
-
-
-
-
-
-
-
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
 
 msgid "(Search: '{0}')"
 msgstr ""
 
 msgid "(truncated)"
+msgstr ""
+
+msgid "- - - -"
 msgstr ""
 
 msgid "--- CONTACTS ---"
@@ -176,6 +180,9 @@ msgid "Color for holiday days"
 msgstr ""
 
 msgid "Completed"
+msgstr ""
+
+msgid "Configuration saved successfully!"
 msgstr ""
 
 msgid "Contact '{0}' deleted successfully"
@@ -643,7 +650,7 @@ msgstr ""
 msgid "Manage Contacts"
 msgstr ""
 
-msgid "Manage Events"
+msgid "Manage Event"
 msgstr ""
 
 msgid "Manage ICS Events"
@@ -811,6 +818,9 @@ msgstr ""
 msgid "Re-import"
 msgstr ""
 
+msgid "Really close without saving settings?"
+msgstr ""
+
 msgid "Red"
 msgstr ""
 
@@ -848,6 +858,9 @@ msgid "S:{0}"
 msgstr ""
 
 msgid "SCHEDULED EVENTS:"
+msgstr ""
+
+msgid "SELECT YOUR CHOICE"
 msgstr ""
 
 msgid "Sat"

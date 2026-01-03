@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 14:37+0100\n"
-"PO-Revision-Date: 2026-01-02 21:30+0100\n"
+"PO-Revision-Date: 2026-01-03 22:44+0100\n"
 "Last-Translator: \n"
 "Language-Team: <sirius.al@rambler.ru>\n"
 "Language: it\n"
@@ -20,6 +20,9 @@ msgstr "(Cerca: '{0}')"
 
 msgid "(truncated)"
 msgstr "(troncato)"
+
+msgid "- - - -"
+msgstr ""
 
 msgid "--- CONTACTS ---"
 msgstr "--- CONTATTI ---"
@@ -182,6 +185,9 @@ msgstr "Colori per i giorni di festa"
 
 msgid "Completed"
 msgstr "Completato"
+
+msgid "Configuration saved successfully!"
+msgstr "Configurazione salvata con successo!"
 
 msgid "Contact '{0}' deleted successfully"
 msgstr "Contatto '{0}' eliminato con successo"
@@ -648,8 +654,8 @@ msgstr "Formato legacy (file di testo)"
 msgid "Manage Contacts"
 msgstr "Gestisci Contatti"
 
-msgid "Manage Events"
-msgstr "Gestisci eventi"
+msgid "Manage Event"
+msgstr "Gestisci evento"
 
 msgid "Manage ICS Events"
 msgstr "Gestire gli eventi ICS"
@@ -816,6 +822,9 @@ msgstr "Progresso: {0}%"
 msgid "Re-import"
 msgstr "Reimportare"
 
+msgid "Really close without saving settings?"
+msgstr "Davvero chiudere senza salvare le impostazioni?"
+
 msgid "Red"
 msgstr "Rosso"
 
@@ -854,6 +863,9 @@ msgstr "S:{0}"
 
 msgid "SCHEDULED EVENTS:"
 msgstr "EVENTI IN PROGRAMMA:"
+
+msgid "SELECT YOUR CHOICE"
+msgstr ""
 
 msgid "Sat"
 msgstr "Sab"
@@ -1151,225 +1163,3 @@ msgstr "vCard: formato (standard)"
 
 msgid "vCard import feature not available: {0}"
 msgstr "vCard: La funzionalità di importazione non è disponibile: {0}"
-
-#, python-format
-#~ msgid ""
-#~ "%s\n"
-#~ "\n"
-#~ "Restart Enigma2 now for changes to take effect."
-#~ msgstr ""
-#~ "%s\n"
-#~ "\n"
-#~ "Restart Enigma2 now for changes to take effect."
-
-#~ msgid "... and {} more\n"
-#~ msgstr "... e {} altro\n"
-
-#~ msgid ""
-#~ "A new version is available!\n"
-#~ "\n"
-#~ "Update now?\n"
-#~ "\n"
-#~ "(Recommended to backup first)"
-#~ msgstr ""
-#~ "È disponibile una nuova versione!\n"
-#~ "\n"
-#~ "Aggiornare ora?\n"
-#~ "\n"
-#~ "(Si consiglia di effettuare prima un backup)"
-
-#~ msgid "Auto-convert to vCard"
-#~ msgstr "Conversione automatica in vCard"
-
-#~ msgid "Automatically convert legacy files to vCard format on first use"
-#~ msgstr "Converti automaticamente i file legacy in formato vCard al primo utilizzo"
-
-#~ msgid "CONTACTS WITH BIRTHDAYS TODAY:\n"
-#~ msgstr "CONTATTI CON COMPLEANNI OGGI:\n"
-
-#~ msgid ""
-#~ "CONTACTS WITH BIRTHDAYS TODAY:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "CONTATTI CON COMPLEANNI OGGI:\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Calendar\n"
-#~ "Developer: Sirius0103 \n"
-#~ "Homepage: www.gisclub.tv \n"
-#~ "\n"
-#~ "Donate:\n"
-#~ "WMZ  Z395874509364\n"
-#~ "WME  E284580190260\n"
-#~ "WMR  R213063691482\n"
-#~ "WMU  U658742613505"
-#~ msgstr ""
-#~ "Calendario\n"
-#~ "Sviluppatore: Sirius0103\n"
-#~ "Homepage: www.gisclub.tv\n"
-#~ "\n"
-#~ "Donazioni:\n"
-#~ "WMZ Z395874509364\n"
-#~ "WME E284580190260\n"
-#~ "WMR R213063691482\n"
-#~ "WMU U658742613505"
-
-#~ msgid "Calendar Planner v.%s"
-#~ msgstr "Calendario Planner v.%s"
-
-#~ msgid "Configuration is saved"
-#~ msgstr "Конфигурация сохранена"
-
-#~ msgid "Conversion completed successfully!"
-#~ msgstr "Conversione completata con successo!"
-
-#~ msgid "Convert all existing data to ICS format?"
-#~ msgstr "Convertire tutti i dati esistenti nel formato ICS?"
-
-#~ msgid "Convert to Legacy"
-#~ msgstr "Converti in Legacy"
-
-#~ msgid "Convert to vCard"
-#~ msgstr "Converti in vCard"
-
-#~ msgid "Converting to Legacy..."
-#~ msgstr "Conversione in Legacy..."
-
-#~ msgid "Converting to vCard..."
-#~ msgstr "Conversione in vCard..."
-
-#~ msgid "Converting: {0} ({1}/{2})"
-#~ msgstr "Conversione: {0} ({1}/{2})"
-
-#~ msgid "Current format: {0}"
-#~ msgstr "Formato Corrente: {0}"
-
-#~ msgid "Database Converter"
-#~ msgstr "Convertitore Database"
-
-#~ msgid "Database Statistics"
-#~ msgstr "Statistiche del database"
-
-#~ msgid "Database converter error: {0}"
-#~ msgstr "Errore del convertitore del database: {0}"
-
-#~ msgid "Database has been automatically converted to {0} format."
-#~ msgstr "Il database è stato convertito automaticamente nel formato {0}."
-
-#~ msgid "Debug Settings"
-#~ msgstr "Impostazioni di debug"
-
-#~ msgid "Debug and logging options"
-#~ msgstr "Opzioni di debug e registrazione"
-
-#~ msgid "Do you want to remove all past non-recurring events?"
-#~ msgstr "Vuoi rimuovere tutti gli eventi passati non ricorrenti?"
-
-#~ msgid "Event Settings"
-#~ msgstr "Impostazioni evento"
-
-#~ msgid "Exit"
-#~ msgstr "Esci"
-
-#~ msgid "Filter"
-#~ msgstr "Filtro"
-
-#~ msgid "Holiday Settings"
-#~ msgstr "Impostazioni Festività"
-
-#~ msgid "Holiday display and coloring"
-#~ msgstr "Esposizione e colorazione delle feste"
-
-#~ msgid "ICS Events: {0} (Search: '{1}')"
-#~ msgstr "Eventi ICS: {0} (Cerca: '{1}')"
-
-#~ msgid "Language: {0}"
-#~ msgstr "Lingua: {0}"
-
-#~ msgid "Latvia"
-#~ msgstr "Латвия"
-
-#~ msgid "Legacy files: {0}"
-#~ msgstr "File legacy: {0}"
-
-#~ msgid "Legacy: {0}"
-#~ msgstr "Legacy: {0}"
-
-#~ msgid "Legacy: {0} files | vCard: {1} files"
-#~ msgstr "Legacy: {0} file | vCard: {1} file"
-
-#~ msgid "Location:"
-#~ msgstr "Местоположение:"
-
-#~ msgid "Magenta"
-#~ msgstr "Magenta"
-
-#~ msgid "Mo Tu We Th Fr Sa Su"
-#~ msgstr "Пн Вт Ср Чт Пт Сб Вс"
-
-#~ msgid "No legacy files found"
-#~ msgstr "Nessun file legacy trovato"
-
-#~ msgid "No legacy files found to convert"
-#~ msgstr "Nessun file legacy trovato da convertire"
-
-#~ msgid "No vCard files found"
-#~ msgstr "Nessun file vCard trovato"
-
-#~ msgid "No vCard files found to convert"
-#~ msgstr "Nessun file vCard trovato da convertire"
-
-#~ msgid "Paths:"
-#~ msgstr "Percorso:"
-
-#~ msgid "Purple"
-#~ msgstr "Viola"
-
-#~ msgid "Ready"
-#~ msgstr "Pronto"
-
-#~ msgid "Russia"
-#~ msgstr "Россия"
-
-#~ msgid "Show Calendar in main information menu"
-#~ msgstr "Mostra Calendario nel menu principale delle informazioni"
-
-#~ msgid "Show Calendar in menu"
-#~ msgstr "Mostra Calendario nel menu"
-
-#~ msgid "Skipped (duplicates): {}\n"
-#~ msgstr "Saltati (duplicati): {}\n"
-
-#~ msgid "Successfully imported: {}\n"
-#~ msgstr "Importato correttamente: {}\n"
-
-#~ msgid "TODAY'S EVENTS:"
-#~ msgstr "EVENTI DI OGGI:"
-
-#~ msgid "Total processed: {}\n"
-#~ msgstr "Totale elaborato: {}\n"
-
-#~ msgid "Ukraine"
-#~ msgstr "Украина"
-
-#~ msgid "Updated {0} events to {1}"
-#~ msgstr "Aggiornati {0} eventi a {1}"
-
-#~ msgid "no"
-#~ msgstr "no"
-
-#~ msgid "vCard files: {0}"
-#~ msgstr "vCard:: file  {0}"
-
-#~ msgid "vCard: {0}"
-#~ msgstr "vCard: {0}"
-
-#~ msgid "yes"
-#~ msgstr "si"
-
-#~ msgid "{0}"
-#~ msgstr "{0}"
-
-#~ msgid "{0} files"
-#~ msgstr "{0} files"

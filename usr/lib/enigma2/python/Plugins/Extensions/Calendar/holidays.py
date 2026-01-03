@@ -504,9 +504,9 @@ class HolidaysManager:
 class HolidaysImportScreen(Screen):
     if version_info[0] >= 3:
         skin = """
-            <screen position="center,center" size="1180,650" title="Import Holidays" flags="wfNoBorder">
+            <screen name=HolidaysImportScreen" position="center,center" size="1180,650" title="Import Holidays" flags="wfNoBorder">
                 <widget name="country_list" position="13,76" size="691,480" itemHeight="45" font="Regular;34" scrollbarMode="showNever" />
-                <widget name="status_label" position="11,10" size="1163,60" font="Regular;34" foregroundColor="#00ffcc33" backgroundColor="background" />
+                <widget name="status_label" position="11,10" size="1163,60" font="Regular;34" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
                 <widget name="log_text" position="714,83" size="447,502" font="Regular;26" />
                 <widget name="key_red" position="10,590" size="190,35" font="Regular;24" halign="center" />
                 <widget name="key_green" position="210,590" size="190,35" font="Regular;24" halign="center" />
@@ -518,9 +518,9 @@ class HolidaysImportScreen(Screen):
         """
     else:
         skin = """
-            <screen position="center,center" size="1180,650" title="Import Holidays" flags="wfNoBorder">
+            <screen name="HolidaysImportScreen" position="center,center" size="1180,650" title="Import Holidays" flags="wfNoBorder">
                 <widget name="country_list" position="13,76" size="691,500" itemHeight="30" scrollbarMode="showNever" />
-                <widget name="status_label" position="11,10" size="1163,60" font="Regular;34" foregroundColor="#00ffcc33" backgroundColor="background" />
+                <widget name="status_label" position="11,10" size="1163,60" font="Regular;34" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
                 <widget name="log_text" position="714,83" size="447,502" font="Regular;26" />
                 <widget name="key_red" position="10,590" size="190,35" font="Regular;24" halign="center" />
                 <widget name="key_green" position="210,590" size="190,35" font="Regular;24" halign="center" />

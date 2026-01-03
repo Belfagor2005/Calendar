@@ -15,9 +15,41 @@ Homepage: www.corvoboys.org www.linuxsat-support.com
 import os
 import re
 import subprocess
+import sys
 from xml.etree import ElementTree as ET
 
+# Compatibilità Python 2/3
+PY3 = sys.version_info.major >= 3
 
+# Funzioni di compatibilità
+def compat_makedirs(path, exist_ok=False):
+    """Compatibile con Python 2 e 3 per makedirs"""
+    if PY3:
+        os.makedirs(path, exist_ok=exist_ok)
+    else:
+        try:
+            os.makedirs(path)
+        except OSError:
+            if not exist_ok or not os.path.isdir(path):
+                raise
+
+def compat_open(filename, mode='r', encoding=None):
+    """Compatibile con Python 2 e 3 per open"""
+    if PY3:
+        return open(filename, mode, encoding=encoding)
+    else:
+        if 'b' in mode:
+            return open(filename, mode)
+        else:
+            return open(filename, mode)
+
+def decode_bytes(data):
+    """Decodifica bytes in stringa per Python 2/3"""
+    if PY3 and isinstance(data, bytes):
+        return data.decode('utf-8', errors='ignore')
+    return data
+
+# Variabili globali
 PLUGIN_NAME = "Calendar"
 PLUGIN_DIR = os.path.dirname(os.path.abspath(__file__))
 LOCALE_DIR = os.path.join(PLUGIN_DIR, "locale")
@@ -101,8 +133,23 @@ def extract_python_strings():
             '-o', temp_pot
         ] + py_files
 
-        # Run xgettext
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        # Run xgettext - compatibile Python 2/3
+        try:
+            if PY3:
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+            else:
+                # Python 2: usa Popen
+                import time
+                proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                stdout, stderr = proc.communicate()
+                result = type('obj', (object,), {
+                    'returncode': proc.returncode,
+                    'stdout': decode_bytes(stdout),
+                    'stderr': decode_bytes(stderr)
+                })()
+        except Exception as e:
+            print("ERROR running xgettext: {}".format(e))
+            return []
 
         if result.returncode != 0:
             print("ERROR xgettext: {}".format(result.stderr))
@@ -110,7 +157,7 @@ def extract_python_strings():
 
         # Read strings from the temporary .pot file
         if os.path.exists(temp_pot):
-            with open(temp_pot, 'r', encoding='utf-8') as f:
+            with compat_open(temp_pot, 'r', encoding='utf-8') as f:
                 content = f.read()
                 # Extract all msgid
                 for match in re.finditer(r'msgid "([^"]+)"', content):
@@ -118,7 +165,11 @@ def extract_python_strings():
                     if text and text.strip():
                         py_strings.append(text.strip())
 
-            os.remove(temp_pot)
+            # Clean up temp file
+            try:
+                os.remove(temp_pot)
+            except:
+                pass
 
         print("Python: found {} strings".format(len(py_strings)))
         return py_strings
@@ -132,7 +183,7 @@ def update_pot_file(xml_strings, py_strings):
     """Create or update the final .pot file"""
 
     # Ensure the folder exists
-    os.makedirs(LOCALE_DIR, exist_ok=True)
+    compat_makedirs(LOCALE_DIR, exist_ok=True)
 
     # Merge all strings
     all_strings = list(set(xml_strings + py_strings))
@@ -145,7 +196,7 @@ def update_pot_file(xml_strings, py_strings):
     pot_header = ""
 
     if os.path.exists(POT_FILE):
-        with open(POT_FILE, 'r', encoding='utf-8') as f:
+        with compat_open(POT_FILE, 'r', encoding='utf-8') as f:
             content = f.read()
 
             # Separate header (everything before first msgid)
@@ -160,7 +211,7 @@ def update_pot_file(xml_strings, py_strings):
                 existing_translations[msgid] = msgstr
 
     # Write the new .pot file
-    with open(POT_FILE, 'w', encoding='utf-8') as f:
+    with compat_open(POT_FILE, 'w', encoding='utf-8') as f:
         # Header
         if pot_header:
             f.write(pot_header)
@@ -221,19 +272,33 @@ def update_po_files():
                 ]
 
                 try:
-                    subprocess.run(cmd, check=True, capture_output=True, text=True)
+                    if PY3:
+                        result = subprocess.run(cmd, check=True, capture_output=True, text=True, timeout=30)
+                    else:
+                        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                        stdout, stderr = proc.communicate()
+                        if proc.returncode != 0:
+                            raise subprocess.CalledProcessError(proc.returncode, cmd, output=stdout)
+                    
                     print("  ✓ {} updated".format(lang_dir))
-                except subprocess.CalledProcessError as e:
-                    print("  ✗ ERROR updating {}: {}".format(lang_dir, e.stderr))
+                except Exception as e:
+                    print("  ✗ ERROR updating {}: {}".format(lang_dir, str(e)))
 
             else:
                 # Create new .po file
-                os.makedirs(po_dir, exist_ok=True)
+                compat_makedirs(po_dir, exist_ok=True)
                 cmd = ['msginit', '-i', POT_FILE, '-o', po_file, '-l', lang_dir]
                 try:
-                    subprocess.run(cmd, check=True, capture_output=True)
+                    if PY3:
+                        result = subprocess.run(cmd, check=True, capture_output=True, timeout=30)
+                    else:
+                        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                        stdout, stderr = proc.communicate()
+                        if proc.returncode != 0:
+                            raise subprocess.CalledProcessError(proc.returncode, cmd, output=stdout)
+                    
                     print("  ✓ Created new file for: {}".format(lang_dir))
-                except:
+                except Exception as e:
                     print("  ✗ ERROR creating file for: {}".format(lang_dir))
 
 
@@ -248,10 +313,19 @@ def compile_mo_files():
         if os.path.exists(po_file):
             try:
                 cmd = ['msgfmt', po_file, '-o', mo_file]
-                subprocess.run(cmd, check=True, capture_output=True)
+                
+                if PY3:
+                    result = subprocess.run(cmd, check=True, capture_output=True, timeout=30)
+                else:
+                    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    stdout, stderr = proc.communicate()
+                    if proc.returncode != 0:
+                        raise subprocess.CalledProcessError(proc.returncode, cmd, output=stdout)
+                
                 print("✓ Compiled: {}/LC_MESSAGES/{}.mo".format(lang_dir, PLUGIN_NAME))
-            except subprocess.CalledProcessError as e:
-                print("✗ ERROR compiling {}: {}".format(lang_dir, e.stderr.decode('utf-8')))
+            except Exception as e:
+                error_msg = str(e)
+                print("✗ ERROR compiling {}: {}".format(lang_dir, error_msg))
 
 
 # ===== MAIN =====

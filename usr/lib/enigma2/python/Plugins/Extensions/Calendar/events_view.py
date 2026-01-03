@@ -278,13 +278,13 @@ class EventsView(Screen):
             )
 
     def edit_event(self):
-        """Edit selected event - PASS ALL EVENTS, NOT JUST TODAY'S"""
+        """Edit selected event"""
         index = self["events_list"].getSelectedIndex()
         if 0 <= index < len(self.current_events):
             from .event_dialog import EventDialog
 
             # Get ALL events from event manager
-            all_events = self.event_manager.events  # Tutti gli eventi
+            all_events = self.event_manager.events
 
             # Find the index of current event in all_events
             current_event = self.current_events[index]
@@ -305,8 +305,8 @@ class EventsView(Screen):
                 EventDialog,
                 self.event_manager,
                 event=current_event,
-                all_events=all_events,           # Passa TUTTI gli eventi
-                current_index=current_index_in_all  # Posizione nell'array completo
+                all_events=all_events,
+                current_index=current_index_in_all
             )
 
     def delete_event(self):

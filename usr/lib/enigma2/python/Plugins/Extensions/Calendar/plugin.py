@@ -36,7 +36,7 @@ MENU  - Configuration
 
 UNIVERSAL NAVIGATION CONTROLS (ALL SCREENS):
 CH+   - Next item (wrap-around)
-CH-   - Previous item (wrap-around) 
+CH-   - Previous item (wrap-around)
 UP/DOWN - Standard navigation (wrap-around)
 PAGE UP/DOWN - Jump 5 items
 BLUE  - Jump to TODAY'S item
@@ -55,7 +55,7 @@ EVENT TIME CONVERSION SYSTEM:
 
 UNIFIED INTERFACE FEATURES:
 • EventsView - Today's Events List with CH+/CH- navigation
-• EventDialog - Event Editor with auto-save on navigation  
+• EventDialog - Event Editor with auto-save on navigation
 • ContactsView - Contact List with wrap-around navigation
 • BirthdayDialog - Contact Editor with universal controls
 • ICSEventsView - ICS Events List with position display
@@ -181,62 +181,62 @@ class Calendar(Screen):
             <widget name="wn5" position="15,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#00808080" />
 
             <!-- GIORNI DEL MESE (42 celle) -->
-            <widget name="d0" position="83,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d1" position="150,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d2" position="218,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d3" position="285,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d4" position="353,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d5" position="420,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d6" position="488,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d0" position="83,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d1" position="150,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d2" position="218,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d3" position="285,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d4" position="353,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d5" position="420,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d6" position="488,128" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d7" position="83,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d8" position="150,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d9" position="218,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d10" position="285,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d11" position="353,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d12" position="420,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d13" position="488,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d7" position="83,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d8" position="150,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d9" position="218,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d10" position="285,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d11" position="353,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d12" position="420,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d13" position="488,195" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d14" position="83,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d15" position="150,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d16" position="218,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d17" position="285,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d18" position="353,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d19" position="420,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d20" position="488,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d14" position="83,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d15" position="150,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d16" position="218,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d17" position="285,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d18" position="353,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d19" position="420,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d20" position="488,263" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d21" position="83,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d22" position="150,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d23" position="218,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d24" position="285,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d25" position="353,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d26" position="420,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d27" position="488,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d21" position="83,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d22" position="150,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d23" position="218,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d24" position="285,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d25" position="353,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d26" position="420,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d27" position="488,330" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d28" position="83,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d29" position="150,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d30" position="218,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d31" position="285,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d32" position="353,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d33" position="420,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d34" position="488,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d28" position="83,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d29" position="150,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d30" position="218,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d31" position="285,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d32" position="353,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d33" position="420,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d34" position="488,398" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d35" position="83,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d36" position="150,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d37" position="218,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d38" position="285,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d39" position="353,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d40" position="420,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d41" position="488,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d35" position="83,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d36" position="150,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d37" position="218,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d38" position="285,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d39" position="353,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d40" position="420,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d41" position="488,465" size="60,60" font="Regular;30" halign="center" valign="center" backgroundColor="#20101010" />
 
             <!-- TESTI INFORMATIVI -->
-            <widget name="monthname" position="15,8" size="533,45" font="Regular; 36" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="date" position="555,10" size="1330,45" font="Regular; 34" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="datepeople" position="555,60" size="1330,45" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="monthpeople" position="15,540" size="533,427" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="sign" position="555,110" size="1330,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="holiday" position="555,188" size="1330,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="description" position="555,270" size="1330,696" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" valign="top" transparent="1" />
+            <widget name="monthname" position="15,8" size="533,45" font="Regular; 36" foregroundColor="#00ffcc33" backgroundColor="#20101010" halign="center" transparent="1" />
+            <widget name="date" position="555,10" size="1330,45" font="Regular; 34" foregroundColor="#00ffcc33" backgroundColor="#20101010" halign="center" transparent="1" />
+            <widget name="datepeople" position="555,60" size="1330,45" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" transparent="1" />
+            <widget name="monthpeople" position="15,540" size="533,427" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" transparent="1" />
+            <widget name="sign" position="555,110" size="1330,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" transparent="1" />
+            <widget name="holiday" position="555,188" size="1330,75" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" transparent="1" />
+            <widget name="description" position="555,270" size="1330,696" font="Regular; 30" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" valign="top" transparent="1" />
             <widget name="status" position="1351,971" size="537,45" font="Regular; 32" foregroundColor="#1edb76" zPosition="5" halign="center" transparent="1" />
 
             <!-- TASTI FUNZIONE -->
@@ -282,62 +282,62 @@ class Calendar(Screen):
             <widget name="wn5" position="10,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
 
             <!-- GIORNI DEL MESE (42 celle) -->
-            <widget name="d0" position="55,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d1" position="100,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d2" position="145,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d3" position="190,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d4" position="235,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d5" position="280,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d6" position="325,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d0" position="55,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d1" position="100,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d2" position="145,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d3" position="190,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d4" position="235,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d5" position="280,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d6" position="325,85" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d7" position="55,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d8" position="100,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d9" position="145,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d10" position="190,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d11" position="235,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d12" position="280,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d13" position="325,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d7" position="55,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d8" position="100,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d9" position="145,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d10" position="190,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d11" position="235,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d12" position="280,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d13" position="325,130" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d14" position="55,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d15" position="100,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d16" position="145,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d17" position="190,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d18" position="235,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d19" position="280,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d20" position="325,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d14" position="55,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d15" position="100,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d16" position="145,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d17" position="190,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d18" position="235,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d19" position="280,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d20" position="325,175" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d21" position="55,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d22" position="100,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d23" position="145,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d24" position="190,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d25" position="235,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d26" position="280,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d27" position="325,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d21" position="55,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d22" position="100,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d23" position="145,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d24" position="190,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d25" position="235,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d26" position="280,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d27" position="325,220" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d28" position="55,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d29" position="100,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d30" position="145,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d31" position="190,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d32" position="235,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d33" position="280,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d34" position="325,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d28" position="55,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d29" position="100,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d30" position="145,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d31" position="190,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d32" position="235,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d33" position="280,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d34" position="325,265" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
 
-            <widget name="d35" position="55,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d36" position="100,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d37" position="145,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d38" position="190,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d39" position="235,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d40" position="280,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
-            <widget name="d41" position="325,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="background" />
+            <widget name="d35" position="55,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d36" position="100,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d37" position="145,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d38" position="190,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d39" position="235,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d40" position="280,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
+            <widget name="d41" position="325,310" size="40,40" font="Regular;20" halign="center" valign="center" backgroundColor="#20101010" />
 
             <!-- TESTI INFORMATIVI -->
-            <widget name="monthname" position="10,5" size="355,30" font="Regular; 24" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="date" position="370,5" size="895,30" font="Regular; 24" foregroundColor="#00ffcc33" backgroundColor="background" halign="center" transparent="1" />
-            <widget name="datepeople" position="370,35" size="895,40" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="monthpeople" position="10,360" size="355,290" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="sign" position="370,75" size="895,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="holiday" position="370,125" size="895,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" transparent="1" />
-            <widget name="description" position="370,175" size="895,475" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="background" halign="left" valign="top" transparent="1" />
+            <widget name="monthname" position="10,5" size="355,30" font="Regular; 24" foregroundColor="#00ffcc33" backgroundColor="#20101010" halign="center" transparent="1" />
+            <widget name="date" position="370,5" size="895,30" font="Regular; 24" foregroundColor="#00ffcc33" backgroundColor="#20101010" halign="center" transparent="1" />
+            <widget name="datepeople" position="370,35" size="895,40" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" transparent="1" />
+            <widget name="monthpeople" position="10,360" size="355,290" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" transparent="1" />
+            <widget name="sign" position="370,75" size="895,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" transparent="1" />
+            <widget name="holiday" position="370,125" size="895,50" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" transparent="1" />
+            <widget name="description" position="370,175" size="895,475" font="Regular; 20" foregroundColor="#00f4f4f4" backgroundColor="#20101010" halign="left" valign="top" transparent="1" />
             <widget name="status" position="894,656" size="378,25" font="Regular; 20" foregroundColor="#1edb76" halign="center" zPosition="5" transparent="1" />
 
             <!-- TASTI FUNZIONE -->
@@ -582,7 +582,7 @@ class Calendar(Screen):
         if config.plugins.calendar.events_enabled.value and self.event_manager:
             menu.extend([
                 (_("--- EVENTS ---"), None),  # Separator
-                (_("Manage Events"), self.show_events),
+                (_("Manage Event"), self.show_events),
                 (_("Add Event"), self.add_event),
                 (_("Import Google Calendar (.ics)"), self.import_ics_file),
                 (_("Manage ICS Files"), self.manage_ics_files),
@@ -3596,15 +3596,6 @@ class Calendar(Screen):
     def show_events(self):
         """Show the events view for the current date"""
         current_date = datetime.date(self.year, self.month, self.day)
-        # date_str = "{0}-{1:02d}-{2:02d}".format(
-            # current_date.year,
-            # current_date.month,
-            # current_date.day
-        # )
-
-        # # Get events for this date
-        # events_for_date = self.event_manager.get_events_for_date(date_str)
-
         # Get ALL events for navigation
         all_events = self.event_manager.events
 
