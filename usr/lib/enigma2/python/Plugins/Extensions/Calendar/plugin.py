@@ -157,7 +157,7 @@ class Calendar(Screen):
         <screen name="Calendar" position="center,center" size="1900,1060" title=" " flags="wfNoBorder" zPosition="0">
             <eLabel backgroundColor="#001a2336" cornerRadius="30" position="10,980" size="1880,90" zPosition="0" />
             <eLabel name="" position="0,0" size="1920,1080" zPosition="-1" cornerRadius="20" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-            <widget source="session.VideoPicture" render="Pig" position="1402,687" zPosition="19" size="475,271" backgroundColor="transparent" transparent="0" cornerRadius="20" />
+            <widget source="session.VideoPicture" render="Pig" position="1402,687" zPosition="19" size="475,271" backgroundColor="#ff000000" transparent="0" cornerRadius="20" />
 
             <!-- SEPARATORE
             <eLabel position="30,915" size="1740,5" backgroundColor="#FF555555" zPosition="1" />
@@ -261,7 +261,7 @@ class Calendar(Screen):
         <screen name="Calendar" position="center,center" size="1280,720" title=" " flags="wfNoBorder">
             <eLabel backgroundColor="#001a2336" cornerRadius="20" position="10,655" size="1260,60" zPosition="0" />
             <eLabel name="" position="-80,-270" size="1280,720" zPosition="-1" cornerRadius="12" backgroundColor="#00171a1c" foregroundColor="#00171a1c" />
-            <widget source="session.VideoPicture" render="Pig" position="943,466" zPosition="19" size="315,180" backgroundColor="transparent" transparent="0" cornerRadius="10" />
+            <widget source="session.VideoPicture" render="Pig" position="943,466" zPosition="19" size="315,180" backgroundColor="#ff000000" transparent="0" cornerRadius="10" />
 
             <!-- NOMI GIORNI SETTIMANA -->
             <widget name="w0" position="10,40" size="42,40" font="Regular;20" halign="center" valign="center" backgroundColor="#00808080" />
@@ -4257,9 +4257,15 @@ class Calendar(Screen):
         self.close()
 
 
+# class settingCalendar(Setup):
+    # def __init__(self, session, parent=None):
+        # Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
+        # self.parent = parent
+
+
 class settingCalendar(Setup):
     def __init__(self, session, parent=None):
-        Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
+        Setup.__init__(self, session, "settingCalendar", plugin="Extensions/Calendar", PluginLanguageDomain="Calendar")
         self.parent = parent
 
     def keySave(self):
