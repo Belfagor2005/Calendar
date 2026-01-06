@@ -312,6 +312,18 @@ class EventManager:
         if NOTIFICATION_AVAILABLE:
             init_notification_system(session)
 
+        import atexit
+        atexit.register(self.cleanup)
+    
+    def cleanup(self):
+        """Cleanup this instance"""
+        try:
+            self.save_notified_events()
+            if DEBUG:
+                print("[EventManager] Instance cleanup completed")
+        except Exception as e:
+            print("[EventManager] Cleanup error:", str(e))
+
     def load_events(self):
         """Load events from JSON file - convert old times"""
         try:
@@ -1555,16 +1567,16 @@ def format_event_display(event):
 import atexit
 
 
-def cleanup_event_manager():
-    """Cleanup function called on exit"""
-    try:
-        if 'manager' in globals():
-            manager.save_notified_events()
-            print("[EventManager] Cleanup completed")
-    except:
-        pass
+# def cleanup_event_manager():
+    # """Cleanup function called on exit"""
+    # try:
+        # if 'manager' in globals():
+            # manager.save_notified_events()
+            # print("[EventManager] Cleanup completed")
+    # except:
+        # pass
 
-atexit.register(cleanup_event_manager)
+# atexit.register(cleanup_event_manager)
 
 
 # Test the module
