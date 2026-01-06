@@ -26,8 +26,12 @@ from Screens.MessageBox import MessageBox
 from Screens.InfoBar import InfoBar
 
 from . import _, PLUGIN_PATH
-from .formatters import EVENTS_JSON, SOUNDS_DIR
 from .config_manager import get_debug, get_default_event_time, OLD_DEFAULT_EVENT_TIME, get_last_used_default_time
+from .formatters import get_EVENTS_JSON, get_SOUNDS_DIR
+
+EVENTS_JSON = get_EVENTS_JSON()
+SOUNDS_DIR = get_SOUNDS_DIR()
+
 
 global DEBUG
 DEBUG = get_debug()
@@ -278,8 +282,11 @@ class EventManager:
         self.sound_dir = SOUNDS_DIR
 
         self.events = []
-
+        from .formatters import DATA_PATH
         self.notified_events = set()  # Events already notified in this session
+        self.notified_events_file = join(DATA_PATH, "notified_events.json")
+        self.load_notified_events()
+
         self.tv_service_backup = None  # For TV service backup
         self.sound_stop_timer = None   # For audio timer
 
@@ -506,6 +513,51 @@ class EventManager:
             print("[EventManager] Error saving events: %s" % str(e))
             raise
 
+    def save_notified_events(self):
+        """Save notified events cache to file"""
+        try:
+            if DEBUG:
+                print("[EventManager] Saving notified events cache")
+
+            # Create directory if needed
+            events_dir = dirname(self.notified_events_file)
+            if not exists(events_dir):
+                makedirs(events_dir, 0o755)
+
+            # Save to file
+            with open(self.notified_events_file, 'w') as f:
+                dump(list(self.notified_events), f, indent=2)
+                f.flush()
+                fsync(f.fileno())
+
+            if DEBUG:
+                print("[EventManager] Saved {} notified events".format(len(self.notified_events)))
+
+        except Exception as e:
+            print("[EventManager] Error saving notified events: {}".format(str(e)))
+
+
+    def load_notified_events(self):
+        """Load notified events cache from file"""
+        try:
+            if exists(self.notified_events_file):
+                with open(self.notified_events_file, 'r') as f:
+                    loaded_events = load(f)
+                    self.notified_events = set(loaded_events)
+
+                    if DEBUG:
+                        print(
+                            "[EventManager] Loaded {} previously notified events"
+                            .format(len(self.notified_events))
+                        )
+            else:
+                if DEBUG:
+                    print("[EventManager] No notified events cache found")
+
+        except Exception as e:
+            print("[EventManager] Error loading notified events: {}".format(str(e)))
+            self.notified_events = set()
+
     def _get_file_hash(self):
         """Get hash of events file for version tracking"""
         try:
@@ -602,8 +654,13 @@ class EventManager:
         """Delete an event"""
         self.events = [event for event in self.events if event.id != event_id]
         self.save_events()
+        # Also remove from notified cache
+        if event_id in self.notified_events:
+            self.notified_events.remove(event_id)
+            self.save_notified_events()
+
         if DEBUG:
-            print("[EventManager] Event deleted: {0}".format(event_id))
+            print(f"[EventManager] Event deleted: {event_id}")
         return True
 
     def get_event(self, event_id):
@@ -711,106 +768,158 @@ class EventManager:
         """Check events and show notifications if needed"""
         try:
             now = datetime.now()
+
             if DEBUG:
-                print("[EventManager DEBUG] Checking events at {0}".format(now.strftime('%H:%M:%S')))
-                print("[EventManager DEBUG] Total events: {0}".format(len(self.events)))
+                print(
+                    "\n[EventManager] === CHECK EVENTS at {} ==="
+                    .format(now.strftime('%H:%M:%S'))
+                )
+                print("[EventManager] Total events: {}".format(len(self.events)))
+                print(
+                    "[EventManager] Enabled events: {}"
+                    .format(sum(1 for e in self.events if e.enabled))
+                )
+                print(
+                    "[EventManager] Recurring events: {}"
+                    .format(sum(1 for e in self.events if e.repeat != 'none'))
+                )
+                print(
+                    "[EventManager] Already notified: {}"
+                    .format(len(self.notified_events))
+                )
 
             events_checked = 0
             events_skipped = 0
+            notifications_shown = 0
 
             for event in self.events:
-                # 1. If the event is disabled, skip it
-                if not event.enabled:
-                    if DEBUG:
-                        print("[EventManager DEBUG] Event '{0}' is disabled - SKIP".format(event.title))
+                # Check if we should skip this event
+                if not self._should_check_event(event, now):
                     events_skipped += 1
                     continue
 
-                # 2. For NON-recurring events already past by >5 minutes: SKIP CHECKING
-                if event.repeat == "none":
-                    event_dt = event.get_datetime()
-                    if event_dt:
-                        time_passed = now - event_dt
-
-                        # Event passed more than 5 minutes ago AND already notified? SKIP
-                        if time_passed > timedelta(minutes=5) and event.id in self.notified_events:
-                            if DEBUG:
-                                print("[EventManager DEBUG] Event '{0}' passed {1} min ago and already notified - SKIP CHECKING".format(
-                                    event.title, time_passed.seconds // 60))
-                            events_skipped += 1
-                            continue
-
-                        # Event passed more than 30 minutes ago (even if not notified)? SKIP
-                        elif time_passed > timedelta(minutes=30):
-                            if DEBUG:
-                                print("[EventManager DEBUG] Event '{0}' passed {1} min ago - SKIP CHECKING".format(
-                                    event.title, time_passed.seconds // 60))
-                            events_skipped += 1
-                            continue
-
-                        # Event passed 2-30 minutes ago but not notified? Still check
-                        elif time_passed > timedelta(minutes=2):
-                            # Event passed but we might still be in notification window
-                            pass
-
                 events_checked += 1
+
                 if DEBUG:
-                    print("[EventManager DEBUG] Checking event: {0}".format(event.title))
-                    print("[EventManager DEBUG]   Date/Time: {0} {1}".format(event.date, event.time))
-                    print("[EventManager DEBUG]   Notify before: {0} min".format(event.notify_before))
-                    print("[EventManager DEBUG]   Repeat: {0}".format(event.repeat))
+                    print("\n[EventManager] Checking: '{}'".format(event.title))
+                    print(
+                        "[EventManager]   Date/Time: {} {}"
+                        .format(event.date, event.time)
+                    )
+                    print("[EventManager]   Repeat: {}".format(event.repeat))
+                    print(
+                        "[EventManager]   Notify before: {}min"
+                        .format(event.notify_before)
+                    )
 
                 next_occurrence = event.get_next_occurrence(now)
+
                 if next_occurrence:
-                    if DEBUG:
-                        print("[EventManager DEBUG]   Next occurrence: {0}".format(next_occurrence))
+                    # Calculate notification window
+                    notify_window_start = (
+                        next_occurrence - timedelta(minutes=event.notify_before)
+                    )
+                    notify_window_end = next_occurrence + timedelta(minutes=5)
 
-                    # Check if it's time to notify
-                    notify_time = next_occurrence - timedelta(minutes=event.notify_before)
                     if DEBUG:
-                        print("[EventManager DEBUG]   Notify time: {0}".format(notify_time))
-                        print("[EventManager DEBUG]   Now: {0}".format(now))
-                        print("[EventManager DEBUG]   Should notify window: {0} to {1}".format(
-                            notify_time, next_occurrence + timedelta(minutes=5)))
+                        print("[EventManager]   Next: {}".format(next_occurrence))
+                        print(
+                            "[EventManager]   Notify window: {} to {}"
+                            .format(notify_window_start, notify_window_end)
+                        )
 
-                    should_notify = event.should_notify(now)
-                    if DEBUG:
-                        print("[EventManager DEBUG]   Should notify: {0}".format(should_notify))
-                        print("[EventManager DEBUG]   Already notified: {0}".format(
-                            event.id in self.notified_events))
+                    # Check if we should notify now
+                    should_notify = notify_window_start <= now <= notify_window_end
 
                     if should_notify and event.id not in self.notified_events:
                         if DEBUG:
-                            print("[EventManager DEBUG]   >>> SHOWING NOTIFICATION for {0}".format(event.title))
+                            print("[EventManager]   >>> SHOWING NOTIFICATION!")
+
                         self.show_notification(event)
                         self.notified_events.add(event.id)
-                        if DEBUG:
-                            print("[EventManager DEBUG]   Added to notified events: {0}".format(event.id))
+                        self.save_notified_events()  # <-- SALVA SUBITO
+                        notifications_shown += 1
+
                     elif event.id in self.notified_events:
-                        if DEBUG:
-                            print("[EventManager DEBUG]   Already notified, checking if past...")
-                        if (next_occurrence and
-                                (next_occurrence - timedelta(minutes=event.notify_before)) >
-                                now + timedelta(minutes=5)):
+                        # Clean up if event is past notification window
+                        if now > notify_window_end:
                             self.notified_events.remove(event.id)
+                            self.save_notified_events()
                             if DEBUG:
-                                print("[EventManager DEBUG]   Removed from notified events: {0}".format(event.id))
-                else:
-                    print("[EventManager DEBUG]   No next occurrence found")
+                                print("[EventManager]   Removed from notified cache")
 
             if DEBUG:
-                print("[EventManager DEBUG]   ---")
-                print("[EventManager DEBUG] Summary: {0} events checked, {1} skipped".format(
-                    events_checked, events_skipped))
-                print("[EventManager DEBUG] Notified events count: {0}".format(len(self.notified_events)))
+                print("\n[EventManager] Summary:")
+                print("[EventManager]   Checked: {}".format(events_checked))
+                print("[EventManager]   Skipped: {}".format(events_skipped))
+                print(
+                    "[EventManager]   Notifications shown: {}"
+                    .format(notifications_shown)
+                )
+                print(
+                    "[EventManager]   Notified cache size: {}"
+                    .format(len(self.notified_events))
+                )
+                print("[EventManager] === CHECK COMPLETE ===\n")
 
             # Reschedule next check
             self.check_timer.start(30000, True)
-            if DEBUG:
-                print("[EventManager DEBUG] Next check in 30 seconds")
 
         except Exception as e:
-            print("[EventManager] Error checking events: {0}".format(e))
+            print(
+                "[EventManager] Error in check_events: {}"
+                .format(str(e))
+            )
+            import traceback
+            traceback.print_exc()
+
+    def _should_check_event(self, event, now):
+        """
+        Determine if an event should be checked for notifications
+
+        Returns:
+            bool: True if event should be checked, False otherwise
+        """
+        # Disabled events: skip
+        if not event.enabled:
+            if DEBUG:
+                print("[EventManager]   SKIP: Event disabled")
+            return False
+
+        # Recurring events: always check
+        if event.repeat != "none":
+            return True
+
+        # Non-recurring events
+        event_dt = event.get_datetime()
+        if not event_dt:
+            if DEBUG:
+                print("[EventManager]   SKIP: Invalid date/time")
+            return False
+
+        time_passed = now - event_dt
+
+        # More than 1 day past: skip
+        if time_passed > timedelta(days=1):
+            if DEBUG:
+                print(
+                    "[EventManager]   SKIP: More than 1 day past ({})"
+                    .format(time_passed)
+                )
+            return False
+
+        # More than 30 minutes past and already notified: skip
+        if (time_passed > timedelta(minutes=30) and
+                event.id in self.notified_events):
+            if DEBUG:
+                print(
+                    "[EventManager]   SKIP: Past & notified ({}min ago)"
+                    .format(time_passed.seconds // 60)
+                )
+            return False
+
+        # Check this event
+        return True
 
     def cleanup_past_events(self):
         """Clean up past non-recurring events"""
@@ -1070,6 +1179,7 @@ class EventManager:
             if NOTIFICATION_AVAILABLE:
                 # Show notification for 5 seconds
                 quick_notify(message, seconds=10)
+                self.save_notified_events()
 
                 # Timer to stop the sound when the notification ends
                 def stop_sound_when_notification_ends():
@@ -1440,6 +1550,21 @@ def format_event_display(event):
     }.get(event.repeat, "")
 
     return "{0} - {1}{2}".format(event.time, event.title, repeat_text)
+
+
+import atexit
+
+
+def cleanup_event_manager():
+    """Cleanup function called on exit"""
+    try:
+        if 'manager' in globals():
+            manager.save_notified_events()
+            print("[EventManager] Cleanup completed")
+    except:
+        pass
+
+atexit.register(cleanup_event_manager)
 
 
 # Test the module

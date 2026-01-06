@@ -4261,10 +4261,22 @@ class Calendar(Screen):
     # def __init__(self, session, parent=None):
         # Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
         # self.parent = parent
+# class settingCalendar(Setup):
+    # def __init__(self, session, parent=None):
+        # Setup.__init__(self, session, "settingCalendar", plugin="Extensions/Calendar", PluginLanguageDomain="Calendar")
+        # self.parent = parent
 
 
 class settingCalendar(Setup):
     def __init__(self, session, parent=None):
+        print("[Calendar DEBUG] Opening settings...")
+        from .config_manager import init_calendar_config
+        init_calendar_config()
+        if not hasattr(config.plugins.calendar, 'menu'):
+            from Components.config import ConfigYesNo
+            config.plugins.calendar.menu = ConfigYesNo(default=True)
+            print("[Calendar DEBUG] Added missing 'menu' attribute")
+
         Setup.__init__(self, session, "settingCalendar", plugin="Extensions/Calendar", PluginLanguageDomain="Calendar")
         self.parent = parent
 
