@@ -161,7 +161,7 @@ class ICSEventDialog(Screen):
 
         # Set title
         title_text = _("Edit Event ({0}/{1})").format(current_index + 1, len(all_events)) if all_events else _("Edit ICS Event")
-        safe_title = compat_text(title_text)
+        safe_title = str(title_text)
         self.setTitle(safe_title)
 
         # Initialize all widgets
@@ -253,7 +253,7 @@ class ICSEventDialog(Screen):
         total_fields = len(self.fields)
         field_name = self.fields[self.current_field_index][1]
         info_text = _("Field {0}/{1}: {2}").format(field_number, total_fields, field_name)
-        self["current_field_info"].setText(compat_text(info_text))
+        self["current_field_info"].setText(str(info_text))
 
     def edit_current_field(self):
         """Edit current field"""

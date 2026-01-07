@@ -337,7 +337,7 @@ class BirthdayDialog(Screen):
                 self.fields[self.current_field_index][1]
 
             )
-            self["current_field_info"].setText(compat_text(info_text))
+            self["current_field_info"].setText(str(info_text))
 
     def _format_phone_display(self, phone_value):
         """Format phone number for display"""
