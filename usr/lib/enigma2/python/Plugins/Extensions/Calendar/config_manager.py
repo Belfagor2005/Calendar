@@ -114,6 +114,25 @@ def init_calendar_config():
             config.plugins.calendar = ConfigSubsection()
             print("[ConfigManager] Created config.plugins.calendar")
 
+        # AUTOSTART CONFIG
+        config.plugins.calendar.autostart_enabled = ConfigYesNo(default=True)
+        config.plugins.calendar.autostart_delay = ConfigInteger(
+            default=30,
+            limits=(5, 300)
+        )
+        # config.plugins.calendar.show_in_system_menu = ConfigYesNo(default=True)
+
+        # PERFORMANCE CONFIG
+        config.plugins.calendar.check_interval = ConfigInteger(
+            default=30,
+            limits=(10, 300)
+        )
+        config.plugins.calendar.auto_clean_notifications = ConfigYesNo(default=True)
+        config.plugins.calendar.notification_cache_days = ConfigInteger(
+            default=7,
+            limits=(1, 30)
+        )
+
         # EVENTS CONFIG
         config.plugins.calendar.events_enabled = ConfigYesNo(default=True)
         config.plugins.calendar.default_event_time = ConfigText(default=OLD_DEFAULT_EVENT_TIME, fixed_size=True)
@@ -177,8 +196,7 @@ def init_calendar_config():
             limits=(0, 1440)
         )
 
-        print("[ConfigManager] Basic config initialized successfully")
-
+        print("[ConfigManager] All config initialized successfully")
     except Exception as e:
         print("[ConfigManager] ERROR in init_calendar_config:", str(e))
         import traceback
@@ -186,6 +204,21 @@ def init_calendar_config():
         return False
 
     return True
+
+
+def validate_event_time(time_str):
+    """Validate HH:MM format"""
+    try:
+        if not time_str or len(time_str) != 5:
+            return False
+        parts = time_str.split(':')
+        if len(parts) != 2:
+            return False
+        hour = int(parts[0])
+        minute = int(parts[1])
+        return 0 <= hour <= 23 and 0 <= minute <= 59
+    except:
+        return False
 
 
 def init_export_config():

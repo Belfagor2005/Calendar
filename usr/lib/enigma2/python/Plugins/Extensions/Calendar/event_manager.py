@@ -276,9 +276,26 @@ class Event:
 class EventManager:
     """Central event manager with notification system"""
 
+    _instance = None  # Singleton pattern
+
+    @classmethod
+    def get_instance(cls, session=None):
+        """Get the singleton instance"""
+        if cls._instance is None and session:
+            cls._instance = cls(session)
+        return cls._instance
+
+    @classmethod
+    def has_instance(cls):
+        """Check whether an instance already exists"""
+        return cls._instance is not None
+
     def __init__(self, session, events_file=None):
-        self.session = session
-        self.events_file = events_file or EVENTS_JSON
+        # If an instance already exists, reuse it
+        if EventManager._instance is not None:
+            self.__dict__ = EventManager._instance.__dict__
+            return
+
         self.sound_dir = SOUNDS_DIR
 
         self.events = []
@@ -314,7 +331,8 @@ class EventManager:
 
         import atexit
         atexit.register(self.cleanup)
-    
+        EventManager._instance = self
+
     def cleanup(self):
         """Cleanup this instance"""
         try:
@@ -323,6 +341,36 @@ class EventManager:
                 print("[EventManager] Instance cleanup completed")
         except Exception as e:
             print("[EventManager] Cleanup error:", str(e))
+
+    def auto_clean_notification_cache(self):
+        """Automatically clean old notifications from cache"""
+        try:
+            if not config.plugins.calendar.auto_clean_notifications.value:
+                return 0
+
+            # Load current cache
+            if exists(self.notified_events_file):
+                with open(self.notified_events_file, 'r') as f:
+                    cache_data = load(f)
+
+                if isinstance(cache_data, list):
+                    # Simple cleanup: keep only last 100 entries
+                    # You can implement more sophisticated cleanup here
+                    if len(cache_data) > 100:
+                        cleaned_count = len(cache_data) - 100
+                        self.notified_events = set(cache_data[-100:])
+                        self.save_notified_events()
+
+                        if DEBUG:
+                            print("[EventManager] Cleaned %d old notifications from cache" % cleaned_count)
+
+                        return cleaned_count
+
+            return 0
+
+        except Exception as e:
+            print("[EventManager] Error cleaning notification cache: %s" % str(e))
+            return 0
 
     def load_events(self):
         """Load events from JSON file - convert old times"""
@@ -548,7 +596,6 @@ class EventManager:
         except Exception as e:
             print("[EventManager] Error saving notified events: {}".format(str(e)))
 
-
     def load_notified_events(self):
         """Load notified events cache from file"""
         try:
@@ -624,11 +671,25 @@ class EventManager:
             traceback.print_exc()
 
     def start_monitoring(self):
-        """Start event monitoring"""
-        # Check events every 30 seconds
-        self.check_timer.start(30000, True)
-        # Update time every minute
-        self.time_timer.start(60000, True)
+        """Start event monitoring with configurable interval"""
+        try:
+            # Get interval from config
+            interval = config.plugins.calendar.check_interval.value * 1000  # convert to milliseconds
+
+            if DEBUG:
+                print("[EventManager] Starting monitoring with %sms interval" % interval)
+
+            # Check events every configured seconds
+            self.check_timer.start(interval, True)
+
+            # Update time every minute
+            self.time_timer.start(60000, True)
+
+        except Exception as e:
+            print("[EventManager] Error starting monitoring: %s" % str(e))
+            # Fallback to default 30 seconds
+            self.check_timer.start(30000, True)
+            self.time_timer.start(60000, True)
 
     def stop_monitoring(self):
         """Stop event monitoring"""
@@ -874,14 +935,13 @@ class EventManager:
                 )
                 print("[EventManager] === CHECK COMPLETE ===\n")
 
-            # Reschedule next check
-            self.check_timer.start(30000, True)
+            interval = config.plugins.calendar.check_interval.value * 1000
+            self.check_timer.start(interval, True)
 
         except Exception as e:
-            print(
-                "[EventManager] Error in check_events: {}"
-                .format(str(e))
-            )
+            print("[EventManager] Error in check_events: %s" % str(e))
+            # Fallback to default interval
+            self.check_timer.start(30000, True)
             import traceback
             traceback.print_exc()
 
@@ -1562,21 +1622,6 @@ def format_event_display(event):
     }.get(event.repeat, "")
 
     return "{0} - {1}{2}".format(event.time, event.title, repeat_text)
-
-
-import atexit
-
-
-# def cleanup_event_manager():
-    # """Cleanup function called on exit"""
-    # try:
-        # if 'manager' in globals():
-            # manager.save_notified_events()
-            # print("[EventManager] Cleanup completed")
-    # except:
-        # pass
-
-# atexit.register(cleanup_event_manager)
 
 
 # Test the module
