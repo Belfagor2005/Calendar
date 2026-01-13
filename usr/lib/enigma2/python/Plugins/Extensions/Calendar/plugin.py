@@ -4270,8 +4270,8 @@ class Calendar(Screen):
 class settingCalendar(Setup):
     def __init__(self, session, parent=None):
         print("[Calendar DEBUG] Opening settings...")
-        from .config_manager import init_all_config
-        init_all_config()
+        from .config_manager import init_calendar_config
+        init_calendar_config()
         if not hasattr(config.plugins.calendar, 'menu'):
             from Components.config import ConfigYesNo
             config.plugins.calendar.menu = ConfigYesNo(default=True)
@@ -4281,33 +4281,18 @@ class settingCalendar(Setup):
         self.parent = parent
 
     def keySave(self):
-        """Save configuration with validation and apply changes"""
-        from .config_manager import (
-            validate_event_time,
-            get_default_event_time,
-            get_last_used_default_time,
-            update_last_used_default_time
-        )
-
-        # 1. Validate event time before saving
-        new_default = get_default_event_time()
-        if not validate_event_time(new_default):
-            self.session.open(
-                MessageBox,
-                _("Invalid time format! Please use HH:MM (00:00 to 23:59)"),
-                MessageBox.TYPE_ERROR
-            )
-            return  # Don't save, let user correct
-
-        # 2. Save configuration using parent method
+        # Save configuration using parent method
         Setup.keySave(self)
 
+        # Get new default time
+        from .config_manager import get_default_event_time, get_last_used_default_time, update_last_used_default_time
+        new_default = get_default_event_time()
         old_default = get_last_used_default_time()
 
         if DEBUG:
             print("[settingCalendar] Config saved, new default: %s, old default: %s" % (new_default, old_default))
 
-        # 3. Check if event time changed
+        # Check if time changed
         if old_default != new_default:
             if DEBUG:
                 print("[settingCalendar] Event time changed from %s to %s" % (old_default, new_default))
@@ -4329,49 +4314,26 @@ class settingCalendar(Setup):
             if DEBUG:
                 print("[settingCalendar] Event time unchanged")
 
-        # 4. Apply new performance settings
+        # Force save to disk
         try:
-            # Restart monitoring with new interval if event manager exists
-            if self.parent and hasattr(self.parent, 'event_manager') and self.parent.event_manager:
-                # Stop current timer and restart with new interval
-                self.parent.event_manager.check_timer.stop()
-                self.parent.event_manager.start_monitoring()
-
-                if DEBUG:
-                    print("[settingCalendar] Monitoring restarted with new interval")
-
-                # Clean notification cache if enabled
-                if config.plugins.calendar.auto_clean_notifications.value:
-                    cleaned = self.parent.event_manager.auto_clean_notification_cache()
-                    if DEBUG and cleaned > 0:
-                        print("[settingCalendar] Cleaned %d old notifications" % cleaned)
-        except Exception as e:
-            print("[settingCalendar] Error applying performance settings: %s" % str(e))
-
-        # 5. Force save to disk
-        try:
-            from Components.config import configfile
             configfile.save()
             if DEBUG:
                 print("[settingCalendar] Configuration saved to disk")
         except Exception as e:
             print("[settingCalendar] Error saving config: %s" % str(e))
 
-        # 6. Refresh calendar
+        # Refresh calendar
         if self.parent:
             try:
-                # Clear caches
+                if hasattr(self.parent, 'event_manager') and self.parent.event_manager:
+                    self.parent.event_manager.load_events()
+
                 if hasattr(self.parent, 'holiday_cache'):
                     self.parent.holiday_cache = {}
 
                 if hasattr(self.parent, 'original_cell_states'):
                     self.parent.original_cell_states = {}
 
-                # Reload events if manager exists
-                if hasattr(self.parent, 'event_manager') and self.parent.event_manager:
-                    self.parent.event_manager.load_events()
-
-                # Repaint calendar
                 self.parent._paint_calendar()
 
                 if DEBUG:
@@ -4382,44 +4344,6 @@ class settingCalendar(Setup):
         self.close()
 
 
-def sessionAutostart(reason, **kwargs):
-    """Start the event manager in background when Enigma2 starts"""
-    if reason == 0:  # WHERE_SESSIONSTART
-        try:
-            from .config_manager import init_all_config
-            init_all_config()
-
-            # Check if autostart is enabled
-            if not config.plugins.calendar.autostart_enabled.value:
-                print("[Calendar] Autostart disabled in settings")
-                return
-
-            from .autostart import start_autostart
-            import NavigationInstance
-
-            if NavigationInstance.instance:
-                # Configurable delay
-                delay = config.plugins.calendar.autostart_delay.value * 1000
-
-                # Use a timer to start after the delay
-                from enigma import eTimer
-
-                def delayed_start():
-                    print("[Calendar] Automatic start after " +
-                          str(delay / 1000) + " seconds")
-                    start_autostart(NavigationInstance.instance)
-
-                timer = eTimer()
-                try:
-                    timer.timeout.connect(delayed_start)
-                except AttributeError:
-                    timer.callback.append(delayed_start)
-                timer.start(delay, True)
-
-        except Exception as e:
-            print("[Calendar] Autostart error: " + str(e))
-
-
 def main(session, **kwargs):
     session.open(Calendar)
 
@@ -4427,14 +4351,9 @@ def main(session, **kwargs):
 def Plugins(**kwargs):
     result = []
     result.append(PluginDescriptor(
-        where=PluginDescriptor.WHERE_SESSIONSTART,
-        fnc=sessionAutostart
-    ))
-    result.append(PluginDescriptor(
         name=_("Calendar"),
         description=_("Calendar with events and notifications"),
-        where=[PluginDescriptor.WHERE_PLUGINMENU,
-               PluginDescriptor.WHERE_EXTENSIONSMENU],
+        where=[PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU],
         icon=PLUGIN_ICON,
         fnc=main
     ))
