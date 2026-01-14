@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-22 13:01+0100\n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: 2025-12-30 22:22+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,6 +19,9 @@ msgid "(Search: '{0}')"
 msgstr ""
 
 msgid "(truncated)"
+msgstr ""
+
+msgid "- - - -"
 msgstr ""
 
 msgid "--- CONTACTS ---"
@@ -194,6 +197,11 @@ msgstr ""
 
 msgid "Completed"
 msgstr ""
+
+#, fuzzy
+#| msgid "Configuration is saved"
+msgid "Configuration saved successfully!"
+msgstr "Конфигурация сохранена"
 
 msgid "Contact '{0}' deleted successfully"
 msgstr ""
@@ -846,6 +854,9 @@ msgstr ""
 msgid "Re-import"
 msgstr ""
 
+msgid "Really close without saving settings?"
+msgstr ""
+
 msgid "Red"
 msgstr ""
 
@@ -883,6 +894,9 @@ msgid "S:{0}"
 msgstr ""
 
 msgid "SCHEDULED EVENTS:"
+msgstr ""
+
+msgid "SELECT YOUR CHOICE"
 msgstr ""
 
 msgid "Sat"
@@ -1223,9 +1237,6 @@ msgstr ""
 #~ "WME E284580190260\n"
 #~ "WMR R213063691482\n"
 #~ "WMU U658742613505"
-
-#~ msgid "Configuration is saved"
-#~ msgstr "Конфигурация сохранена"
 
 #~ msgid "Do you want to remove all past non-recurring events?"
 #~ msgstr "Vuoi rimuovere tutti gli eventi passati non ricorrenti?"
