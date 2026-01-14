@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 14:37+0100\n"
-"PO-Revision-Date: 2026-01-03 22:44+0100\n"
+"PO-Revision-Date: 2026-01-14 20:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: <sirius.al@rambler.ru>\n"
 "Language: it\n"
@@ -20,9 +20,6 @@ msgstr "(Cerca: '{0}')"
 
 msgid "(truncated)"
 msgstr "(troncato)"
-
-msgid "- - - -"
-msgstr ""
 
 msgid "--- CONTACTS ---"
 msgstr "--- CONTATTI ---"
@@ -83,6 +80,12 @@ msgstr "Aprile"
 
 msgid "August"
 msgstr "Agosto"
+
+msgid "Automatically clean old notified events"
+msgstr "Pulisci automaticamente i vecchi eventi notificati"
+
+msgid "Autostart delay"
+msgstr "Ritardo di avvio automatico"
 
 msgid "Back"
 msgstr "Torna"
@@ -147,6 +150,12 @@ msgstr "Scegli tra file di testo legacy o formato vCard standard"
 msgid "Choose where to save exported files"
 msgstr "Scegli dove salvare i file esportati"
 
+msgid "Clean after days"
+msgstr "Pulito dopo giorni"
+
+msgid "Clean old notifications"
+msgstr "Pulisci le vecchie notifiche"
+
 msgid "Cleaned {0} duplicate events"
 msgstr "Rimossi {0} eventi duplicati"
 
@@ -185,9 +194,6 @@ msgstr "Colori per i giorni di festa"
 
 msgid "Completed"
 msgstr "Completato"
-
-msgid "Configuration saved successfully!"
-msgstr "Configurazione salvata con successo!"
 
 msgid "Contact '{0}' deleted successfully"
 msgstr "Contatto '{0}' eliminato con successo"
@@ -228,6 +234,9 @@ msgstr "Impossibile verificare la presenza di aggiornamenti. Controllare la conn
 msgid "Could not check for updates: %s"
 msgstr "Impossibile verificare la presenza di aggiornamenti: %s"
 
+msgid "Could not play sound"
+msgstr "Impossibile riprodurre l'audio"
+
 msgid "Could not read file"
 msgstr "Impossibile leggere il file"
 
@@ -263,6 +272,9 @@ msgstr "Giorno+"
 
 msgid "Day -"
 msgstr "Giorno-"
+
+msgid "Days to keep notifications in cache"
+msgstr "Giorni per conservare le notifiche nella cache"
 
 msgid "Debug completed. Check logs."
 msgstr "Debug completato. Controllare i log."
@@ -381,6 +393,9 @@ msgstr "Modifica: {0}"
 msgid "Email"
 msgstr "Email"
 
+msgid "Enable autostart"
+msgstr "Abilita avvio automatico"
+
 msgid "Enable debug mode"
 msgstr "Abilita la modalità debug"
 
@@ -449,6 +464,9 @@ msgstr "Evento '{0}' eliminato con successo"
 
 msgid "Event '{0}' saved successfully"
 msgstr "Evento '{0}' salvato con successo"
+
+msgid "Event check interval"
+msgstr "Intervallo di controllo degli eventi"
 
 msgid "Event color"
 msgstr "Colore Evento"
@@ -633,6 +651,9 @@ msgstr "Formato data di nascita non valido. Utilizzare AAAA-MM-GG"
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr "Formato data non valido. Utilizzare AAAA-MM-GG"
 
+msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
+msgstr "Formato ora non valido! Si prega di utilizzare HH:MM (da 00:00 a 23:59)"
+
 msgid "Invalid time format. Use HH:MM"
 msgstr "Formato ora non valido. Utilizzare HH:MM"
 
@@ -804,6 +825,9 @@ msgstr "Riproduci suono con notifiche"
 msgid "Please restart Enigma2 manually."
 msgstr "Riavviare Enigma2 manualmente."
 
+msgid "Plugin Directory"
+msgstr "Cartella del plugin"
+
 msgid "Plugin is up to date"
 msgstr "Il plugin è aggiornato"
 
@@ -821,9 +845,6 @@ msgstr "Progresso: {0}%"
 
 msgid "Re-import"
 msgstr "Reimportare"
-
-msgid "Really close without saving settings?"
-msgstr "Davvero chiudere senza salvare le impostazioni?"
 
 msgid "Red"
 msgstr "Rosso"
@@ -864,9 +885,6 @@ msgstr "S:{0}"
 msgid "SCHEDULED EVENTS:"
 msgstr "EVENTI IN PROGRAMMA:"
 
-msgid "SELECT YOUR CHOICE"
-msgstr ""
-
 msgid "Sat"
 msgstr "Sab"
 
@@ -881,6 +899,12 @@ msgstr "Cerca eventi"
 
 msgid "Search:"
 msgstr "Cerca:"
+
+msgid "Seconds between event checks (advanced)"
+msgstr "Secondi tra i controlli degli eventi (avanzato)"
+
+msgid "Seconds to wait after boot before starting notifications"
+msgstr "Secondi da attendere dopo l'avvio prima di avviare le notifiche"
 
 msgid "Select .ics file to import"
 msgstr "Seleziona il file .ics da importare"
@@ -993,6 +1017,12 @@ msgstr "Ordinato per: Nome"
 msgid "Sorted by: Title"
 msgstr "Ordinato per: Titolo"
 
+msgid "Sound playback started"
+msgstr "Riproduzione audio avviata"
+
+msgid "Start event notifications in background (recommended)"
+msgstr "Avvia le notifiche degli eventi in background (consigliato)"
+
 msgid "Subdirectory name for exports (created automatically)"
 msgstr "Nome sottodirettori esportazioni (creato automaticamente)"
 
@@ -1025,6 +1055,15 @@ msgstr "Test Forza Salva tutta la Config"
 
 msgid "Test Holiday Loading"
 msgstr "Test Caricamento Festività"
+
+msgid "Test Notification Now"
+msgstr "Test Tono di Notifica Adesso"
+
+msgid "Test Sound Playback"
+msgstr "Prova la riproduzione del suono"
+
+msgid "Test notification sent"
+msgstr "Notifica di prova inviata"
 
 msgid "Text format"
 msgstr "Formato del testo"
@@ -1163,3 +1202,9 @@ msgstr "vCard: formato (standard)"
 
 msgid "vCard import feature not available: {0}"
 msgstr "vCard: La funzionalità di importazione non è disponibile: {0}"
+
+#~ msgid "Configuration saved successfully!"
+#~ msgstr "Configurazione salvata con successo!"
+
+#~ msgid "Really close without saving settings?"
+#~ msgstr "Davvero chiudere senza salvare le impostazioni?"

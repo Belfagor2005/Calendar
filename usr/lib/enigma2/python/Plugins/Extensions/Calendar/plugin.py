@@ -124,15 +124,18 @@ from skin import parseColor
 from . import _, PLUGIN_VERSION, PLUGIN_ICON
 from .config_manager import (
     get_debug,
-    get_export_format,
     get_default_event_time,
-    get_last_used_default_time
+    get_export_format,
+    get_last_used_default_time,
+    init_all_config,
+    save_all_config,
+    update_last_used_default_time,
+    validate_event_time
 )
-
 from .birthday_dialog import BirthdayDialog
 from .birthday_manager import BirthdayManager
 from .event_dialog import EventDialog
-from .event_manager import EventManager
+from .event_manager import EventManager, Event
 from .contacts_view import ContactsView
 from .events_view import EventsView
 from .ics_events_view import ICSEventsView
@@ -148,6 +151,13 @@ from .holidays import (
 
 
 DEBUG = False
+
+try:
+    from .config_manager import force_init_config
+    force_init_config()
+    print("[Calendar] Configurazione forzatamente inizializzata all'import")
+except Exception as e:
+    print("[Calendar] Errore inizializzazione config:", str(e))
 
 
 class Calendar(Screen):
@@ -362,7 +372,6 @@ class Calendar(Screen):
         self.session = session
         self.setup_title = _("Calendar Planner")
 
-        from .config_manager import init_all_config
         init_all_config()
 
         global DEBUG
@@ -370,7 +379,7 @@ class Calendar(Screen):
 
         from .formatters import (
             DATA_PATH, CONTACTS_PATH, VCARDS_PATH, ICS_BASE_PATH,
-            HOLIDAYS_PATH, EVENTS_JSON, SOUNDS_DIR
+            HOLIDAYS_PATH, EVENTS_JSON, SOUNDS_DIR, create_directories
         )
 
         self.DATA_PATH = DATA_PATH
@@ -381,7 +390,6 @@ class Calendar(Screen):
         self.EVENTS_JSON = EVENTS_JSON
         self.SOUNDS_DIR = SOUNDS_DIR
 
-        from .formatters import create_directories
         create_directories()
 
         self.birthday_manager = BirthdayManager()
@@ -392,22 +400,30 @@ class Calendar(Screen):
         self.selected_day = self.day
 
         if config.plugins.calendar.events_enabled.value:
-            self.event_manager = EventManager(session)
+            if DEBUG:
+                print("[Calendar] Checking for EventManager...")
+
+            if hasattr(session, 'calendar_event_manager') and session.calendar_event_manager is not None:
+                if DEBUG:
+                    print("[Calendar] Using EventManager from autostart")
+                self.event_manager = session.calendar_event_manager
+            else:
+                if DEBUG:
+                    print("[Calendar] Creating new EventManager")
+                self.event_manager = EventManager(session)
+                session.calendar_event_manager = self.event_manager
         else:
             self.event_manager = None
+            if DEBUG:
+                print("[Calendar] Event system disabled")
 
         self.language = config.osd.language.value.split("_")[0].strip()
 
-        self.birthday_manager = BirthdayManager()
         if DEBUG:
-            print("[Calendar] BirthdayManager initialized, contacts: {0}".format(
-                len(self.birthday_manager.contacts)))
+            print("[Calendar] BirthdayManager initialized, contacts: %d" % len(self.birthday_manager.contacts))
 
         # Force reload to be sure
         self.birthday_manager.load_all_contacts()
-        if DEBUG:
-            print("[Calendar] Contacts after reload: {0}".format(
-                len(self.birthday_manager.contacts)))
 
         self.database_format = config.plugins.calendar.database_format.value
 
@@ -418,7 +434,6 @@ class Calendar(Screen):
         self.holiday_cache = {}
         self.cells_by_day = {}
 
-        # Create all UI elements
         for x in range(6):
             self['wn' + str(x)] = Label()
 
@@ -480,6 +495,48 @@ class Calendar(Screen):
         self._auto_convert_events_on_startup()
 
         self.onLayoutFinish.append(self._paint_calendar)
+        if DEBUG:
+            print("[Calendar] Calendar initialized, using existing EventManager")
+
+    """
+    def _start_background_monitoring(self):
+        try:
+            if config.plugins.calendar.events_enabled.value and self.event_manager:
+                current_default = get_default_event_time()
+                last_used = get_last_used_default_time()
+
+                if current_default != last_used:
+                    print("[Calendar] Converting events from {} to {}".format(
+                        last_used, current_default))
+                    self.event_manager.convert_all_events_time(current_default)
+
+                    from .config_manager import update_last_used_default_time
+                    update_last_used_default_time(current_default)
+
+                self.event_manager.check_events()
+                from enigma import eTimer
+                self.monitoring_timer = eTimer()
+                try:
+                    self.monitoring_timer_conn = self.monitoring_timer.timeout.connect(
+                        self._periodic_check)
+                except AttributeError:
+                    self.monitoring_timer.callback.append(self._periodic_check)
+
+                interval = config.plugins.calendar.check_interval.value * 1000
+                self.monitoring_timer.start(interval, True)
+
+        except Exception as e:
+            print("[Calendar] Error starting background monitoring: {}".format(e))
+    """
+
+    def _periodic_check(self):
+        """Periodic check for events"""
+        if self.event_manager:
+            self.event_manager.check_events()
+
+        # Reschedule
+        interval = config.plugins.calendar.check_interval.value * 1000
+        self.monitoring_timer.start(interval, True)
 
     def _auto_convert_events_on_startup(self):
         """Auto-convert events to the new default time on startup - FORCED"""
@@ -635,10 +692,56 @@ class Calendar(Screen):
             (_("Test Fix Event Now"), self.test_fix_events_now),
             (_("Test Debug Config"), self.debug_config),
             (_("Test Force Save all Config"), self.force_save_all_config),
+            (_("Test Notification Now"), self.test_notification),
+            (_("Test Sound Playback"), self.test_sound),
             (_("Test Event Time Conversion"), self.debug_event_time_conversion),
         ])
 
         self.session.openWithCallback(self.menu_callback, MenuDialog, menu)
+
+    # DEBUG SECTION
+    def test_notification(self):
+        """Test notification system"""
+        try:
+            if self.event_manager:
+                # Crea un evento di test
+                test_event = Event(
+                    title="Test Notification",
+                    description="This is a test notification",
+                    date=datetime.now().strftime("%Y-%m-%d"),
+                    time=datetime.now().strftime("%H:%M"),
+                    repeat="none",
+                    notify_before=0
+                )
+                self.event_manager.show_notification(test_event)
+                self.session.open(
+                    MessageBox,
+                    _("Test notification sent"),
+                    MessageBox.TYPE_INFO
+                )
+        except Exception as e:
+            print("[Calendar] Test notification error:", str(e))
+
+    def test_sound(self):
+        """Test sound playback"""
+        try:
+            if self.event_manager:
+                # Prova a riprodurre il suono di notifica
+                sound_timer = self.event_manager.play_notification_sound("notify")
+                if sound_timer:
+                    self.session.open(
+                        MessageBox,
+                        _("Sound playback started"),
+                        MessageBox.TYPE_INFO
+                    )
+                else:
+                    self.session.open(
+                        MessageBox,
+                        _("Could not play sound"),
+                        MessageBox.TYPE_ERROR
+                    )
+        except Exception as e:
+            print("[Calendar] Test sound error:", str(e))
 
     def debug_event_time_conversion(self):
         """Debug event time conversion"""
@@ -693,7 +796,6 @@ class Calendar(Screen):
                         converted, current_default)
 
                     # Update last used time
-                    from .config_manager import update_last_used_default_time
                     update_last_used_default_time(current_default)
 
                     self._paint_calendar()
@@ -829,6 +931,8 @@ class Calendar(Screen):
             _("Debug completed. Check logs."),
             MessageBox.TYPE_INFO
         )
+
+    # DEBUG SECTION
 
     def check_for_updates(self):
         """Check for plugin updates"""
@@ -1446,7 +1550,11 @@ class Calendar(Screen):
     def export_vcard_file(self):
         """Export all contacts to file based on configured format"""
         try:
-            from .formatters import MenuDialog
+            from .formatters import (
+                create_export_directory,
+                generate_export_filename,
+                MenuDialog
+            )
             if len(self.birthday_manager.contacts) == 0:
                 self.session.open(
                     MessageBox,
@@ -1459,7 +1567,6 @@ class Calendar(Screen):
             export_format = get_export_format()
 
             # Get export path from configuration
-            from .formatters import create_export_directory, generate_export_filename
             base_path = config.plugins.calendar.export_location.value
             subdir = config.plugins.calendar.export_subdir.value
             add_timestamp = config.plugins.calendar.export_add_timestamp.value
@@ -4257,42 +4364,48 @@ class Calendar(Screen):
         self.close()
 
 
-# class settingCalendar(Setup):
-    # def __init__(self, session, parent=None):
-        # Setup.__init__(self, session, setup="settingCalendar", plugin="Extensions/Calendar")
-        # self.parent = parent
-# class settingCalendar(Setup):
-    # def __init__(self, session, parent=None):
-        # Setup.__init__(self, session, "settingCalendar", plugin="Extensions/Calendar", PluginLanguageDomain="Calendar")
-        # self.parent = parent
-
-
 class settingCalendar(Setup):
     def __init__(self, session, parent=None):
         print("[Calendar DEBUG] Opening settings...")
-        from .config_manager import init_calendar_config
-        init_calendar_config()
+        init_all_config()
+        """
         if not hasattr(config.plugins.calendar, 'menu'):
             from Components.config import ConfigYesNo
             config.plugins.calendar.menu = ConfigYesNo(default=True)
             print("[Calendar DEBUG] Added missing 'menu' attribute")
-
+        """
         Setup.__init__(self, session, "settingCalendar", plugin="Extensions/Calendar", PluginLanguageDomain="Calendar")
         self.parent = parent
 
     def keySave(self):
-        # Save configuration using parent method
+        """Save configuration with validation and apply changes"""
+        # from .config_manager import (
+            # validate_event_time,
+            # get_default_event_time,
+            # get_last_used_default_time,
+            # update_last_used_default_time,
+            # save_all_config
+        # )
+
+        # 1. Validate event time before saving
+        new_default = get_default_event_time()
+        if not validate_event_time(new_default):
+            self.session.open(
+                MessageBox,
+                _("Invalid time format! Please use HH:MM (00:00 to 23:59)"),
+                MessageBox.TYPE_ERROR
+            )
+            return  # Don't save, let user correct
+
+        # 2. Save configuration using parent method
         Setup.keySave(self)
 
-        # Get new default time
-        from .config_manager import get_default_event_time, get_last_used_default_time, update_last_used_default_time
-        new_default = get_default_event_time()
         old_default = get_last_used_default_time()
 
         if DEBUG:
             print("[settingCalendar] Config saved, new default: %s, old default: %s" % (new_default, old_default))
 
-        # Check if time changed
+        # 3. Check if event time changed
         if old_default != new_default:
             if DEBUG:
                 print("[settingCalendar] Event time changed from %s to %s" % (old_default, new_default))
@@ -4314,26 +4427,50 @@ class settingCalendar(Setup):
             if DEBUG:
                 print("[settingCalendar] Event time unchanged")
 
-        # Force save to disk
+        # 4. Apply new performance settings
         try:
-            configfile.save()
+            # Restart monitoring with new interval if event manager exists
+            if self.parent and hasattr(self.parent, 'event_manager') and self.parent.event_manager:
+                # Stop current timer and restart with new interval
+                self.parent.event_manager.check_timer.stop()
+                self.parent.event_manager.start_monitoring()
+
+                if DEBUG:
+                    print("[settingCalendar] Monitoring restarted with new interval")
+
+                # Clean notification cache if enabled
+                if config.plugins.calendar.auto_clean_notifications.value:
+                    cleaned = self.parent.event_manager.auto_clean_notification_cache()
+                    if DEBUG and cleaned > 0:
+                        print("[settingCalendar] Cleaned %d old notifications" % cleaned)
+        except Exception as e:
+            print("[settingCalendar] Error applying performance settings: %s" % str(e))
+
+        # 5. Force save to disk
+        try:
+            # from Components.config import configfile
+            # configfile.save()
+            save_all_config()
             if DEBUG:
                 print("[settingCalendar] Configuration saved to disk")
         except Exception as e:
             print("[settingCalendar] Error saving config: %s" % str(e))
 
-        # Refresh calendar
+        # 6. Refresh calendar
         if self.parent:
             try:
-                if hasattr(self.parent, 'event_manager') and self.parent.event_manager:
-                    self.parent.event_manager.load_events()
-
+                # Clear caches
                 if hasattr(self.parent, 'holiday_cache'):
                     self.parent.holiday_cache = {}
 
                 if hasattr(self.parent, 'original_cell_states'):
                     self.parent.original_cell_states = {}
 
+                # Reload events if manager exists
+                if hasattr(self.parent, 'event_manager') and self.parent.event_manager:
+                    self.parent.event_manager.load_events()
+
+                # Repaint calendar
                 self.parent._paint_calendar()
 
                 if DEBUG:
@@ -4349,12 +4486,58 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
+    """
+    Plugin descriptor for Enigma2
+    """
+    print("[Calendar] === PLUGIN DESCRIPTOR CALLED ===")
+
     result = []
+
+    try:
+        from .autostart import autostart_main
+        print("[Calendar] Autostart module imported successfully")
+
+        result.append(PluginDescriptor(
+            where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART],
+            needsRestart=True,
+            fnc=autostart_main,
+        ))
+        print("[Calendar] Added autostart descriptor (WHERE_AUTOSTART and WHERE_SESSIONSTART)")
+
+    except ImportError as e:
+        print("[Calendar] ERROR: Cannot import autostart module!")
+        print("[Calendar] Error details: %s" % str(e))
+
     result.append(PluginDescriptor(
         name=_("Calendar"),
         description=_("Calendar with events and notifications"),
-        where=[PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU],
+        where=[
+            PluginDescriptor.WHERE_PLUGINMENU,
+            PluginDescriptor.WHERE_EXTENSIONSMENU
+        ],
+        icon=PLUGIN_ICON,
+        fnc=main,
+        needsRestart=False
+    ))
+
+    print("[Calendar] Total descriptors: %d" % len(result))
+    return result
+
+
+"""
+def Plugins(**kwargs):
+    result = []
+    result.append(PluginDescriptor(
+        where=PluginDescriptor.WHERE_SESSIONSTART,
+        fnc=sessionAutostart
+    ))
+    result.append(PluginDescriptor(
+        name=_("Calendar"),
+        description=_("Calendar with events and notifications"),
+        where=[PluginDescriptor.WHERE_PLUGINMENU,
+               PluginDescriptor.WHERE_EXTENSIONSMENU],
         icon=PLUGIN_ICON,
         fnc=main
     ))
     return result
+"""

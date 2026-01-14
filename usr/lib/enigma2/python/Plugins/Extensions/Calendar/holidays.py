@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.7                      #
-#  Created by: Lululla (based on Sirius0103)              #
+#  Calendar Planner for Enigma2 v1.8                      #
+#  Created by: Lululla                                    #
 ###########################################################
 
 Last Updated: 2026-01-02
 Status: Stable with complete vCard & ICS support
-Credits: Sirius0103 (original), Lululla (modifications)
+Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """
@@ -504,7 +504,7 @@ class HolidaysManager:
 class HolidaysImportScreen(Screen):
     if version_info[0] >= 3:
         skin = """
-            <screen name=HolidaysImportScreen" position="center,center" size="1180,650" title="Import Holidays" flags="wfNoBorder">
+            <screen name="HolidaysImportScreen" position="center,center" size="1180,650" title="Import Holidays" flags="wfNoBorder">
                 <widget name="country_list" position="13,76" size="691,480" itemHeight="45" font="Regular;34" scrollbarMode="showNever" />
                 <widget name="status_label" position="11,10" size="1163,60" font="Regular;34" foregroundColor="#00ffcc33" backgroundColor="#20101010" />
                 <widget name="log_text" position="714,83" size="447,502" font="Regular;26" />

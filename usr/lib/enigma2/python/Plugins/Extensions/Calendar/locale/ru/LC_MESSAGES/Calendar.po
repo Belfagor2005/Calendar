@@ -85,6 +85,12 @@ msgstr "Апрель"
 msgid "August"
 msgstr "Август"
 
+msgid "Automatically clean old notified events"
+msgstr ""
+
+msgid "Autostart delay"
+msgstr ""
+
 msgid "Back"
 msgstr "Назад"
 
@@ -146,6 +152,12 @@ msgid "Choose between legacy text files or standard vCard format"
 msgstr ""
 
 msgid "Choose where to save exported files"
+msgstr ""
+
+msgid "Clean after days"
+msgstr ""
+
+msgid "Clean old notifications"
 msgstr ""
 
 msgid "Cleaned {0} duplicate events"
@@ -231,6 +243,9 @@ msgstr "Не удалось проверить наличие обновлени
 msgid "Could not check for updates: %s"
 msgstr "Не удалось проверить наличие обновлений: %s"
 
+msgid "Could not play sound"
+msgstr ""
+
 msgid "Could not read file"
 msgstr ""
 
@@ -266,6 +281,9 @@ msgstr "День +"
 
 msgid "Day -"
 msgstr "День -"
+
+msgid "Days to keep notifications in cache"
+msgstr ""
 
 msgid "Debug completed. Check logs."
 msgstr ""
@@ -384,6 +402,9 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+msgid "Enable autostart"
+msgstr ""
+
 msgid "Enable debug mode"
 msgstr ""
 
@@ -451,6 +472,9 @@ msgid "Event '{0}' deleted successfully"
 msgstr ""
 
 msgid "Event '{0}' saved successfully"
+msgstr ""
+
+msgid "Event check interval"
 msgstr ""
 
 msgid "Event color"
@@ -636,6 +660,9 @@ msgstr ""
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr ""
 
+msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
+msgstr ""
+
 msgid "Invalid time format. Use HH:MM"
 msgstr ""
 
@@ -657,8 +684,6 @@ msgstr ""
 msgid "Manage Contacts"
 msgstr ""
 
-#, fuzzy
-#| msgid "Manage Events"
 msgid "Manage Event"
 msgstr "Управление событиями"
 
@@ -809,6 +834,9 @@ msgstr ""
 msgid "Please restart Enigma2 manually."
 msgstr "Пожалуйста, перезапустите Enigma2 вручную."
 
+msgid "Plugin Directory"
+msgstr ""
+
 msgid "Plugin is up to date"
 msgstr "Плагин обновлен"
 
@@ -885,6 +913,12 @@ msgid "Search events"
 msgstr ""
 
 msgid "Search:"
+msgstr ""
+
+msgid "Seconds between event checks (advanced)"
+msgstr ""
+
+msgid "Seconds to wait after boot before starting notifications"
 msgstr ""
 
 msgid "Select .ics file to import"
@@ -998,6 +1032,12 @@ msgstr ""
 msgid "Sorted by: Title"
 msgstr ""
 
+msgid "Sound playback started"
+msgstr ""
+
+msgid "Start event notifications in background (recommended)"
+msgstr ""
+
 msgid "Subdirectory name for exports (created automatically)"
 msgstr ""
 
@@ -1029,6 +1069,15 @@ msgid "Test Force Save all Config"
 msgstr ""
 
 msgid "Test Holiday Loading"
+msgstr ""
+
+msgid "Test Notification Now"
+msgstr ""
+
+msgid "Test Sound Playback"
+msgstr ""
+
+msgid "Test notification sent"
 msgstr ""
 
 msgid "Text format"
