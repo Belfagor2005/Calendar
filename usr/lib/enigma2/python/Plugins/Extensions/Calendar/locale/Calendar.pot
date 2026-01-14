@@ -1,23 +1,9 @@
 #, fuzzy
-msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
 
 msgid "(Search: '{0}')"
 msgstr ""
 
 msgid "(truncated)"
-msgstr ""
-
-msgid "- - - -"
 msgstr ""
 
 msgid "--- CONTACTS ---"
@@ -78,6 +64,12 @@ msgid "April"
 msgstr ""
 
 msgid "August"
+msgstr ""
+
+msgid "Automatically clean old notified events"
+msgstr ""
+
+msgid "Autostart delay"
 msgstr ""
 
 msgid "Back"
@@ -143,6 +135,12 @@ msgstr ""
 msgid "Choose where to save exported files"
 msgstr ""
 
+msgid "Clean after days"
+msgstr ""
+
+msgid "Clean old notifications"
+msgstr ""
+
 msgid "Cleaned {0} duplicate events"
 msgstr ""
 
@@ -180,9 +178,6 @@ msgid "Color for holiday days"
 msgstr ""
 
 msgid "Completed"
-msgstr ""
-
-msgid "Configuration saved successfully!"
 msgstr ""
 
 msgid "Contact '{0}' deleted successfully"
@@ -224,6 +219,9 @@ msgstr ""
 msgid "Could not check for updates: %s"
 msgstr ""
 
+msgid "Could not play sound"
+msgstr ""
+
 msgid "Could not read file"
 msgstr ""
 
@@ -258,6 +256,9 @@ msgid "Day +"
 msgstr ""
 
 msgid "Day -"
+msgstr ""
+
+msgid "Days to keep notifications in cache"
 msgstr ""
 
 msgid "Debug completed. Check logs."
@@ -377,6 +378,9 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+msgid "Enable autostart"
+msgstr ""
+
 msgid "Enable debug mode"
 msgstr ""
 
@@ -444,6 +448,9 @@ msgid "Event '{0}' deleted successfully"
 msgstr ""
 
 msgid "Event '{0}' saved successfully"
+msgstr ""
+
+msgid "Event check interval"
 msgstr ""
 
 msgid "Event color"
@@ -629,6 +636,9 @@ msgstr ""
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr ""
 
+msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
+msgstr ""
+
 msgid "Invalid time format. Use HH:MM"
 msgstr ""
 
@@ -800,6 +810,9 @@ msgstr ""
 msgid "Please restart Enigma2 manually."
 msgstr ""
 
+msgid "Plugin Directory"
+msgstr ""
+
 msgid "Plugin is up to date"
 msgstr ""
 
@@ -816,9 +829,6 @@ msgid "Progress: {0}%"
 msgstr ""
 
 msgid "Re-import"
-msgstr ""
-
-msgid "Really close without saving settings?"
 msgstr ""
 
 msgid "Red"
@@ -860,9 +870,6 @@ msgstr ""
 msgid "SCHEDULED EVENTS:"
 msgstr ""
 
-msgid "SELECT YOUR CHOICE"
-msgstr ""
-
 msgid "Sat"
 msgstr ""
 
@@ -876,6 +883,12 @@ msgid "Search events"
 msgstr ""
 
 msgid "Search:"
+msgstr ""
+
+msgid "Seconds between event checks (advanced)"
+msgstr ""
+
+msgid "Seconds to wait after boot before starting notifications"
 msgstr ""
 
 msgid "Select .ics file to import"
@@ -989,6 +1002,12 @@ msgstr ""
 msgid "Sorted by: Title"
 msgstr ""
 
+msgid "Sound playback started"
+msgstr ""
+
+msgid "Start event notifications in background (recommended)"
+msgstr ""
+
 msgid "Subdirectory name for exports (created automatically)"
 msgstr ""
 
@@ -1020,6 +1039,15 @@ msgid "Test Force Save all Config"
 msgstr ""
 
 msgid "Test Holiday Loading"
+msgstr ""
+
+msgid "Test Notification Now"
+msgstr ""
+
+msgid "Test Sound Playback"
+msgstr ""
+
+msgid "Test notification sent"
 msgstr ""
 
 msgid "Text format"

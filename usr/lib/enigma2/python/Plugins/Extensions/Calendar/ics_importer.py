@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.7                      #
-#  Created by: Lululla (based on Sirius0103)              #
+#  Calendar Planner for Enigma2 v1.8                      #
+#  Created by: Lululla                                    #
 ###########################################################
 
 Last Updated: 2026-01-02
 Status: Stable with complete vCard & ICS support
-Credits: Sirius0103 (original), Lululla (modifications)
+Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """

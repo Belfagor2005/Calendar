@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.7                      #
-#  Created by: Lululla (based on Sirius0103)              #
+#  Calendar Planner for Enigma2 v1.8                      #
+#  Created by: Lululla                                    #
 ###########################################################
 
 Last Updated: 2026-01-02
 Status: Stable with complete vCard & ICS support
-Credits: Sirius0103 (original), Lululla (modifications)
+Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
 ###########################################################
 """
@@ -26,8 +26,19 @@ from Screens.MessageBox import MessageBox
 from Screens.InfoBar import InfoBar
 
 from . import _, PLUGIN_PATH
-from .config_manager import get_debug, get_default_event_time, OLD_DEFAULT_EVENT_TIME, get_last_used_default_time
-from .formatters import get_EVENTS_JSON, get_SOUNDS_DIR
+from .config_manager import (
+    OLD_DEFAULT_EVENT_TIME,
+    get_check_interval,
+    get_debug,
+    get_default_event_time,
+    get_last_used_default_time,
+    update_last_used_default_time
+)
+from .formatters import (
+    DATA_PATH,
+    get_EVENTS_JSON,
+    get_SOUNDS_DIR,
+)
 
 EVENTS_JSON = get_EVENTS_JSON()
 SOUNDS_DIR = get_SOUNDS_DIR()
@@ -59,8 +70,6 @@ class Event:
         self.enabled = enabled
         self.created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.id = int(time.time() * 1000)  # Unique ID
-
-        # NEW FIELD: Labels for display
         self.labels = self._extract_labels()
 
     def _extract_labels(self):
@@ -278,12 +287,24 @@ class EventManager:
 
     def __init__(self, session, events_file=None):
         self.session = session
-        self.events_file = events_file or EVENTS_JSON
-        self.sound_dir = SOUNDS_DIR
 
+        if events_file is None:
+            self.events_file = get_EVENTS_JSON()
+        else:
+            self.events_file = events_file
+
+        if self.events_file:
+            events_dir = dirname(self.events_file)
+            if not exists(events_dir):
+                try:
+                    makedirs(events_dir, 0o755)
+                except:
+                    pass
+
+        self.sound_dir = SOUNDS_DIR
         self.events = []
-        from .formatters import DATA_PATH
-        self.notified_events = set()  # Events already notified in this session
+
+        self.notified_events = set()
         self.notified_events_file = join(DATA_PATH, "notified_events.json")
         self.load_notified_events()
 
@@ -305,7 +326,12 @@ class EventManager:
             self.time_timer.callback.append(self.update_time)
 
         self.converted_events_file = EVENTS_JSON + ".converted"
-        self.load_events()
+        try:
+            self.load_events()
+        except Exception as e:
+            print("[EventManager] Warning: Could not load events initially: %s" % str(e))
+            self.events = []
+
         self.start_monitoring()
 
         # Initialize notification system if available
@@ -314,7 +340,7 @@ class EventManager:
 
         import atexit
         atexit.register(self.cleanup)
-    
+
     def cleanup(self):
         """Cleanup this instance"""
         try:
@@ -323,6 +349,37 @@ class EventManager:
                 print("[EventManager] Instance cleanup completed")
         except Exception as e:
             print("[EventManager] Cleanup error:", str(e))
+
+    def auto_clean_notification_cache(self):
+        """Automatically clean old notifications from cache"""
+        try:
+            if not config.plugins.calendar.auto_clean_notifications.value:
+                return 0
+
+            # Load current cache
+            if exists(self.notified_events_file):
+                # days_to_keep = config.plugins.calendar.notification_cache_days.value
+                with open(self.notified_events_file, 'r') as f:
+                    cache_data = load(f)
+
+                if isinstance(cache_data, list):
+                    # Simple cleanup: keep only last 100 entries
+                    # You can implement more sophisticated cleanup here
+                    if len(cache_data) > 100:
+                        cleaned_count = len(cache_data) - 100
+                        self.notified_events = set(cache_data[-100:])
+                        self.save_notified_events()
+
+                        if DEBUG:
+                            print("[EventManager] Cleaned %d old notifications from cache" % cleaned_count)
+
+                        return cleaned_count
+
+            return 0
+
+        except Exception as e:
+            print("[EventManager] Error cleaning notification cache: %s" % str(e))
+            return 0
 
     def load_events(self):
         """Load events from JSON file - convert old times"""
@@ -431,7 +488,6 @@ class EventManager:
                 self._mark_as_converted(file_hash, current_default)
 
                 # Update last used default time after conversion
-                from .config_manager import update_last_used_default_time
                 update_last_used_default_time(current_default)
                 if DEBUG:
                     print("[EventManager] Events updated to new default time: %s" % current_default)
@@ -548,7 +604,6 @@ class EventManager:
         except Exception as e:
             print("[EventManager] Error saving notified events: {}".format(str(e)))
 
-
     def load_notified_events(self):
         """Load notified events cache from file"""
         try:
@@ -624,11 +679,22 @@ class EventManager:
             traceback.print_exc()
 
     def start_monitoring(self):
-        """Start event monitoring"""
-        # Check events every 30 seconds
-        self.check_timer.start(30000, True)
-        # Update time every minute
-        self.time_timer.start(60000, True)
+        print("[EventManager] === START MONITORING ===")
+        print("[EventManager] Timer check_interval: %d seconds" % get_check_interval())
+        self.check_timer.stop()
+
+        self.check_timer = eTimer()
+        try:
+            self.check_timer.timeout.connect(self.check_events)
+        except AttributeError:
+            self.check_timer.callback.append(self.check_events)
+
+        interval_ms = get_check_interval() * 1000
+        print("[EventManager] Setting timer for %d ms" % interval_ms)
+
+        self.check_timer.start(interval_ms, True)
+        print("[EventManager] Check timer started")
+        print("[EventManager] === MONITORING STARTED ===")
 
     def stop_monitoring(self):
         """Stop event monitoring"""
@@ -672,7 +738,7 @@ class EventManager:
             self.save_notified_events()
 
         if DEBUG:
-            print(f"[EventManager] Event deleted: {event_id}")
+            print("[EventManager] Event deleted: {0}".format(event_id))
         return True
 
     def get_event(self, event_id):
@@ -780,25 +846,14 @@ class EventManager:
         """Check events and show notifications if needed"""
         try:
             now = datetime.now()
+            if DEBUG:
+                print("\n[EventManager] === CHECK EVENTS at %s ===" % now.strftime('%Y-%m-%d %H:%M:%S'))
+                print("[EventManager] Total events: %d" % len(self.events))
+
+            today_str = now.strftime('%Y-%m-%d')
 
             if DEBUG:
-                print(
-                    "\n[EventManager] === CHECK EVENTS at {} ==="
-                    .format(now.strftime('%H:%M:%S'))
-                )
-                print("[EventManager] Total events: {}".format(len(self.events)))
-                print(
-                    "[EventManager] Enabled events: {}"
-                    .format(sum(1 for e in self.events if e.enabled))
-                )
-                print(
-                    "[EventManager] Recurring events: {}"
-                    .format(sum(1 for e in self.events if e.repeat != 'none'))
-                )
-                print(
-                    "[EventManager] Already notified: {}"
-                    .format(len(self.notified_events))
-                )
+                print("[EventManager] Looking for events TODAY: %s" % today_str)
 
             events_checked = 0
             events_skipped = 0
@@ -812,18 +867,6 @@ class EventManager:
 
                 events_checked += 1
 
-                if DEBUG:
-                    print("\n[EventManager] Checking: '{}'".format(event.title))
-                    print(
-                        "[EventManager]   Date/Time: {} {}"
-                        .format(event.date, event.time)
-                    )
-                    print("[EventManager]   Repeat: {}".format(event.repeat))
-                    print(
-                        "[EventManager]   Notify before: {}min"
-                        .format(event.notify_before)
-                    )
-
                 next_occurrence = event.get_next_occurrence(now)
 
                 if next_occurrence:
@@ -833,23 +876,16 @@ class EventManager:
                     )
                     notify_window_end = next_occurrence + timedelta(minutes=5)
 
-                    if DEBUG:
-                        print("[EventManager]   Next: {}".format(next_occurrence))
-                        print(
-                            "[EventManager]   Notify window: {} to {}"
-                            .format(notify_window_start, notify_window_end)
-                        )
-
                     # Check if we should notify now
                     should_notify = notify_window_start <= now <= notify_window_end
 
                     if should_notify and event.id not in self.notified_events:
                         if DEBUG:
-                            print("[EventManager]   >>> SHOWING NOTIFICATION!")
+                            print("[EventManager] >>> SHOWING NOTIFICATION for: %s" % event.title)
 
                         self.show_notification(event)
                         self.notified_events.add(event.id)
-                        self.save_notified_events()  # <-- SALVA SUBITO
+                        self.save_notified_events()
                         notifications_shown += 1
 
                     elif event.id in self.notified_events:
@@ -857,33 +893,30 @@ class EventManager:
                         if now > notify_window_end:
                             self.notified_events.remove(event.id)
                             self.save_notified_events()
-                            if DEBUG:
-                                print("[EventManager]   Removed from notified cache")
 
-            if DEBUG:
+            if DEBUG and (notifications_shown > 0 or events_checked > 0):
                 print("\n[EventManager] Summary:")
-                print("[EventManager]   Checked: {}".format(events_checked))
-                print("[EventManager]   Skipped: {}".format(events_skipped))
-                print(
-                    "[EventManager]   Notifications shown: {}"
-                    .format(notifications_shown)
-                )
-                print(
-                    "[EventManager]   Notified cache size: {}"
-                    .format(len(self.notified_events))
-                )
-                print("[EventManager] === CHECK COMPLETE ===\n")
+                print("[EventManager]   Checked: %d" % events_checked)
+                print("[EventManager]   Skipped: %d" % events_skipped)
+                print("[EventManager]   Notifications shown: %d" % notifications_shown)
 
             # Reschedule next check
             self.check_timer.start(30000, True)
 
         except Exception as e:
             print(
-                "[EventManager] Error in check_events: {}"
-                .format(str(e))
+                "[EventManager] Error in check_events: %s"
+                % str(e)
             )
             import traceback
             traceback.print_exc()
+            traceback.print_exc()
+
+        finally:
+            # Make sure the timer is ALWAYS restarted
+            interval_ms = get_check_interval() * 1000
+            self.check_timer.start(interval_ms, True)
+            print("[EventManager] Timer restarted for %d ms" % interval_ms)
 
     def _should_check_event(self, event, now):
         """
@@ -1139,90 +1172,62 @@ class EventManager:
     def show_notification(self, event):
         """Show notification with optional sound"""
         try:
+            from Tools import Notifications
             if not config.plugins.calendar.events_notifications.value:
                 return
 
             # PLAY SOUND if configured
             if config.plugins.calendar.events_play_sound.value:
                 sound_type = config.plugins.calendar.events_sound_type.value
-                # PLAY SOUND if configured
-                """
-                sound_type = config.plugins.calendar.events_sound_type.value
-                # if sound_type != "none" and config.plugins.calendar.events_play_sound.value:
-                    # # Choose sound based on priority
-                    # if event.notify_before == 0:
-                        # sound_to_play = "alert"   # Event in progress
-                    # elif event.notify_before <= 5:
-                        # sound_to_play = "notify"  # Event imminent
-                    # else:
-                        # sound_to_play = sound_type  # User setting
-                """
                 if sound_type != "none":
-                    # Store current service BEFORE playing sound
+                    # Save current service
                     self.previous_service = self.session.nav.getCurrentlyPlayingServiceReference()
 
-                    if DEBUG:
-                        if self.previous_service:
-                            print("[EventManager] Saved previous service before playing sound")
-                        else:
-                            print("[EventManager] No service currently playing")
-
-                    # Use only the user's selected sound type
+                    # Use only the sound type selected by the user
                     sound_to_play = sound_type
 
-                    # Play sound and get the stop timer
+                    # Play sound
                     sound_stop_timer = self.play_notification_sound(sound_to_play)
-
-                    # Store the timer reference
                     if sound_stop_timer:
                         self.sound_stop_timer = sound_stop_timer
 
-            # Build message
+            # Build the message
             time_str = event.time[:5] if event.time else get_default_event_time()
-            message = "Event: {0}\nTime: {1}".format(event.title, time_str)
+            message = _("Calendar Event: %s\nTime: %s") % (event.title, time_str)
 
             if event.description:
                 desc = event.description
                 if len(desc) > 50:
                     desc = desc[:47] + "..."
-                message += "\n{0}".format(desc)
+                message += "\n%s" % desc
 
-            # Show notification
-            if NOTIFICATION_AVAILABLE:
-                # Show notification for 5 seconds
-                quick_notify(message, seconds=10)
-                self.save_notified_events()
+            # METHOD 1: Enigma2 system notifications (works in background)
+            try:
+                notification = MessageBox(
+                    message,
+                    type=MessageBox.TYPE_INFO,
+                    timeout=10  # 10 seconds
+                )
 
-                # Timer to stop the sound when the notification ends
-                def stop_sound_when_notification_ends():
-                    try:
-                        if DEBUG:
-                            print("[EventManager] Notification timer ended, stopping sound")
+                # Add to the notifications queue
+                Notifications.AddNotification(notification)
 
-                        # Stop any active sound timer
-                        if hasattr(self, 'sound_stop_timer') and self.sound_stop_timer:
-                            if self.sound_stop_timer.isActive():
-                                self.sound_stop_timer.stop()
+                if DEBUG:
+                    print("[EventManager] System notification shown")
 
-                        # Call method to stop audio and restore TV
-                        self.stop_notification_sound()
+            except Exception as e:
+                print("[EventManager] System notification error: %s" % str(e))
 
-                    except Exception as e:
-                        print("[EventManager] Error in notification end callback: " + str(e))
+                # METHOD 2: Custom notification (only if plugin is open)
+                if NOTIFICATION_AVAILABLE:
+                    quick_notify(message, seconds=10)
 
-                # 10-second timer (notification duration)
-                notification_timer = eTimer()
-                try:
-                    notification_timer.timeout.connect(stop_sound_when_notification_ends)
-                except AttributeError:
-                    notification_timer.callback.append(stop_sound_when_notification_ends)
-                notification_timer.start(10000, True)  # 10 seconds
-
-            else:
-                print("[EventManager] NOTIFICATION: {0}".format(message))
+            self.save_notified_events()
 
         except Exception as e:
-            print("[EventManager] Error in show_notification: {0}".format(e))
+            print("[EventManager] Error in show_notification: %s" % str(e))
+            import traceback
+            traceback.print_exc()
 
     def play_notification_sound(self, sound_type="notify"):
         try:
@@ -1562,21 +1567,6 @@ def format_event_display(event):
     }.get(event.repeat, "")
 
     return "{0} - {1}{2}".format(event.time, event.title, repeat_text)
-
-
-import atexit
-
-
-# def cleanup_event_manager():
-    # """Cleanup function called on exit"""
-    # try:
-        # if 'manager' in globals():
-            # manager.save_notified_events()
-            # print("[EventManager] Cleanup completed")
-    # except:
-        # pass
-
-# atexit.register(cleanup_event_manager)
 
 
 # Test the module
