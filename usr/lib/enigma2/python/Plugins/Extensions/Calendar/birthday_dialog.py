@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.8                      #
+#  Calendar Planner for Enigma2 v1.9                      #
 #  Created by: Lululla                                    #
 ###########################################################
 
-Last Updated: 2026-01-02
+Last Updated: 2026-01-15
 Status: Stable with complete vCard & ICS support
 Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -330,7 +330,7 @@ class BirthdayDialog(Screen):
         if "current_field_info" in self and self["current_field_info"] is not None:
             field_number = self.current_field_index + 1
             total_fields = len(self.fields)
-                                               
+
             info_text = _("Field {0}/{1}: {2}").format(
                 field_number,
                 total_fields,

@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.8                      #
+#  Calendar Planner for Enigma2 v1.9                      #
 #  Created by: Lululla                                    #
 ###########################################################
 
-Last Updated: 2026-01-02
+Last Updated: 2026-01-15
 Status: Stable with complete vCard & ICS support
 Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -25,7 +25,6 @@ from datetime import datetime
 from enigma import getDesktop
 
 from . import _
-# from .event_manager import Event
 from .config_manager import get_debug, get_default_event_time
 
 global DEBUG
@@ -159,12 +158,10 @@ class ICSEventDialog(Screen):
             ('labels', _('Labels (comma separated)'), 'text_labels', 'label_labels'),
         ]
 
-        # Set title
         title_text = _("Edit Event ({0}/{1})").format(current_index + 1, len(all_events)) if all_events else _("Edit ICS Event")
         safe_title = str(title_text)
         self.setTitle(safe_title)
 
-        # Initialize all widgets
         for field_key, field_label, widget_name, label_name in self.fields:
             # Labels
             self[label_name] = Label(field_label)
@@ -186,7 +183,6 @@ class ICSEventDialog(Screen):
             self[indicator_name] = Label("")
             self[indicator_name].hide()
 
-        # Button labels
         self["key_red"] = Label(_("Cancel"))
         self["key_green"] = Label(_("Save"))
         self["key_yellow"] = Label(_("Next Field"))
@@ -291,7 +287,6 @@ class ICSEventDialog(Screen):
         if not self.all_events or len(self.all_events) <= 1:
             return
 
-        # Save current changes
         self._save_current_changes()
         
         # Move to next event WITH WRAP-AROUND
@@ -305,7 +300,6 @@ class ICSEventDialog(Screen):
         if not self.all_events or len(self.all_events) <= 1:
             return
 
-        # Save current changes
         self._save_current_changes()
         
         # Move to previous event WITH WRAP-AROUND
@@ -493,7 +487,6 @@ class ICSEventDialog(Screen):
             event_id = self.event_data.get('id')
             title = self.event_data.get('title', 'Unknown')
 
-            # Remove event
             for i, event in enumerate(self.event_manager.events):
                 if event.id == event_id:
                     del self.event_manager.events[i]

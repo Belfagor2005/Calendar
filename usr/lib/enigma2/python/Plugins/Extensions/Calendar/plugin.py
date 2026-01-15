@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.8                      #
+#  Calendar Planner for Enigma2 v1.9                      #
 #  Created by: Lululla (based on Sirius0103)              #
 ###########################################################
 
@@ -15,15 +15,9 @@ MAIN FEATURES:
 • Database format converter (Legacy ↔ vCard ↔ ICS)
 • Phone and email formatters for Calendar Planner
 • Maintains consistent formatting across import, display, and storage
-
-NEW IN v1.8:
-UNIVERSAL WRAP-AROUND NAVIGATION - CH+/CH- navigation in ALL screens
-INTELLIGENT EVENT TIME CONVERSION - Auto-convert events when default time changes
-REAL-TIME POSITION DISPLAY - Show "Edit Event (3/15)" with current position
-JUMP TO TODAY - BLUE button jumps to today's event from anywhere
-AUTO-SAVE NAVIGATION - Changes auto-saved when navigating with CH+/CH-
-UNIFIED INTERFACE - Same navigation in EventsView, EventDialog, ContactsView, ICSEventsView
-ADVANCED DUPLICATE DETECTION - Smart cache for fast duplicate checking
+• Implemented auto-start system at decoder boot
+• Automatic management of background processes
+• Watchdog timer for service continuity monitoring
 
 KEY CONTROLS - MAIN:
 OK    - Main menu (Events/Holidays/Contacts/Import/Export/Converter)
@@ -93,8 +87,9 @@ v1.5 - vCard import
 v1.6 - vCard export & converter
 v1.7 - ICS event management & browser
 v1.8 - Universal navigation & event time conversion
+v1.9 - Implemented auto-start system at decoder boot
 
-Last Updated: 2026-01-02
+Last Updated: 2026-01-15
 Status: Stable with complete navigation and conversion system
 Credits: Sirius0103 (original), Lululla (rewrite all code)
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -110,7 +105,7 @@ from os import remove, makedirs, listdir
 from os.path import exists, dirname, join, basename, getmtime, getsize
 from time import localtime, time, strftime
 
-from enigma import getDesktop
+from enigma import getDesktop, eTimer
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -118,11 +113,12 @@ from Screens.Setup import Setup
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Components.ActionMap import ActionMap
 from Components.Label import Label
-from Components.config import config, configfile
+from Components.config import config  # , configfile
 from skin import parseColor
 
 from . import _, PLUGIN_VERSION, PLUGIN_ICON
 from .config_manager import (
+    get_check_interval,
     get_debug,
     get_default_event_time,
     get_export_format,
@@ -498,45 +494,14 @@ class Calendar(Screen):
         if DEBUG:
             print("[Calendar] Calendar initialized, using existing EventManager")
 
-    """
-    def _start_background_monitoring(self):
-        try:
-            if config.plugins.calendar.events_enabled.value and self.event_manager:
-                current_default = get_default_event_time()
-                last_used = get_last_used_default_time()
+    # def _periodic_check(self):
+        # """Periodic check for events"""
+        # if self.event_manager:
+            # self.event_manager.check_events()
 
-                if current_default != last_used:
-                    print("[Calendar] Converting events from {} to {}".format(
-                        last_used, current_default))
-                    self.event_manager.convert_all_events_time(current_default)
-
-                    from .config_manager import update_last_used_default_time
-                    update_last_used_default_time(current_default)
-
-                self.event_manager.check_events()
-                from enigma import eTimer
-                self.monitoring_timer = eTimer()
-                try:
-                    self.monitoring_timer_conn = self.monitoring_timer.timeout.connect(
-                        self._periodic_check)
-                except AttributeError:
-                    self.monitoring_timer.callback.append(self._periodic_check)
-
-                interval = config.plugins.calendar.check_interval.value * 1000
-                self.monitoring_timer.start(interval, True)
-
-        except Exception as e:
-            print("[Calendar] Error starting background monitoring: {}".format(e))
-    """
-
-    def _periodic_check(self):
-        """Periodic check for events"""
-        if self.event_manager:
-            self.event_manager.check_events()
-
-        # Reschedule
-        interval = config.plugins.calendar.check_interval.value * 1000
-        self.monitoring_timer.start(interval, True)
+        # # Reschedule
+        # interval = config.plugins.calendar.check_interval.value * 1000
+        # self.monitoring_timer.start(interval, True)
 
     def _auto_convert_events_on_startup(self):
         """Auto-convert events to the new default time on startup - FORCED"""
@@ -686,62 +651,155 @@ class Calendar(Screen):
             (_("--- SYSTEM ---"), None),  # Separator
             (_("Cleanup duplicate events"), self.cleanup_duplicate_events),
             (_("Check for Updates"), self.check_for_updates),
-            (_("--- DEBUG ---"), None),  # Separator
-            (_("Test Holiday Loading"), self.debug_holiday_loading),
-            (_("Test Force Event Conversion Event Time"), self.force_event_time_conversion),
-            (_("Test Fix Event Now"), self.test_fix_events_now),
-            (_("Test Debug Config"), self.debug_config),
-            (_("Test Force Save all Config"), self.force_save_all_config),
-            (_("Test Notification Now"), self.test_notification),
-            (_("Test Sound Playback"), self.test_sound),
-            (_("Test Event Time Conversion"), self.debug_event_time_conversion),
+            # (_("--- DEBUG ---"), None),  # Separator
+            # (_("Test Event Time Conversion"), self.debug_event_time_conversion),
+            # (_("Test Force Event Conversion Event Time"), self.force_event_time_conversion),
+            # (_("Test Fix Event Now"), self.test_fix_events_now),
+            # (_("Test Notification Now"), self.test_event_notification_now),
+            # (_("Test Debug Event System"), self.debug_event_system),
+            # (_("Test TV Restore"), self.test_tv_restore),
         ])
 
         self.session.openWithCallback(self.menu_callback, MenuDialog, menu)
 
     # DEBUG SECTION
-    def test_notification(self):
-        """Test notification system"""
+    def debug_event_system(self):
+        """Debug event system status"""
         try:
-            if self.event_manager:
-                # Crea un evento di test
-                test_event = Event(
-                    title="Test Notification",
-                    description="This is a test notification",
-                    date=datetime.now().strftime("%Y-%m-%d"),
-                    time=datetime.now().strftime("%H:%M"),
-                    repeat="none",
-                    notify_before=0
-                )
-                self.event_manager.show_notification(test_event)
+            if not self.event_manager:
+                message = "Event manager: NOT INITIALIZED"
+            else:
+                message = "Event system status:\n\n"
+                message += "Events loaded: %d\n" % len(self.event_manager.events)
+                message += "Check interval: %d seconds\n" % get_check_interval()
+                message += "Timer active: %s\n" % ("YES" if self.event_manager.check_timer.isActive() else "NO")
+                message += "Notifications enabled: %s\n" % config.plugins.calendar.events_notifications.value
+
+                # List upcoming events
+                # from datetime import datetime
+                # now = datetime.now()
+                upcoming = self.event_manager.get_upcoming_events(days=1)
+
+                if upcoming:
+                    message += "\nUpcoming events (next 24h):\n"
+                    for dt, event in upcoming:
+                        message += "- %s: %s at %s\n" % (
+                            dt.strftime("%H:%M"),
+                            event.title,
+                            event.time
+                        )
+                else:
+                    message += "\nNo upcoming events in next 24h"
+
+            self.session.open(
+                MessageBox,
+                message,
+                MessageBox.TYPE_INFO
+            )
+
+        except Exception as e:
+            print("[Calendar] Debug error: %s" % str(e))
+
+    def test_event_notification_now(self):
+        """Test immediate event notification"""
+        try:
+            if not self.event_manager:
                 self.session.open(
                     MessageBox,
-                    _("Test notification sent"),
-                    MessageBox.TYPE_INFO
+                    _("Event manager not initialized"),
+                    MessageBox.TYPE_ERROR
                 )
-        except Exception as e:
-            print("[Calendar] Test notification error:", str(e))
+                return
 
-    def test_sound(self):
-        """Test sound playback"""
+            # Create a test event for RIGHT NOW
+            from datetime import datetime, timedelta
+            now = datetime.now()
+            test_time = (now + timedelta(minutes=1)).strftime("%H:%M")
+            test_date = now.strftime("%Y-%m-%d")
+
+            test_event = Event(
+                title="TEST NOTIFICATION",
+                description="This is a test notification",
+                date=test_date,
+                time=test_time,
+                repeat="none",
+                notify_before=0,
+                enabled=True
+            )
+
+            # Add to manager
+            self.event_manager.events.append(test_event)
+            self.event_manager.save_events()
+
+            # Force immediate check
+            self.event_manager.check_events()
+
+            self.session.open(
+                MessageBox,
+                _("Test event created for %s\nNotification should appear in 1 minute.") % test_time,
+                MessageBox.TYPE_INFO
+            )
+
+        except Exception as e:
+            print("[Calendar] Test error: %s" % str(e))
+            self.session.open(
+                MessageBox,
+                _("Test error: %s") % str(e),
+                MessageBox.TYPE_ERROR
+            )
+
+    def test_tv_restore(self):
+        """Test TV restore functionality"""
         try:
-            if self.event_manager:
-                # Prova a riprodurre il suono di notifica
-                sound_timer = self.event_manager.play_notification_sound("notify")
-                if sound_timer:
-                    self.session.open(
-                        MessageBox,
-                        _("Sound playback started"),
-                        MessageBox.TYPE_INFO
-                    )
+            if hasattr(self, 'event_manager') and self.event_manager:
+                current_service = self.session.nav.getCurrentlyPlayingServiceReference()
+                if current_service:
+                    print("[Calendar] Current service: %s" % current_service.toString())
+                    self.event_manager.tv_service_backup = current_service
+
+                    print("[Calendar] Playing test sound...")
+                    success = self.event_manager.play_notification_sound("notify")
+
+                    if success:
+                        print("[Calendar] Scheduling restore in 5 seconds...")
+                        restore_timer = eTimer()
+
+                        def restore():
+                            print("[Calendar] Manual restore test")
+                            self.event_manager.stop_notification_sound()
+
+                        try:
+                            restore_timer.timeout.connect(restore)
+                        except AttributeError:
+                            restore_timer.callback.append(restore)
+
+                        restore_timer.start(5000, True)
+
+                        self.session.open(
+                            MessageBox,
+                            _("Test started.\nSound will play for 5 seconds, then TV should be restored."),
+                            MessageBox.TYPE_INFO
+                        )
+                    else:
+                        self.session.open(
+                            MessageBox,
+                            _("Unable to play test sound"),
+                            MessageBox.TYPE_ERROR
+                        )
                 else:
                     self.session.open(
                         MessageBox,
-                        _("Could not play sound"),
-                        MessageBox.TYPE_ERROR
+                        _("No TV service currently playing"),
+                        MessageBox.TYPE_INFO
                     )
+            else:
+                self.session.open(
+                    MessageBox,
+                    _("Event manager not available"),
+                    MessageBox.TYPE_ERROR
+                )
         except Exception as e:
-            print("[Calendar] Test sound error:", str(e))
+            print("[Calendar] TV restore test error: %s" % str(e))
 
     def debug_event_time_conversion(self):
         """Debug event time conversion"""
@@ -822,53 +880,6 @@ class Calendar(Screen):
             MessageBox.TYPE_YESNO
         )
 
-    def force_save_all_config(self):
-        """Force saving of ALL configuration"""
-        try:
-            print("=== FORCE SAVE ALL ===")
-            # 1. Set a different value
-            config.plugins.calendar.default_event_time.value = "15:00"
-
-            # 2. Explicitly save
-            configfile.save()
-            print("Config saved to /etc/enigma2/settings")
-
-            # 3. Verify
-            settings_file = "/etc/enigma2/settings"
-            if exists(settings_file):
-                with open(settings_file, 'r') as f:
-                    content = f.read()
-                    if 'config.plugins.calendar.default_event_time' in content:
-                        print("SUCCESS: Config found in settings file")
-                    else:
-                        print("ERROR: Config NOT found in settings file!")
-
-        except Exception as e:
-            print("Force save error:", str(e))
-
-    def debug_config(self):
-        """Debug configuration"""
-        try:
-            print("=== DEBUG CONFIG ===")
-            # List ALL plugin configuration entries
-            if hasattr(config, 'plugins') and hasattr(config.plugins, 'calendar'):
-                for attr_name in dir(config.plugins.calendar):
-                    if not attr_name.startswith('__'):
-                        attr = getattr(config.plugins.calendar, attr_name)
-                        if hasattr(attr, 'value'):
-                            print("%s: %s" % (attr_name, attr.value))
-
-            # Read directly from settings file
-            settings_file = "/etc/enigma2/settings"
-            if exists(settings_file):
-                print("\n=== SETTINGS FILE CONTENT ===")
-                with open(settings_file, 'r') as f:
-                    for line in f:
-                        if 'calendar' in line.lower():
-                            print(line.strip())
-        except Exception as e:
-            print("Debug error:", str(e))
-
     def test_fix_events_now(self):
         """Immediate test to fix events"""
         try:
@@ -887,50 +898,6 @@ class Calendar(Screen):
             print("TEST ERROR:", str(e))
             import traceback
             traceback.print_exc()
-
-    def debug_holiday_loading(self):
-        print("[Calendar] === DEBUG HOLIDAY LOADING ===")
-        print("[Calendar] Current date: %d-%02d-%02d" % (self.year, self.month, self.day))
-        print("[Calendar] Language: %s" % self.language)
-        # Check directory
-        holiday_dir = "%s/%s/day" % (self.HOLIDAYS_PATH, self.language)
-        print("[Calendar] Holiday directory: %s" % holiday_dir)
-        print("[Calendar] Directory exists: %s" % exists(holiday_dir))
-        # List files in directory
-        files = glob.glob("%s/*.txt" % holiday_dir)
-        print("[Calendar] Found %d holiday files" % len(files))
-        # Check specific file for today
-        test_file = "%s/%s/day/%d%02d%02d.txt" % (
-            self.HOLIDAYS_PATH,
-            self.language,
-            self.year,
-            self.month,
-            self.day
-        )
-        print("[Calendar] Test file: %s" % test_file)
-        print("[Calendar] Test file exists: %s" % exists(test_file))
-        if exists(test_file):
-            try:
-                with open(test_file, 'r') as f:
-                    content = f.read()
-                print("[Calendar] File content:")
-                print(content)
-            except Exception as e:
-                print("[Calendar] Error reading file: %s" % str(e))
-        # Force reload
-        print("[Calendar] Forcing holiday cache reload...")
-        cache_key = (self.year, self.month)
-        if cache_key in self.holiday_cache:
-            del self.holiday_cache[cache_key]
-        # Load holidays
-        holidays = self._load_month_holidays(self.year, self.month)
-        print("[Calendar] Found %d holidays for this month" % len(holidays))
-        # Show message
-        self.session.open(
-            MessageBox,
-            _("Debug completed. Check logs."),
-            MessageBox.TYPE_INFO
-        )
 
     # DEBUG SECTION
 
@@ -3273,7 +3240,6 @@ class Calendar(Screen):
                             processed_events.add(event_key)
 
                 except Exception as e:
-                    from os.path import basename
                     print("[Calendar] Error processing ICS file %s: %s" % (basename(ics_file), str(e)))
                     continue
 
@@ -4379,14 +4345,6 @@ class settingCalendar(Setup):
 
     def keySave(self):
         """Save configuration with validation and apply changes"""
-        # from .config_manager import (
-            # validate_event_time,
-            # get_default_event_time,
-            # get_last_used_default_time,
-            # update_last_used_default_time,
-            # save_all_config
-        # )
-
         # 1. Validate event time before saving
         new_default = get_default_event_time()
         if not validate_event_time(new_default):
@@ -4496,13 +4454,12 @@ def Plugins(**kwargs):
     try:
         from .autostart import autostart_main
         print("[Calendar] Autostart module imported successfully")
-
         result.append(PluginDescriptor(
-            where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART],
+            where=PluginDescriptor.WHERE_SESSIONSTART,
             needsRestart=True,
             fnc=autostart_main,
         ))
-        print("[Calendar] Added autostart descriptor (WHERE_AUTOSTART and WHERE_SESSIONSTART)")
+        print("[Calendar] Added autostart descriptor (WHERE_SESSIONSTART)")
 
     except ImportError as e:
         print("[Calendar] ERROR: Cannot import autostart module!")

@@ -1,6 +1,7 @@
 #, fuzzy
 
 
+
 msgid "(Search: '{0}')"
 msgstr ""
 
@@ -11,9 +12,6 @@ msgid "--- CONTACTS ---"
 msgstr ""
 
 msgid "--- DATABASE ---"
-msgstr ""
-
-msgid "--- DEBUG ---"
 msgstr ""
 
 msgid "--- EVENTS ---"
@@ -220,9 +218,6 @@ msgstr ""
 msgid "Could not check for updates: %s"
 msgstr ""
 
-msgid "Could not play sound"
-msgstr ""
-
 msgid "Could not read file"
 msgstr ""
 
@@ -260,9 +255,6 @@ msgid "Day -"
 msgstr ""
 
 msgid "Days to keep notifications in cache"
-msgstr ""
-
-msgid "Debug completed. Check logs."
 msgstr ""
 
 msgid "December"
@@ -455,6 +447,9 @@ msgid "Event check interval"
 msgstr ""
 
 msgid "Event color"
+msgstr ""
+
+msgid "Event manager not available"
 msgstr ""
 
 msgid "Event manager not initialized"
@@ -722,6 +717,9 @@ msgid "No ICS files found"
 msgstr ""
 
 msgid "No ICS files in archive"
+msgstr ""
+
+msgid "No TV service currently playing"
 msgstr ""
 
 msgid "No contact files found"
@@ -1003,9 +1001,6 @@ msgstr ""
 msgid "Sorted by: Title"
 msgstr ""
 
-msgid "Sound playback started"
-msgstr ""
-
 msgid "Start event notifications in background (recommended)"
 msgstr ""
 
@@ -1024,31 +1019,7 @@ msgstr ""
 msgid "Temporary Storage (/tmp)"
 msgstr ""
 
-msgid "Test Debug Config"
-msgstr ""
-
-msgid "Test Event Time Conversion"
-msgstr ""
-
-msgid "Test Fix Event Now"
-msgstr ""
-
-msgid "Test Force Event Conversion Event Time"
-msgstr ""
-
-msgid "Test Force Save all Config"
-msgstr ""
-
-msgid "Test Holiday Loading"
-msgstr ""
-
-msgid "Test Notification Now"
-msgstr ""
-
-msgid "Test Sound Playback"
-msgstr ""
-
-msgid "Test notification sent"
+msgid "Test error: %s"
 msgstr ""
 
 msgid "Text format"
@@ -1109,6 +1080,9 @@ msgid "USB Drive"
 msgstr ""
 
 msgid "USB Drive (/media/usb)"
+msgstr ""
+
+msgid "Unable to play test sound"
 msgstr ""
 
 msgid "Update available!"

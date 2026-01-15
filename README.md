@@ -1,5 +1,5 @@
 ![](https://komarev.com/ghpvc/?username=Belfagor2005&label=Repository%20Views&color=blueviolet)
-[![Version](https://img.shields.io/badge/Version-1.8.1-blue.svg)](https://github.com/Belfagor2005/Calendar)
+[![Version](https://img.shields.io/badge/Version-1.9-blue.svg)](https://github.com/Belfagor2005/Calendar)
 [![Enigma2](https://img.shields.io/badge/Enigma2-Plugin-ff6600.svg)](https://www.enigma2.net)
 [![Python](https://img.shields.io/badge/Python-2.7%2B%203.X%2B-blue.svg)](https://www.python.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -18,6 +18,9 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **File Operations**: Create, edit, remove, or delete date data files with custom naming (YYYYMMDD.txt)
 - **Multi-language Support**: Data organized by language folders for localization
 - **Smooth navigation**: with keyboard shortcuts
+- **Autostart System**: Implemented auto-start system at decoder boot
+- **Monitor Timer**: Efficient timer for continuous monitoring
+- **Autostart Event**: Lazy event loading on startup
 
 ### Event Management System
 - **Smart Event Notifications**: Get notified before events start (configurable from 0 to 60 minutes before)
@@ -29,6 +32,7 @@ A comprehensive calendar plugin for Enigma2-based receivers with event managemen
 - **Past Event Cleanup**: Automatic skipping of old non-recurring events to improve performance
 - **Intelligent Event Time Conversion**: Auto-converts existing events when default time changes
 - **Universal Navigation**: CH+/CH- wrap-around navigation in all event screens
+
 ### vCard Contact Management System
 - **vCard Import/Export**: Import thousands of contacts from .vcf files with progress tracking
 - **Contact Management**: Full contact database with birthday tracking and age calculation
@@ -650,6 +654,9 @@ tail -f /tmp/enigma2.log | grep Calendar
 - **Auto-save Navigation**: Changes saved when navigating with CH+/CH-
 - **Page Navigation**: PAGE UP/DOWN to skip 5 items
 - **Unified Interface**: Same navigation across all dialogs and browsers
+
+### v1.9
+- **Autostart System**: Implemented auto-start system at decoder boot
 
 ## 🤝 Contributing
 Contributions are welcome! Please ensure:

@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.8                      #
+#  Calendar Planner for Enigma2 v1.9                      #
 #  Created by: Lululla                                    #
 ###########################################################
 
-Last Updated: 2026-01-02
+Last Updated: 2026-01-15
 Status: Stable with complete vCard & ICS support
 Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -29,7 +29,7 @@ import shutil
 import threading
 
 from . import _ 
-from .duplicate_checker import DuplicateChecker
+from .duplicate_checker import DuplicateChecker, run_complete_cleanup
 from .event_manager import Event
 from .formatters import ICS_BASE_PATH
 from .config_manager import get_debug, get_default_event_time
@@ -966,8 +966,6 @@ class ICSImportProgressScreen(Screen):
         # RUN DUPLICATE CLEANUP
         cleaned = 0
         try:
-            from duplicate_checker import run_complete_cleanup
-
             # Check if birthday_manager exists
             if hasattr(self.event_manager, 'birthday_manager'):
                 cleaned = run_complete_cleanup(self.event_manager.birthday_manager)

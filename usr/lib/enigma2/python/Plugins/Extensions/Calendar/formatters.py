@@ -25,7 +25,7 @@ from Components.MenuList import MenuList
 from . import _, PLUGIN_PATH
 
 # ============================================================================
-# COSTANTI GLOBALI - INIZIALIZZATE SUBITO ALL'IMPORT
+# GLOBAL CONSTANTS - INITIALIZE IMMEDIATELY ON IMPORT
 # ============================================================================
 
 try:
@@ -404,33 +404,6 @@ def init_formatters_paths():
 
     print("[Formatters] Path constants already initialized")
     return True
-
-
-# BASE_DIR = join(PLUGIN_PATH, "base")
-
-# DATA_PATH = BASE_DIR
-# CONTACTS_PATH = join(BASE_DIR, "contacts")
-# VCARDS_PATH = join(BASE_DIR, "vcard")
-# ICS_BASE_PATH = join(BASE_DIR, "ics")
-# HOLIDAYS_PATH = join(BASE_DIR, "holidays")
-# EVENTS_JSON = join(BASE_DIR, "events.json")
-# SOUNDS_DIR = join(PLUGIN_PATH, "sounds")
-
-# print("[Formatters] Constants initialized:")
-# print("[Formatters] PLUGIN_PATH:", PLUGIN_PATH)
-# print("[Formatters] DATA_PATH:", DATA_PATH)
-# print("[Formatters] ICS_BASE_PATH:", ICS_BASE_PATH)
-
-
-# _DATA_PATHS = {
-    # 'DATA_PATH': DATA_PATH,
-    # 'CONTACTS_PATH': CONTACTS_PATH,
-    # 'VCARDS_PATH': VCARDS_PATH,
-    # 'ICS_BASE_PATH': ICS_BASE_PATH,
-    # 'HOLIDAYS_PATH': HOLIDAYS_PATH,
-    # 'EVENTS_JSON': EVENTS_JSON,
-    # 'SOUNDS_DIR': SOUNDS_DIR
-# }
 
 
 # ============================================================================

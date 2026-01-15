@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.8                      #
+#  Calendar Planner for Enigma2 v1.9                      #
 #  Created by: Lululla                                    #
 ###########################################################
 
-Last Updated: 2026-01-02
+Last Updated: 2026-01-15
 Status: Stable with complete vCard & ICS support
 Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -23,7 +23,7 @@ from Components.Language import language
 
 
 PLUGIN_NAME = "Calendar"
-PLUGIN_VERSION = "1.8.1"
+PLUGIN_VERSION = "1.9"
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format(PLUGIN_NAME))
 PLUGIN_ICON = resolveFilename(SCOPE_PLUGINS, "Extensions/Calendar/plugin.png")
 USER_AGENT = "Calendar-Enigma2-Updater/%s" % PLUGIN_VERSION

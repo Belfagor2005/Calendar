@@ -63,9 +63,9 @@ class NotificationManager:
 
         self.hide_timer = eTimer()
         try:
-            self.hide_timer_conn = self.hide_timer.timeout.connect(self._hideNotification)
-        except AttributeError:
             self.hide_timer.callback.append(self._hideNotification)
+        except AttributeError:
+            self.hide_timer.timeout.connect(self._hideNotification)
 
         self.is_initialized = False
 

@@ -24,9 +24,6 @@ msgstr "--- ΕΠΑΦΕΣ ---"
 msgid "--- DATABASE ---"
 msgstr "--- ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ ---"
 
-msgid "--- DEBUG ---"
-msgstr "--- ΕΝΤΟΠΙΣΜΟΣ ΣΦΑΛΜΑΤΩΝ ---"
-
 msgid "--- EVENTS ---"
 msgstr "--- ΣΥΜΒΑΝΤΑ ---"
 
@@ -231,9 +228,6 @@ msgstr "Δεν ήταν δυνατός ο έλεγχος για ενημερώσ
 msgid "Could not check for updates: %s"
 msgstr "Δεν ήταν δυνατός ο έλεγχος για ενημερώσεις: %s"
 
-msgid "Could not play sound"
-msgstr "Δεν ήταν δυνατή η αναπαραγωγή ήχου"
-
 msgid "Could not read file"
 msgstr "Δεν ήταν δυνατή η ανάγνωση του αρχείου"
 
@@ -272,9 +266,6 @@ msgstr "Ημέρα -"
 
 msgid "Days to keep notifications in cache"
 msgstr "Ημέρες διατήρησης ειδοποιήσεων στην προσωρινή μνήμη"
-
-msgid "Debug completed. Check logs."
-msgstr "Ο εντοπισμός σφαλμάτων ολοκληρώθηκε. Ελέγξτε τα αρχεία καταγραφής."
 
 msgid "December"
 msgstr "Δεκέμβριος"
@@ -467,6 +458,9 @@ msgstr "Διάστημα ελέγχου συμβάντων"
 
 msgid "Event color"
 msgstr "Χρώμα συμβάντων"
+
+msgid "Event manager not available"
+msgstr "Ο υπεύθυνος εκδηλώσεων δεν είναι διαθέσιμος"
 
 msgid "Event manager not initialized"
 msgstr "Ο διαχειριστής συμβάντων δεν έχει αρχικοποιηθεί"
@@ -734,6 +728,9 @@ msgstr "Δεν βρέθηκαν αρχεία ICS"
 
 msgid "No ICS files in archive"
 msgstr "Δεν υπάρχουν αρχεία ICS στο αρχείο"
+
+msgid "No TV service currently playing"
+msgstr "Δεν αναπαράγεται τηλεοπτική υπηρεσία αυτήν τη στιγμή"
 
 msgid "No contact files found"
 msgstr "Δεν βρέθηκαν αρχεία επαφών"
@@ -1014,9 +1011,6 @@ msgstr "Ταξινόμηση: Όνομα"
 msgid "Sorted by: Title"
 msgstr "Ταξινόμηση: Τίτλος"
 
-msgid "Sound playback started"
-msgstr "Η αναπαραγωγή ήχου ξεκίνησε"
-
 msgid "Start event notifications in background (recommended)"
 msgstr "Έναρξη ειδοποιήσεων συμβάντων στο παρασκήνιο (συνιστάται)"
 
@@ -1035,32 +1029,8 @@ msgstr "Ετικέτες: {0}"
 msgid "Temporary Storage (/tmp)"
 msgstr "Προσωρινή αποθήκευση (/tmp)"
 
-msgid "Test Debug Config"
-msgstr "Δοκιμή ρυθμίσεων εντοπισμού σφαλμάτων"
-
-msgid "Test Event Time Conversion"
-msgstr "Δοκιμή μετατροπής ώρας συμβάντος"
-
-msgid "Test Fix Event Now"
-msgstr "Δοκιμή άμεσης διόρθωσης συμβάντος"
-
-msgid "Test Force Event Conversion Event Time"
-msgstr "Δοκιμή εξαναγκασμένης μετατροπής ώρας συμβάντος"
-
-msgid "Test Force Save all Config"
-msgstr "Δοκιμή εξαναγκασμένης αποθήκευσης όλων των ρυθμίσεων"
-
-msgid "Test Holiday Loading"
-msgstr "Δοκιμή φόρτωσης αργιών"
-
-msgid "Test Notification Now"
-msgstr "Δοκιμή ειδοποίησης τώρα"
-
-msgid "Test Sound Playback"
-msgstr "Δοκιμή αναπαραγωγής ήχου"
-
-msgid "Test notification sent"
-msgstr "Η δοκιμαστική ειδοποίηση στάλθηκε"
+msgid "Test error: %s"
+msgstr "Σφάλμα δοκιμής: %s"
 
 msgid "Text format"
 msgstr "Μορφή κειμένου"
@@ -1121,6 +1091,9 @@ msgstr "Μονάδα USB"
 
 msgid "USB Drive (/media/usb)"
 msgstr "Μονάδα USB (/media/usb)"
+
+msgid "Unable to play test sound"
+msgstr "Δεν είναι δυνατή η αναπαραγωγή δοκιμαστικού ήχου"
 
 msgid "Update available!"
 msgstr "Διαθέσιμη ενημέρωση!"
@@ -1199,3 +1172,39 @@ msgstr "mορφή vCard (τυπική)"
 
 msgid "vCard import feature not available: {0}"
 msgstr "h δυνατότητα εισαγωγής vCard δεν είναι διαθέσιμη: {0}"
+
+#~ msgid "--- DEBUG ---"
+#~ msgstr "--- ΕΝΤΟΠΙΣΜΟΣ ΣΦΑΛΜΑΤΩΝ ---"
+
+#~ msgid "Debug completed. Check logs."
+#~ msgstr "Ο εντοπισμός σφαλμάτων ολοκληρώθηκε. Ελέγξτε τα αρχεία καταγραφής."
+
+#~ msgid "Sound playback started"
+#~ msgstr "Η αναπαραγωγή ήχου ξεκίνησε"
+
+#~ msgid "Test Debug Config"
+#~ msgstr "Δοκιμή ρυθμίσεων εντοπισμού σφαλμάτων"
+
+#~ msgid "Test Event Time Conversion"
+#~ msgstr "Δοκιμή μετατροπής ώρας συμβάντος"
+
+#~ msgid "Test Fix Event Now"
+#~ msgstr "Δοκιμή άμεσης διόρθωσης συμβάντος"
+
+#~ msgid "Test Force Event Conversion Event Time"
+#~ msgstr "Δοκιμή εξαναγκασμένης μετατροπής ώρας συμβάντος"
+
+#~ msgid "Test Force Save all Config"
+#~ msgstr "Δοκιμή εξαναγκασμένης αποθήκευσης όλων των ρυθμίσεων"
+
+#~ msgid "Test Holiday Loading"
+#~ msgstr "Δοκιμή φόρτωσης αργιών"
+
+#~ msgid "Test Notification Now"
+#~ msgstr "Δοκιμή ειδοποίησης τώρα"
+
+#~ msgid "Test Sound Playback"
+#~ msgstr "Δοκιμή αναπαραγωγής ήχου"
+
+#~ msgid "Test notification sent"
+#~ msgstr "Η δοκιμαστική ειδοποίηση στάλθηκε"

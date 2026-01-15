@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.8                      #
+#  Calendar Planner for Enigma2 v1.9                      #
 #  Created by: Lululla                                    #
 ###########################################################
 
-Last Updated: 2026-01-02
+Last Updated: 2026-01-15
 Status: Stable with complete vCard & ICS support
 Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -22,6 +22,7 @@ from enigma import getDesktop
 
 from . import _
 from .config_manager import get_default_event_time
+from .event_dialog import EventDialog
 
 
 class EventsView(Screen):
@@ -269,7 +270,6 @@ class EventsView(Screen):
     def add_event(self):
         """Add new event"""
         if self.date:
-            from .event_dialog import EventDialog
             self.session.openWithCallback(
                 self.event_added_callback,
                 EventDialog,
@@ -281,8 +281,6 @@ class EventsView(Screen):
         """Edit selected event"""
         index = self["events_list"].getSelectedIndex()
         if 0 <= index < len(self.current_events):
-            from .event_dialog import EventDialog
-
             # Get ALL events from event manager
             all_events = self.event_manager.events
 

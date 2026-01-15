@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 14:37+0100\n"
-"PO-Revision-Date: 2026-01-14 20:43+0100\n"
+"PO-Revision-Date: 2026-01-15 21:25+0100\n"
 "Last-Translator: \n"
 "Language-Team: <sirius.al@rambler.ru>\n"
 "Language: it\n"
@@ -26,9 +26,6 @@ msgstr "--- CONTATTI ---"
 
 msgid "--- DATABASE ---"
 msgstr "--- BANCA DATI ---"
-
-msgid "--- DEBUG ---"
-msgstr "--- DEBUG ---"
 
 msgid "--- EVENTS ---"
 msgstr "--- EVENTI ---"
@@ -234,9 +231,6 @@ msgstr "Impossibile verificare la presenza di aggiornamenti. Controllare la conn
 msgid "Could not check for updates: %s"
 msgstr "Impossibile verificare la presenza di aggiornamenti: %s"
 
-msgid "Could not play sound"
-msgstr "Impossibile riprodurre l'audio"
-
 msgid "Could not read file"
 msgstr "Impossibile leggere il file"
 
@@ -275,9 +269,6 @@ msgstr "Giorno-"
 
 msgid "Days to keep notifications in cache"
 msgstr "Giorni per conservare le notifiche nella cache"
-
-msgid "Debug completed. Check logs."
-msgstr "Debug completato. Controllare i log."
 
 msgid "December"
 msgstr "Dicembre"
@@ -470,6 +461,9 @@ msgstr "Intervallo di controllo degli eventi"
 
 msgid "Event color"
 msgstr "Colore Evento"
+
+msgid "Event manager not available"
+msgstr "Event manager non disponibile"
 
 msgid "Event manager not initialized"
 msgstr "Gestore eventi non inizializzato"
@@ -737,6 +731,9 @@ msgstr "Nessun file ICS trovato"
 
 msgid "No ICS files in archive"
 msgstr "Nessun file ICS nell'archivio"
+
+msgid "No TV service currently playing"
+msgstr "Nessun servizio TV in riproduzione al momento"
 
 msgid "No contact files found"
 msgstr "Nessun file di contatto trovato"
@@ -1017,9 +1014,6 @@ msgstr "Ordinato per: Nome"
 msgid "Sorted by: Title"
 msgstr "Ordinato per: Titolo"
 
-msgid "Sound playback started"
-msgstr "Riproduzione audio avviata"
-
 msgid "Start event notifications in background (recommended)"
 msgstr "Avvia le notifiche degli eventi in background (consigliato)"
 
@@ -1038,32 +1032,8 @@ msgstr "Tag: {0}"
 msgid "Temporary Storage (/tmp)"
 msgstr "Archiviazione temporanea (/tmp)"
 
-msgid "Test Debug Config"
-msgstr "Test e Debug Configurazione"
-
-msgid "Test Event Time Conversion"
-msgstr "Test Tempo di conversione"
-
-msgid "Test Fix Event Now"
-msgstr "Test Fix Evento di Adesso"
-
-msgid "Test Force Event Conversion Event Time"
-msgstr "Tempo di conversione dell'evento di forza di prova"
-
-msgid "Test Force Save all Config"
-msgstr "Test Forza Salva tutta la Config"
-
-msgid "Test Holiday Loading"
-msgstr "Test Caricamento Festività"
-
-msgid "Test Notification Now"
-msgstr "Test Tono di Notifica Adesso"
-
-msgid "Test Sound Playback"
-msgstr "Prova la riproduzione del suono"
-
-msgid "Test notification sent"
-msgstr "Notifica di prova inviata"
+msgid "Test error: %s"
+msgstr "Errore di Test: %s"
 
 msgid "Text format"
 msgstr "Formato del testo"
@@ -1124,6 +1094,9 @@ msgstr ""
 
 msgid "USB Drive (/media/usb)"
 msgstr ""
+
+msgid "Unable to play test sound"
+msgstr "Impossibile riprodurre il suono di prova"
 
 msgid "Update available!"
 msgstr "Aggiornamento disponibile!"
@@ -1203,8 +1176,44 @@ msgstr "vCard: formato (standard)"
 msgid "vCard import feature not available: {0}"
 msgstr "vCard: La funzionalità di importazione non è disponibile: {0}"
 
+#~ msgid "--- DEBUG ---"
+#~ msgstr "--- DEBUG ---"
+
 #~ msgid "Configuration saved successfully!"
 #~ msgstr "Configurazione salvata con successo!"
 
+#~ msgid "Debug completed. Check logs."
+#~ msgstr "Debug completato. Controllare i log."
+
 #~ msgid "Really close without saving settings?"
 #~ msgstr "Davvero chiudere senza salvare le impostazioni?"
+
+#~ msgid "Sound playback started"
+#~ msgstr "Riproduzione audio avviata"
+
+#~ msgid "Test Debug Config"
+#~ msgstr "Test e Debug Configurazione"
+
+#~ msgid "Test Event Time Conversion"
+#~ msgstr "Test Tempo di conversione"
+
+#~ msgid "Test Fix Event Now"
+#~ msgstr "Test Fix Evento di Adesso"
+
+#~ msgid "Test Force Event Conversion Event Time"
+#~ msgstr "Tempo di conversione dell'evento di forza di prova"
+
+#~ msgid "Test Force Save all Config"
+#~ msgstr "Test Forza Salva tutta la Config"
+
+#~ msgid "Test Holiday Loading"
+#~ msgstr "Test Caricamento Festività"
+
+#~ msgid "Test Notification Now"
+#~ msgstr "Test Tono di Notifica Adesso"
+
+#~ msgid "Test Sound Playback"
+#~ msgstr "Prova la riproduzione del suono"
+
+#~ msgid "Test notification sent"
+#~ msgstr "Notifica di prova inviata"

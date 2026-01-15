@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.8                      #
+#  Calendar Planner for Enigma2 v1.9                      #
 #  Created by: Lululla                                    #
 ###########################################################
 
-Last Updated: 2026-01-02
+Last Updated: 2026-01-15
 Status: Stable with complete vCard & ICS support
 Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -23,7 +23,7 @@ from Components.Label import Label
 from skin import parseColor
 
 from . import _
-from .config_manager import get_default_event_time, get_debug
+from .config_manager import get_default_event_time, get_default_notify_minutes, get_debug
 from .event_manager import create_event_from_data
 
 DEBUG = get_debug()
@@ -313,12 +313,10 @@ class EventDialog(Screen):
             if not self["description_value"].getText():
                 self["description_value"].setText(_("Description"))
             # Set default time from configuration
-            from .config_manager import get_default_event_time
             default_time = get_default_event_time()
             self["time_value"].setText(default_time)
 
             # Set default notification minutes
-            from .config_manager import get_default_notify_minutes
             default_notify = get_default_notify_minutes()
             if default_notify > 0:
                 notify_text = str(default_notify) + " minutes before"

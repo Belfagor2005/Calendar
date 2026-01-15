@@ -21,7 +21,6 @@ from os.path import dirname, exists, join
 from re import search
 from sys import version_info
 
-# URL handling based on Python version
 if version_info[0] >= 3:
     from urllib.request import urlopen
 else:
@@ -41,7 +40,6 @@ from .config_manager import get_debug
 
 global DEBUG
 DEBUG = get_debug()
-# DEBUG = True
 
 
 # Country/Language Map

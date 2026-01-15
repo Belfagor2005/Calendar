@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 ###########################################################
-#  Calendar Planner for Enigma2 v1.8                      #
+#  Calendar Planner for Enigma2 v1.9                      #
 #  Created by: Lululla                                    #
 ###########################################################
 
-Last Updated: 2026-01-02
+Last Updated: 2026-01-15
 Status: Stable with complete vCard & ICS support
 Credits: Lululla
 Homepage: www.corvoboys.org www.linuxsat-support.com
@@ -20,7 +20,8 @@ from Components.config import (
     ConfigSelection,
     ConfigYesNo,
     ConfigText,
-    ConfigInteger
+    ConfigInteger,
+    configfile
 )
 from . import _
 
@@ -326,7 +327,6 @@ def save_all_config():
         config.plugins.calendar.database_format.save()
         config.plugins.calendar.default_notify_minutes.save()
 
-        from Components.config import configfile
         # Ensure all config is initialized
         init_calendar_config()
         init_export_config()
@@ -492,7 +492,7 @@ def get_max_events_per_day():
 def init_all_config():
     """Initialize all configuration in correct order"""
     global _calendar_config_initialized
-    
+
     if _calendar_config_initialized:
         print("[ConfigManager] Config already initialized, skipping")
         return True
