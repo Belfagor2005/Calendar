@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Celndar\n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2025-12-22 15:15+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: lululla [ekekaz@gmail.com]\n"
@@ -19,9 +19,6 @@ msgid "(Search: '{0}')"
 msgstr ""
 
 msgid "(truncated)"
-msgstr ""
-
-msgid "- - - -"
 msgstr ""
 
 msgid "--- CONTACTS ---"
@@ -197,11 +194,6 @@ msgstr ""
 
 msgid "Completed"
 msgstr ""
-
-#, fuzzy
-#| msgid "Update completed successfully!"
-msgid "Configuration saved successfully!"
-msgstr "Aktualizácia bola úspešne dokončená!"
 
 msgid "Contact '{0}' deleted successfully"
 msgstr ""
@@ -855,9 +847,6 @@ msgstr ""
 msgid "Re-import"
 msgstr ""
 
-msgid "Really close without saving settings?"
-msgstr ""
-
 msgid "Red"
 msgstr ""
 
@@ -895,9 +884,6 @@ msgid "S:{0}"
 msgstr ""
 
 msgid "SCHEDULED EVENTS:"
-msgstr ""
-
-msgid "SELECT YOUR CHOICE"
 msgstr ""
 
 msgid "Sat"

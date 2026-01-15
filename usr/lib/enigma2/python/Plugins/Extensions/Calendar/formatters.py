@@ -433,10 +433,10 @@ def init_formatters_paths():
 # }
 
 
-
 # ============================================================================
 # FUNZIONI GETTER PER BACKWARD COMPATIBILITY
 # ============================================================================
+
 
 def get_all_paths():
     """Return all paths as a tuple"""

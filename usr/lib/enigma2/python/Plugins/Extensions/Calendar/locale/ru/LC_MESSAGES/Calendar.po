@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2025-12-22 15:13+0100\n"
 "PO-Revision-Date: 2026-01-02 21:33+0100\n"
 "Last-Translator: Warder <ciksa@seznam.cz>\n"
 "Language-Team: <ekekaz@gmail.com>\n"
@@ -20,9 +20,6 @@ msgid "(Search: '{0}')"
 msgstr ""
 
 msgid "(truncated)"
-msgstr ""
-
-msgid "- - - -"
 msgstr ""
 
 msgid "--- CONTACTS ---"
@@ -198,11 +195,6 @@ msgstr ""
 
 msgid "Completed"
 msgstr ""
-
-#, fuzzy
-#| msgid "Update completed successfully!"
-msgid "Configuration saved successfully!"
-msgstr "Обновление успешно завершено!"
 
 msgid "Contact '{0}' deleted successfully"
 msgstr ""
@@ -684,6 +676,7 @@ msgstr ""
 msgid "Manage Contacts"
 msgstr ""
 
+#, fuzzy
 msgid "Manage Event"
 msgstr "Управление событиями"
 
@@ -855,9 +848,6 @@ msgstr ""
 msgid "Re-import"
 msgstr ""
 
-msgid "Really close without saving settings?"
-msgstr ""
-
 msgid "Red"
 msgstr "Красный"
 
@@ -896,9 +886,6 @@ msgstr ""
 
 msgid "SCHEDULED EVENTS:"
 msgstr "ЗАПЛАНИРОВАННЫЕ МЕРОПРИЯТИЯ:"
-
-msgid "SELECT YOUR CHOICE"
-msgstr ""
 
 msgid "Sat"
 msgstr "Сб"

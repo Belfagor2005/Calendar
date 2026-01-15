@@ -340,6 +340,28 @@ class EventManager:
 
         import atexit
         atexit.register(self.cleanup)
+        # self.test_notification_direct()
+
+    def test_notification_direct(self):
+        """Test direct notification bypassing all checks"""
+        try:
+            print("[EventManager] === DIRECT NOTIFICATION TEST ===")
+
+            # Crea un messaggio di test
+            test_msg = "🔔 TEST NOTIFICATION\n🕐 " + datetime.now().strftime("%H:%M")
+
+            # Prova il tuo sistema
+            if NOTIFICATION_AVAILABLE:
+                quick_notify(test_msg, seconds=15)
+                print("[EventManager] Direct quick_notify sent")
+                return True
+            else:
+                print("[EventManager] quick_notify not available")
+                return False
+
+        except Exception as e:
+            print("[EventManager] Direct test error: " + str(e))
+            return False
 
     def cleanup(self):
         """Cleanup this instance"""
@@ -1172,62 +1194,90 @@ class EventManager:
     def show_notification(self, event):
         """Show notification with optional sound"""
         try:
-            from Tools import Notifications
             if not config.plugins.calendar.events_notifications.value:
                 return
 
-            # PLAY SOUND if configured
-            if config.plugins.calendar.events_play_sound.value:
-                sound_type = config.plugins.calendar.events_sound_type.value
-                if sound_type != "none":
-                    # Save current service
-                    self.previous_service = self.session.nav.getCurrentlyPlayingServiceReference()
-
-                    # Use only the sound type selected by the user
-                    sound_to_play = sound_type
-
-                    # Play sound
-                    sound_stop_timer = self.play_notification_sound(sound_to_play)
-                    if sound_stop_timer:
-                        self.sound_stop_timer = sound_stop_timer
-
-            # Build the message
+            # Build message
             time_str = event.time[:5] if event.time else get_default_event_time()
-            message = _("Calendar Event: %s\nTime: %s") % (event.title, time_str)
+            message_lines = []
+            message_lines.append("📅 " + event.title)
+            message_lines.append("🕐 " + time_str)
 
             if event.description:
                 desc = event.description
-                if len(desc) > 50:
-                    desc = desc[:47] + "..."
-                message += "\n%s" % desc
+                if len(desc) > 60:
+                    desc = desc[:57] + "..."
+                message_lines.append("📝 " + desc)
 
-            # METHOD 1: Enigma2 system notifications (works in background)
+            if event.repeat != "none":
+                message_lines.append("🔁 " + event.repeat.capitalize())
+
+            message = "\n".join(message_lines)
+
+            # Play sound FIRST (if enabled)
+            if config.plugins.calendar.events_play_sound.value:
+                sound_type = config.plugins.calendar.events_sound_type.value
+                if sound_type != "none":
+                    self.play_notification_sound(sound_type)
+
+            # Show visual notification SECOND
             try:
-                notification = MessageBox(
-                    message,
-                    type=MessageBox.TYPE_INFO,
-                    timeout=10  # 10 seconds
-                )
-
-                # Add to the notifications queue
-                Notifications.AddNotification(notification)
-
-                if DEBUG:
-                    print("[EventManager] System notification shown")
-
-            except Exception as e:
-                print("[EventManager] System notification error: %s" % str(e))
-
-                # METHOD 2: Custom notification (only if plugin is open)
                 if NOTIFICATION_AVAILABLE:
                     quick_notify(message, seconds=10)
+                    if DEBUG:
+                        print("[EventManager] Notified via quick_notify: " + event.title)
+                else:
+                    from Tools import Notifications
+                    notification = MessageBox(
+                        message,
+                        type=MessageBox.TYPE_INFO,
+                        timeout=10
+                    )
+                    Notifications.AddNotification(notification)
+                    if DEBUG:
+                        print("[EventManager] Fallback to system notification")
+            except Exception as e:
+                print("[EventManager] Notification error: " + str(e))
 
+            # Mark as notified
+            self.notified_events.add(event.id)
             self.save_notified_events()
 
         except Exception as e:
-            print("[EventManager] Error in show_notification: %s" % str(e))
+            print("[EventManager] Error in show_notification: " + str(e))
             import traceback
             traceback.print_exc()
+
+    def _restore_tv_service(self):
+        """Restore TV service after notification"""
+        try:
+            if DEBUG:
+                print("[EventManager] Restoring TV service")
+
+            # Stop any audio playback first
+            self.session.nav.stopService()
+            time.sleep(0.2)
+
+            # Restore previous TV service if available
+            if hasattr(self, 'previous_service') and self.previous_service:
+                # Check it's not our audio file
+                if self.previous_service.toString().find("Calendar Notification") == -1:
+                    if DEBUG:
+                        print("[EventManager] Playing saved service: " + self.previous_service.toString())
+                    self.session.nav.playService(self.previous_service)
+                else:
+                    if DEBUG:
+                        print("[EventManager] Skipping - saved service is audio file")
+
+            # Clean up
+            if hasattr(self, 'previous_service'):
+                self.previous_service = None
+
+            if hasattr(self, 'current_sound_path'):
+                self.current_sound_path = None
+
+        except Exception as e:
+            print("[EventManager] Error restoring TV: " + str(e))
 
     def play_notification_sound(self, sound_type="notify"):
         try:
@@ -1296,7 +1346,7 @@ class EventManager:
 
             # 2. STOP the current service BEFORE playing audio
             self.session.nav.stopService()
-            time.sleep(0.1)  # Piccola pausa
+            time.sleep(0.1)
 
             # 3. Create eServiceReference for audio file
             # 4097 = isFile (1) + isAudio (4096)
@@ -1306,54 +1356,24 @@ class EventManager:
             if DEBUG:
                 print("[EventManager] Playing sound: " + sound_path)
 
+            # Save sound path for later cleanup
+            self.current_sound_path = sound_path
+
+            # 4. Start playing the sound
             self.session.nav.playService(service_ref)
 
-            # 4. Timer STOP automatic
-            def stop_and_restore_tv():
-                if DEBUG:
-                    print("[EventManager] Auto-stop timer triggered")
+            # 5. Set a flag to indicate we're in notification mode
+            self.in_notification_mode = True
 
-                try:
-                    # Stop audio playback
-                    self.session.nav.stopService()
-
-                    # Wait a bit
-                    time.sleep(0.2)
-
-                    # Restore ORIGINAL service (TV/radio) if it exists
-                    if hasattr(self, 'tv_service_backup') and self.tv_service_backup:
-                        if DEBUG:
-                            print("[EventManager] Restoring TV service: " +
-                                  self.tv_service_backup.toString())
-
-                        # Check it's not our audio file
-                        if self.tv_service_backup.toString().find("Calendar Notification") == -1:
-                            self.session.nav.playService(self.tv_service_backup)
-                        else:
-                            if DEBUG:
-                                print("[EventManager] Skipping - backup is audio file")
-
-                    # Clean up
-                    if hasattr(self, 'tv_service_backup'):
-                        self.tv_service_backup = None
-
-                except Exception as e:
-                    print("[EventManager] Error in stop_and_restore_tv: " + str(e))
-
-            # Create and start the timer
-            stop_timer = eTimer()
-            try:
-                stop_timer.timeout.connect(stop_and_restore_tv)
-            except AttributeError:
-                stop_timer.callback.append(stop_and_restore_tv)
-            stop_timer.start(10000, True)  # 10 seconds
+            # 6. Timer to stop sound and restore TV
+            # The timer will be activated AFTER the visual notification has been displayed.
+            # This timer will be controlled by the show_notification method.
 
             if DEBUG:
-                print("[EventManager] Auto-stop timer set for 3000 ms")
+                print("[EventManager] Sound playback started, TV service saved")
                 print("[EventManager] === END play_notification_sound ===")
 
-            # Return the timer so it can be stopped if needed
-            return stop_timer
+            return True  # Return True to indicate success
 
         except Exception as e:
             print("[EventManager] CRITICAL ERROR in play_notification_sound: " + str(e))
@@ -1362,26 +1382,15 @@ class EventManager:
             return None
 
     def stop_notification_sound(self):
+        """Stop the sound and immediately restore the TV"""
         try:
             if DEBUG:
-                print("[EventManager] stop_notification_sound called")
+                print("[EventManager] stop_notification_sound called - forcing TV restore")
 
-            # Ferma audio
             self.session.nav.stopService()
             time.sleep(0.2)
 
-            # Restore previous service if it exists AND is NOT the audio file
-            if hasattr(self, 'tv_service_backup') and self.tv_service_backup:
-                if DEBUG:
-                    print("[EventManager] Restoring from backup: " +
-                          self.tv_service_backup.toString())
-
-                # Only restore if it's a TV/radio service, not audio file
-                if self.tv_service_backup.toString().find("Calendar Notification") == -1:
-                    self.session.nav.playService(self.tv_service_backup)
-
-                # Clear the reference
-                self.tv_service_backup = None
+            self._restore_tv_service()
 
             return True
 

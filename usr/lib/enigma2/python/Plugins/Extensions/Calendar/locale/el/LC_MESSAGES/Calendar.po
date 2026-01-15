@@ -13,13 +13,10 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "(Search: '{0}')"
-msgstr ""
+msgstr "(Αναζήτηση: '{0}')"
 
 msgid "(truncated)"
 msgstr "(περικομμένο)"
-
-msgid "- - - -"
-msgstr ""
 
 msgid "--- CONTACTS ---"
 msgstr "--- ΕΠΑΦΕΣ ---"
@@ -73,7 +70,7 @@ msgid "Alert sound"
 msgstr "Ήχος συναγερμού"
 
 msgid "Already on today's event"
-msgstr ""
+msgstr "Ήδη στο σημερινό συμβάν"
 
 msgid "April"
 msgstr "Απρίλιος"
@@ -82,10 +79,10 @@ msgid "August"
 msgstr "Αύγουστος"
 
 msgid "Automatically clean old notified events"
-msgstr ""
+msgstr "Αυτόματος καθαρισμός παλιών ειδοποιημένων συμβάντων"
 
 msgid "Autostart delay"
-msgstr ""
+msgstr "Καθυστέρηση αυτόματης εκκίνησης"
 
 msgid "Back"
 msgstr "Πίσω"
@@ -133,7 +130,7 @@ msgid "Cannot delete: Contact has no ID"
 msgstr "Δεν είναι δυνατή η διαγραφή: Η επαφή δεν έχει αναγνωριστικό"
 
 msgid "Cannot initialize event system: {0}"
-msgstr "Αδυναμία αρχικοποίησης του συστήματος συμβάντων: {0}"
+msgstr "Αδυναμία αρχικοποίησης των συμβάντων συστήματος: {0}"
 
 msgid "Categories (comma separated)"
 msgstr "Κατηγορίες (διαχωρισμένες με κόμμα)"
@@ -151,10 +148,10 @@ msgid "Choose where to save exported files"
 msgstr "Επιλέξτε πού θα αποθηκεύονται τα εξαγόμενα αρχεία"
 
 msgid "Clean after days"
-msgstr ""
+msgstr "Καθαρισμός μετά από ημέρες"
 
 msgid "Clean old notifications"
-msgstr ""
+msgstr "Καθαρισμός παλαιών ειδοποιήσεων"
 
 msgid "Cleaned {0} duplicate events"
 msgstr "Καθαρίστηκαν {0} διπλότυπα συμβάντα"
@@ -195,11 +192,6 @@ msgstr "Χρώμα για τις ημέρες αργιών"
 msgid "Completed"
 msgstr "Ολοκληρώθηκε"
 
-#, fuzzy
-#| msgid "Contact '{0}' deleted successfully"
-msgid "Configuration saved successfully!"
-msgstr "Η επαφή '{0}' διαγράφηκε με επιτυχία"
-
 msgid "Contact '{0}' deleted successfully"
 msgstr "Η επαφή '{0}' διαγράφηκε με επιτυχία"
 
@@ -210,10 +202,10 @@ msgid "Contacts imported from ICS file!"
 msgstr "Οι επαφές εισήχθησαν από αρχείο ICS!"
 
 msgid "Contacts: 0"
-msgstr ""
+msgstr "Επαφές: 0"
 
 msgid "Contacts: {0}/{1}"
-msgstr ""
+msgstr "Επαφές: {0}/{1}"
 
 msgid "Conversion error: {0}"
 msgstr "Σφάλμα μετατροπής: {0}"
@@ -240,7 +232,7 @@ msgid "Could not check for updates: %s"
 msgstr "Δεν ήταν δυνατός ο έλεγχος για ενημερώσεις: %s"
 
 msgid "Could not play sound"
-msgstr ""
+msgstr "Δεν ήταν δυνατή η αναπαραγωγή ήχου"
 
 msgid "Could not read file"
 msgstr "Δεν ήταν δυνατή η ανάγνωση του αρχείου"
@@ -279,7 +271,7 @@ msgid "Day -"
 msgstr "Ημέρα -"
 
 msgid "Days to keep notifications in cache"
-msgstr ""
+msgstr "Ημέρες διατήρησης ειδοποιήσεων στην προσωρινή μνήμη"
 
 msgid "Debug completed. Check logs."
 msgstr "Ο εντοπισμός σφαλμάτων ολοκληρώθηκε. Ελέγξτε τα αρχεία καταγραφής."
@@ -360,7 +352,7 @@ msgid "Edit Contact"
 msgstr "Επεξεργασία επαφής"
 
 msgid "Edit Contact ({0}/{1})"
-msgstr ""
+msgstr "Επεξεργασία επαφής ({0}/{1})"
 
 msgid "Edit Date"
 msgstr "Επεξεργασία ημερομηνίας"
@@ -372,13 +364,13 @@ msgid "Edit Description"
 msgstr "Επεξεργασία περιγραφής"
 
 msgid "Edit Event"
-msgstr ""
+msgstr "Επεξεργασία συμβάντος"
 
 msgid "Edit Event ({0}/{1})"
-msgstr ""
+msgstr "Επεξεργασία συμβάντος ({0}/{1})"
 
 msgid "Edit Event ({0}/{1}) - Today"
-msgstr ""
+msgstr "Επεξεργασία συμβάντος ({0}/{1}) - Σήμερα"
 
 msgid "Edit Holiday"
 msgstr "Επεξεργασία αργίας"
@@ -399,7 +391,7 @@ msgid "Email"
 msgstr "Email"
 
 msgid "Enable autostart"
-msgstr ""
+msgstr "Ενεργοποίηση αυτόματης εκκίνησης"
 
 msgid "Enable debug mode"
 msgstr "Ενεργοποίηση λειτουργίας εντοπισμού σφαλμάτων"
@@ -408,7 +400,7 @@ msgid "Enable event management with date/time"
 msgstr "Ενεργοποίηση της διαχείρισης συμβάντων με ημερομηνία/ώρα"
 
 msgid "Enable event system"
-msgstr "Ενεργοποίηση συστήματος συμβάντων"
+msgstr "Ενεργοποίηση συμβάντων συστήματος"
 
 msgid "Enable holiday coloring"
 msgstr "Ενεργοποίηση χρωματισμού αργιών"
@@ -450,7 +442,7 @@ msgid "Error saving data"
 msgstr "Σφάλμα κατά την αποθήκευση δεδομένων"
 
 msgid "Error saving event"
-msgstr ""
+msgstr "Σφάλμα αποθήκευσης συμβάντος"
 
 msgid "Error: {0}"
 msgstr "Σφάλμα: {0}"
@@ -468,10 +460,10 @@ msgid "Event '{0}' deleted successfully"
 msgstr "Το συμβάν '{0}' διαγράφηκε με επιτυχία"
 
 msgid "Event '{0}' saved successfully"
-msgstr ""
+msgstr "Το συμβάν '{0}' αποθηκεύτηκε με επιτυχία"
 
 msgid "Event check interval"
-msgstr ""
+msgstr "Διάστημα ελέγχου συμβάντων"
 
 msgid "Event color"
 msgstr "Χρώμα συμβάντων"
@@ -579,10 +571,10 @@ msgid "I:{0}"
 msgstr "I:{0}"
 
 msgid "ICS Events: 0"
-msgstr ""
+msgstr "Συμβάντα ICS: 0"
 
 msgid "ICS Events: {0}/{1}"
-msgstr ""
+msgstr "Συμβάντα ICS: {0}/{1}"
 
 msgid "ICS format"
 msgstr "Μορφή ICS"
@@ -657,7 +649,7 @@ msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr "Μη έγκυρη μορφή ημερομηνίας. Χρησιμοποιήστε ΕΕΕΕ-ΜΜ-ΗΗ"
 
 msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
-msgstr ""
+msgstr "Μη έγκυρη μορφή ώρας! Παρακαλώ χρησιμοποιήστε ΩΩ:ΛΛ (00:00 έως 23:59)"
 
 msgid "Invalid time format. Use HH:MM"
 msgstr "Μη έγκυρη μορφή ώρας. Χρησιμοποιήστε ΩΩ:ΛΛ"
@@ -681,7 +673,7 @@ msgid "Manage Contacts"
 msgstr "Διαχείριση επαφών"
 
 msgid "Manage Event"
-msgstr ""
+msgstr "Διαχείριση συμβάντων"
 
 msgid "Manage ICS Events"
 msgstr "Διαχείριση συμβάντων ICS"
@@ -768,7 +760,7 @@ msgid "No events database found"
 msgstr "Δεν βρέθηκε βάση δεδομένων συμβάντων"
 
 msgid "No events for today"
-msgstr ""
+msgstr "Δεν υπάρχουν συμβάντα για σήμερα"
 
 msgid "No events to convert"
 msgstr "Δεν υπάρχουν συμβάντα προς μετατροπή"
@@ -831,7 +823,7 @@ msgid "Please restart Enigma2 manually."
 msgstr "Παρακαλώ επανεκκινήστε το Enigma2 χειροκίνητα."
 
 msgid "Plugin Directory"
-msgstr ""
+msgstr "Κατάλογος πρόσθετου"
 
 msgid "Plugin is up to date"
 msgstr "Το πρόσθετο είναι ενημερωμένο"
@@ -850,9 +842,6 @@ msgstr "Πρόοδος: {0}%"
 
 msgid "Re-import"
 msgstr "Επανεισαγωγή"
-
-msgid "Really close without saving settings?"
-msgstr ""
 
 msgid "Red"
 msgstr "Κόκκινο"
@@ -893,9 +882,6 @@ msgstr "S:{0}"
 msgid "SCHEDULED EVENTS:"
 msgstr "ΠΡΟΓΡΑΜΜΑΤΙΣΜΕΝΑ ΣΥΜΒΑΝΤΑ:"
 
-msgid "SELECT YOUR CHOICE"
-msgstr ""
-
 msgid "Sat"
 msgstr "Σαβ"
 
@@ -912,10 +898,10 @@ msgid "Search:"
 msgstr "Αναζήτηση:"
 
 msgid "Seconds between event checks (advanced)"
-msgstr ""
+msgstr "Δευτερόλεπτα μεταξύ ελέγχων συμβάντων (για προχωρημένους)"
 
 msgid "Seconds to wait after boot before starting notifications"
-msgstr ""
+msgstr "Δευτερόλεπτα αναμονής μετά την εκκίνηση πριν ξεκινήσουν οι ειδοποιήσεις"
 
 msgid "Select .ics file to import"
 msgstr "Επιλέξτε αρχείο .ics για εισαγωγή"
@@ -1029,10 +1015,10 @@ msgid "Sorted by: Title"
 msgstr "Ταξινόμηση: Τίτλος"
 
 msgid "Sound playback started"
-msgstr ""
+msgstr "Η αναπαραγωγή ήχου ξεκίνησε"
 
 msgid "Start event notifications in background (recommended)"
-msgstr ""
+msgstr "Έναρξη ειδοποιήσεων συμβάντων στο παρασκήνιο (συνιστάται)"
 
 msgid "Subdirectory name for exports (created automatically)"
 msgstr "Όνομα υποκαταλόγου για εξαγωγές (δημιουργείται αυτόματα)"
@@ -1053,7 +1039,7 @@ msgid "Test Debug Config"
 msgstr "Δοκιμή ρυθμίσεων εντοπισμού σφαλμάτων"
 
 msgid "Test Event Time Conversion"
-msgstr "Μετατροπή χρόνου συμβάντος δοκιμής"
+msgstr "Δοκιμή μετατροπής ώρας συμβάντος"
 
 msgid "Test Fix Event Now"
 msgstr "Δοκιμή άμεσης διόρθωσης συμβάντος"
@@ -1068,13 +1054,13 @@ msgid "Test Holiday Loading"
 msgstr "Δοκιμή φόρτωσης αργιών"
 
 msgid "Test Notification Now"
-msgstr ""
+msgstr "Δοκιμή ειδοποίησης τώρα"
 
 msgid "Test Sound Playback"
-msgstr ""
+msgstr "Δοκιμή αναπαραγωγής ήχου"
 
 msgid "Test notification sent"
-msgstr ""
+msgstr "Η δοκιμαστική ειδοποίηση στάλθηκε"
 
 msgid "Text format"
 msgstr "Μορφή κειμένου"
@@ -1104,7 +1090,7 @@ msgid "Title:"
 msgstr "Τίτλος:"
 
 msgid "Today"
-msgstr ""
+msgstr "Σήμερα"
 
 msgid "Total events: {0}"
 msgstr "Συνολικά συμβάντα: {0}"
@@ -1213,6 +1199,3 @@ msgstr "mορφή vCard (τυπική)"
 
 msgid "vCard import feature not available: {0}"
 msgstr "h δυνατότητα εισαγωγής vCard δεν είναι διαθέσιμη: {0}"
-
-#~ msgid "ICS Events: {0} (Search: '{1}')"
-#~ msgstr "Συμβάντα ICS: {0} (Αναζήτηση: '{1}')"

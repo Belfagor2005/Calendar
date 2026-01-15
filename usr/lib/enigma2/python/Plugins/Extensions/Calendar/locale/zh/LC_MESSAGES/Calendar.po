@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2025-12-22 13:01+0100\n"
 "PO-Revision-Date: 2025-12-30 22:23+0100\n"
 "Last-Translator: 沙鸥_lexlong2007 <lexlong2007@gmail.com>\n"
 "Language-Team: \n"
@@ -18,9 +18,6 @@ msgid "(Search: '{0}')"
 msgstr ""
 
 msgid "(truncated)"
-msgstr ""
-
-msgid "- - - -"
 msgstr ""
 
 msgid "--- CONTACTS ---"
@@ -196,11 +193,6 @@ msgstr ""
 
 msgid "Completed"
 msgstr ""
-
-#, fuzzy
-#| msgid "Configuration is saved"
-msgid "Configuration saved successfully!"
-msgstr "配置已保存"
 
 msgid "Contact '{0}' deleted successfully"
 msgstr ""
@@ -853,9 +845,6 @@ msgstr ""
 msgid "Re-import"
 msgstr ""
 
-msgid "Really close without saving settings?"
-msgstr ""
-
 msgid "Red"
 msgstr ""
 
@@ -893,9 +882,6 @@ msgid "S:{0}"
 msgstr ""
 
 msgid "SCHEDULED EVENTS:"
-msgstr ""
-
-msgid "SELECT YOUR CHOICE"
 msgstr ""
 
 msgid "Sat"
@@ -1236,6 +1222,9 @@ msgstr ""
 #~ "WME E284580190260\n"
 #~ "WMR R213063691482\n"
 #~ "WMU U658742613505"
+
+#~ msgid "Configuration is saved"
+#~ msgstr "配置已保存"
 
 #~ msgid "no"
 #~ msgstr "否"
