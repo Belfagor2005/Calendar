@@ -34,9 +34,6 @@ from .event_manager import Event
 from .formatters import ICS_BASE_PATH
 from .config_manager import get_debug, get_default_event_time
 
-global DEBUG
-DEBUG = get_debug()
-
 
 class ICSImporter(Screen):
     if (getDesktop(0).size().width() >= 1920):
@@ -73,13 +70,13 @@ class ICSImporter(Screen):
     def __init__(self, session, event_manager, filepath=None):
         Screen.__init__(self, session)
         self.event_manager = event_manager
-        if DEBUG:
+        if get_debug():
             print("[ICSImporter] Initializing...")
 
         start_path = "/tmp"
         if not exists(start_path):
             start_path = "/"
-        if DEBUG:
+        if get_debug():
             print("[ICSImporter] Start path: {0}".format(start_path))
         self.duplicate_checker = DuplicateChecker()
         matching_pattern = r".*\.(ics|ical|icalendar)$"
@@ -100,7 +97,7 @@ class ICSImporter(Screen):
                 "ok": self.ok,
             }, -1
         )
-        if DEBUG:
+        if get_debug():
             print("[ICSImporter] Initialization complete")
 
     def ok(self):
@@ -134,7 +131,7 @@ class ICSImporter(Screen):
             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                 content = f.read(1000000)  # Read first 1MB
                 event_count = content.count('BEGIN:VEVENT')
-            if DEBUG:
+            if get_debug():
                 print("[ICSImporter] Counted {0} events in {1}".format(event_count, filepath))
             return event_count
         except Exception as e:
@@ -205,7 +202,7 @@ class ICSImporter(Screen):
 
     def do_import(self):
         """Import selected file"""
-        if DEBUG:
+        if get_debug():
             print("[ICSImporter] do_import() called")
 
         selection = self["filelist"].getSelection()
@@ -220,7 +217,7 @@ class ICSImporter(Screen):
         filename = selection[0]
         current_dir = self["filelist"].getCurrentDirectory()
         filepath = join(current_dir, filename)
-        if DEBUG:
+        if get_debug():
             print("[ICSImporter] Selected file: {0}".format(filename))
 
         if not exists(filepath):
@@ -273,7 +270,7 @@ class ICSImporter(Screen):
         """Start the actual import process"""
         if not result:
             return
-        if DEBUG:
+        if get_debug():
             print("[ICSImporter] Starting import of: {0}".format(filepath))
 
         self.session.openWithCallback(
@@ -313,7 +310,7 @@ class ICSFileImporterThread(threading.Thread):
 
     def _preload_caches(self):
         """Pre-carica le cache con eventi e contatti esistenti"""
-        if DEBUG:
+        if get_debug():
             print("[DEBUG] Preloading caches...")
 
         # Event cache (key: title + date + time)
@@ -332,7 +329,7 @@ class ICSFileImporterThread(threading.Thread):
         except Exception:
             pass
 
-        if DEBUG:
+        if get_debug():
             print("[DEBUG] Events cache: {} items".format(
                 len(self.existing_events_cache)
             ))
@@ -439,7 +436,7 @@ class ICSFileImporterThread(threading.Thread):
             archive_path = join(ICS_BASE_PATH, archive_name)
             with open(archive_path, 'w', encoding='utf-8') as f:
                 f.write(content)
-            if DEBUG:
+            if get_debug():
                 print("[ICSArchive] Saved to: {}".format(archive_path))
             return True
 
@@ -449,13 +446,13 @@ class ICSFileImporterThread(threading.Thread):
 
     def parse_and_import_events(self, content):
         """Parse .ics content and import events"""
-        if DEBUG:
+        if get_debug():
             print("[DEBUG] Starting parse_and_import_events")
             print("[DEBUG] Preloaded cache sizes: events={0}, contacts={1}".format(len(self.existing_events_cache), len(self.existing_contacts_cache)))
 
         vevent_blocks = split(r'BEGIN:VEVENT\s*', content, flags=IGNORECASE)
 
-        if DEBUG:
+        if get_debug():
             print("[DEBUG] Found {} VEVENT blocks".format(len(vevent_blocks)))
 
         for i, block in enumerate(vevent_blocks):
@@ -472,13 +469,13 @@ class ICSFileImporterThread(threading.Thread):
             self.callback(progress, self.current, self.total_events,
                           self.imported, self.skipped, self.errors, False)
 
-            if DEBUG:
+            if get_debug():
                 print("[DEBUG] Processing block {}".format(i))
 
             try:
                 event_obj = self.parse_vevent_block(block)
                 if event_obj:
-                    if DEBUG:
+                    if get_debug():
                         print("[DEBUG] Event object created")
                         print("[DEBUG] Event title: {0}".format(event_obj.title))
                         print("[DEBUG] Event date: {0}".format(event_obj.date))
@@ -493,7 +490,7 @@ class ICSFileImporterThread(threading.Thread):
 
                         # Cache duplicate check O(1)
                         if self._is_contact_duplicate(contact_data):
-                            if DEBUG:
+                            if get_debug():
                                 print("[DEBUG] CONTACT duplicate (cache hit), skipping: {0}".format(
                                     contact_data.get('FN', 'Unknown')))
                             self.skipped += 1
@@ -504,7 +501,7 @@ class ICSFileImporterThread(threading.Thread):
                     if not is_duplicate:
                         # Cache duplicate check O(1)
                         if self._is_event_duplicate(event_obj):
-                            if DEBUG:
+                            if get_debug():
                                 print("[DEBUG] EVENT duplicate (cache hit), skipping: {0}".format(
                                     event_obj.title))
                             self.skipped += 1
@@ -524,11 +521,11 @@ class ICSFileImporterThread(threading.Thread):
                             self.add_to_contacts_cache(contact_data)
 
                         self.imported += 1
-                        if DEBUG:
+                        if get_debug():
                             print("[DEBUG] Event added with ID: {0}".format(event_id))
 
                     except Exception as e:
-                        if DEBUG:
+                        if get_debug():
                             print("[DEBUG] add_event failed: {0}".format(str(e)))
 
                         # Fallback: add directly
@@ -538,7 +535,7 @@ class ICSFileImporterThread(threading.Thread):
 
                 else:
                     self.errors += 1
-                    if DEBUG:
+                    if get_debug():
                         print("[DEBUG] Failed to parse event block")
 
             except Exception as e:
@@ -548,7 +545,7 @@ class ICSFileImporterThread(threading.Thread):
 
         # Save all events at the end
         self.event_manager.save_events()
-        if DEBUG:
+        if get_debug():
             print("[DEBUG] Final save: {0} events imported, {1} skipped".format(
                 self.imported, self.skipped))
 
@@ -675,7 +672,7 @@ class ICSFileImporterThread(threading.Thread):
                     'time': "{0:02d}:{1:02d}".format(hour, minute)
                 }
             else:
-                if DEBUG:
+                if get_debug():
                     print("[ICSFileImporterThread] Unknown date format: {0}".format(dt_string))
                 return None
 
@@ -836,7 +833,7 @@ class ICSConverter:
         with open(filepath, 'w') as f:
             f.write('\n'.join(lines))
 
-        if DEBUG:
+        if get_debug():
             print("[ICSConverter] Created: %s" % filepath)
 
 
@@ -904,7 +901,7 @@ class ICSImportProgressScreen(Screen):
 
     def start_import(self):
         """Start import process"""
-        if DEBUG:
+        if get_debug():
             print("[ICSImportProgress] Starting import process")
 
         def progress_callback(progress, current, total, imported, skipped, errors, finished):
@@ -959,7 +956,7 @@ class ICSImportProgressScreen(Screen):
 
     def import_completed(self, imported, skipped, errors):
         """Import completed"""
-        if DEBUG:
+        if get_debug():
             print("[ICSImportProgress] Import completed: imported=%d, skipped=%d, errors=%d" % (
                 imported, skipped, errors))
 

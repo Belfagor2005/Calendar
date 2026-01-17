@@ -28,9 +28,6 @@ from . import _
 from .config_manager import get_debug
 from .formatters import format_field_display, clean_field_storage
 
-global DEBUG
-DEBUG = get_debug()
-
 
 class BirthdayDialog(Screen):
     if (getDesktop(0).size().width() >= 1920):
@@ -136,7 +133,7 @@ class BirthdayDialog(Screen):
         self.current_field_index = 0
         self.is_closing = False
         self.is_navigating = False
-        if DEBUG:
+        if get_debug():
             print("[BirthdayDialog] Initialization...")
             print("[BirthdayDialog] Available widgets after Screen.__init__:", list(self.keys()))
 
@@ -157,7 +154,7 @@ class BirthdayDialog(Screen):
 
         # Initialize ALL widgets – check if they already exist
         if "title_label" not in self:
-            if DEBUG:
+            if get_debug():
                 print("[BirthdayDialog] Creating title_label")
             self["title_label"] = Label("")
 
@@ -171,7 +168,7 @@ class BirthdayDialog(Screen):
         for field_key, field_label, widget_name, label_name in self.fields:
             # Create / initialize labels
             if label_name not in self:
-                if DEBUG:
+                if get_debug():
                     print("[BirthdayDialog] Creating", label_name)
                 self[label_name] = Label("")
 
@@ -180,7 +177,7 @@ class BirthdayDialog(Screen):
 
             # Create / initialize text widgets
             if widget_name not in self:
-                if DEBUG:
+                if get_debug():
                     print("[BirthdayDialog] Creating", widget_name)
                 self[widget_name] = Label("")
 
@@ -227,7 +224,7 @@ class BirthdayDialog(Screen):
 
         for widget_name, text in button_widgets.items():
             if widget_name not in self:
-                if DEBUG:
+                if get_debug():
                     print("[BirthdayDialog] Make", widget_name)
                 self[widget_name] = Label("")
 
@@ -259,7 +256,7 @@ class BirthdayDialog(Screen):
 
     def force_first_field_highlight(self):
         """Highlight the first field when the dialog opens - like EventDialog"""
-        if DEBUG:
+        if get_debug():
             print("[BirthdayDialog] Layout finished, highlighting first field")
         self.current_field_index = 0
         self.update_field_highlight()
@@ -270,7 +267,7 @@ class BirthdayDialog(Screen):
             return
 
         current_field_key = self.fields[self.current_field_index][0]
-        if DEBUG:
+        if get_debug():
             print("[BirthdayDialog] Highlighting field:", current_field_key)
 
         for i, (field_key, field_label, widget_name, label_name) in enumerate(self.fields):
@@ -362,7 +359,7 @@ class BirthdayDialog(Screen):
 
         field_key, field_label, widget_name, label_name = self.fields[self.current_field_index]
         if widget_name not in self or self[widget_name] is None:
-            if DEBUG:
+            if get_debug():
                 print("[BirthdayDialog] ERRORE: Widget", widget_name, "non esiste!")
             return
 
@@ -380,7 +377,7 @@ class BirthdayDialog(Screen):
         def keyboard_callback(new_value):
             if new_value is not None:
                 if widget_name not in self or self[widget_name] is None:
-                    if DEBUG:
+                    if get_debug():
                         print("[BirthdayDialog] ERRORE: Widget", widget_name, "non esiste dopo keyboard!")
                     return
 
@@ -415,7 +412,7 @@ class BirthdayDialog(Screen):
         """Move to next field"""
         self.current_field_index = (self.current_field_index + 1) % len(self.fields)
         self.update_field_highlight()
-        if DEBUG:
+        if get_debug():
             print("[BirthdayDialog] Moved to field: {0}".format(
                 self.fields[self.current_field_index][0]))
 
@@ -423,7 +420,7 @@ class BirthdayDialog(Screen):
         """Move to previous field"""
         self.current_field_index = (self.current_field_index - 1) % len(self.fields)
         self.update_field_highlight()
-        if DEBUG:
+        if get_debug():
             print("[BirthdayDialog] Moved to field: {0}".format(
                 self.fields[self.current_field_index][0]))
 
@@ -537,20 +534,20 @@ class BirthdayDialog(Screen):
                 # Remove display formatting and save
                 cleaned_value = current_value.replace(' | ', '|')
                 self.contact_data[field_key] = clean_field_storage(cleaned_value)
-                if DEBUG:
+                if get_debug():
                     print("[BirthdayDialog] Saved phone:", self.contact_data[field_key])
 
             elif field_key == 'EMAIL':
                 # Remove display formatting and save
                 cleaned_value = current_value.replace(' | ', '|')
                 self.contact_data[field_key] = clean_field_storage(cleaned_value)
-                if DEBUG:
+                if get_debug():
                     print("[BirthdayDialog] Saved email:", self.contact_data[field_key])
 
             else:
                 # For other fields, save as is
                 self.contact_data[field_key] = current_value
-                if DEBUG:
+                if get_debug():
                     print("[BirthdayDialog] Saved", field_key, ":", current_value[:50])
 
         except Exception as e:
@@ -577,7 +574,7 @@ class BirthdayDialog(Screen):
                     else:
                         self.contact_data[field_key] = value
 
-            if DEBUG:
+            if get_debug():
                 print("[BirthdayDialog] All changes saved")
 
         except Exception as e:

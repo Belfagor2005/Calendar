@@ -26,9 +26,6 @@ from .formatters import MenuDialog
 from .ics_event_dialog import ICSEventDialog
 from .config_manager import get_debug, get_default_event_time
 
-global DEBUG
-DEBUG = get_debug()
-
 
 class ICSEventsView(Screen):
     """Browser for ICS imported events - similar to ContactsView"""
@@ -355,7 +352,7 @@ class ICSEventsView(Screen):
         self["events_list"].moveToIndex(new_idx)
         self.update_details()
 
-        if DEBUG:
+        if get_debug():
             print("[ICSEventsView] CH-: Moved to event {0}/{1}: {2}".format(
                 new_idx + 1, total_events,
                 self.displayed_events[new_idx].title[:20] if new_idx < len(self.displayed_events) else "N/A"))
@@ -377,7 +374,7 @@ class ICSEventsView(Screen):
         self["events_list"].moveToIndex(new_idx)
         self.update_details()
 
-        if DEBUG:
+        if get_debug():
             print("[ICSEventsView] CH+: Moved to event {0}/{1}: {2}".format(
                 new_idx + 1, total_events,
                 self.displayed_events[new_idx].title[:20] if new_idx < len(self.displayed_events) else "N/A"))
@@ -521,12 +518,12 @@ class ICSEventsView(Screen):
 
     def delete_all_ics_events(self):
         """Delete all ICS imported events"""
-        if DEBUG:
+        if get_debug():
             print("[IcsEventsView DEBUG] delete_all_ics_events called")
         ics_events = self.get_ics_events()
 
         if len(ics_events) == 0:
-            if DEBUG:
+            if get_debug():
                 print("[IcsEventsView DEBUG] No ICS events found")
             self.session.open(
                 MessageBox,
@@ -536,7 +533,7 @@ class ICSEventsView(Screen):
             return
 
         def confirm_callback(result):
-            if DEBUG:
+            if get_debug():
                 print("[IcsEventsView DEBUG] delete_all confirm_callback result:", result)
 
             if not result:
@@ -577,7 +574,7 @@ class ICSEventsView(Screen):
 
     def confirm_delete_single(self, event):
         """Delete single event"""
-        if DEBUG:
+        if get_debug():
             print("[IcsEventsView DEBUG] confirm_delete_single called")
             print("[IcsEventsView DEBUG] event:", event)
 
@@ -612,6 +609,6 @@ class ICSEventsView(Screen):
 
     def close(self, changes_made=False):
         """Close the screen and indicate if changes were made"""
-        if DEBUG:
+        if get_debug():
             print("[IcsEventsView] Closing, changes_made:", changes_made)
         Screen.close(self, changes_made)

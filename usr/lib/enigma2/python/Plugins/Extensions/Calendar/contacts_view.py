@@ -30,9 +30,6 @@ from .birthday_dialog import BirthdayDialog
 from .formatters import format_field_display, MenuDialog
 from .config_manager import get_debug
 
-global DEBUG
-DEBUG = get_debug()
-
 
 class ContactsView(Screen):
     """View for browsing contacts"""
@@ -441,18 +438,18 @@ class ContactsView(Screen):
 
     def delete_contact(self):
         """Delete contact - with option to delete all"""
-        if DEBUG:
+        if get_debug():
             print("[ContactsView DEBUG] delete_contact() called")
 
         contact = self.get_selected_contact()
 
         if not contact:
-            if DEBUG:
+            if get_debug():
                 print("[ContactsView DEBUG] No contact selected")
 
             # No contact selected, ask about deleting all
             def confirm_all_callback(result):
-                if DEBUG:
+                if get_debug():
                     print("[ContactsView DEBUG] confirm_all_callback result:", result)
                 if result:
                     self.delete_all_contacts()
@@ -467,7 +464,7 @@ class ContactsView(Screen):
 
         name = contact.get('FN', 'Unknown')
         contact_id = contact.get('id')
-        if DEBUG:
+        if get_debug():
             print("[ContactsView DEBUG] Selected contact:", name, "ID:", contact_id)
 
         if not contact_id:
@@ -484,33 +481,33 @@ class ContactsView(Screen):
             (_("Delete ALL contacts"), "all"),
             (_("Cancel"), "cancel")
         ]
-        if DEBUG:
+        if get_debug():
             print("[ContactsView DEBUG] Menu items created:", menu_items)
 
         def menu_callback(selected_item):
-            if DEBUG:
+            if get_debug():
                 print("[ContactsView DEBUG] menu_callback received:", selected_item)
 
             if not selected_item:
-                if DEBUG:
+                if get_debug():
                     print("[ContactsView DEBUG] No item selected (cancelled)")
                 return
 
             # selected item is a tuple (text, value)
             selected_text, selected_value = selected_item
-            if DEBUG:
+            if get_debug():
                 print("[ContactsView DEBUG] Selected value:", selected_value)
 
             if selected_value == "single":
-                if DEBUG:
+                if get_debug():
                     print("[ContactsView DEBUG] Deleting single contact")
                 self.confirm_delete_single(contact_id, name)
             elif selected_value == "all":
-                if DEBUG:
+                if get_debug():
                     print("[ContactsView DEBUG] Deleting all contacts")
                 self.delete_all_contacts()
             # "cancel"
-        if DEBUG:
+        if get_debug():
             print("[ContactsView DEBUG] Opening MenuDialog...")
         self.session.openWithCallback(
             menu_callback,
@@ -520,11 +517,11 @@ class ContactsView(Screen):
 
     def delete_all_contacts(self):
         """Delete all contacts"""
-        if DEBUG:
+        if get_debug():
             print("[ContactsView DEBUG] delete_all_contacts called")
 
         if len(self.birthday_manager.contacts) == 0:
-            if DEBUG:
+            if get_debug():
                 print("[ContactsView DEBUG] No contacts found")
             self.session.open(
                 MessageBox,
@@ -534,7 +531,7 @@ class ContactsView(Screen):
             return
 
         def confirm_callback(result):
-            if DEBUG:
+            if get_debug():
                 print("[ContactsView DEBUG] delete_all confirm_callback result:", result)
             if not result:
                 return
@@ -542,11 +539,11 @@ class ContactsView(Screen):
             try:
                 import glob
                 contacts_path = self.birthday_manager.contacts_path
-                if DEBUG:
+                if get_debug():
                     print("[ContactsView DEBUG] Contacts path:", contacts_path)
 
                 if not exists(contacts_path):
-                    if DEBUG:
+                    if get_debug():
                         print("[ContactsView DEBUG] Contacts path not found")
                     self.session.open(
                         MessageBox,
@@ -558,7 +555,7 @@ class ContactsView(Screen):
                 # Count files before deletion
                 vcard_files = glob.glob(join(contacts_path, "*.txt"))
                 file_count = len(vcard_files)
-                if DEBUG:
+                if get_debug():
                     print("[ContactsView DEBUG] Found", file_count, "contact files")
 
                 if file_count == 0:
@@ -573,13 +570,13 @@ class ContactsView(Screen):
                 deleted_count = 0
                 for file_path in vcard_files:
                     try:
-                        if DEBUG:
+                        if get_debug():
                             print("[ContactsView DEBUG] Deleting file:", file_path)
                         remove(file_path)
                         deleted_count += 1
                     except Exception as e:
                         print("[ContactsView DEBUG] Error deleting file:", str(e))
-                if DEBUG:
+                if get_debug():
                     print("[ContactsView DEBUG] Deleted", deleted_count, "files")
 
                 self.birthday_manager.load_all_contacts()
@@ -590,7 +587,7 @@ class ContactsView(Screen):
 
                 # Show confirmation and CLOSE self to force calendar refresh
                 def close_after_message(result=None):
-                    if DEBUG:
+                    if get_debug():
                         print("[ContactsView DEBUG] Closing ContactsView after delete all")
                     self.close(True)
 
@@ -619,21 +616,21 @@ class ContactsView(Screen):
 
     def confirm_delete_single(self, contact_id, contact_name):
         """Delete single contact"""
-        if DEBUG:
+        if get_debug():
             print("[ContactsView DEBUG] confirm_delete_single called")
             print("[ContactsView DEBUG] Contact ID:", contact_id)
             print("[ContactsView DEBUG] Contact name:", contact_name)
 
         # Ask for final confirmation
         def final_confirm_callback(result):
-            if DEBUG:
+            if get_debug():
                 print("[ContactsView DEBUG] final_confirm_callback result:", result)
             if not result:
                 return
-            if DEBUG:
+            if get_debug():
                 print("[ContactsView DEBUG] Calling birthday_manager.delete_contact...")
             success = self.birthday_manager.delete_contact(contact_id)
-            if DEBUG:
+            if get_debug():
                 print("[ContactsView DEBUG] Delete result:", success)
 
             if success:
@@ -666,6 +663,6 @@ class ContactsView(Screen):
 
     def close(self, changes_made=False):
         """Close the screen and indicate if changes were made"""
-        if DEBUG:
+        if get_debug():
             print("[ContactsView] Closing, changes_made:", changes_made)
         Screen.close(self, changes_made)

@@ -189,8 +189,16 @@ msgstr "Χρώμα για τις ημέρες αργιών"
 msgid "Completed"
 msgstr "Ολοκληρώθηκε"
 
+#, fuzzy
+msgid "Contact"
+msgstr "Προσθήκη επαφής"
+
 msgid "Contact '{0}' deleted successfully"
 msgstr "Η επαφή '{0}' διαγράφηκε με επιτυχία"
+
+#, fuzzy
+msgid "Contact:"
+msgstr "Επαφές: 0"
 
 msgid "Contacts directory not found"
 msgstr "Δεν βρέθηκε ο κατάλογος επαφών"
@@ -245,12 +253,6 @@ msgstr "Ημερομηνία"
 
 msgid "Date (YYYY-MM-DD)"
 msgstr "Ημερομηνία (ΕΕΕΕ-ΜΜ-ΗΗ)"
-
-msgid "Date People"
-msgstr "Άτομα ανά ημερομηνία"
-
-msgid "Date People:"
-msgstr "Άτομα ανά ημερομηνία:"
 
 msgid "Date range: {0} to {1}"
 msgstr "Εύρος ημερομηνιών: {0} έως {1}"
@@ -348,9 +350,6 @@ msgstr "Επεξεργασία επαφής ({0}/{1})"
 msgid "Edit Date"
 msgstr "Επεξεργασία ημερομηνίας"
 
-msgid "Edit Date People"
-msgstr "Επεξεργασία ατόμων ανά ημερομηνία"
-
 msgid "Edit Description"
 msgstr "Επεξεργασία περιγραφής"
 
@@ -369,8 +368,9 @@ msgstr "Επεξεργασία αργίας"
 msgid "Edit ICS Event"
 msgstr "Επεξεργασία συμβάντος ICS"
 
-msgid "Edit Month People"
-msgstr "Επεξεργασία ατόμων ανά μήνα"
+#, fuzzy
+msgid "Edit Note"
+msgstr "Επεξεργασία ημερομηνίας"
 
 msgid "Edit Sign"
 msgstr "Επεξεργασία ζωδίου"
@@ -642,7 +642,8 @@ msgstr "Μη έγκυρη μορφή ημερομηνίας γέννησης. Χ
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr "Μη έγκυρη μορφή ημερομηνίας. Χρησιμοποιήστε ΕΕΕΕ-ΜΜ-ΗΗ"
 
-msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
+#, fuzzy
+msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
 msgstr "Μη έγκυρη μορφή ώρας! Παρακαλώ χρησιμοποιήστε ΩΩ:ΛΛ (00:00 έως 23:59)"
 
 msgid "Invalid time format. Use HH:MM"
@@ -692,12 +693,6 @@ msgstr "Μήνας +"
 
 msgid "Month -"
 msgstr "Μήνας -"
-
-msgid "Month People"
-msgstr "Άτομα ανά μήνα"
-
-msgid "Month People:"
-msgstr "Άτομα ανά μήνα:"
 
 msgid "Name"
 msgstr "Όνομα"
@@ -776,6 +771,14 @@ msgstr "Χωρίς ταξινόμηση (αρχική σειρά)"
 
 msgid "No sound"
 msgstr "Χωρίς ήχο"
+
+#, fuzzy
+msgid "Note"
+msgstr "Σημειώσεις"
+
+#, fuzzy
+msgid "Note:"
+msgstr "Σημειώσεις"
 
 msgid "Notes"
 msgstr "Σημειώσεις"
@@ -1176,8 +1179,26 @@ msgstr "h δυνατότητα εισαγωγής vCard δεν είναι δια
 #~ msgid "--- DEBUG ---"
 #~ msgstr "--- ΕΝΤΟΠΙΣΜΟΣ ΣΦΑΛΜΑΤΩΝ ---"
 
+#~ msgid "Date People"
+#~ msgstr "Άτομα ανά ημερομηνία"
+
+#~ msgid "Date People:"
+#~ msgstr "Άτομα ανά ημερομηνία:"
+
 #~ msgid "Debug completed. Check logs."
 #~ msgstr "Ο εντοπισμός σφαλμάτων ολοκληρώθηκε. Ελέγξτε τα αρχεία καταγραφής."
+
+#~ msgid "Edit Date People"
+#~ msgstr "Επεξεργασία ατόμων ανά ημερομηνία"
+
+#~ msgid "Edit Month People"
+#~ msgstr "Επεξεργασία ατόμων ανά μήνα"
+
+#~ msgid "Month People"
+#~ msgstr "Άτομα ανά μήνα"
+
+#~ msgid "Month People:"
+#~ msgstr "Άτομα ανά μήνα:"
 
 #~ msgid "Sound playback started"
 #~ msgstr "Η αναπαραγωγή ήχου ξεκίνησε"

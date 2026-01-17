@@ -193,7 +193,13 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
+msgid "Contact"
+msgstr ""
+
 msgid "Contact '{0}' deleted successfully"
+msgstr ""
+
+msgid "Contact:"
 msgstr ""
 
 msgid "Contacts directory not found"
@@ -248,12 +254,6 @@ msgid "Date"
 msgstr "Dátum"
 
 msgid "Date (YYYY-MM-DD)"
-msgstr ""
-
-msgid "Date People"
-msgstr "Stretnutie s ľuďmi"
-
-msgid "Date People:"
 msgstr ""
 
 msgid "Date range: {0} to {1}"
@@ -352,9 +352,6 @@ msgstr ""
 msgid "Edit Date"
 msgstr "Upraviť dátum"
 
-msgid "Edit Date People"
-msgstr "Upraviť dátum Ľudia"
-
 msgid "Edit Description"
 msgstr "Upraviť popis"
 
@@ -373,8 +370,9 @@ msgstr "Upraviť sviatok"
 msgid "Edit ICS Event"
 msgstr ""
 
-msgid "Edit Month People"
-msgstr "Upraviť mesiac Ľudia"
+#, fuzzy
+msgid "Edit Note"
+msgstr "Upraviť dátum"
 
 msgid "Edit Sign"
 msgstr "Upraviť označenie"
@@ -646,7 +644,7 @@ msgstr ""
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr ""
 
-msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
+msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
 msgstr ""
 
 msgid "Invalid time format. Use HH:MM"
@@ -697,12 +695,6 @@ msgstr "Mesiac +"
 
 msgid "Month -"
 msgstr "Mesiac -"
-
-msgid "Month People"
-msgstr "Mesiac Ľudia"
-
-msgid "Month People:"
-msgstr ""
 
 msgid "Name"
 msgstr ""
@@ -781,6 +773,12 @@ msgstr ""
 
 msgid "No sound"
 msgstr "Bez zvuku"
+
+msgid "Note"
+msgstr ""
+
+msgid "Note:"
+msgstr ""
 
 msgid "Notes"
 msgstr ""
@@ -1205,11 +1203,23 @@ msgstr ""
 #~ msgid "Calendar Planner v.%s"
 #~ msgstr "Plánovač kalendárov verzia %s"
 
+#~ msgid "Date People"
+#~ msgstr "Stretnutie s ľuďmi"
+
+#~ msgid "Edit Date People"
+#~ msgstr "Upraviť dátum Ľudia"
+
+#~ msgid "Edit Month People"
+#~ msgstr "Upraviť mesiac Ľudia"
+
 #~ msgid "Exit"
 #~ msgstr "Ukončiť"
 
 #~ msgid "Magenta"
 #~ msgstr "Purpurová farba"
+
+#~ msgid "Month People"
+#~ msgstr "Mesiac Ľudia"
 
 #~ msgid "Purple"
 #~ msgstr "Svetlo fialová"

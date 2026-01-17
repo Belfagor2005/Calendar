@@ -27,9 +27,6 @@ from enigma import getDesktop
 from . import _
 from .config_manager import get_debug, get_default_event_time
 
-global DEBUG
-DEBUG = get_debug()
-
 
 class ICSEventDialog(Screen):
     """Dialog for editing ICS events - similar to BirthdayDialog"""
@@ -146,7 +143,7 @@ class ICSEventDialog(Screen):
         self.all_events = all_events or []
         self.current_index = current_index
         self.current_field_index = 0
-        if DEBUG:
+        if get_debug():
             print("[ICSEventDialog] Initialization...")
             print("[ICSEventDialog] Available widgets after Screen.__init__:", list(self.keys()))
         self.fields = [
@@ -212,7 +209,7 @@ class ICSEventDialog(Screen):
 
     def force_first_field_highlight(self):
         """Highlight first field"""
-        if DEBUG:
+        if get_debug():
             print("[ICSEventDialog] Layout finished, highlighting first field")
         self.current_field_index = 0
         self.update_field_highlight()
@@ -363,7 +360,7 @@ class ICSEventDialog(Screen):
                     if value:
                         self.event_data[field_key] = value
                         
-            if DEBUG:
+            if get_debug():
                 print("[ICSEventDialog] Saved changes for event: {0}".format(
                     self.event_data.get('title', 'Unknown')
                 ))

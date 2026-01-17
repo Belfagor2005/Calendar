@@ -193,7 +193,13 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
+msgid "Contact"
+msgstr ""
+
 msgid "Contact '{0}' deleted successfully"
+msgstr ""
+
+msgid "Contact:"
 msgstr ""
 
 msgid "Contacts directory not found"
@@ -248,12 +254,6 @@ msgid "Date"
 msgstr "Дата"
 
 msgid "Date (YYYY-MM-DD)"
-msgstr ""
-
-msgid "Date People"
-msgstr "Знакомства с людьми"
-
-msgid "Date People:"
 msgstr ""
 
 msgid "Date range: {0} to {1}"
@@ -352,9 +352,6 @@ msgstr ""
 msgid "Edit Date"
 msgstr "Изменить дату"
 
-msgid "Edit Date People"
-msgstr "Редактировать дату Люди"
-
 msgid "Edit Description"
 msgstr "Редактировать описание"
 
@@ -373,8 +370,9 @@ msgstr "Редактировать отпуск"
 msgid "Edit ICS Event"
 msgstr ""
 
-msgid "Edit Month People"
-msgstr "Редактировать Месяц Люди"
+#, fuzzy
+msgid "Edit Note"
+msgstr "Изменить дату"
 
 msgid "Edit Sign"
 msgstr "Редактировать знак"
@@ -646,7 +644,7 @@ msgstr ""
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr ""
 
-msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
+msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
 msgstr ""
 
 msgid "Invalid time format. Use HH:MM"
@@ -697,12 +695,6 @@ msgstr "Месяц +"
 
 msgid "Month -"
 msgstr "Месяц -"
-
-msgid "Month People"
-msgstr "Месяц Люди"
-
-msgid "Month People:"
-msgstr ""
 
 msgid "Name"
 msgstr ""
@@ -781,6 +773,12 @@ msgstr ""
 
 msgid "No sound"
 msgstr "Нет звука"
+
+msgid "Note"
+msgstr ""
+
+msgid "Note:"
+msgstr ""
 
 msgid "Notes"
 msgstr ""
@@ -1209,11 +1207,23 @@ msgstr ""
 #~ msgid "Calendar Planner v.%s"
 #~ msgstr "Календарь-планировщик v.%s"
 
+#~ msgid "Date People"
+#~ msgstr "Знакомства с людьми"
+
+#~ msgid "Edit Date People"
+#~ msgstr "Редактировать дату Люди"
+
+#~ msgid "Edit Month People"
+#~ msgstr "Редактировать Месяц Люди"
+
 #~ msgid "Exit"
 #~ msgstr "Выход"
 
 #~ msgid "Magenta"
 #~ msgstr "Пурпурный"
+
+#~ msgid "Month People"
+#~ msgstr "Месяц Люди"
 
 #~ msgid "Purple"
 #~ msgstr "Пурпурный"

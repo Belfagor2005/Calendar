@@ -40,10 +40,6 @@ from .duplicate_checker import (
 )
 
 
-global DEBUG
-DEBUG = get_debug()
-
-
 class VCardFileImporter:
     """Main vCard file importer - unified class with static methods"""
 
@@ -57,7 +53,7 @@ class VCardFileImporter:
         if VCardFileImporter._cache_initialized:
             return
 
-        if DEBUG:
+        if get_debug():
             print("[VCardCache] Initializing cache...")
 
         for contact in birthday_manager.contacts:
@@ -87,7 +83,7 @@ class VCardFileImporter:
 
         VCardFileImporter._cache_initialized = True
 
-        if DEBUG:
+        if get_debug():
             print("[VCardCache] Cache initialized with {0} entries".format(len(VCardFileImporter._contacts_cache)))
 
     @staticmethod
@@ -95,7 +91,7 @@ class VCardFileImporter:
         """Clear cache"""
         VCardFileImporter._contacts_cache.clear()
         VCardFileImporter._cache_initialized = False
-        if DEBUG:
+        if get_debug():
             print("[VCardCache] Cache cleared")
 
     @staticmethod
@@ -218,7 +214,7 @@ class VCardFileImporter:
 
                 # Count any remaining in final buffer
                 contact_count += buffer.upper().count('BEGIN:VCARD')
-            if DEBUG:
+            if get_debug():
                 print("[VCardFileImporter] Counted {0} contacts in {1}".format(contact_count, filepath))
             return contact_count
 
@@ -237,11 +233,11 @@ class VCardFileImporter:
     @staticmethod
     def import_file_sync(birthday_manager, filepath, progress_callback=None):
         """Import contacts from vCard file synchronously - OPTIMIZED"""
-        if DEBUG:
+        if get_debug():
             print("[VCardFileImporter] Starting optimized import from: {0}".format(filepath))
 
         if not exists(filepath):
-            if DEBUG:
+            if get_debug():
                 print("[VCardFileImporter] ERROR: File not found")
             return 0, 0, 0, 1
 
@@ -256,7 +252,7 @@ class VCardFileImporter:
 
             # Count total contacts
             total = VCardFileImporter.count_contacts(filepath)
-            if DEBUG:
+            if get_debug():
                 print("[VCardFileImporter] Total contacts found: {0}".format(total))
                 print("[VCardCache] Using cache with {0} entries".format(len(VCardFileImporter._contacts_cache)))
 
@@ -271,7 +267,7 @@ class VCardFileImporter:
 
             # Split by VCARD blocks
             vcard_blocks = split(r'BEGIN:VCARD\s*', content, flags=IGNORECASE)
-            if DEBUG:
+            if get_debug():
                 print("[VCardFileImporter] Found {0} blocks".format(len(vcard_blocks)))
 
             current = 0
@@ -285,7 +281,7 @@ class VCardFileImporter:
                 if progress_callback:
                     progress = float(current) / total if total > 0 else 0
                     if not progress_callback(progress, current, total, imported, updated, skipped, errors):
-                        if DEBUG:
+                        if get_debug():
                             print("[VCardFileImporter] Import cancelled by user")
                         break
 
@@ -301,7 +297,7 @@ class VCardFileImporter:
                     is_duplicate, duplicate_type = VCardFileImporter.is_duplicate_by_cache(contact_data)
 
                     if is_duplicate:
-                        if DEBUG:
+                        if get_debug():
                             print("[VCardCache] Duplicate found via cache ({0}): {1}".format(
                                 duplicate_type, contact_data.get('FN', 'Unknown')))
 
@@ -310,12 +306,12 @@ class VCardFileImporter:
 
                         if updated_id:
                             updated += 1
-                            if DEBUG:
+                            if get_debug():
                                 print("[VCardFileImporter] Updated contact: {0}".format(
                                     contact_data.get('FN', 'Unknown')))
                         else:
                             skipped += 1
-                            if DEBUG:
+                            if get_debug():
                                 print("[VCardFileImporter] Skipped exact duplicate: {0}".format(
                                     contact_data.get('FN', 'Unknown')))
                         continue
@@ -328,12 +324,12 @@ class VCardFileImporter:
 
                         if updated_id:
                             updated += 1
-                            if DEBUG:
+                            if get_debug():
                                 print("[VCardFileImporter] Updated contact after detailed check: {0}".format(
                                     contact_data.get('FN', 'Unknown')))
                         else:
                             skipped += 1
-                            if DEBUG:
+                            if get_debug():
                                 print("[VCardFileImporter] Skipped duplicate ({0}): {1}".format(
                                     reason, contact_data.get('FN', 'Unknown')))
                         continue
@@ -345,7 +341,7 @@ class VCardFileImporter:
                         # ADD TO CACHE
                         VCardFileImporter.add_to_cache(contact_data)
 
-                        if DEBUG:
+                        if get_debug():
                             print("[VCardFileImporter] Imported new contact: {0}".format(
                                 contact_data.get('FN', 'Unknown')))
                     else:
@@ -358,7 +354,7 @@ class VCardFileImporter:
             # Clear cache after import
             VCardFileImporter.clear_cache()
 
-            if DEBUG:
+            if get_debug():
                 print("[VCardFileImporter] Import completed. Result: imported={0}, updated={1}, skipped={2}, errors={3}".format(
                     imported, updated, skipped, errors))
             return imported, updated, skipped, errors
@@ -470,12 +466,12 @@ class VCardFileImporter:
                         contact['URL'] = value
 
                 elif prop_base == 'BDAY':
-                    if DEBUG:
+                    if get_debug():
                         print("[DEBUG vCard] RAW BDAY VALUE: '{0}'".format(value))
                     bday = VCardFileImporter.parse_birthday(value)
                     if bday:
                         contact['BDAY'] = bday
-                        if DEBUG:
+                        if get_debug():
                             print("[DEBUG vCard] BDAY PARSED: '{0}' -> '{1}'".format(value, bday))
                     else:
                         print("[DEBUG vCard] BDAY FAILED: '{0}'".format(value))
@@ -495,7 +491,7 @@ class VCardFileImporter:
         # Apply Google Contacts–specific fixes
         contact = VCardFileImporter.fix_google_contacts(contact)
 
-        if DEBUG and contact['FN']:
+        if get_debug() and contact['FN']:
             print("[DEBUG parse_vcard_block] Parsed contact: {0}, BDAY: {1}".format(
                 contact.get('FN', 'Unknown'), contact.get('BDAY', 'Empty')))
 
@@ -582,12 +578,12 @@ class VCardFileImporter:
 
         # Remove time part if present
         value = value.split('T')[0].split(' ')[0].strip()
-        if DEBUG:
+        if get_debug():
             print("[DEBUG parse_birthday] Processing: '{0}'".format(value))  # FORCE DEBUG
 
         # ULTIMATE FIX: Direct brute-force for 8-digit YYYYMMDD
         if len(value) == 8 and value.isdigit():
-            if DEBUG:
+            if get_debug():
                 print("[DEBUG parse_birthday] 8-digit detected: {0}".format(value))
             try:
                 year = int(value[0:4])
@@ -597,7 +593,7 @@ class VCardFileImporter:
                 # Very basic validation - accept almost anything
                 if 1800 <= year <= 2100 and 1 <= month <= 12 and 1 <= day <= 31:
                     result = "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
-                    if DEBUG:
+                    if get_debug():
                         print("[DEBUG parse_birthday] SUCCESS: {0} -> {1}".format(value, result))
                     return result
                 else:
@@ -614,7 +610,7 @@ class VCardFileImporter:
                 month = int(match.group(2))
                 day = int(match.group(3))
                 result = "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
-                if DEBUG:
+                if get_debug():
                     print("[DEBUG parse_birthday] Regex extracted: {0} -> {1}".format(value, result))
                 return result
             except:
@@ -635,7 +631,7 @@ class VCardFileImporter:
             try:
                 dt = datetime.strptime(value, fmt)
                 result = dt.strftime('%Y-%m-%d')
-                if DEBUG:
+                if get_debug():
                     print("[DEBUG parse_birthday] Format '{0}' matched: {1} -> {2}".format(fmt, value, result))
                 return result
             except ValueError:
@@ -649,12 +645,12 @@ class VCardFileImporter:
                 month = int(digits[4:6])
                 day = int(digits[6:8])
                 result = "{0:04d}-{1:02d}-{2:02d}".format(year, month, day)
-                if DEBUG:
+                if get_debug():
                     print("[DEBUG parse_birthday] Digit extraction: {0} -> {1}".format(value, result))
                 return result
             except:
                 pass
-        if DEBUG:
+        if get_debug():
             print("[DEBUG parse_birthday] FAILED to parse: {0}".format(value))
         return ''
 
@@ -829,13 +825,13 @@ class VCardImporter(Screen):
     def __init__(self, session, birthday_manager):
         Screen.__init__(self, session)
         self.birthday_manager = birthday_manager
-        if DEBUG:
+        if get_debug():
             print("[VCardImporter] Initializing...")
 
         start_path = "/tmp"
         if not exists(start_path):
             start_path = "/"
-        if DEBUG:
+        if get_debug():
             print("[VCardImporter] Start path: {0}".format(start_path))
 
         matching_pattern = r".*\.(vcf|vcard)$"
@@ -856,7 +852,7 @@ class VCardImporter(Screen):
                 "ok": self.ok,
             }, -1
         )
-        if DEBUG:
+        if get_debug():
             print("[VCardImporter] Initialization complete")
 
     def ok(self):
@@ -955,7 +951,7 @@ class VCardImporter(Screen):
 
                 # Count any remaining in final buffer
                 contact_count += buffer.upper().count('BEGIN:VCARD')
-            if DEBUG:
+            if get_debug():
                 print("[VCardImporter] Counted {0} contacts in {1}".format(contact_count, filepath))
             return contact_count
 
@@ -973,7 +969,7 @@ class VCardImporter(Screen):
 
     def do_import(self):
         """Import selected file"""
-        if DEBUG:
+        if get_debug():
             print("[VCardImporter] do_import() called")
 
         selection = self["filelist"].getSelection()
@@ -988,7 +984,7 @@ class VCardImporter(Screen):
         filename = selection[0]
         current_dir = self["filelist"].getCurrentDirectory()
         filepath = join(current_dir, filename)
-        if DEBUG:
+        if get_debug():
             print("[VCardImporter] Selected file: {0}".format(filename))
 
         if not exists(filepath):
@@ -1041,7 +1037,7 @@ class VCardImporter(Screen):
         """Start the actual import process"""
         if not result:
             return
-        if DEBUG:
+        if get_debug():
             print("[VCardImporter] Starting import of: {0}".format(filepath))
         try:
             # Open import progress screen
@@ -1052,7 +1048,7 @@ class VCardImporter(Screen):
                 filepath,
                 event_count
             )
-            if DEBUG:
+            if get_debug():
                 print("[VCardImporter] ImportProgressScreen opened successfully")
         except Exception as e:
             print("[VCardImporter] ERROR opening ImportProgressScreen: {0}".format(e))
@@ -1106,7 +1102,7 @@ class VCardImporter(Screen):
 
             try:
                 cleaned = run_complete_cleanup(self.birthday_manager)
-                if cleaned > 0 and DEBUG:
+                if cleaned > 0 and get_debug():
                     print("[VCardImporter] Cleaned {0} contacts with duplicates".format(cleaned))
             except Exception as e:
                 print("[VCardImporter] Error cleaning duplicates: {0}".format(e))
@@ -1156,12 +1152,12 @@ class VCardFileImporterThread:
         # Initialize cache
         VCardFileImporter.init_cache(birthday_manager)
 
-        if DEBUG:
+        if get_debug():
             print("[VCardImporterThread] Initialized with cache")
 
     def start(self):
         """Start import process"""
-        if DEBUG:
+        if get_debug():
             print("[VCardImporterThread] Starting import")
 
         try:
@@ -1176,7 +1172,7 @@ class VCardFileImporterThread:
             self.total_blocks = len([b for b in self.vcard_blocks
                                     if b.strip() and 'END:VCARD' in b.upper()])
 
-            if DEBUG:
+            if get_debug():
                 print("[VCardImporterThread] Total blocks found: {0}, Expected: {1}".format(
                     self.total_blocks, self.total_events))
 
@@ -1230,13 +1226,13 @@ class VCardFileImporterThread:
 
                         if updated_id:
                             self.updated += 1  # (no self.skipped)
-                            if DEBUG:
+                            if get_debug():
                                 print("[VCardImporterThread] Updated contact: {0}".format(
                                     contact_data.get('FN', 'Unknown')))
                         else:
                             self.skipped += 1
 
-                        if DEBUG:
+                        if get_debug():
                             print("[VCardImporterThread] Cache duplicate ({0}): {1}".format(
                                 duplicate_type, contact_data.get('FN', 'Unknown')))
                     else:
@@ -1247,7 +1243,7 @@ class VCardFileImporterThread:
 
                             if updated_id:
                                 self.updated += 1
-                                if DEBUG:
+                                if get_debug():
                                     print("[VCardImporterThread] Updated contact after detailed check: {0}".format(
                                         contact_data.get('FN', 'Unknown')))
                             else:
@@ -1350,7 +1346,7 @@ class ImportProgressScreen(Screen):
 
     def start_import(self):
         """Start import process"""
-        if DEBUG:
+        if get_debug():
             print("[ImportProgress] Starting import process")
 
         def progress_callback(progress, current, total, imported, updated, skipped, errors, finished):
@@ -1405,7 +1401,7 @@ class ImportProgressScreen(Screen):
 
     def import_completed(self, imported, updated, skipped, errors):
         """Import completed"""
-        if DEBUG:
+        if get_debug():
             print("[ImportProgress] Import completed: imported={0}, updated={1}, skipped={2}, errors={3}".format(
                 imported, updated, skipped, errors))
 
@@ -1508,7 +1504,7 @@ def export_contacts_to_vcf(birthday_manager, output_path="/tmp/calendar.vcf", so
         contacts = birthday_manager.contacts
 
         if not contacts:
-            if DEBUG:
+            if get_debug():
                 print("[VCardExport] No contacts found")
             return 0
 
@@ -1532,7 +1528,7 @@ def export_contacts_to_vcf(birthday_manager, output_path="/tmp/calendar.vcf", so
         elif sort_by == 'category':
             # Sort by category
             contacts = sorted(contacts, key=lambda x: x.get('CATEGORIES', '').lower())
-        if DEBUG:
+        if get_debug():
             print("[VCardExport] Exporting {0} contacts ({1}) to {2}".format(
                 len(contacts), sort_by, output_path))
 
@@ -1611,7 +1607,7 @@ def export_contacts_to_vcf(birthday_manager, output_path="/tmp/calendar.vcf", so
 
                 f.write("END:VCARD\n\n")
                 count += 1
-        if DEBUG:
+        if get_debug():
             print("[VCardExport] Successfully exported {0} contacts".format(count))
         return count
 

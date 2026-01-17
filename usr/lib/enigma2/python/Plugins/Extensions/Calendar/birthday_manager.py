@@ -22,10 +22,6 @@ from .formatters import CONTACTS_PATH
 from .config_manager import get_debug
 
 
-global DEBUG
-DEBUG = get_debug()
-
-
 class BirthdayManager:
     """Manages contacts and birthdays in vCard-like format"""
 
@@ -173,7 +169,7 @@ class BirthdayManager:
 
         # SORT contacts alphabetically when loading
         self.sort_contacts_by_name()
-        if DEBUG:
+        if get_debug():
             print("[BirthdayManager] Loaded {0} contacts (sorted)".format(len(self.contacts)))
 
     def load_contact(self, contact_id):
@@ -242,7 +238,7 @@ class BirthdayManager:
         filepath = join(self.contacts_path, contact_id + ".txt")
 
         try:
-            if DEBUG:
+            if get_debug():
                 print("[DEBUG BirthdayManager] Saving contact data:")
                 for key, value in contact_data.items():
                     print("  {0}: {1}".format(key, value))
@@ -264,7 +260,7 @@ class BirthdayManager:
 
             content += "CREATED: {0}\n".format(contact_data.get('created', ''))
 
-            if DEBUG:
+            if get_debug():
                 print("[DEBUG BirthdayManager] File content:\n{0}".format(content))
 
             # Save to file

@@ -193,7 +193,13 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
+msgid "Contact"
+msgstr ""
+
 msgid "Contact '{0}' deleted successfully"
+msgstr ""
+
+msgid "Contact:"
 msgstr ""
 
 msgid "Contacts directory not found"
@@ -248,12 +254,6 @@ msgid "Date"
 msgstr "Datum"
 
 msgid "Date (YYYY-MM-DD)"
-msgstr ""
-
-msgid "Date People"
-msgstr "Rande s lidmi"
-
-msgid "Date People:"
 msgstr ""
 
 msgid "Date range: {0} to {1}"
@@ -352,9 +352,6 @@ msgstr ""
 msgid "Edit Date"
 msgstr "Editovat datum"
 
-msgid "Edit Date People"
-msgstr "Upravit datum Lidé"
-
 msgid "Edit Description"
 msgstr "Upravit popis"
 
@@ -373,8 +370,9 @@ msgstr "Upravit dovolenou"
 msgid "Edit ICS Event"
 msgstr ""
 
-msgid "Edit Month People"
-msgstr "Upravit měsíc Osoby"
+#, fuzzy
+msgid "Edit Note"
+msgstr "Editovat datum"
 
 msgid "Edit Sign"
 msgstr "Upravit znamení"
@@ -646,7 +644,7 @@ msgstr ""
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr ""
 
-msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
+msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
 msgstr ""
 
 msgid "Invalid time format. Use HH:MM"
@@ -697,12 +695,6 @@ msgstr "Měsíc +"
 
 msgid "Month -"
 msgstr "Měsíc -"
-
-msgid "Month People"
-msgstr "Měsíční lidé"
-
-msgid "Month People:"
-msgstr ""
 
 msgid "Name"
 msgstr ""
@@ -781,6 +773,12 @@ msgstr ""
 
 msgid "No sound"
 msgstr "Žádný zvuk"
+
+msgid "Note"
+msgstr ""
+
+msgid "Note:"
+msgstr ""
 
 msgid "Notes"
 msgstr ""
@@ -1211,11 +1209,23 @@ msgstr ""
 #~ msgid "Calendar Planner v.%s"
 #~ msgstr "Plánovač kalendářů verze %s"
 
+#~ msgid "Date People"
+#~ msgstr "Rande s lidmi"
+
+#~ msgid "Edit Date People"
+#~ msgstr "Upravit datum Lidé"
+
+#~ msgid "Edit Month People"
+#~ msgstr "Upravit měsíc Osoby"
+
 #~ msgid "Exit"
 #~ msgstr "Odejít"
 
 #~ msgid "Magenta"
 #~ msgstr "Magenta"
+
+#~ msgid "Month People"
+#~ msgstr "Měsíční lidé"
 
 #~ msgid "Purple"
 #~ msgstr "Fialová"

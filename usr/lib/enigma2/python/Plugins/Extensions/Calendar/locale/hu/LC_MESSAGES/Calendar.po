@@ -193,7 +193,13 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
+msgid "Contact"
+msgstr ""
+
 msgid "Contact '{0}' deleted successfully"
+msgstr ""
+
+msgid "Contact:"
 msgstr ""
 
 msgid "Contacts directory not found"
@@ -248,12 +254,6 @@ msgid "Date"
 msgstr "Dátum"
 
 msgid "Date (YYYY-MM-DD)"
-msgstr ""
-
-msgid "Date People"
-msgstr "Randevúzz emberekkel"
-
-msgid "Date People:"
 msgstr ""
 
 msgid "Date range: {0} to {1}"
@@ -352,9 +352,6 @@ msgstr ""
 msgid "Edit Date"
 msgstr "Dátum szerkesztése"
 
-msgid "Edit Date People"
-msgstr "Dátum szerkesztése Személyek"
-
 msgid "Edit Description"
 msgstr "Leírás szerkesztése"
 
@@ -373,8 +370,9 @@ msgstr "Ünnepnap szerkesztése"
 msgid "Edit ICS Event"
 msgstr ""
 
-msgid "Edit Month People"
-msgstr "Hónap Személyek Szerkesztése"
+#, fuzzy
+msgid "Edit Note"
+msgstr "Dátum szerkesztése"
 
 msgid "Edit Sign"
 msgstr "Szerkesztési jel"
@@ -646,7 +644,7 @@ msgstr ""
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr ""
 
-msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
+msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
 msgstr ""
 
 msgid "Invalid time format. Use HH:MM"
@@ -697,12 +695,6 @@ msgstr "Hónap +"
 
 msgid "Month -"
 msgstr "Hónap -"
-
-msgid "Month People"
-msgstr "Hónap Emberek"
-
-msgid "Month People:"
-msgstr ""
 
 msgid "Name"
 msgstr ""
@@ -781,6 +773,12 @@ msgstr ""
 
 msgid "No sound"
 msgstr "Nincs hang"
+
+msgid "Note"
+msgstr ""
+
+msgid "Note:"
+msgstr ""
 
 msgid "Notes"
 msgstr ""
@@ -1209,11 +1207,23 @@ msgstr ""
 #~ msgid "Calendar Planner v.%s"
 #~ msgstr "Naptártervező v.%s"
 
+#~ msgid "Date People"
+#~ msgstr "Randevúzz emberekkel"
+
+#~ msgid "Edit Date People"
+#~ msgstr "Dátum szerkesztése Személyek"
+
+#~ msgid "Edit Month People"
+#~ msgstr "Hónap Személyek Szerkesztése"
+
 #~ msgid "Exit"
 #~ msgstr "Kilépés"
 
 #~ msgid "Magenta"
 #~ msgstr "Magenta"
+
+#~ msgid "Month People"
+#~ msgstr "Hónap Emberek"
 
 #~ msgid "Purple"
 #~ msgstr "Lila"

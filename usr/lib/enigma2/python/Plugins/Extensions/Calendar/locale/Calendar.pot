@@ -2,6 +2,9 @@
 
 
 
+
+
+
 msgid "(Search: '{0}')"
 msgstr ""
 
@@ -179,7 +182,13 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
+msgid "Contact"
+msgstr ""
+
 msgid "Contact '{0}' deleted successfully"
+msgstr ""
+
+msgid "Contact:"
 msgstr ""
 
 msgid "Contacts directory not found"
@@ -234,12 +243,6 @@ msgid "Date"
 msgstr ""
 
 msgid "Date (YYYY-MM-DD)"
-msgstr ""
-
-msgid "Date People"
-msgstr ""
-
-msgid "Date People:"
 msgstr ""
 
 msgid "Date range: {0} to {1}"
@@ -338,9 +341,6 @@ msgstr ""
 msgid "Edit Date"
 msgstr ""
 
-msgid "Edit Date People"
-msgstr ""
-
 msgid "Edit Description"
 msgstr ""
 
@@ -359,7 +359,7 @@ msgstr ""
 msgid "Edit ICS Event"
 msgstr ""
 
-msgid "Edit Month People"
+msgid "Edit Note"
 msgstr ""
 
 msgid "Edit Sign"
@@ -632,7 +632,7 @@ msgstr ""
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr ""
 
-msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
+msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
 msgstr ""
 
 msgid "Invalid time format. Use HH:MM"
@@ -681,12 +681,6 @@ msgid "Month +"
 msgstr ""
 
 msgid "Month -"
-msgstr ""
-
-msgid "Month People"
-msgstr ""
-
-msgid "Month People:"
 msgstr ""
 
 msgid "Name"
@@ -765,6 +759,12 @@ msgid "No sorting (original order)"
 msgstr ""
 
 msgid "No sound"
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid "Note:"
 msgstr ""
 
 msgid "Notes"

@@ -34,9 +34,6 @@ from .duplicate_checker import DuplicateChecker
 from .formatters import MenuDialog, ICS_BASE_PATH
 from .config_manager import get_debug
 
-global DEBUG
-DEBUG = get_debug()
-
 
 class ICSBrowser(Screen):
     if (getDesktop(0).size().width() >= 1920):
@@ -100,7 +97,7 @@ class ICSBrowser(Screen):
 
     def update_list(self):
         """Update file list - CERCA SOLO NELLA CARTELLA ICS"""
-        if DEBUG:
+        if get_debug():
             print("[ICSBrowser] DEBUG: update_list called")
             print("[ICSBrowser] DEBUG: Looking in:", ICS_BASE_PATH)
 
@@ -135,7 +132,7 @@ class ICSBrowser(Screen):
                     items.append("{} ({} - {})".format(
                         filename, display_size, date_str
                     ))
-                    if DEBUG:
+                    if get_debug():
                         print("[ICSBrowser] DEBUG: Found archive file:", filename)
             except Exception as e:
                 print("[ICSBrowser] ERROR:", e)
@@ -147,7 +144,7 @@ class ICSBrowser(Screen):
             self["status"].setText(_("Found {0} ICS files").format(len(items)))
         else:
             self["status"].setText(_("No ICS files in archive"))
-            if DEBUG:
+            if get_debug():
                 print("[ICSBrowser] WARNING: No .ics files found in:", ICS_BASE_PATH)
 
     def view_file(self):

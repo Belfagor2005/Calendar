@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Calendar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 14:37+0100\n"
-"PO-Revision-Date: 2026-01-15 21:25+0100\n"
+"PO-Revision-Date: 2026-01-17 20:37+0100\n"
 "Last-Translator: \n"
 "Language-Team: <sirius.al@rambler.ru>\n"
 "Language: it\n"
@@ -192,8 +192,14 @@ msgstr "Colori per i giorni di festa"
 msgid "Completed"
 msgstr "Completato"
 
+msgid "Contact"
+msgstr "Contatto"
+
 msgid "Contact '{0}' deleted successfully"
 msgstr "Contatto '{0}' eliminato con successo"
+
+msgid "Contact:"
+msgstr "Contatto:"
 
 msgid "Contacts directory not found"
 msgstr "Rubrica dei contatti non trovata"
@@ -248,12 +254,6 @@ msgstr "Data"
 
 msgid "Date (YYYY-MM-DD)"
 msgstr "Data (AAAA-MM-GG)"
-
-msgid "Date People"
-msgstr "Data Persona"
-
-msgid "Date People:"
-msgstr "Data Persona:"
 
 msgid "Date range: {0} to {1}"
 msgstr "Intervallo di date: da {0} a {1}"
@@ -351,9 +351,6 @@ msgstr "Modifica contatto ({0}/{1})"
 msgid "Edit Date"
 msgstr "Modifica Dati"
 
-msgid "Edit Date People"
-msgstr "Modifica Dati Persone"
-
 msgid "Edit Description"
 msgstr "Modifica Descrizione"
 
@@ -372,8 +369,8 @@ msgstr "Modifica Compleanno"
 msgid "Edit ICS Event"
 msgstr "Modifica evento ICS"
 
-msgid "Edit Month People"
-msgstr "Modifica Mese Persone"
+msgid "Edit Note"
+msgstr "Modifica Note"
 
 msgid "Edit Sign"
 msgstr "Modifica Segno"
@@ -394,10 +391,10 @@ msgid "Enable event management with date/time"
 msgstr "Abilita la gestione degli eventi con data/ora"
 
 msgid "Enable event system"
-msgstr "Abilita la colorazione delle vacanze"
+msgstr "Abilita il sistema di eventi"
 
 msgid "Enable holiday coloring"
-msgstr "Abilita la colorazione delle vacanze"
+msgstr "Abilita la colorazione delle festività"
 
 msgid "Enable notifications"
 msgstr "Abilita le notifiche"
@@ -645,8 +642,8 @@ msgstr "Formato data di nascita non valido. Utilizzare AAAA-MM-GG"
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr "Formato data non valido. Utilizzare AAAA-MM-GG"
 
-msgid "Invalid time format! Please use HH:MM (00:00 to 23:59)"
-msgstr "Formato ora non valido! Si prega di utilizzare HH:MM (da 00:00 a 23:59)"
+msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
+msgstr "Formato ora non valido! Utilizzare HH:MM (da 00:00 a 23:59)"
 
 msgid "Invalid time format. Use HH:MM"
 msgstr "Formato ora non valido. Utilizzare HH:MM"
@@ -695,12 +692,6 @@ msgstr "Mese+"
 
 msgid "Month -"
 msgstr "Mese-"
-
-msgid "Month People"
-msgstr "Mese Persona"
-
-msgid "Month People:"
-msgstr "Mese Persona:"
 
 msgid "Name"
 msgstr "Nome"
@@ -779,6 +770,12 @@ msgstr "Nessun ordinamento (ordine originale)"
 
 msgid "No sound"
 msgstr "Nessun Suono"
+
+msgid "Note"
+msgstr "Note"
+
+msgid "Note:"
+msgstr "Note:"
 
 msgid "Notes"
 msgstr "Note"
@@ -1182,8 +1179,26 @@ msgstr "vCard: La funzionalità di importazione non è disponibile: {0}"
 #~ msgid "Configuration saved successfully!"
 #~ msgstr "Configurazione salvata con successo!"
 
+#~ msgid "Date People"
+#~ msgstr "Data Persona"
+
+#~ msgid "Date People:"
+#~ msgstr "Data Persona:"
+
 #~ msgid "Debug completed. Check logs."
 #~ msgstr "Debug completato. Controllare i log."
+
+#~ msgid "Edit Date People"
+#~ msgstr "Modifica Dati Persone"
+
+#~ msgid "Edit Month People"
+#~ msgstr "Modifica Mese Persone"
+
+#~ msgid "Month People"
+#~ msgstr "Mese Persona"
+
+#~ msgid "Month People:"
+#~ msgstr "Mese Persona:"
 
 #~ msgid "Really close without saving settings?"
 #~ msgstr "Davvero chiudere senza salvare le impostazioni?"
