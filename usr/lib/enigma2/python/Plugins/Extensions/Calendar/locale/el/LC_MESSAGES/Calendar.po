@@ -112,7 +112,7 @@ msgid "Calendar Planner | Ready"
 msgstr "Calendar Planner | Έτοιμο"
 
 msgid "Calendar Settings"
-msgstr "Ρυθμίσεις ημερολογίου"
+msgstr "Ρυθμίσεις Calendar"
 
 msgid "Calendar with events and notifications"
 msgstr "Ημερολόγιο με συμβάντα και ειδοποιήσεις"
@@ -189,16 +189,14 @@ msgstr "Χρώμα για τις ημέρες αργιών"
 msgid "Completed"
 msgstr "Ολοκληρώθηκε"
 
-#, fuzzy
 msgid "Contact"
-msgstr "Προσθήκη επαφής"
+msgstr "Επαφή"
 
 msgid "Contact '{0}' deleted successfully"
 msgstr "Η επαφή '{0}' διαγράφηκε με επιτυχία"
 
-#, fuzzy
 msgid "Contact:"
-msgstr "Επαφές: 0"
+msgstr "Επαφή:"
 
 msgid "Contacts directory not found"
 msgstr "Δεν βρέθηκε ο κατάλογος επαφών"
@@ -368,9 +366,8 @@ msgstr "Επεξεργασία αργίας"
 msgid "Edit ICS Event"
 msgstr "Επεξεργασία συμβάντος ICS"
 
-#, fuzzy
 msgid "Edit Note"
-msgstr "Επεξεργασία ημερομηνίας"
+msgstr "Επεξεργασία σημείωσης"
 
 msgid "Edit Sign"
 msgstr "Επεξεργασία ζωδίου"
@@ -460,7 +457,7 @@ msgid "Event color"
 msgstr "Χρώμα συμβάντων"
 
 msgid "Event manager not available"
-msgstr "Ο υπεύθυνος εκδηλώσεων δεν είναι διαθέσιμος"
+msgstr "Ο διαχειριστής συμβάντων δεν είναι διαθέσιμος"
 
 msgid "Event manager not initialized"
 msgstr "Ο διαχειριστής συμβάντων δεν έχει αρχικοποιηθεί"
@@ -642,9 +639,8 @@ msgstr "Μη έγκυρη μορφή ημερομηνίας γέννησης. Χ
 msgid "Invalid date format. Use YYYY-MM-DD"
 msgstr "Μη έγκυρη μορφή ημερομηνίας. Χρησιμοποιήστε ΕΕΕΕ-ΜΜ-ΗΗ"
 
-#, fuzzy
 msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
-msgstr "Μη έγκυρη μορφή ώρας! Παρακαλώ χρησιμοποιήστε ΩΩ:ΛΛ (00:00 έως 23:59)"
+msgstr "Μη έγκυρη μορφή ώρας! Χρησιμοποιήστε ΩΩ:ΛΛ (00:00 έως 23:59)"
 
 msgid "Invalid time format. Use HH:MM"
 msgstr "Μη έγκυρη μορφή ώρας. Χρησιμοποιήστε ΩΩ:ΛΛ"
@@ -725,7 +721,7 @@ msgid "No ICS files in archive"
 msgstr "Δεν υπάρχουν αρχεία ICS στο αρχείο"
 
 msgid "No TV service currently playing"
-msgstr "Δεν αναπαράγεται τηλεοπτική υπηρεσία αυτήν τη στιγμή"
+msgstr "Δεν αναπαράγεται αυτή τη στιγμή καμία τηλεοπτική υπηρεσία"
 
 msgid "No contact files found"
 msgstr "Δεν βρέθηκαν αρχεία επαφών"
@@ -772,13 +768,11 @@ msgstr "Χωρίς ταξινόμηση (αρχική σειρά)"
 msgid "No sound"
 msgstr "Χωρίς ήχο"
 
-#, fuzzy
 msgid "Note"
-msgstr "Σημειώσεις"
+msgstr "Σημείωση"
 
-#, fuzzy
 msgid "Note:"
-msgstr "Σημειώσεις"
+msgstr "Σημείωση:"
 
 msgid "Notes"
 msgstr "Σημειώσεις"
@@ -1096,7 +1090,7 @@ msgid "USB Drive (/media/usb)"
 msgstr "Μονάδα USB (/media/usb)"
 
 msgid "Unable to play test sound"
-msgstr "Δεν είναι δυνατή η αναπαραγωγή δοκιμαστικού ήχου"
+msgstr "Αδυναμία αναπαραγωγής ήχου δοκιμής"
 
 msgid "Update available!"
 msgstr "Διαθέσιμη ενημέρωση!"
@@ -1168,64 +1162,10 @@ msgid "sorted by name"
 msgstr "ταξινόμηση κατά όνομα"
 
 msgid "vCard format"
-msgstr "mορφή vCard"
+msgstr "Μορφή vCard"
 
 msgid "vCard format (standard)"
-msgstr "mορφή vCard (τυπική)"
+msgstr "Μορφή vCard (τυπική)"
 
 msgid "vCard import feature not available: {0}"
-msgstr "h δυνατότητα εισαγωγής vCard δεν είναι διαθέσιμη: {0}"
-
-#~ msgid "--- DEBUG ---"
-#~ msgstr "--- ΕΝΤΟΠΙΣΜΟΣ ΣΦΑΛΜΑΤΩΝ ---"
-
-#~ msgid "Date People"
-#~ msgstr "Άτομα ανά ημερομηνία"
-
-#~ msgid "Date People:"
-#~ msgstr "Άτομα ανά ημερομηνία:"
-
-#~ msgid "Debug completed. Check logs."
-#~ msgstr "Ο εντοπισμός σφαλμάτων ολοκληρώθηκε. Ελέγξτε τα αρχεία καταγραφής."
-
-#~ msgid "Edit Date People"
-#~ msgstr "Επεξεργασία ατόμων ανά ημερομηνία"
-
-#~ msgid "Edit Month People"
-#~ msgstr "Επεξεργασία ατόμων ανά μήνα"
-
-#~ msgid "Month People"
-#~ msgstr "Άτομα ανά μήνα"
-
-#~ msgid "Month People:"
-#~ msgstr "Άτομα ανά μήνα:"
-
-#~ msgid "Sound playback started"
-#~ msgstr "Η αναπαραγωγή ήχου ξεκίνησε"
-
-#~ msgid "Test Debug Config"
-#~ msgstr "Δοκιμή ρυθμίσεων εντοπισμού σφαλμάτων"
-
-#~ msgid "Test Event Time Conversion"
-#~ msgstr "Δοκιμή μετατροπής ώρας συμβάντος"
-
-#~ msgid "Test Fix Event Now"
-#~ msgstr "Δοκιμή άμεσης διόρθωσης συμβάντος"
-
-#~ msgid "Test Force Event Conversion Event Time"
-#~ msgstr "Δοκιμή εξαναγκασμένης μετατροπής ώρας συμβάντος"
-
-#~ msgid "Test Force Save all Config"
-#~ msgstr "Δοκιμή εξαναγκασμένης αποθήκευσης όλων των ρυθμίσεων"
-
-#~ msgid "Test Holiday Loading"
-#~ msgstr "Δοκιμή φόρτωσης αργιών"
-
-#~ msgid "Test Notification Now"
-#~ msgstr "Δοκιμή ειδοποίησης τώρα"
-
-#~ msgid "Test Sound Playback"
-#~ msgstr "Δοκιμή αναπαραγωγής ήχου"
-
-#~ msgid "Test notification sent"
-#~ msgstr "Η δοκιμαστική ειδοποίηση στάλθηκε"
+msgstr "Η δυνατότητα εισαγωγής vCard δεν είναι διαθέσιμη: {0}"
