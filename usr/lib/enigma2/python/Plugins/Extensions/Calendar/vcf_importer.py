@@ -411,7 +411,7 @@ class VCardFileImporter:
                 prop_base = prop_full.split(';')[0].upper()
 
                 # DEBUG for BDAY field
-                if prop_base == 'BDAY' and DEBUG:
+                if prop_base == 'BDAY' and get_debug():
                     print("[DEBUG parse_vcard_block] Found BDAY field: '{0}'".format(value))
 
                 if prop_base == 'FN':
