@@ -23,7 +23,7 @@ from Components.Language import language
 
 
 PLUGIN_NAME = "Calendar"
-PLUGIN_VERSION = "2.0"
+PLUGIN_VERSION = "2.1"
 PLUGIN_PATH = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format(PLUGIN_NAME))
 PLUGIN_ICON = resolveFilename(SCOPE_PLUGINS, "Extensions/Calendar/plugin.png")
 USER_AGENT = "Calendar-Enigma2-Updater/%s" % PLUGIN_VERSION

@@ -1,8 +1,8 @@
 #!/bin/bash
 ## setup command=wget -q --no-check-certificate https://raw.githubusercontent.com/Belfagor2005/Calendar/main/installer.sh -O - | /bin/bash
 
-version='2.0'
-changelog="Fixed auto-start system at decoder boot\nStandalone configuration"
+version='2.1'
+changelog="Fixed auto-start system at decoder boot\nStandalone configuration\nFix Past-Futures events"
 
 TMPPATH=/tmp/Calendar-install
 FILEPATH=/tmp/Calendar-main.tar.gz

@@ -175,7 +175,6 @@ class Event:
             return None
 
         elif self.repeat == "daily":
-            # For daily events, find the next day
             test_date = datetime(from_date.year, from_date.month, from_date.day,
                                  event_dt.hour, event_dt.minute)
             if test_date < from_date:
@@ -183,15 +182,15 @@ class Event:
             return test_date
 
         elif self.repeat == "weekly":
-            # For weekly events (same day of week)
             event_weekday = event_dt.weekday()
             current_weekday = from_date.weekday()
 
             days_ahead = event_weekday - current_weekday
             if days_ahead < 0 or (
                 days_ahead == 0 and
-                    (event_dt.hour < from_date.hour or
-                        (event_dt.hour == from_date.hour and event_dt.minute <= from_date.minute))):
+                (event_dt.hour < from_date.hour or
+                 (event_dt.hour == from_date.hour and event_dt.minute <= from_date.minute))
+            ):
                 days_ahead += 7
 
             next_date = from_date + timedelta(days=days_ahead)
@@ -199,42 +198,46 @@ class Event:
                             event_dt.hour, event_dt.minute)
 
         elif self.repeat == "monthly":
-            # For monthly events (same day of month)
-            test_date = datetime(from_date.year, from_date.month,
-                                 min(event_dt.day, 28),  # Avoid February issues
+            day = min(event_dt.day, 28)
+            test_date = datetime(from_date.year, from_date.month, day,
                                  event_dt.hour, event_dt.minute)
 
             if test_date < from_date:
-                # Move to next month
                 if from_date.month == 12:
-                    test_date = datetime(from_date.year + 1, 1,
-                                         min(event_dt.day, 28),
+                    test_date = datetime(from_date.year + 1, 1, day,
                                          event_dt.hour, event_dt.minute)
                 else:
-                    test_date = datetime(from_date.year, from_date.month + 1,
-                                         min(event_dt.day, 28),
+                    test_date = datetime(from_date.year, from_date.month + 1, day,
                                          event_dt.hour, event_dt.minute)
 
-            # Adjust for months with less than 31 days
             while True:
                 try:
                     datetime(test_date.year, test_date.month, event_dt.day)
                     break
                 except ValueError:
                     test_date = datetime(test_date.year, test_date.month,
-                                         event_dt.day - 1,
+                                         test_date.day - 1,
                                          event_dt.hour, event_dt.minute)
 
             return test_date
 
         elif self.repeat == "yearly":
-            # For yearly events (same day and month)
-            test_date = datetime(from_date.year, event_dt.month, event_dt.day,
-                                 event_dt.hour, event_dt.minute)
-
-            if test_date < from_date:
-                test_date = datetime(from_date.year + 1, event_dt.month, event_dt.day,
+            try:
+                test_date = datetime(from_date.year, event_dt.month, event_dt.day,
                                      event_dt.hour, event_dt.minute)
+            except ValueError:
+                test_date = datetime(from_date.year, event_dt.month, 28,
+                                     event_dt.hour, event_dt.minute)
+
+            diff_minutes = (from_date - test_date).total_seconds() / 60
+
+            if test_date < from_date and diff_minutes > 60:
+                try:
+                    test_date = datetime(from_date.year + 1, event_dt.month, event_dt.day,
+                                         event_dt.hour, event_dt.minute)
+                except ValueError:
+                    test_date = datetime(from_date.year + 1, event_dt.month, 28,
+                                         event_dt.hour, event_dt.minute)
 
             return test_date
 
@@ -329,10 +332,27 @@ class EventManager:
 
         if get_debug():
             self.debug_timer_status()
-            # Verifica subito
-            from threading import Timer
-            Timer(2, self.debug_timer_status).start()  # Controlla dopo 2 secondi
-            Timer(5, self.debug_timer_status).start()
+            # Verifica subito usando eTimer
+            check_timer_2s = eTimer()
+            check_timer_5s = eTimer()
+
+            def check_after_2s():
+                print("[EventManager] 2-second check:")
+                self.debug_timer_status()
+
+            def check_after_5s():
+                print("[EventManager] 5-second check:")
+                self.debug_timer_status()
+
+            try:
+                check_timer_2s.timeout.connect(check_after_2s)
+                check_timer_5s.timeout.connect(check_after_5s)
+            except AttributeError:
+                check_timer_2s.callback.append(check_after_2s)
+                check_timer_5s.callback.append(check_after_5s)
+
+            check_timer_2s.start(2000, True)  # 2 secondi
+            check_timer_5s.start(5000, True)  # 5 secondi
 
         if NOTIFICATION_AVAILABLE:
             init_notification_system(session)
@@ -344,7 +364,7 @@ class EventManager:
         """Debug function to check timer status"""
         if not get_debug():
             return
-        
+
         print("\n[EventManager] === TIMER STATUS DEBUG ===")
         print("[EventManager] Has check_timer attribute: %s" % hasattr(self, 'check_timer'))
         if hasattr(self, 'check_timer'):
@@ -395,6 +415,30 @@ class EventManager:
         except Exception as e:
             print("[EventManager] Error cleaning notification cache: %s" % str(e))
             return 0
+
+    def clean_old_notifications(self, current_time):
+        """Remove old notifications (not for today) from the cache"""
+        today = current_time.date()
+        to_remove = []
+
+        for event_id in list(self.notified_events):
+            # Handle special keys for recurring notifications (event_id_min)
+            if "_" in str(event_id):
+                base_id, _ = str(event_id).split("_", 1)
+            else:
+                base_id = str(event_id)
+
+            event = self.get_event(base_id)
+            if event:
+                event_date = event.get_datetime()
+                if event_date and event_date.date() < today:
+                    to_remove.append(event_id)
+
+        for event_id in to_remove:
+            self.notified_events.discard(event_id)
+
+        if to_remove and get_debug():
+            print("[EventManager] Cleaned %d old notifications" % len(to_remove))
 
     def load_events(self):
         """Load events from JSON file - convert old times"""
@@ -699,21 +743,21 @@ class EventManager:
         self.time_timer.stop()
 
     def start_monitoring(self):
-        """Start event monitoring with debug"""
+        """Start event monitoring with debug output"""
         if get_debug():
             print("[EventManager] === START MONITORING ===")
             print("[EventManager] check_interval from config: %d" % get_check_interval())
-        
+
+        # Stop existing timer if present
         if hasattr(self, 'check_timer') and self.check_timer:
             if get_debug():
                 print("[EventManager] Stopping existing timer")
             self.check_timer.stop()
-        
+
+        # Create new timer
         self.check_timer = eTimer()
-        
-        if get_debug():
-            print("[EventManager] Timer created: %s" % type(self.check_timer))
-        
+
+        # Connect check_events directly
         try:
             self.check_timer.timeout.connect(self.check_events)
             if get_debug():
@@ -722,19 +766,21 @@ class EventManager:
             self.check_timer.callback.append(self.check_events)
             if get_debug():
                 print("[EventManager] Connected via callback.append")
-        
+
+        # Start timer as PERIODIC (False = not single shot)
         interval = get_check_interval() * 1000
         if get_debug():
-            print("[EventManager] Starting timer with %d ms interval" % interval)
-        
+            print("[EventManager] Starting PERIODIC timer with %d ms interval" % interval)
+
         try:
-            self.check_timer.start(interval, True)
+            # Use False as second parameter for periodic timer
+            self.check_timer.start(interval, False)
             if get_debug():
                 print("[EventManager] Timer started successfully")
                 print("[EventManager] Timer active after start: %s" % self.check_timer.isActive())
         except Exception as e:
             print("[EventManager] ERROR starting timer: %s" % str(e))
-        
+
         if get_debug():
             print("[EventManager] === MONITORING STARTED ===")
 
@@ -888,53 +934,23 @@ class EventManager:
     def check_events(self):
         try:
             now = datetime.now()
-            if get_debug():
-                print("\n" + "="*60)
-                print("[EventManager] === CHECK EVENTS at %s ===" % now.strftime('%Y-%m-%d %H:%M:%S'))
-                print("[EventManager] Timer object exists: %s" % (hasattr(self, 'check_timer')))
-                print("[EventManager] Timer is active: %s" % self.check_timer.isActive())
-                print("[EventManager] Total events: %d" % len(self.events))
+            print("[EventManager] CHECK at: %s" % now.strftime('%H:%M:%S'))
+            self.clean_old_notifications(now)
 
             notifications_shown = 0
+            imminent_events_count = 0
 
-            if get_debug():
-                print("\n[EventManager] === EVENT LIST ===")
-                for i, event in enumerate(self.events):
-                    if event.enabled:
-                        print("[EventManager] Event[%d]: '%s' at %s %s (repeat:%s, notify_before:%d)" % (
-                            i, event.title, event.date, event.time, event.repeat, event.notify_before))
+            for event in self.events:
+                if not event.enabled:
+                    continue
 
-                        next_occ = event.get_next_occurrence(now)
-                        if next_occ:
-                            time_diff = next_occ - now
-                            minutes_diff = time_diff.total_seconds() / 60
+                next_occurrence = event.get_next_occurrence(now)
+                if next_occurrence:
+                    mins_to_event = (next_occurrence - now).total_seconds() / 60
+                    if 0 <= mins_to_event <= 10:
+                        imminent_events_count += 1
 
-                            print("[EventManager]   Next occurrence: %s (in %.1f minutes)" %
-                                  (next_occ.strftime('%Y-%m-%d %H:%M'), minutes_diff))
-
-                            notify_time = next_occ - timedelta(minutes=event.notify_before)
-                            notification_window_end = next_occ + timedelta(minutes=5)
-
-                            print("[EventManager]   Notify window: %s to %s" % (
-                                notify_time.strftime('%H:%M'), notification_window_end.strftime('%H:%M')))
-                            print("[EventManager]   Current time: %s" % now.strftime('%H:%M'))
-
-                            if notify_time <= now <= notification_window_end:
-                                print("[EventManager]   >>> IN NOTIFICATION WINDOW! <<<")
-                                if event.id not in self.notified_events:
-                                    print("[EventManager]   >>> NOT YET NOTIFIED - SHOULD NOTIFY! <<<")
-                                else:
-                                    print("[EventManager]   Already notified (ID: %d)" % event.id)
-                            else:
-                                if now < notify_time:
-                                    mins_to_notify = (notify_time - now).total_seconds() / 60
-                                    print("[EventManager]   Not yet time to notify (%.1f minutes to go)" % mins_to_notify)
-                                else:
-                                    print("[EventManager]   Notification window passed")
-                        else:
-                            print("[EventManager]   No next occurrence found")
-                    else:
-                        print("[EventManager] Event[%d]: '%s' - DISABLED" % (i, event.title))
+            print("[EventManager] Imminent events: %d" % imminent_events_count)
 
             for event in self.events:
                 if not event.enabled:
@@ -944,58 +960,73 @@ class EventManager:
                 if not next_occurrence:
                     continue
 
+                time_diff = (next_occurrence - now).total_seconds() / 60
+                if -5 <= time_diff <= 5:
+                    print("[EventManager] Event '%s' - Event: %s, Now: %s, Diff: %.1f min" %
+                          (event.title[:20],
+                           next_occurrence.strftime('%H:%M:%S'),
+                           now.strftime('%H:%M:%S'),
+                           time_diff))
+
                 notify_time = next_occurrence - timedelta(minutes=event.notify_before)
-                notification_window_end = next_occurrence + timedelta(minutes=5)
+                notification_window_end = next_occurrence + timedelta(minutes=30)
+
+                already_notified_today = False
+                if event.id in self.notified_events:
+                    event_date = next_occurrence.date()
+                    today = now.date()
+                    if event_date == today:
+                        already_notified_today = True
+                        print("[EventManager]   Already notified TODAY")
+
+                        time_since_event_start = (now - next_occurrence).total_seconds() / 60
+                        if 0 <= time_since_event_start <= 2:
+                            last_notify_min = int(time_since_event_start / 2)
+                            notify_key = "%s_%d" % (event.id, last_notify_min)
+
+                            if notify_key not in self.notified_events:
+                                print("[EventManager]   Event still in progress (%.1f min), re-notify" % time_since_event_start)
+                                already_notified_today = False
+                                self.notified_events.add(notify_key)
+                    else:
+                        self.notified_events.discard(event.id)
 
                 if now >= next_occurrence and now <= notification_window_end:
-                    if event.id not in self.notified_events or now >= next_occurrence:
-                        if get_debug():
-                            print("\n[EventManager] >>> SHOWING NOTIFICATION FOR: %s" % event.title)
-                            print("[EventManager] >>> Event time: %s" % event.time)
-                            print("[EventManager] >>> Current time: %s" % now.strftime('%H:%M'))
-                            if event.id in self.notified_events:
-                                print("[EventManager] >>> EVENT ALREADY NOTIFIED BUT SHOWING AGAIN (IN-PROGRESS)")
-
+                    if not already_notified_today:
+                        print("[EventManager] >>> NOTIFY (in-progress): %s" % event.title)
                         self.show_notification(event)
                         self.notified_events.add(event.id)
                         notifications_shown += 1
                         self.save_notified_events()
 
-                elif notify_time <= now <= notification_window_end:
-                    if event.id not in self.notified_events:
-                        if get_debug():
-                            print("\n[EventManager] >>> SHOWING NOTIFICATION FOR: %s" % event.title)
-                            print("[EventManager] >>> Event time: %s" % event.time)
-                            print("[EventManager] >>> Current time: %s" % now.strftime('%H:%M'))
-
+                elif notify_time <= now < next_occurrence:
+                    if not already_notified_today:
+                        print("[EventManager] >>> NOTIFY (upcoming): %s" % event.title)
                         self.show_notification(event)
                         self.notified_events.add(event.id)
                         notifications_shown += 1
                         self.save_notified_events()
-                    else:
-                        if now > notification_window_end:
-                            self.notified_events.discard(event.id)
 
-                if event.id in self.notified_events and now > notification_window_end:
-                    self.notified_events.discard(event.id)
+            if notifications_shown > 0:
+                print("[EventManager] Notifications shown: %d" % notifications_shown)
 
-            if get_debug():
-                if notifications_shown > 0:
-                    print("[EventManager] Notifications shown in this check: %d" % notifications_shown)
-                else:
-                    print("[EventManager] No notifications to show in this check")
+            if imminent_events_count > 0:
+                new_interval = 10000
+                timer_msg = "10s (imminent events)"
+            elif notifications_shown > 0:
+                new_interval = 60000
+                timer_msg = "30s (post-notification)"
+            else:
+                new_interval = get_check_interval() * 1000
+                timer_msg = "60s (normal)"
 
-                print("[EventManager] Notified events cache: %s" % list(self.notified_events))
-                print("[EventManager] === CHECK COMPLETED ===")
-                print("="*60 + "\n")
+            print("[EventManager] Timer: %s" % timer_msg)
 
-            interval = get_check_interval() * 1000
-            if get_debug():
-                print("[EventManager] Rescheduling timer for %d ms" % interval)
-            self.check_timer.start(interval, True)
+            self.check_timer.stop()
+            self.check_timer.start(new_interval, False)
 
         except Exception as e:
-            print("[EventManager] Error in check_events: %s" % str(e))
+            print("[EventManager] Error: %s" % str(e))
             import traceback
             traceback.print_exc()
 
@@ -1192,13 +1223,13 @@ class EventManager:
             message = "\n".join(message_lines)
 
             if NOTIFICATION_AVAILABLE:
-                quick_notify(message, seconds=10)
+                quick_notify(message, seconds=15)
             else:
                 from Tools import Notifications
                 notification = MessageBox(
                     message,
                     type=MessageBox.TYPE_INFO,
-                    timeout=10
+                    timeout=15
                 )
                 Notifications.AddNotification(notification)
 

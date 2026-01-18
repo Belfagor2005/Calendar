@@ -82,11 +82,11 @@ class NotificationManager:
 
     def showMessage(self, message, duration=10000):
         """
-        Show temporary notification
+        Display a temporary notification
 
         Args:
             message (str): Text to display
-            duration (int): Duration in milliseconds (default: 3000 = 3 seconds)
+            duration (int): Duration in milliseconds (default: 10000 = 10 seconds)
         """
         if not self.is_initialized:
             print("[NotificationManager] Not initialized! Call initialize() first.")
@@ -102,6 +102,9 @@ class NotificationManager:
 
             # Start auto-hide timer
             self.hide_timer.start(duration, True)
+
+            print("[NotificationManager] Notification displayed for %d ms" % duration)
+
 
     def show(self, message, seconds=5):
         """Simplified version with duration in seconds"""
@@ -149,7 +152,7 @@ def quick_notify(message, seconds=10):
 
     Args:
         message (str): Text to display
-        seconds (int): Display duration in seconds (default: 3)
+        seconds (int): Display duration in seconds (default: 10)
 
     Example:
         quick_notify("Task completed")
