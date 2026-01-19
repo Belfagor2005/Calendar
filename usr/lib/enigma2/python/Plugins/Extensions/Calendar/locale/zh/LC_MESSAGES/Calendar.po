@@ -3,73 +3,73 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-22 13:01+0100\n"
-"PO-Revision-Date: 2025-12-30 22:23+0100\n"
-"Last-Translator: 沙鸥_lexlong2007 <lexlong2007@gmail.com>\n"
+"PO-Revision-Date: 2026-01-19 16:47+0800\n"
+"Last-Translator: 沙鸥 <lexlong2007@gmail.com>\n"
 "Language-Team: \n"
 "Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 1.8.3\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "(Search: '{0}')"
-msgstr ""
+msgstr "(搜索: '{0}')"
 
 msgid "(truncated)"
-msgstr ""
+msgstr "（截断）"
 
 msgid "--- CONTACTS ---"
-msgstr ""
+msgstr "通讯录"
 
 msgid "--- DATABASE ---"
-msgstr ""
+msgstr "数据库"
 
 msgid "--- EVENTS ---"
-msgstr ""
+msgstr "事件部署"
 
 msgid "--- HOLIDAYS ---"
-msgstr ""
+msgstr "假期"
 
 msgid "--- PERSONAL DATA ---"
-msgstr ""
+msgstr "个人资料"
 
 msgid "--- SYSTEM ---"
-msgstr ""
+msgstr "---系统---"
 
 msgid "..."
 msgstr "..."
 
 msgid ".............."
-msgstr ""
+msgstr ".............."
 
 msgid "Active"
-msgstr ""
+msgstr "激活"
 
 msgid "Active:"
-msgstr ""
+msgstr "活跃:"
 
 msgid "Add"
-msgstr ""
+msgstr "添加"
 
 msgid "Add Contact"
-msgstr ""
+msgstr "添加合同"
 
 msgid "Add Event"
-msgstr ""
+msgstr "添加事件"
 
 msgid "Add date and time to exported filenames"
-msgstr ""
+msgstr "为导出的文件名添加日期和时间"
 
 msgid "Add timestamp to filename"
-msgstr ""
+msgstr "将时间戳添加到文件名"
 
 msgid "Alert sound"
-msgstr ""
+msgstr "铃声提醒"
 
 msgid "Already on today's event"
-msgstr ""
+msgstr "已在今天的活动中"
 
 msgid "April"
 msgstr "四月"
@@ -78,187 +78,187 @@ msgid "August"
 msgstr "八月"
 
 msgid "Automatically clean old notified events"
-msgstr ""
+msgstr "自动清除旧的通知事件"
 
 msgid "Autostart delay"
-msgstr ""
+msgstr "自动启动延迟"
 
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 msgid "Birthday (YYYY-MM-DD)"
-msgstr ""
+msgstr "生日（ YYYY-MM-DD ）"
 
 msgid "Birthdays: {0}"
-msgstr ""
+msgstr "生日"
 
 msgid "Blue"
-msgstr ""
+msgstr "蓝"
 
 msgid "Browse ICS Files"
-msgstr ""
+msgstr "浏览ICS文件"
 
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
-msgstr ""
+msgstr "今日生日联系人："
 
 msgid "CSV format"
-msgstr ""
+msgstr "CSV格式"
 
 msgid "Calendar"
-msgstr ""
+msgstr "日历"
 
 msgid "Calendar Planner"
-msgstr ""
+msgstr "日历规划器"
 
 msgid "Calendar Planner | Ready"
-msgstr ""
+msgstr "日历规划器|准备就绪"
 
 msgid "Calendar Settings"
-msgstr ""
+msgstr "日历设置"
 
 msgid "Calendar with events and notifications"
-msgstr ""
+msgstr "包含活动和通知的日历"
 
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 msgid "Cancelling..."
-msgstr ""
+msgstr "正在取消..."
 
 msgid "Cannot delete: Contact has no ID"
-msgstr ""
+msgstr "无法删除：联系人没有ID"
 
 msgid "Cannot initialize event system: {0}"
-msgstr ""
+msgstr "无法初始化事件系统： {0}"
 
 msgid "Categories (comma separated)"
-msgstr ""
+msgstr "文章分类 (逗号分隔)"
 
 msgid "Check for Updates"
-msgstr ""
+msgstr "检查更新"
 
 msgid "Checking for updates..."
-msgstr ""
+msgstr "正在检查更新..."
 
 msgid "Choose between legacy text files or standard vCard format"
-msgstr ""
+msgstr "选择传统文本文件或标准vCard格式"
 
 msgid "Choose where to save exported files"
-msgstr ""
+msgstr "选择保存导出文件的位置"
 
 msgid "Clean after days"
-msgstr ""
+msgstr "失效周期为"
 
 msgid "Clean old notifications"
-msgstr ""
+msgstr "清除旧通知"
 
 msgid "Cleaned {0} duplicate events"
-msgstr ""
+msgstr "已清除 {0} 个重复的事件"
 
 msgid "Cleaned {0} old ICS files"
-msgstr ""
+msgstr "已清理 {0} 个旧ICS文件"
 
 msgid "Cleanup Old Files"
-msgstr ""
+msgstr "清理旧文件"
 
 msgid "Cleanup duplicate events"
-msgstr ""
+msgstr "清理重复事件"
 
 msgid "Cleanup past events"
-msgstr ""
+msgstr "清理过去的事件"
 
 msgid "Clear ALL holiday entries from all date files?"
-msgstr ""
+msgstr "清除所有日期文件中的所有假日条目？"
 
 msgid "Clear All"
-msgstr ""
+msgstr "全部清除"
 
 msgid "Clear Holiday Database"
-msgstr ""
+msgstr "清除假日数据库"
 
 msgid "Close"
 msgstr "关闭"
 
 msgid "Color days with holidays"
-msgstr ""
+msgstr "带假日的彩色天数"
 
 msgid "Color for days with events"
-msgstr ""
+msgstr "有事件的天数的颜色"
 
 msgid "Color for holiday days"
-msgstr ""
+msgstr "节假日的颜色"
 
 msgid "Completed"
-msgstr ""
+msgstr "更新推荐"
 
 msgid "Contact"
-msgstr ""
+msgstr "联系方式"
 
 msgid "Contact '{0}' deleted successfully"
-msgstr ""
+msgstr "联系人“ {0} ”已成功删除"
 
 msgid "Contact:"
-msgstr ""
+msgstr "联系我们："
 
 msgid "Contacts directory not found"
-msgstr ""
+msgstr "未找到联系人目录"
 
 msgid "Contacts imported from ICS file!"
-msgstr ""
+msgstr "联系人已从ICS文件导入！"
 
 msgid "Contacts: 0"
-msgstr ""
+msgstr "联系:%0"
 
 msgid "Contacts: {0}/{1}"
-msgstr ""
+msgstr "联系人： {0}/{1}"
 
 msgid "Conversion error: {0}"
-msgstr ""
+msgstr "转换错误： {0}"
 
 msgid "Convert all existing data to vCard format?"
-msgstr ""
+msgstr "是否将所有现有数据转换为vCard格式？"
 
 msgid "Convert to ICS format"
-msgstr ""
+msgstr "转换为ICS格式"
 
 msgid "Convert to legacy format"
-msgstr ""
+msgstr "转换为旧格式"
 
 msgid "Convert to vCard format"
-msgstr ""
+msgstr "转换为vCard格式"
 
 msgid "Converted {0} events to {1}"
-msgstr ""
+msgstr "已将 {0} 个事件转换为 {1}"
 
 msgid "Could not check for updates. Check internet connection."
-msgstr ""
+msgstr "无法检查更新。请检查互联网连接。"
 
 msgid "Could not check for updates: %s"
-msgstr ""
+msgstr "无法检查更新： %s"
 
 msgid "Could not read file"
-msgstr ""
+msgstr "无法读取文件 "
 
 msgid "Cyan"
-msgstr ""
+msgstr "青色"
 
 msgid "Database converted to vCard format"
-msgstr ""
+msgstr "数据库已转换为vCard格式"
 
 msgid "Database format"
-msgstr ""
+msgstr "数据库格式"
 
 msgid "Date"
-msgstr ""
+msgstr "日期"
 
 msgid "Date (YYYY-MM-DD)"
-msgstr ""
+msgstr "日期：年/月/日"
 
 msgid "Date range: {0} to {1}"
-msgstr ""
+msgstr "范围: {0} 至 {1}"
 
 msgid "Date:"
-msgstr ""
+msgstr "时间:"
 
 msgid "Day +"
 msgstr "天 +"
@@ -267,385 +267,385 @@ msgid "Day -"
 msgstr "天 -"
 
 msgid "Days to keep notifications in cache"
-msgstr ""
+msgstr "在缓存中保留通知的天数"
 
 msgid "December"
 msgstr "十二月"
 
 msgid "Default event time"
-msgstr ""
+msgstr "默认事件时间"
 
 msgid "Default format for exported files"
-msgstr ""
+msgstr "导出文件的默认格式"
 
 msgid "Default minutes before event to show notification"
-msgstr ""
+msgstr "默认在活动开始前几分钟显示通知"
 
 msgid "Default notification minutes"
-msgstr ""
+msgstr "默认通知分钟数"
 
 msgid "Default time for new events (HH:MM format)"
-msgstr ""
+msgstr "新事件的默认时间（ HH:MM格式）"
 
 msgid "Delete"
-msgstr ""
+msgstr "删除"
 
 msgid "Delete ALL ICS events"
-msgstr ""
+msgstr "删除所有事件"
 
 msgid "Delete ALL contacts"
-msgstr ""
+msgstr "删除所有联系人"
 
 msgid "Delete ALL events"
-msgstr ""
+msgstr "删除所有事件"
 
 msgid "Delete File"
-msgstr ""
+msgstr "删除文件？"
 
 msgid "Delete ICS files older than 30 days?"
-msgstr ""
+msgstr "删除超过30天的ICS文件？"
 
 msgid "Delete file"
-msgstr ""
+msgstr "删除文件"
 
 msgid "Delete {0}?"
-msgstr ""
+msgstr "删除“{0}”？"
 
 msgid "Delete: {0}"
-msgstr ""
+msgstr "删除:{0}"
 
 msgid "Deleted {0} ICS events"
-msgstr ""
+msgstr "已删除 {0} 个ICS事件"
 
 msgid "Deleted {0} contacts from database"
-msgstr ""
+msgstr "已从数据库中删除 {0} 个联系人"
 
 msgid "Description"
-msgstr ""
+msgstr "详情描述"
 
 msgid "Description:"
-msgstr ""
+msgstr "详情描述"
 
 msgid "Directory: {0}"
-msgstr ""
+msgstr "目录： {0}"
 
 msgid "Disk"
-msgstr ""
+msgstr "磁盘"
 
 msgid "Duplicates cleaned: %d"
-msgstr ""
+msgstr "已清除的重复项： %d"
 
 msgid "E:{0}"
-msgstr ""
+msgstr "电邮：{0}"
 
 msgid "Edit"
-msgstr ""
+msgstr "编辑"
 
 msgid "Edit Contact"
-msgstr ""
+msgstr "编辑联系人"
 
 msgid "Edit Contact ({0}/{1})"
-msgstr ""
+msgstr "编辑联系人({0}/{1})"
 
 msgid "Edit Date"
-msgstr ""
+msgstr "编辑日期"
 
 msgid "Edit Description"
-msgstr ""
+msgstr "编辑说明"
 
 msgid "Edit Event"
-msgstr ""
+msgstr "编辑事件"
 
 msgid "Edit Event ({0}/{1})"
-msgstr ""
+msgstr "编辑活动({0}/{1})"
 
 msgid "Edit Event ({0}/{1}) - Today"
-msgstr ""
+msgstr "编辑活动({0}/{1}) -今天"
 
 msgid "Edit Holiday"
-msgstr ""
+msgstr "编辑假期"
 
 msgid "Edit ICS Event"
-msgstr ""
+msgstr "编辑ICS事件"
 
 msgid "Edit Note"
-msgstr ""
+msgstr "编辑备注"
 
 msgid "Edit Sign"
-msgstr ""
+msgstr "编辑符号"
 
 msgid "Edit: {0}"
-msgstr ""
+msgstr "编辑:{0}"
 
 msgid "Email"
-msgstr ""
+msgstr "邮箱"
 
 msgid "Enable autostart"
-msgstr ""
+msgstr "启用streamlink服务器的自动启动 以便在您的频道列表中播放youtube视频. 此安装streamlink服务插件包，需要重新启动!"
 
 msgid "Enable debug mode"
-msgstr ""
+msgstr "启用调试:"
 
 msgid "Enable event management with date/time"
-msgstr ""
+msgstr "使用日期/时间启用事件管理"
 
 msgid "Enable event system"
-msgstr ""
+msgstr "事件之后"
 
 msgid "Enable holiday coloring"
-msgstr ""
+msgstr "启用调试"
 
 msgid "Enable notifications"
-msgstr ""
+msgstr "显示直方图"
 
 msgid "Enter"
-msgstr ""
+msgstr "确认"
 
 msgid "Error deleting contact"
-msgstr ""
+msgstr "删除联系人时出错"
 
 msgid "Error deleting contact '{0}'"
-msgstr ""
+msgstr "删除联系人“ {0} ”时出错"
 
 msgid "Error deleting database: {0}"
-msgstr ""
+msgstr "删除数据库时出错： {0}"
 
 msgid "Error getting ICS statistics"
-msgstr ""
+msgstr "获取ICS统计信息时出错"
 
 msgid "Error opening ICS browser: %s"
-msgstr ""
+msgstr "打开ICS浏览器时出错： %s"
 
 msgid "Error opening ICS importer: {0}"
-msgstr ""
+msgstr "打开ICS导入程序时出错： {0}"
 
 msgid "Error opening event dialog"
-msgstr ""
+msgstr "[错误] 无法打开文件 %s"
 
 msgid "Error saving ICS data"
-msgstr ""
+msgstr "错误保ICS存数据"
 
 msgid "Error saving contact"
-msgstr ""
+msgstr "保存联系人时出错"
 
 msgid "Error saving data"
-msgstr ""
+msgstr "保存数据"
 
 msgid "Error saving event"
-msgstr ""
+msgstr "保存事件记录时出错"
 
 msgid "Error: {0}"
-msgstr ""
+msgstr "错误：{0}"
 
 msgid "Errors: %d"
-msgstr ""
+msgstr "错误 （%d）"
 
 msgid "Errors: {0}"
-msgstr ""
+msgstr "错误： {0}"
 
 msgid "Event"
-msgstr ""
+msgstr "事件之后"
 
 msgid "Event '{0}' deleted successfully"
-msgstr ""
+msgstr "活动已成功删除。"
 
 msgid "Event '{0}' saved successfully"
-msgstr ""
+msgstr "屏幕截图已成功保存！"
 
 msgid "Event check interval"
-msgstr ""
+msgstr "事件之后"
 
 msgid "Event color"
-msgstr ""
+msgstr "事件之后"
 
 msgid "Event manager not available"
-msgstr ""
+msgstr "Chkroot管理器操作"
 
 msgid "Event manager not initialized"
-msgstr ""
+msgstr "没有找到硬盘或硬盘没有初始化！"
 
 msgid "Event system is disabled. Enable it in settings first."
-msgstr ""
+msgstr "事件系统已禁用。首先在设置中启用它。"
 
 msgid "Event system is disabled. Enable it in settings."
-msgstr ""
+msgstr "事件系统已禁用。在设置中启用。"
 
 msgid "Event system is not enabled"
-msgstr ""
+msgstr "---系统---"
 
 msgid "Events found: {0}"
-msgstr ""
+msgstr "找到的事件:{0}"
 
 msgid "Events imported successfully"
-msgstr ""
+msgstr "屏幕截图已成功保存！"
 
 msgid "Export All to ICS File"
-msgstr ""
+msgstr "删除文件或目录（及其所有内容）"
 
 msgid "Export error: {0}"
-msgstr ""
+msgstr "导出"
 
 msgid "Export failed or no contacts to export"
-msgstr ""
+msgstr "导出失败或没有要导出的联系人"
 
 msgid "Export format"
-msgstr ""
+msgstr "导出格式"
 
 msgid "Export location"
-msgstr ""
+msgstr "导出位置"
 
 msgid "Export subdirectory"
-msgstr ""
+msgstr "导出子目录"
 
 msgid "Export vCard File"
-msgstr ""
+msgstr "导出vCard文件"
 
 msgid "Exporting contacts..."
-msgstr ""
+msgstr "正在导出联系人..."
 
 msgid "Failed to create backup. Update cancelled."
-msgstr ""
+msgstr "创建备份失败。更新已取消。"
 
 msgid "Failed to start import"
-msgstr ""
+msgstr "启动后开始加载"
 
 msgid "February"
 msgstr "二月"
 
 msgid "Field {0}/{1}: {2}"
-msgstr ""
+msgstr "字段 {0}/{1} ： {2}"
 
 msgid "File deleted"
-msgstr ""
+msgstr "文件已删除"
 
 msgid "File not found!"
-msgstr ""
+msgstr "找不到文件-重命名失败 ！"
 
 msgid "File re-imported successfully"
-msgstr ""
+msgstr "文件导入成功"
 
 msgid "File re-imported. Found {0} potential duplicates."
-msgstr ""
+msgstr "文件已重新导入。找到 {0} 个潜在的重复项。"
 
 msgid "File: {0}"
-msgstr ""
+msgstr "文件： {0}"
 
 msgid "Files is Empty..."
-msgstr ""
+msgstr "...文件为空..."
 
 msgid "Found {0} ICS files"
-msgstr ""
+msgstr "找到 {0} 个ICS文件"
 
 msgid "Fri"
 msgstr "星期五"
 
 msgid "Green"
-msgstr ""
+msgstr "绿色"
 
 msgid "Hard Disk"
-msgstr ""
+msgstr "硬盘"
 
 msgid "Hard Disk (/media/hdd)"
-msgstr ""
+msgstr "硬盘: "
 
 msgid "Holiday"
-msgstr ""
+msgstr "假日"
 
 msgid "Holiday color"
-msgstr ""
+msgstr "假日颜色"
 
 msgid "Holiday:"
-msgstr ""
+msgstr "假日:"
 
 msgid "Holidays imported"
-msgstr ""
+msgstr "节假日已导入"
 
 msgid "I:{0}"
-msgstr ""
+msgstr "I:{0}"
 
 msgid "ICS Events: 0"
-msgstr ""
+msgstr "ICS事件： 0"
 
 msgid "ICS Events: {0}/{1}"
-msgstr ""
+msgstr "ICS事件： {0}/{1}"
 
 msgid "ICS format"
-msgstr ""
+msgstr "ICS格式"
 
 msgid "ICS format (google calendar)"
-msgstr ""
+msgstr "ICS格式（谷歌日历）"
 
 msgid "ICS import feature not yet available: {0}"
-msgstr ""
+msgstr "ICS导入功能尚不可用： {0}"
 
 msgid "Import"
-msgstr ""
+msgstr "导入"
 
 msgid "Import All"
-msgstr ""
+msgstr "全部导入"
 
 msgid "Import Google Calendar (.ics)"
-msgstr ""
+msgstr "导入Google日历（ .ics ）"
 
 msgid "Import Holidays"
-msgstr ""
+msgstr "导入假日"
 
 msgid "Import ICS Contacts Google Calendar (.ics)"
-msgstr ""
+msgstr "导入ICS联系人Google日历(.ics)"
 
 msgid "Import completed"
-msgstr ""
+msgstr "导入完成"
 
 msgid "Import completed - Sorting contacts..."
-msgstr ""
+msgstr "导入完成-正在对联系人进行排序..."
 
 msgid "Import completed!"
-msgstr ""
+msgstr "更新推荐"
 
 msgid "Import completed. Ready."
-msgstr ""
+msgstr "更新推荐"
 
 msgid "Import error: {0}"
-msgstr ""
+msgstr "导入出错: {0}"
 
 msgid "Import events to calendar"
-msgstr ""
+msgstr "上次导入: %s 节目"
 
 msgid "Import vCard File"
-msgstr ""
+msgstr "错误的导入文件..."
 
 msgid "Imported ICS Files"
-msgstr ""
+msgstr "日历 ics 网址"
 
 msgid "Imported: %d"
-msgstr ""
+msgstr "页码 %d/%d"
 
 msgid "Imported: {0}"
-msgstr ""
+msgstr "0%"
 
 msgid "Imported: {0} contacts"
-msgstr ""
+msgstr "(搜索: '{0}')"
 
 msgid "Importing iCalendar File"
-msgstr ""
+msgstr "输入："
 
 msgid "Importing vCard File"
-msgstr ""
+msgstr "输入："
 
 msgid "Initializing..."
-msgstr ""
+msgstr "正在初始化存储设备..."
 
 msgid "Invalid birthday format. Use YYYY-MM-DD"
-msgstr ""
+msgstr "生日格式无效。使用YYYY-MM-DD"
 
 msgid "Invalid date format. Use YYYY-MM-DD"
-msgstr ""
+msgstr "日期格式无效。使用YYYY-MM-DD"
 
 msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
-msgstr ""
+msgstr "时间格式无效！使用HH: MM (00:00至23:59)"
 
 msgid "Invalid time format. Use HH:MM"
-msgstr ""
+msgstr "无效的时间格式。使用HH:MM"
 
 msgid "January"
 msgstr "一月"
@@ -657,22 +657,22 @@ msgid "June"
 msgstr "六月"
 
 msgid "Labels (comma separated)"
-msgstr ""
+msgstr "标签（以逗号分隔）"
 
 msgid "Legacy format (text files)"
-msgstr ""
+msgstr "旧版格式（文本文件）"
 
 msgid "Manage Contacts"
-msgstr ""
+msgstr "管理联系人"
 
 msgid "Manage Event"
-msgstr ""
+msgstr "管理事件"
 
 msgid "Manage ICS Events"
-msgstr ""
+msgstr "管理ICS事件"
 
 msgid "Manage ICS Files"
-msgstr ""
+msgstr "管理ICS文件"
 
 msgid "March"
 msgstr "三月"
@@ -681,7 +681,7 @@ msgid "May"
 msgstr "五月"
 
 msgid "Modified: {0}"
-msgstr ""
+msgstr "修改: {0}"
 
 msgid "Mon"
 msgstr "周一"
@@ -693,103 +693,103 @@ msgid "Month -"
 msgstr "月份 -"
 
 msgid "Name"
-msgstr ""
+msgstr "名 称"
 
 msgid "Name is required"
-msgstr ""
+msgstr "名称是必需项"
 
 msgid "Network Share"
-msgstr ""
+msgstr "网络共享"
 
 msgid "New Date"
-msgstr ""
+msgstr "新日期"
 
 msgid "Newest file: {0}"
-msgstr ""
+msgstr "最新文件:{0}"
 
 msgid "Next Field"
-msgstr ""
+msgstr "下一个字段"
 
 msgid "No ICS directory found"
-msgstr ""
+msgstr "未找到ICS目录"
 
 msgid "No ICS events found"
-msgstr ""
+msgstr "未找到任何事件"
 
 msgid "No ICS files found"
-msgstr ""
+msgstr "在此扫描期间未找到大文件"
 
 msgid "No ICS files in archive"
-msgstr ""
+msgstr "在压缩包中没有更多的文件"
 
 msgid "No TV service currently playing"
-msgstr ""
+msgstr "当前没有正在播放的电视服务"
 
 msgid "No contact files found"
-msgstr ""
+msgstr "未找到联系人文件"
 
 msgid "No contact selected"
-msgstr ""
+msgstr "未选择联系表格"
 
 msgid "No contacts found in database"
-msgstr ""
+msgstr "数据库中未找到联系人"
 
 msgid "No data found to convert"
-msgstr ""
+msgstr "未找到要转换的数据"
 
 msgid "No data to export"
-msgstr ""
+msgstr "选择要导出的数据"
 
 msgid "No duplicates found"
-msgstr ""
+msgstr "未找到重复项"
 
 msgid "No event selected"
-msgstr ""
+msgstr "没有选择事件"
 
 msgid "No events database found"
-msgstr ""
+msgstr "未找到事件数据库"
 
 msgid "No events for today"
-msgstr ""
+msgstr "今日暂无日程"
 
 msgid "No events to convert"
-msgstr ""
+msgstr "没有可显示的事件"
 
 msgid "No file in database..."
 msgstr "数据库中没有文件..."
 
 msgid "No file selected"
-msgstr ""
+msgstr "没有选择文件或选择了错误的文件，请先尝试正确的文件！"
 
 msgid "No past events to remove"
-msgstr ""
+msgstr "移除"
 
 msgid "No sorting (original order)"
-msgstr ""
+msgstr "CrossEPG-提供程序启动顺序"
 
 msgid "No sound"
-msgstr ""
+msgstr "无声音"
 
 msgid "Note"
-msgstr ""
+msgstr "备注"
 
 msgid "Note:"
-msgstr ""
+msgstr "备注："
 
 msgid "Notes"
-msgstr ""
+msgstr "发行说明"
 
 msgid "Notification sound type"
-msgstr ""
+msgstr "通知声音"
 
 msgid "Notification tone"
-msgstr ""
+msgstr "隐藏静音通知"
 
 msgid "Notify"
-msgstr ""
+msgstr "通知"
 
 msgid "Notify:"
-msgstr ""
+msgstr "通知："
 
 msgid "November"
 msgstr "十一月"
@@ -798,85 +798,85 @@ msgid "October"
 msgstr "十月"
 
 msgid "Oldest file: {0}\n"
-msgstr ""
+msgstr "最新文件:{0}\n"
 
 msgid "Orange"
-msgstr ""
+msgstr "橙色"
 
 msgid "P:{0}/{1}"
-msgstr ""
+msgstr "P: {0}/{1}"
 
 msgid "Phone"
-msgstr ""
+msgstr "手机"
 
 msgid "Play a sound when event notification appears"
-msgstr ""
+msgstr "事件通知出现时播放声音"
 
 msgid "Play sound with notifications"
-msgstr ""
+msgstr "显示直方图"
 
 msgid "Please restart Enigma2 manually."
-msgstr ""
+msgstr "重启系统界面"
 
 msgid "Plugin Directory"
-msgstr ""
+msgstr "父目录"
 
 msgid "Plugin is up to date"
-msgstr ""
+msgstr "向上移动插件"
 
 msgid "Press GREEN to import"
-msgstr ""
+msgstr "按OK进行多系统选择."
 
 msgid "Press TEXT to search"
-msgstr ""
+msgstr "编辑要搜索的文本"
 
 msgid "Preview file content"
-msgstr ""
+msgstr "预览"
 
 msgid "Progress: {0}%"
-msgstr ""
+msgstr "进度:{0}%"
 
 msgid "Re-import"
-msgstr ""
+msgstr "再次导入"
 
 msgid "Red"
-msgstr ""
+msgstr "红"
 
 msgid "Refresh"
-msgstr ""
+msgstr "刷新"
 
 msgid "Refreshed"
-msgstr ""
+msgstr "已刷新"
 
 msgid "Remove"
-msgstr ""
+msgstr "移除"
 
 msgid "Remove Date"
-msgstr ""
+msgstr "删除日期"
 
 msgid "Removed {0} past events"
-msgstr ""
+msgstr "已删除 {0} 个过去的事件"
 
 msgid "Repeat"
-msgstr ""
+msgstr "重复"
 
 msgid "Repeat (none/daily/weekly/monthly/yearly)"
-msgstr ""
+msgstr "重复（无/每日/每周/每月/每年）"
 
 msgid "Repeat:"
-msgstr ""
+msgstr "重复"
 
 msgid "Repeat: {0}"
-msgstr ""
+msgstr "重复: 0."
 
 msgid "Root Home (/home/root)"
-msgstr ""
+msgstr "根主页(/home/root)"
 
 msgid "S:{0}"
-msgstr ""
+msgstr "S:{0}"
 
 msgid "SCHEDULED EVENTS:"
-msgstr ""
+msgstr "预定事件"
 
 msgid "Sat"
 msgstr "星期六"
@@ -885,292 +885,292 @@ msgid "Save"
 msgstr "保存"
 
 msgid "Search contacts"
-msgstr ""
+msgstr "搜索联系人"
 
 msgid "Search events"
-msgstr ""
+msgstr "搜索事件"
 
 msgid "Search:"
-msgstr ""
+msgstr "搜索:"
 
 msgid "Seconds between event checks (advanced)"
-msgstr ""
+msgstr "事件检查之间的秒数（高级）"
 
 msgid "Seconds to wait after boot before starting notifications"
-msgstr ""
+msgstr "启动后开始通知之前等待的秒数"
 
 msgid "Select .ics file to import"
-msgstr ""
+msgstr "错误的导入文件..."
 
 msgid "Select a file, not a folder"
-msgstr ""
+msgstr "选择一个文件，而不是文件夹"
 
 msgid "Select vCard file to import"
-msgstr ""
+msgstr "选择要导入的 vCard 文件"
 
 msgid "Selected: {0}"
-msgstr ""
+msgstr "已选择: {0}"
 
 msgid "September"
 msgstr "九月"
 
 msgid "Short beep"
-msgstr ""
+msgstr "简短"
 
 msgid "Show 'H' marker on holiday days"
-msgstr ""
+msgstr "在假日显示“H”标记"
 
 msgid "Show Statistics"
-msgstr ""
+msgstr "ECM 统计"
 
 msgid "Show Today's Holidays"
-msgstr ""
+msgstr "今天"
 
 msgid "Show Upcoming Holidays"
-msgstr ""
+msgstr "-显示状态"
 
 msgid "Show debug messages in console/log"
-msgstr ""
+msgstr "将控制台消息的日志保存到文件"
 
 msgid "Show event indicators"
-msgstr ""
+msgstr "显示事件信息插件"
 
 msgid "Show event statistics"
-msgstr ""
+msgstr "ECM 统计"
 
 msgid "Show holiday indicators"
-msgstr ""
+msgstr "显示"
 
 msgid "Show markers on days with events"
-msgstr ""
+msgstr "显示事件之间的分界线."
 
 msgid "Show notifications for upcoming events"
-msgstr ""
+msgstr "显示直方图"
 
 msgid "Sign"
-msgstr ""
+msgstr "签名"
 
 msgid "Sign:"
-msgstr ""
+msgstr "签名："
 
 msgid "Size: {0:.1f} KB"
-msgstr ""
+msgstr "大小： {0: .1f} KB"
 
 msgid "Size: {0:.1f} MB"
-msgstr ""
+msgstr "大小： {0: .1f} MB"
 
 msgid "Skipped: %d"
-msgstr ""
+msgstr "已跳过：%d"
 
 msgid "Skipped: {0}"
-msgstr ""
+msgstr "跳过:{0}"
 
 msgid "Skipped: {0} (duplicates)"
-msgstr ""
+msgstr "已跳过： {0} （重复）"
 
 msgid "Sort"
-msgstr ""
+msgstr "排序"
 
 msgid "Sort by birthday (month/day)"
-msgstr ""
+msgstr "按生日（月/日）排序"
 
 msgid "Sort by category"
-msgstr ""
+msgstr "分类排序"
 
 msgid "Sort by name (alphabetical)"
-msgstr ""
+msgstr "按名称排序（按字母顺序）"
 
 msgid "Sorted by birthday"
-msgstr ""
+msgstr "按生日排序"
 
 msgid "Sorted by category"
-msgstr ""
+msgstr "按类别排序"
 
 msgid "Sorted by date"
-msgstr ""
+msgstr "按日期排序"
 
 msgid "Sorted by name"
-msgstr ""
+msgstr "按名称排序"
 
 msgid "Sorted by title"
-msgstr ""
+msgstr "按标题排序"
 
 msgid "Sorted by: Birthday"
-msgstr ""
+msgstr "排序方式：生日"
 
 msgid "Sorted by: Category"
-msgstr ""
+msgstr "排序方式：类别"
 
 msgid "Sorted by: Date"
-msgstr ""
+msgstr "排序方式：日期"
 
 msgid "Sorted by: Name"
-msgstr ""
+msgstr "排序方式：名称"
 
 msgid "Sorted by: Title"
-msgstr ""
+msgstr "排序方式：标题"
 
 msgid "Start event notifications in background (recommended)"
-msgstr ""
+msgstr "在后台启动事件通知（推荐）"
 
 msgid "Subdirectory name for exports (created automatically)"
-msgstr ""
+msgstr "用于导出的子目录名称（自动创建）"
 
 msgid "Successfully converted {0} entries to ICS format"
-msgstr ""
+msgstr "已成功将 {0} 个条目转换为ICS格式"
 
 msgid "Sun"
 msgstr "星期天"
 
 msgid "Tags: {0}"
-msgstr ""
+msgstr "标签： {0}"
 
 msgid "Temporary Storage (/tmp)"
-msgstr ""
+msgstr "临时存储(/tmp)"
 
 msgid "Test error: %s"
-msgstr ""
+msgstr "测试错误：%s"
 
 msgid "Text format"
-msgstr ""
+msgstr "文本格式"
 
 msgid "Thu"
 msgstr "星期四"
 
 msgid "Time"
-msgstr ""
+msgstr "时间"
 
 msgid "Time (HH:MM)"
-msgstr ""
+msgstr "时间 (HH:MM)"
 
 msgid "Time:"
-msgstr ""
+msgstr "时间:"
 
 msgid "Title"
-msgstr ""
+msgstr "标题"
 
 msgid "Title and date are required!"
-msgstr ""
+msgstr "标题和日期为必填项！"
 
 msgid "Title is required"
-msgstr ""
+msgstr "标题为必填项"
 
 msgid "Title:"
-msgstr ""
+msgstr "标题:"
 
 msgid "Today"
-msgstr ""
+msgstr "今天"
 
 msgid "Total events: {0}"
-msgstr ""
+msgstr "总计活动: {0}"
 
 msgid "Total files: {0}\n"
-msgstr ""
+msgstr "所有文件: {0}\n"
 
 msgid "Total size: {0:.1f} KB\n"
-msgstr ""
+msgstr "总大小: {0: .1f} KB\n"
 
 msgid "Total: %d"
-msgstr ""
+msgstr "总计: %d"
 
 msgid "Total: {0}"
-msgstr ""
+msgstr "总计: {0}"
 
 msgid "Tue"
 msgstr "星期二"
 
 msgid "Type of sound to play with notifications"
-msgstr ""
+msgstr "使用通知播放的声音类型"
 
 msgid "U:{0}"
-msgstr ""
+msgstr "U: {0}"
 
 msgid "USB Drive"
-msgstr ""
+msgstr "U盘"
 
 msgid "USB Drive (/media/usb)"
-msgstr ""
+msgstr "USB驱动器(/media/usb)"
 
 msgid "Unable to play test sound"
-msgstr ""
+msgstr "无法播放测试声音"
 
 msgid "Update available!"
-msgstr ""
+msgstr "更新可用！"
 
 msgid "Update cancelled"
-msgstr ""
+msgstr "更新取消"
 
 msgid "Update check error"
-msgstr ""
+msgstr "更新检查错误"
 
 msgid "Update check failed"
-msgstr ""
+msgstr "更新检查失败"
 
 msgid "Update completed successfully!"
-msgstr ""
+msgstr "成功完成更新!"
 
 msgid "Update error: %s"
-msgstr ""
+msgstr "更新错误： %s"
 
 msgid "Update failed"
-msgstr ""
+msgstr "更新失败!"
 
 msgid "Update failed and backup restore also failed!"
-msgstr ""
+msgstr "更新失败，备份还原也失败！"
 
 msgid "Update failed. Restored from backup."
-msgstr ""
+msgstr "更新失败。已从备份还原。"
 
 msgid "Update successful!"
-msgstr ""
+msgstr "成功"
 
 msgid "Updated: {0}"
-msgstr ""
+msgstr "已更新: {0}"
 
 msgid "Updating plugin... Please wait"
-msgstr ""
+msgstr "正在更新插件...请稍候"
 
 msgid "Using legacy database format"
-msgstr ""
+msgstr "使用旧版数据库格式"
 
 msgid "View"
-msgstr ""
+msgstr "查看"
 
 msgid "Waiting for thread to stop..."
-msgstr ""
+msgstr "正在等待线程停止..."
 
 msgid "Wed"
 msgstr "星期三"
 
 msgid "White"
-msgstr ""
+msgstr "白色"
 
 msgid "Yellow"
-msgstr ""
+msgstr "黄色"
 
 msgid "You have the latest version of Calendar."
-msgstr ""
+msgstr "恭喜！您已经拥有最新版本..."
 
 msgid "not sorted"
-msgstr ""
+msgstr "未排序"
 
 msgid "sorted by birthday"
-msgstr ""
+msgstr "按生日排序"
 
 msgid "sorted by category"
-msgstr ""
+msgstr "按类别排序"
 
 msgid "sorted by name"
-msgstr ""
+msgstr "按名称排序"
 
 msgid "vCard format"
-msgstr ""
+msgstr "vCard 格式"
 
 msgid "vCard format (standard)"
-msgstr ""
+msgstr "vCard格式（标准）"
 
 msgid "vCard import feature not available: {0}"
-msgstr ""
+msgstr "vCard导入功能不可用:{0}"
 
 #~ msgid ""
 #~ "Calendar\n"
