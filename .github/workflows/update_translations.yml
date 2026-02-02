@@ -28,8 +28,25 @@ jobs:
           python3-lxml \
           python3-bs4
         
+    - name: Verify script exists
+      run: |
+        echo "📁 Repository structure:"
+        find . -maxdepth 3 -type f -name "*.py" | grep -E "(update|translation)" | head -20
+        echo ""
+        echo "🔍 Looking for update_all_plugins.py:"
+        if [ -f "update_all_plugins.py" ]; then
+          echo "✅ Found: update_all_plugins.py"
+          ls -la update_all_plugins.py
+        else
+          echo "❌ ERROR: update_all_plugins.py not found in root!"
+          echo "Current directory: $(pwd)"
+          echo "Files in root:"
+          ls -la
+        fi
+        
     - name: Run universal translation updater
       run: |
+        echo "🚀 Starting translation update for ALL plugins..."
         python3 update_all_plugins.py
         
     - name: Show translation report
@@ -37,26 +54,30 @@ jobs:
         if [ -f "translation_update_report.json" ]; then
           echo "📊 TRANSLATION REPORT:"
           echo "======================"
-          cat translation_update_report.json | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-print(f'Total plugins: {data[\"total_plugins\"]}')
-print(f'Successful: {data[\"successful\"]}')
-print(f'Failed: {data[\"failed\"]}')
-print(f'Timestamp: {data[\"timestamp\"]}')
-print()
-print('Details:')
-for detail in data['details']:
-    status = '✅' if detail['success'] else '❌'
-    print(f'{status} {detail[\"plugin_name\"]}:')
-    print(f'    New strings: {detail[\"new_strings\"]}')
-    print(f'    Updated PO: {detail[\"updated_po\"]}')
-    print(f'    Compiled MO: {detail[\"compiled_mo\"]}')
-    if detail['errors']:
-        print(f'    Errors: {detail[\"errors\"]}')
-          "
+          python3 << 'EOF'
+import json, os
+
+if os.path.exists("translation_update_report.json"):
+    with open("translation_update_report.json", "r") as f:
+        data = json.load(f)
+    
+    print(f"Total plugins: {data['total_plugins']}")
+    print(f"Successful: {data['successful']}")
+    print(f"Failed: {data['failed']}")
+    print(f"Timestamp: {data['timestamp']}")
+    print()
+    print("Details:")
+    for detail in data['details']:
+        status = '✅' if detail['success'] else '❌'
+        print(f"{status} {detail['plugin_name']}:")
+        print(f"    New strings: {detail['new_strings']}")
+        print(f"    Updated PO: {detail['updated_po']}")
+        print(f"    Compiled MO: {detail['compiled_mo']}")
+        if detail['errors']:
+            print(f"    Errors: {detail['errors']}")
+EOF
         else
-          echo "No translation report found"
+          echo "⚠️ No translation report found"
         fi
         
     - name: Commit changes if any
@@ -65,8 +86,11 @@ for detail in data['details']:
         git config --global user.email 'actions@github.com'
         
         # Check for any changed translation files
-        if git status --porcelain | grep -E '\.(po|mo|pot|json)$' | grep -v '^??'; then
-          echo "📝 Found changes to commit"
+        changed_files=$(git status --porcelain | grep -E '\.(po|mo|pot|json)$' | grep -v '^??' || true)
+        
+        if [ -n "$changed_files" ]; then
+          echo "📝 Found changes to commit:"
+          echo "$changed_files"
           git add --all
           git commit -m "🌍 Auto-update all plugin translations [$(date +'%Y-%m-%d %H:%M:%S')]"
           git push
@@ -74,7 +98,7 @@ for detail in data['details']:
           echo "✅ No translation files changed"
         fi
         
-    - name: Upload report artifact (updated to v4)
+    - name: Upload report artifact
       uses: actions/upload-artifact@v4
       with:
         name: translation-reports
@@ -92,28 +116,38 @@ for detail in data['details']:
         echo "" >> $GITHUB_STEP_SUMMARY
         
         if [ -f "translation_update_report.json" ]; then
-          cat translation_update_report.json | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
+          python3 << 'EOF' >> $GITHUB_STEP_SUMMARY
+import json, os, sys
 
-successful = data['successful']
-total = data['total_plugins']
-failed = data['failed']
-
-print(f'**Status:** {"✅ Success" if successful > 0 else "⚠️ Partial" if successful > 0 and failed > 0 else "❌ Failed"}')
-print('')
-print(f'**Processed plugins:** {total}')
-print(f'**Successful:** {successful}')
-print(f'**Failed:** {failed}')
-print('')
-print('**Plugin details:**')
-for detail in data['details']:
-    status = '✅' if detail['success'] else '❌'
-    print(f'- {status} **{detail[\"plugin_name\"]}**')
-    print(f'  - New strings: {detail[\"new_strings\"]}')
-    print(f'  - Updated PO files: {detail[\"updated_po\"]}')
-    print(f'  - Compiled MO files: {detail[\"compiled_mo\"]}')
-          " >> $GITHUB_STEP_SUMMARY
+if os.path.exists("translation_update_report.json"):
+    with open("translation_update_report.json", "r") as f:
+        data = json.load(f)
+    
+    successful = data['successful']
+    total = data['total_plugins']
+    failed = data['failed']
+    
+    if successful == total:
+        status = "✅ All plugins updated successfully"
+    elif successful > 0:
+        status = "⚠️ Partial success"
+    else:
+        status = "❌ All plugins failed"
+    
+    print(f"**Status:** {status}")
+    print('')
+    print(f"**Processed plugins:** {total}")
+    print(f"**Successful:** {successful}")
+    print(f"**Failed:** {failed}")
+    print('')
+    print("**Plugin details:**")
+    for detail in data['details']:
+        status = '✅' if detail['success'] else '❌'
+        print(f"- {status} **{detail['plugin_name']}**")
+        print(f"  - New strings: {detail['new_strings']}")
+        print(f"  - Updated PO files: {detail['updated_po']}")
+        print(f"  - Compiled MO files: {detail['compiled_mo']}")
+EOF
         else
           echo "**Status:** ❌ No report generated" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -123,3 +157,4 @@ for detail in data['details']:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "---" >> $GITHUB_STEP_SUMMARY
         echo "*Automatically generated by GitHub Actions*" >> $GITHUB_STEP_SUMMARY
+  
