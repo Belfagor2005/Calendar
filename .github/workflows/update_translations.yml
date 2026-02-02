@@ -79,3 +79,4 @@ for detail in data['details']:
         else
           echo "✅ No translation files changed"
         fi
+
