@@ -8,6 +8,8 @@ on:
       - '**/*.py'
       - '**/*.xml'
       - '**/locale/**'
+  pull_request:
+    branches: [ "main" ]
   schedule:
     - cron: '0 0 * * 0'  # Ogni domenica
   workflow_dispatch:
@@ -79,4 +81,3 @@ for detail in data['details']:
         else
           echo "✅ No translation files changed"
         fi
-
