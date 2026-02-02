@@ -1,5 +1,5 @@
-# .github/workflows/update-all-translations.yml
-name: Update All Plugin Translations
+# .github/workflows/update_translations.yml
+name: Update Translations
 
 on:
   push:
@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-all:
+  update-translations:
     runs-on: ubuntu-latest
     
     steps:
@@ -25,136 +25,57 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y \
           gettext \
-          python3-lxml \
-          python3-bs4
-        
-    - name: Verify script exists
+          python3-lxml
+          
+    - name: Verify main script exists
       run: |
-        echo "📁 Repository structure:"
-        find . -maxdepth 3 -type f -name "*.py" | grep -E "(update|translation)" | head -20
-        echo ""
-        echo "🔍 Looking for update_all_plugins.py:"
+        echo "📁 Checking for update_all_plugins.py..."
         if [ -f "update_all_plugins.py" ]; then
           echo "✅ Found: update_all_plugins.py"
           ls -la update_all_plugins.py
         else
-          echo "❌ ERROR: update_all_plugins.py not found in root!"
+          echo "❌ ERROR: update_all_plugins.py not found!"
           echo "Current directory: $(pwd)"
-          echo "Files in root:"
+          echo "Files:"
           ls -la
+          exit 1
         fi
         
-    - name: Run universal translation updater
+    - name: Run translation updater
       run: |
-        echo "🚀 Starting translation update for ALL plugins..."
+        echo "🚀 Running update_all_plugins.py..."
         python3 update_all_plugins.py
         
-    - name: Show translation report
+    - name: Show results
       run: |
         if [ -f "translation_update_report.json" ]; then
-          echo "📊 TRANSLATION REPORT:"
-          echo "======================"
-          python3 << 'EOF'
+          echo "📊 Translation Update Results:"
+          python3 -c "
 import json, os
-
-if os.path.exists("translation_update_report.json"):
-    with open("translation_update_report.json", "r") as f:
-        data = json.load(f)
-    
-    print(f"Total plugins: {data['total_plugins']}")
-    print(f"Successful: {data['successful']}")
-    print(f"Failed: {data['failed']}")
-    print(f"Timestamp: {data['timestamp']}")
-    print()
-    print("Details:")
-    for detail in data['details']:
-        status = '✅' if detail['success'] else '❌'
-        print(f"{status} {detail['plugin_name']}:")
-        print(f"    New strings: {detail['new_strings']}")
-        print(f"    Updated PO: {detail['updated_po']}")
-        print(f"    Compiled MO: {detail['compiled_mo']}")
-        if detail['errors']:
-            print(f"    Errors: {detail['errors']}")
-EOF
+with open('translation_update_report.json', 'r') as f:
+    data = json.load(f)
+print(f'Plugins processed: {data[\"total_plugins\"]}')
+print(f'Successful: {data[\"successful\"]}')
+print(f'Failed: {data[\"failed\"]}')
+for detail in data['details']:
+    status = '✅' if detail['success'] else '❌'
+    print(f'{status} {detail[\"plugin_name\"]}: {detail[\"new_strings\"]} new strings')
+          "
         else
-          echo "⚠️ No translation report found"
+          echo "⚠️ No translation report generated"
         fi
         
-    - name: Commit changes if any
+    - name: Commit and push changes
       run: |
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         
-        # Check for any changed translation files
-        changed_files=$(git status --porcelain | grep -E '\.(po|mo|pot|json)$' | grep -v '^??' || true)
-        
-        if [ -n "$changed_files" ]; then
-          echo "📝 Found changes to commit:"
-          echo "$changed_files"
+        # Check if there are any changes in translation files
+        if git diff --name-only | grep -E '\.(po|mo|pot|json)$' > /dev/null; then
+          echo "📝 Found translation changes, committing..."
           git add --all
-          git commit -m "🌍 Auto-update all plugin translations [$(date +'%Y-%m-%d %H:%M:%S')]"
+          git commit -m "🌍 Update translations [$(date +'%Y-%m-%d %H:%M:%S')]"
           git push
         else
           echo "✅ No translation files changed"
         fi
-        
-    - name: Upload report artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: translation-reports
-        path: |
-          translation_update_report.json
-          **/locale/**/*.pot
-          **/locale/**/*.po
-          **/locale/**/*.mo
-        retention-days: 7
-        
-    - name: Create workflow summary
-      if: always()
-      run: |
-        echo "### 📋 Translation Update Summary" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        
-        if [ -f "translation_update_report.json" ]; then
-          python3 << 'EOF' >> $GITHUB_STEP_SUMMARY
-import json, os, sys
-
-if os.path.exists("translation_update_report.json"):
-    with open("translation_update_report.json", "r") as f:
-        data = json.load(f)
-    
-    successful = data['successful']
-    total = data['total_plugins']
-    failed = data['failed']
-    
-    if successful == total:
-        status = "✅ All plugins updated successfully"
-    elif successful > 0:
-        status = "⚠️ Partial success"
-    else:
-        status = "❌ All plugins failed"
-    
-    print(f"**Status:** {status}")
-    print('')
-    print(f"**Processed plugins:** {total}")
-    print(f"**Successful:** {successful}")
-    print(f"**Failed:** {failed}")
-    print('')
-    print("**Plugin details:**")
-    for detail in data['details']:
-        status = '✅' if detail['success'] else '❌'
-        print(f"- {status} **{detail['plugin_name']}**")
-        print(f"  - New strings: {detail['new_strings']}")
-        print(f"  - Updated PO files: {detail['updated_po']}")
-        print(f"  - Compiled MO files: {detail['compiled_mo']}")
-EOF
-        else
-          echo "**Status:** ❌ No report generated" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "The translation update script did not generate a report." >> $GITHUB_STEP_SUMMARY
-        fi
-        
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "---" >> $GITHUB_STEP_SUMMARY
-        echo "*Automatically generated by GitHub Actions*" >> $GITHUB_STEP_SUMMARY
-  
