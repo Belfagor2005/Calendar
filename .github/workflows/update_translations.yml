@@ -1,0 +1,50 @@
+# .github/workflows/update-all-translations.yml
+name: Update All Plugin Translations
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**/*.py'
+      - '**/*.xml'
+      - '**/locale/**'
+  schedule:
+    - cron: '0 0 * * 0'  # Ogni domenica
+  workflow_dispatch:
+
+jobs:
+  update-all:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup translation tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gettext python3-lxml
+        
+    - name: Run universal translation updater
+      run: |
+        python3 update_all_plugins.py
+        
+    - name: Commit changes if any
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        
+        if git diff --name-only | grep -E '\.(po|mo|pot|json)$'; then
+          git add --all
+          git commit -m "🌍 Auto-update all plugin translations [$(date +'%Y-%m-%d')]"
+          git push
+        else
+          echo "No files changed"
+          
+    - name: Upload report artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: translation-reports
+        path: |
+          translation_update_report.json
+          **/locale/**/*.pot
