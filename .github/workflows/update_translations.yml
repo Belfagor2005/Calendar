@@ -1,4 +1,3 @@
-# .github/workflows/update_translations.yml
 name: Update Translations
 
 on:
