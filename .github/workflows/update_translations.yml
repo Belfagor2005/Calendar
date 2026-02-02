@@ -2,17 +2,17 @@
 name: Update Translations
 
 on:
-  push:
-    branches: [ main, master ]
-    paths:
-      - '**/*.py'
-      - '**/*.xml'
-      - '**/locale/**'
-  pull_request:
-    branches: [ "main" ]
-  schedule:
-    - cron: '0 0 * * 0'  # Ogni domenica
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "**/*.py"
+      - "**/*.xml"
+      - "**/locale/**"
+  schedule:
+    - cron: "0 0 * * 0"
 
 jobs:
   update-translations:
