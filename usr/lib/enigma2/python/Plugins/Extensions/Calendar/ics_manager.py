@@ -50,7 +50,9 @@ class ICSManager:
                         'modified': modified
                     })
             except Exception as e:
-                print("[ICSManager] Error reading file %s: %s" % (filepath, str(e)))
+                print(
+                    "[ICSManager] Error reading file %s: %s" %
+                    (filepath, str(e)))
 
         # Sort by modification date (newest first)
         ics_files.sort(key=lambda x: x['modified'], reverse=True)
@@ -65,7 +67,7 @@ class ICSManager:
         try:
             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                 return f.read()
-        except:
+        except BaseException:
             # Fallback to latin-1
             try:
                 with open(filepath, 'r', encoding='latin-1') as f:
@@ -82,7 +84,9 @@ class ICSManager:
                 os.remove(filepath)
                 return True
             except Exception as e:
-                print("[ICSManager] Error deleting %s: %s" % (filename, str(e)))
+                print(
+                    "[ICSManager] Error deleting %s: %s" %
+                    (filename, str(e)))
                 return False
         return False
 

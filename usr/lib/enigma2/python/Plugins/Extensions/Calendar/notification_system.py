@@ -72,7 +72,8 @@ class NotificationManager:
     def initialize(self, session):
         """Initialize manager with session"""
         if not self.is_initialized:
-            self.notification_window = session.instantiateDialog(SimpleNotifyWidget)
+            self.notification_window = session.instantiateDialog(
+                SimpleNotifyWidget)
             self.is_initialized = True
 
     def _hideNotification(self):
@@ -103,8 +104,9 @@ class NotificationManager:
             # Start auto-hide timer
             self.hide_timer.start(duration, True)
 
-            print("[NotificationManager] Notification displayed for %d ms" % duration)
-
+            print(
+                "[NotificationManager] Notification displayed for %d ms" %
+                duration)
 
     def show(self, message, seconds=5):
         """Simplified version with duration in seconds"""

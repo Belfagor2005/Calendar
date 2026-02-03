@@ -90,18 +90,22 @@ class DuplicateChecker:
             return False, "Missing name"
 
         # Use cache if requested
-        if use_cache and not hasattr(birthday_manager, '_normalized_contacts_cache'):
+        if use_cache and not hasattr(
+                birthday_manager,
+                '_normalized_contacts_cache'):
             DuplicateChecker._build_contacts_cache(birthday_manager)
 
-        contacts_to_check = (birthday_manager._normalized_contacts_cache
-                             if use_cache and hasattr(birthday_manager, '_normalized_contacts_cache')
-                             else birthday_manager.contacts)
+        contacts_to_check = (
+            birthday_manager._normalized_contacts_cache if use_cache and hasattr(
+                birthday_manager,
+                '_normalized_contacts_cache') else birthday_manager.contacts)
 
         for existing in contacts_to_check:
             if use_cache:
                 existing_norm = existing
             else:
-                existing_norm = DuplicateChecker.normalize_contact_data(existing)
+                existing_norm = DuplicateChecker.normalize_contact_data(
+                    existing)
 
             # 1. Identical names (CASE INSENSITIVE)
             if new_norm['FN'] == existing_norm['FN']:
@@ -221,11 +225,13 @@ def cleanup_duplicate_phones(birthday_manager):
                 contact['TEL'] = '|'.join(unique_phones)
                 birthday_manager.save_contact(contact)
                 cleaned_count += 1
-                print("[DuplicateCleaner] Cleaned phones: %s - from %d to %d numbers" % (
-                    contact.get('FN', 'N/A'),
-                    len(phones),
-                    len(unique_phones)
-                ))
+                print(
+                    "[DuplicateCleaner] Cleaned phones: %s - from %d to %d numbers" %
+                    (contact.get(
+                        'FN',
+                        'N/A'),
+                        len(phones),
+                        len(unique_phones)))
 
     return cleaned_count
 
@@ -246,18 +252,21 @@ def cleanup_duplicate_emails(birthday_manager):
                 clean_email = email_addr.lower()
                 if clean_email and clean_email not in seen:
                     seen.add(clean_email)
-                    unique_emails.append(email_addr)  # Keep original formatting
+                    # Keep original formatting
+                    unique_emails.append(email_addr)
 
             # If duplicates were found, update contact
             if len(unique_emails) < len(emails):
                 contact['EMAIL'] = '|'.join(unique_emails)
                 birthday_manager.save_contact(contact)
                 cleaned_count += 1
-                print("[DuplicateCleaner] Cleaned emails: %s - from %d to %d emails" % (
-                    contact.get('FN', 'N/A'),
-                    len(emails),
-                    len(unique_emails)
-                ))
+                print(
+                    "[DuplicateCleaner] Cleaned emails: %s - from %d to %d emails" %
+                    (contact.get(
+                        'FN',
+                        'N/A'),
+                        len(emails),
+                        len(unique_emails)))
 
     return cleaned_count
 

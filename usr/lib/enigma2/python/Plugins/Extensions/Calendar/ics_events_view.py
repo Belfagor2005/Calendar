@@ -130,7 +130,9 @@ class ICSEventsView(Screen):
             return True
 
         # Check if event has ICS-like properties
-        if hasattr(event, 'description') and ('imported' in event.description.lower() or 'google' in event.description.lower()):
+        if hasattr(
+                event, 'description') and (
+                'imported' in event.description.lower() or 'google' in event.description.lower()):
             return True
 
         return False
@@ -200,7 +202,9 @@ class ICSEventsView(Screen):
                     continue
 
                 # Search in description
-                if hasattr(event, 'description') and search_lower in event.description.lower():
+                if hasattr(
+                        event,
+                        'description') and search_lower in event.description.lower():
                     filtered_events.append(event)
                     continue
 
@@ -225,7 +229,8 @@ class ICSEventsView(Screen):
         # Create display list
         items = []
         for i, event in enumerate(self.displayed_events):
-            time_str = event.time[:5] if hasattr(event, 'time') and event.time else get_default_event_time()
+            time_str = event.time[:5] if hasattr(
+                event, 'time') and event.time else get_default_event_time()
 
             # Format: Numero. Date - Time - Title
             display = "{0}. {1} - {2} - {3}".format(
@@ -257,7 +262,8 @@ class ICSEventsView(Screen):
         # Update title with current position
         if count > 0:
             current_idx = self["events_list"].getSelectedIndex()
-            base_title = _("ICS Events: {0}/{1}").format(current_idx + 1, count)
+            base_title = _(
+                "ICS Events: {0}/{1}").format(current_idx + 1, count)
         else:
             base_title = _("ICS Events: 0")
 
@@ -283,7 +289,8 @@ class ICSEventsView(Screen):
             # Update title con posizione corrente
             if "title_label" in self:
                 current_idx = self["events_list"].getSelectedIndex()
-                base_title = _("ICS Events: {0}/{1}").format(current_idx + 1, total)
+                base_title = _(
+                    "ICS Events: {0}/{1}").format(current_idx + 1, total)
 
                 if self.is_searching and self.search_term:
                     base_title += _(" (Search: '{0}')").format(self.search_term)
@@ -302,7 +309,8 @@ class ICSEventsView(Screen):
             details = []
 
             # Date and time
-            time_str = event.time[:5] if hasattr(event, 'time') and event.time else get_default_event_time()
+            time_str = event.time[:5] if hasattr(
+                event, 'time') and event.time else get_default_event_time()
             details.append("{0} {1}".format(event.date, time_str))
 
             # Repeat info
@@ -311,7 +319,8 @@ class ICSEventsView(Screen):
 
             # Labels/categories
             if hasattr(event, 'labels') and event.labels:
-                details.append(_("Tags: {0}").format(", ".join(event.labels[:3])))
+                details.append(_("Tags: {0}").format(
+                    ", ".join(event.labels[:3])))
 
             # Description preview
             if hasattr(event, 'description') and event.description:
@@ -488,8 +497,7 @@ class ICSEventsView(Screen):
                 confirm_all_callback,
                 MessageBox,
                 _("No event selected.\n\nDelete ALL ICS imported events instead?"),
-                MessageBox.TYPE_YESNO
-            )
+                MessageBox.TYPE_YESNO)
             return
 
         # Create menu for deletion options
@@ -534,7 +542,9 @@ class ICSEventsView(Screen):
 
         def confirm_callback(result):
             if get_debug():
-                print("[IcsEventsView DEBUG] delete_all confirm_callback result:", result)
+                print(
+                    "[IcsEventsView DEBUG] delete_all confirm_callback result:",
+                    result)
 
             if not result:
                 return
@@ -569,8 +579,7 @@ class ICSEventsView(Screen):
             MessageBox,
             _("Delete ALL ICS events?\n\nThis will delete {0} events!\nThis cannot be undone!").format(
                 len(ics_events)),
-            MessageBox.TYPE_YESNO
-        )
+            MessageBox.TYPE_YESNO)
 
     def confirm_delete_single(self, event):
         """Delete single event"""
@@ -603,9 +612,9 @@ class ICSEventsView(Screen):
             final_confirm_callback,
             MessageBox,
             _("Confirm delete '{0}'?\n\nDate: {1}\n\nThis cannot be undone!").format(
-                event.title, event.date),
-            MessageBox.TYPE_YESNO
-        )
+                event.title,
+                event.date),
+            MessageBox.TYPE_YESNO)
 
     def close(self, changes_made=False):
         """Close the screen and indicate if changes were made"""

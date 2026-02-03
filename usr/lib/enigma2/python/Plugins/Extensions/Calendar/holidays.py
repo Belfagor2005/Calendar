@@ -86,10 +86,14 @@ class HolidaysManager:
             try:
                 makedirs(self.holidays_dir)
                 if get_debug():
-                    print("[Holidays] Created directory: {0}".format(self.holidays_dir))
+                    print(
+                        "[Holidays] Created directory: {0}".format(
+                            self.holidays_dir))
             except OSError:
                 if not exists(self.holidays_dir):
-                    print("[Holidays] Error creating directory: {0}".format(self.holidays_dir))
+                    print(
+                        "[Holidays] Error creating directory: {0}".format(
+                            self.holidays_dir))
 
     def _get_country_code(self, country_name):
         """Country code"""
@@ -128,8 +132,11 @@ class HolidaysManager:
         )
 
         if get_debug():
-            print("[Holidays DEBUG] Looking for holiday file: {0}".format(file_path))
-            print("[Holidays DEBUG] File exists: {0}".format(exists(file_path)))
+            print(
+                "[Holidays DEBUG] Looking for holiday file: {0}".format(file_path))
+            print(
+                "[Holidays DEBUG] File exists: {0}".format(
+                    exists(file_path)))
 
         if exists(file_path):
             try:
@@ -137,7 +144,8 @@ class HolidaysManager:
                     content = f.read()
 
                 if get_debug():
-                    print("[Holidays DEBUG] File content:\n{0}".format(content[:200]))
+                    print("[Holidays DEBUG] File content:\n{0}".format(
+                        content[:200]))
 
                 # Parse holiday field
                 for line in content.split('\n'):
@@ -147,7 +155,8 @@ class HolidaysManager:
                         if holiday_text and holiday_text.lower() != "none":
                             holidays.append(holiday_text)
                             if get_debug():
-                                print("[Holidays DEBUG] Found holiday: {0}".format(holiday_text))
+                                print(
+                                    "[Holidays DEBUG] Found holiday: {0}".format(holiday_text))
             except Exception as e:
                 print("[Holidays] Error reading file: " + str(e))
         else:
@@ -159,7 +168,9 @@ class HolidaysManager:
     def get_upcoming_holidays(self, days=30):
         """Upcoming holidays from the filesystem"""
         if get_debug():
-            print("[Holidays DEBUG] get_upcoming_holidays - language:", self.language)
+            print(
+                "[Holidays DEBUG] get_upcoming_holidays - language:",
+                self.language)
             print("[Holidays DEBUG] days parameter:", days)
 
         today = datetime.now()
@@ -192,7 +203,8 @@ class HolidaysManager:
 
                     if 'holiday:' in content:
                         if get_debug():
-                            print("[Holidays DEBUG] File contains 'holiday:' field")
+                            print(
+                                "[Holidays DEBUG] File contains 'holiday:' field")
                         # Parse holiday field
                         for line in content.split('\n'):
                             line = line.strip()
@@ -200,17 +212,21 @@ class HolidaysManager:
                                 holiday_text = line.split(':', 1)[1].strip()
                                 if holiday_text and holiday_text.lower() != "none":
                                     date_str = check_date.strftime('%Y-%m-%d')
-                                    holidays_list.append((date_str, holiday_text))
+                                    holidays_list.append(
+                                        (date_str, holiday_text))
                                     print("[Holidays DEBUG] Found holiday: {0} -> {1}".format(
                                         date_str, holiday_text[:50]))
                                 break
                     else:
-                        print("[Holidays DEBUG] File does NOT contain 'holiday:' field")
+                        print(
+                            "[Holidays DEBUG] File does NOT contain 'holiday:' field")
 
                 except Exception as e:
                     print("[Holidays] Error reading file: " + str(e))
         if get_debug():
-            print("[Holidays DEBUG] Returning {0} holidays".format(len(holidays_list)))
+            print(
+                "[Holidays DEBUG] Returning {0} holidays".format(
+                    len(holidays_list)))
         return holidays_list
 
     def import_from_holidata(self, country, language, year=None):
@@ -226,11 +242,13 @@ class HolidaysManager:
         # 1. FIRST clean all holidays of this country for this year
         cleaned = self._clean_country_holidays(country, year)
         if get_debug():
-            print("[Holidays] Cleaned {0} existing {1} holidays for {2}".format(
-                cleaned, country, year))
+            print(
+                "[Holidays] Cleaned {0} existing {1} holidays for {2}".format(
+                    cleaned, country, year))
 
         # 2. THEN import new holidays
-        locale = "{0}-{1}".format(language, self._get_country_code(country).upper())
+        locale = "{0}-{1}".format(language,
+                                  self._get_country_code(country).upper())
         url = "https://holidata.net/{0}/{1}.json".format(locale, year)
 
         if get_debug():
@@ -265,7 +283,7 @@ class HolidaysManager:
                                 'description': holiday_type
                             }
                             holidays.append(holiday)
-                    except:
+                    except BaseException:
                         continue
 
             if not holidays:
@@ -274,7 +292,9 @@ class HolidaysManager:
                 return False, "No holidays found in data"
 
             if get_debug():
-                print("[Holidays] Found {0} holidays to import".format(len(holidays)))
+                print(
+                    "[Holidays] Found {0} holidays to import".format(
+                        len(holidays)))
 
             # 3. Save new holidays to holidays directory
             saved = self._save_to_holiday_files(country, holidays, year)
@@ -294,14 +314,17 @@ class HolidaysManager:
     def _clean_country_holidays(self, country, year):
         """Remove ALL holidays of a specific country for a specific year"""
         if get_debug():
-            print("[Holidays] Cleaning holidays for {0}, year {1}".format(country, year))
+            print(
+                "[Holidays] Cleaning holidays for {0}, year {1}".format(
+                    country, year))
 
         # Usa il percorso holidays
         base_path = self.holidays_dir
 
         if not exists(base_path):
             if get_debug():
-                print("[Holidays] Holidays directory doesn't exist: {0}".format(base_path))
+                print(
+                    "[Holidays] Holidays directory doesn't exist: {0}".format(base_path))
             return 0
 
         cleaned_count = 0
@@ -326,11 +349,13 @@ class HolidaysManager:
 
                                 if existing and existing.lower() != "none":
                                     # Remove ALL holidays (clean slate for this country/year)
-                                    # We'll remove everything because we're importing fresh data
+                                    # We'll remove everything because we're
+                                    # importing fresh data
                                     new_lines.append('holiday: ')
                                     cleaned_count += 1
                                     if get_debug():
-                                        print("[Holidays] Cleared holiday from {0}".format(filename))
+                                        print(
+                                            "[Holidays] Cleared holiday from {0}".format(filename))
                                 else:
                                     new_lines.append(line)
                             else:
@@ -342,7 +367,9 @@ class HolidaysManager:
                             f.write(new_content)
 
                 except Exception as e:
-                    print("[Holidays] Error cleaning file {0}: {1}".format(filename, str(e)))
+                    print(
+                        "[Holidays] Error cleaning file {0}: {1}".format(
+                            filename, str(e)))
 
         if get_debug():
             print("[Holidays] Total cleaned: {0}".format(cleaned_count))
@@ -352,7 +379,9 @@ class HolidaysManager:
     def _save_to_holiday_files(self, country, holidays, year=None):
         """Save holidays to Holidays directory - SEPARATE from calendar data"""
         if get_debug():
-            print("[Holidays] Saving holidays to holidays directory for " + country)
+            print(
+                "[Holidays] Saving holidays to holidays directory for " +
+                country)
 
         saved_count = 0
 
@@ -383,7 +412,7 @@ class HolidaysManager:
                         continue
                 else:
                     continue
-            except:
+            except BaseException:
                 continue
 
             # Build file path in holidays directory
@@ -401,11 +430,13 @@ class HolidaysManager:
                 try:
                     makedirs(directory)
                     if get_debug():
-                        print("[Holidays] Created directory: {0}".format(directory))
+                        print(
+                            "[Holidays] Created directory: {0}".format(directory))
                 except OSError:
                     # directory creata da altro processo / race condition
                     if not exists(directory):
-                        print("[Holidays] Error creating directory: {0}".format(directory))
+                        print(
+                            "[Holidays] Error creating directory: {0}".format(directory))
                         continue
 
             # Prepare holiday text
@@ -445,7 +476,8 @@ class HolidaysManager:
 
                     # If no holiday field found, add it
                     if not holiday_found:
-                        # Find where to insert (after sign or at end of [day] section)
+                        # Find where to insert (after sign or at end of [day]
+                        # section)
                         in_day_section = False
                         final_lines = []
                         for line in new_lines:
@@ -491,7 +523,9 @@ class HolidaysManager:
                         year, month, day, holiday_text[:50]))
 
             except Exception as e:
-                print("[Holidays] ERROR saving file {0}: {1}".format(file_path, str(e)))
+                print(
+                    "[Holidays] ERROR saving file {0}: {1}".format(
+                        file_path, str(e)))
 
         return saved_count
 
@@ -572,7 +606,8 @@ class HolidaysImportScreen(Screen):
         for language in languages:
             self.append_log("  Language: {0}".format(language))
 
-            success, message = self.manager.import_from_holidata(selected, language)
+            success, message = self.manager.import_from_holidata(
+                selected, language)
 
             if success:
                 self.append_log("  ✓ " + message)
@@ -596,7 +631,8 @@ class HolidaysImportScreen(Screen):
             for language in languages:
                 self.append_log("  Language: {0}".format(language))
 
-                success, message = self.manager.import_from_holidata(country, language)
+                success, message = self.manager.import_from_holidata(
+                    country, language)
 
                 if success:
                     self.append_log("  ✓ " + message)
@@ -608,8 +644,10 @@ class HolidaysImportScreen(Screen):
                     self.append_log("  ✗ " + message)
 
         self.append_log("=" * 50)
-        self.append_log("All countries imported. Total holidays saved: {0}".format(total_saved))
-        self["status_label"].setText("Import completed: {0} holidays".format(total_saved))
+        self.append_log(
+            "All countries imported. Total holidays saved: {0}".format(total_saved))
+        self["status_label"].setText(
+            "Import completed: {0} holidays".format(total_saved))
 
     def append_log(self, message):
         current_text = self["log_text"].getText()
@@ -657,7 +695,9 @@ def clear_holidays_database(language):
                         f.write(new_content)
 
             except Exception as e:
-                print("[Holidays] Error clearing holiday in {0}: {1}".format(filename, str(e)))
+                print(
+                    "[Holidays] Error clearing holiday in {0}: {1}".format(
+                        filename, str(e)))
 
     return cleared_count, "Cleared {0} holiday entries".format(cleared_count)
 
@@ -691,7 +731,9 @@ def show_holidays_today(session):
         language = config.osd.language.value.split("_")[0].strip()
         today = datetime.now()
         if get_debug():
-            print("[Holidays DEBUG] Today: {0}".format(today.strftime('%Y-%m-%d')))
+            print(
+                "[Holidays DEBUG] Today: {0}".format(
+                    today.strftime('%Y-%m-%d')))
             print("[Holidays DEBUG] Language: {0}".format(language))
 
         manager = HolidaysManager(language)
@@ -714,7 +756,8 @@ def show_holidays_today(session):
             with open(file_path, 'r') as f:
                 content = f.read()
                 if get_debug():
-                    print("[Holidays DEBUG] File content:\n{0}".format(content))
+                    print(
+                        "[Holidays DEBUG] File content:\n{0}".format(content))
         else:
             print("[Holidays DEBUG] File does NOT exist!")
 
@@ -723,11 +766,13 @@ def show_holidays_today(session):
             print("[Holidays DEBUG] Found holidays: {0}".format(holidays))
 
         if holidays:
-            message = "TODAY'S HOLIDAYS ({0}):\n\n".format(today.strftime('%d/%m/%Y'))
+            message = "TODAY'S HOLIDAYS ({0}):\n\n".format(
+                today.strftime('%d/%m/%Y'))
             for holiday in holidays:
                 message += "• " + holiday + "\n"
         else:
-            message = "No holidays today ({0})".format(today.strftime('%d/%m/%Y'))
+            message = "No holidays today ({0})".format(
+                today.strftime('%d/%m/%Y'))
 
         session.open(MessageBox, message, MessageBox.TYPE_INFO)
 
@@ -735,7 +780,11 @@ def show_holidays_today(session):
         print("[Holidays] Error showing today's holidays: " + str(e))
         import traceback
         traceback.print_exc()
-        session.open(MessageBox, "Error loading holidays: " + str(e), MessageBox.TYPE_ERROR)
+        session.open(
+            MessageBox,
+            "Error loading holidays: " +
+            str(e),
+            MessageBox.TYPE_ERROR)
 
 
 def show_upcoming_holidays(session, days=30):
@@ -743,8 +792,12 @@ def show_upcoming_holidays(session, days=30):
     try:
         language = config.osd.language.value.split("_")[0].strip()
         if get_debug():
-            print("[Holidays DEBUG] show_upcoming_holidays - language:", language)
-            print("[Holidays DEBUG] Full language config:", config.osd.language.value)
+            print(
+                "[Holidays DEBUG] show_upcoming_holidays - language:",
+                language)
+            print(
+                "[Holidays DEBUG] Full language config:",
+                config.osd.language.value)
 
         manager = HolidaysManager(language)
         if get_debug():
@@ -752,7 +805,9 @@ def show_upcoming_holidays(session, days=30):
         if exists(manager.holidays_dir):
             files = listdir(manager.holidays_dir)
             if get_debug():
-                print("[Holidays DEBUG] Number of files in directory:", len(files))
+                print(
+                    "[Holidays DEBUG] Number of files in directory:",
+                    len(files))
             if files:
                 print("[Holidays DEBUG] First 5 files:", files[:5])
         else:
@@ -762,7 +817,9 @@ def show_upcoming_holidays(session, days=30):
             if exists(base_dir):
                 subdirs = listdir(base_dir)
                 if get_debug():
-                    print("[Holidays DEBUG] Available language directories:", subdirs)
+                    print(
+                        "[Holidays DEBUG] Available language directories:",
+                        subdirs)
 
         holidays = manager.get_upcoming_holidays(days)
         if get_debug():
@@ -775,7 +832,7 @@ def show_upcoming_holidays(session, days=30):
                     date_obj = datetime.strptime(date_str, '%Y-%m-%d')
                     formatted_date = date_obj.strftime('%d/%m/%Y')
                     message += "• " + formatted_date + ": " + holiday + "\n\n"
-                except:
+                except BaseException:
                     message += "• " + date_str + ": " + holiday + "\n\n"
         else:
             message = "No upcoming holidays in the next {0} days.".format(days)
@@ -838,4 +895,7 @@ def show_upcoming_holidays(session, days=30):
 
     except Exception as e:
         print("[Holidays] Error showing upcoming holidays: " + str(e))
-        session.open(MessageBox, "Error loading upcoming holidays.", MessageBox.TYPE_ERROR)
+        session.open(
+            MessageBox,
+            "Error loading upcoming holidays.",
+            MessageBox.TYPE_ERROR)

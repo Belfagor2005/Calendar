@@ -395,7 +395,9 @@ class Calendar(Screen):
             if get_debug():
                 print("[Calendar] Checking for EventManager...")
 
-            if hasattr(session, 'calendar_event_manager') and session.calendar_event_manager is not None:
+            if hasattr(
+                    session,
+                    'calendar_event_manager') and session.calendar_event_manager is not None:
                 if get_debug():
                     print("[Calendar] Using EventManager from autostart")
                 self.event_manager = session.calendar_event_manager
@@ -412,7 +414,8 @@ class Calendar(Screen):
         self.language = config.osd.language.value.split("_")[0].strip()
 
         if get_debug():
-            print("[Calendar] BirthdayManager initialized, contacts: %d" % len(self.birthday_manager.contacts))
+            print("[Calendar] BirthdayManager initialized, contacts: %d" %
+                  len(self.birthday_manager.contacts))
 
         # Force reload to be sure
         self.birthday_manager.load_all_contacts()
@@ -509,8 +512,12 @@ class Calendar(Screen):
 
             if get_debug():
                 print("[Calendar] Startup: checking event time conversion")
-                print("[Calendar] Current configured default time:", current_default)
-                print("[Calendar] Events file:", self.event_manager.events_file)
+                print(
+                    "[Calendar] Current configured default time:",
+                    current_default)
+                print(
+                    "[Calendar] Events file:",
+                    self.event_manager.events_file)
 
             # 1. Check if the file exists
             if not exists(self.event_manager.events_file):
@@ -529,8 +536,9 @@ class Calendar(Screen):
                         if event.get('time', '14:00') == '14:00':
                             old_time_count += 1
                     if get_debug():
-                        print("[Calendar] Found {0} events with old default time".format(old_time_count))
-            except:
+                        print(
+                            "[Calendar] Found {0} events with old default time".format(old_time_count))
+            except BaseException:
                 pass
 
             # 3. Load events (this already converts them in memory)
@@ -543,8 +551,9 @@ class Calendar(Screen):
                     event.time = current_default
                     need_save = True
                     if get_debug():
-                        print("[Calendar] Converting event '{0}' to {1}".format(
-                            event.title, current_default))
+                        print(
+                            "[Calendar] Converting event '{0}' to {1}".format(
+                                event.title, current_default))
 
             # 5. Save if changes were made
             if need_save:
@@ -633,12 +642,16 @@ class Calendar(Screen):
             menu.append((_("Export All to ICS File"), self.export_all_to_ics))
 
         elif self.database_format == "vcard":
-            menu.append((_("Convert to legacy format"), self.convert_to_legacy))
+            menu.append(
+                (_("Convert to legacy format"),
+                 self.convert_to_legacy))
             menu.append((_("Convert to ICS format"), self.convert_to_ics))
             menu.append((_("Export All to ICS File"), self.export_all_to_ics))
 
         else:  # ICS format
-            menu.append((_("Convert to legacy format"), self.convert_to_legacy))
+            menu.append(
+                (_("Convert to legacy format"),
+                 self.convert_to_legacy))
             menu.append((_("Convert to vCard format"), self.convert_to_vcard))
             menu.append((_("Export All to ICS File"), self.export_all_to_ics))
 
@@ -666,9 +679,11 @@ class Calendar(Screen):
                 message = "Event manager: NOT INITIALIZED"
             else:
                 message = "Event system status:\n\n"
-                message += "Events loaded: %d\n" % len(self.event_manager.events)
+                message += "Events loaded: %d\n" % len(
+                    self.event_manager.events)
                 message += "Check interval: %d seconds\n" % get_check_interval()
-                message += "Timer active: %s\n" % ("YES" if self.event_manager.check_timer.isActive() else "NO")
+                message += "Timer active: %s\n" % (
+                    "YES" if self.event_manager.check_timer.isActive() else "NO")
                 message += "Notifications enabled: %s\n" % config.plugins.calendar.events_notifications.value
 
                 # List upcoming events
@@ -732,9 +747,9 @@ class Calendar(Screen):
 
             self.session.open(
                 MessageBox,
-                _("Test event created for %s\nNotification should appear in 1 minute.") % test_time,
-                MessageBox.TYPE_INFO
-            )
+                _("Test event created for %s\nNotification should appear in 1 minute.") %
+                test_time,
+                MessageBox.TYPE_INFO)
 
         except Exception as e:
             print("[Calendar] Test error: %s" % str(e))
@@ -750,11 +765,14 @@ class Calendar(Screen):
             if hasattr(self, 'event_manager') and self.event_manager:
                 current_service = self.session.nav.getCurrentlyPlayingServiceReference()
                 if current_service:
-                    print("[Calendar] Current service: %s" % current_service.toString())
+                    print(
+                        "[Calendar] Current service: %s" %
+                        current_service.toString())
                     self.event_manager.tv_service_backup = current_service
 
                     print("[Calendar] Playing test sound...")
-                    success = self.event_manager.play_notification_sound("notify")
+                    success = self.event_manager.play_notification_sound(
+                        "notify")
 
                     if success:
                         print("[Calendar] Scheduling restore in 5 seconds...")
@@ -774,8 +792,7 @@ class Calendar(Screen):
                         self.session.open(
                             MessageBox,
                             _("Test started.\nSound will play for 5 seconds, then TV should be restored."),
-                            MessageBox.TYPE_INFO
-                        )
+                            MessageBox.TYPE_INFO)
                     else:
                         self.session.open(
                             MessageBox,
@@ -843,7 +860,8 @@ class Calendar(Screen):
                     return
 
                 # Use the new method
-                converted = self.event_manager.convert_all_events_time(current_default)
+                converted = self.event_manager.convert_all_events_time(
+                    current_default)
 
                 if converted > 0:
                     message = _("Converted {0} events to {1}").format(
@@ -883,7 +901,8 @@ class Calendar(Screen):
             print("Config time:", get_default_event_time())
             print("Event manager exists:", hasattr(self, 'event_manager'))
             if self.event_manager:
-                print("Before fix - Events in memory:", len(self.event_manager.events))
+                print("Before fix - Events in memory:",
+                      len(self.event_manager.events))
                 # Manual fix
                 self.event_manager.load_events()
                 print("After load_events")
@@ -924,7 +943,8 @@ class Calendar(Screen):
             print("[Calendar] Clearing all fields (except date)")
 
         # Keep the current date
-        default_date = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
+        default_date = "{0}-{1:02d}-{2:02d}".format(
+            self.year, self.month, self.day)
         self["date"].setText(default_date)
 
         # Clear other fields
@@ -939,7 +959,9 @@ class Calendar(Screen):
         # First try to load from current database format
         if get_debug():
             print("[Calendar] === LOAD DATA START ===")
-            print("[Calendar] Date: %d-%02d-%02d" % (self.year, self.month, self.day))
+            print(
+                "[Calendar] Date: %d-%02d-%02d" %
+                (self.year, self.month, self.day))
         if self.database_format == "vcard":
             file_path = "%s/%s/%d%02d%02d.txt" % (
                 self.VCARDS_PATH,
@@ -992,7 +1014,9 @@ class Calendar(Screen):
                             break
 
                 if get_debug():
-                    print("[Calendar] Found holiday in holiday file: %s" % holiday_text)
+                    print(
+                        "[Calendar] Found holiday in holiday file: %s" %
+                        holiday_text)
             except Exception as e:
                 print("[Calendar] Error reading holiday file: %s" % str(e))
 
@@ -1006,16 +1030,20 @@ class Calendar(Screen):
                 if self.database_format == "ics":
                     data = self._parse_ics_content(lines)
                 else:
-                    data = self._parse_file_content(lines, self.database_format)
+                    data = self._parse_file_content(
+                        lines, self.database_format)
 
                 # Display data
                 self._display_parsed_data(data, default_date)
 
-                # OVERRIDE holiday field with holiday from holiday file (if exists)
+                # OVERRIDE holiday field with holiday from holiday file (if
+                # exists)
                 if holiday_text:
                     self["holiday"].setText(_("Holiday: ") + holiday_text)
                     if get_debug():
-                        print("[Calendar] Overriding holiday field with: %s" % holiday_text)
+                        print(
+                            "[Calendar] Overriding holiday field with: %s" %
+                            holiday_text)
 
             except Exception as e:
                 print("[Calendar] Error loading data: %s" % str(e))
@@ -1040,7 +1068,9 @@ class Calendar(Screen):
             self.add_events_to_description()
 
         if get_debug():
-            print("[Calendar] Holiday field after load: %s" % self["holiday"].getText())
+            print(
+                "[Calendar] Holiday field after load: %s" %
+                self["holiday"].getText())
             print("[Calendar] === LOAD DATA END ===")
 
     def _parse_file_content(self, lines, format_type):
@@ -1132,9 +1162,10 @@ class Calendar(Screen):
                         if line.startswith('holiday:'):
                             holiday_value = line.split(':', 1)[1].strip()
                             if holiday_value and holiday_value.lower() != "none":
-                                self["holiday"].setText(_("Holiday: ") + holiday_value)
+                                self["holiday"].setText(
+                                    _("Holiday: ") + holiday_value)
                                 break
-                except:
+                except BaseException:
                     pass
             else:
                 self["holiday"].setText("")
@@ -1226,18 +1257,26 @@ class Calendar(Screen):
             try:
                 makedirs(directory)
                 if get_debug():
-                    print("[Calendar] Created directory: {0}".format(directory))
+                    print(
+                        "[Calendar] Created directory: {0}".format(directory))
             except Exception as e:
-                print("[Calendar] Error creating directory: {0}".format(str(e)))
+                print(
+                    "[Calendar] Error creating directory: {0}".format(
+                        str(e)))
 
         try:
             # Get current values and remove labels
             date_text = self._clean_field_text(self["date"].getText())
-            contact_text = self._clean_field_text(self["contact"].getText(), "Contact: ")
-            sign_text = self._clean_field_text(self["sign"].getText(), "Sign: ")
-            holiday_text = self._clean_field_text(self["holiday"].getText(), "Holiday: ")
-            description_text = self._clean_field_text(self["description"].getText())
-            note_text = self._clean_field_text(self["note"].getText(), "Note: ")
+            contact_text = self._clean_field_text(
+                self["contact"].getText(), "Contact: ")
+            sign_text = self._clean_field_text(
+                self["sign"].getText(), "Sign: ")
+            holiday_text = self._clean_field_text(
+                self["holiday"].getText(), "Holiday: ")
+            description_text = self._clean_field_text(
+                self["description"].getText())
+            note_text = self._clean_field_text(
+                self["note"].getText(), "Note: ")
 
             # Clean events from description before saving
             if _("SCHEDULED EVENTS:") in description_text:
@@ -1246,7 +1285,8 @@ class Calendar(Screen):
                 if get_debug():
                     print("[Calendar] Cleaned events from description before saving")
             if get_debug():
-                print("[Calendar] Saving description: '{0}'".format(description_text[:50] if description_text else "EMPTY"))
+                print("[Calendar] Saving description: '{0}'".format(
+                    description_text[:50] if description_text else "EMPTY"))
 
             # Format the file content
             day_data = (
@@ -1272,7 +1312,8 @@ class Calendar(Screen):
                 f.write(day_data)
 
             if get_debug():
-                print("[Calendar] Legacy data saved successfully to: {0}".format(file_path))
+                print(
+                    "[Calendar] Legacy data saved successfully to: {0}".format(file_path))
 
         except Exception as e:
             print("[Calendar] Error saving legacy data: {0}".format(str(e)))
@@ -1297,16 +1338,23 @@ class Calendar(Screen):
             try:
                 makedirs(directory)
             except Exception as e:
-                print("[Calendar] Error creating directory: {0}".format(str(e)))
+                print(
+                    "[Calendar] Error creating directory: {0}".format(
+                        str(e)))
 
         try:
             # Get current values and remove labels
             date_text = self._clean_field_text(self["date"].getText())
-            contact_text = self._clean_field_text(self["contact"].getText(), "Contact: ")
-            sign_text = self._clean_field_text(self["sign"].getText(), "Sign: ")
-            holiday_text = self._clean_field_text(self["holiday"].getText(), "Holiday: ")
-            description_text = self._clean_field_text(self["description"].getText())
-            note_text = self._clean_field_text(self["note"].getText(), "Note: ")
+            contact_text = self._clean_field_text(
+                self["contact"].getText(), "Contact: ")
+            sign_text = self._clean_field_text(
+                self["sign"].getText(), "Sign: ")
+            holiday_text = self._clean_field_text(
+                self["holiday"].getText(), "Holiday: ")
+            description_text = self._clean_field_text(
+                self["description"].getText())
+            note_text = self._clean_field_text(
+                self["note"].getText(), "Note: ")
 
             # Clean events from description before saving
             if _("SCHEDULED EVENTS:") in description_text:
@@ -1390,7 +1438,9 @@ class Calendar(Screen):
 
         def contacts_closed_callback(changes_made):
             if get_debug():
-                print("[Calendar] ContactsView closed, changes_made:", changes_made)
+                print(
+                    "[Calendar] ContactsView closed, changes_made:",
+                    changes_made)
 
             if changes_made:
                 if get_debug():
@@ -1424,8 +1474,10 @@ class Calendar(Screen):
     def add_contacts_to_display(self):
         """Add contact information to display"""
         try:
-            date_str = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
-            day_contacts = self.birthday_manager.get_contacts_for_date(date_str)
+            date_str = "{0}-{1:02d}-{2:02d}".format(
+                self.year, self.month, self.day)
+            day_contacts = self.birthday_manager.get_contacts_for_date(
+                date_str)
             from .formatters import format_field_display
 
             if day_contacts:
@@ -1454,11 +1506,13 @@ class Calendar(Screen):
                 current_desc = self["description"].getText()
 
                 if _("CONTACTS WITH BIRTHDAYS TODAY:") in current_desc:
-                    parts = current_desc.split(_("CONTACTS WITH BIRTHDAYS TODAY:"))
+                    parts = current_desc.split(
+                        _("CONTACTS WITH BIRTHDAYS TODAY:"))
                     current_desc = parts[0].rstrip()
 
                 separator = "\n" + "-" * 40 + "\n"
-                self["description"].setText(current_desc + separator + contacts_text.rstrip())
+                self["description"].setText(
+                    current_desc + separator + contacts_text.rstrip())
 
         except Exception as e:
             print("[Calendar] Error displaying contacts: {0}".format(e))
@@ -1478,7 +1532,7 @@ class Calendar(Screen):
                 age -= 1
 
             return str(age)
-        except:
+        except BaseException:
             return ""
 
     def import_vcard_file(self):
@@ -1522,8 +1576,7 @@ class Calendar(Screen):
                 self.session.open(
                     MessageBox,
                     _("No contacts to export.\n\nAdd contacts first via Contacts menu."),
-                    MessageBox.TYPE_INFO
-                )
+                    MessageBox.TYPE_INFO)
                 return
 
             # Get export format from configuration
@@ -1538,23 +1591,43 @@ class Calendar(Screen):
 
             # Set filename based on format
             if export_format == "vcard":
-                filename = generate_export_filename("contacts_export", add_timestamp) + ".vcf"
+                filename = generate_export_filename(
+                    "contacts_export", add_timestamp) + ".vcf"
             elif export_format == "ics":
-                filename = generate_export_filename("calendar_export", add_timestamp) + ".ics"
+                filename = generate_export_filename(
+                    "calendar_export", add_timestamp) + ".ics"
             elif export_format == "csv":
-                filename = generate_export_filename("contacts_export", add_timestamp) + ".csv"
+                filename = generate_export_filename(
+                    "contacts_export", add_timestamp) + ".csv"
             else:  # txt
-                filename = generate_export_filename("contacts_export", add_timestamp) + ".txt"
+                filename = generate_export_filename(
+                    "contacts_export", add_timestamp) + ".txt"
 
             export_path = join(export_dir, filename)
 
             # Menu for sort method selection (only for vcard)
             if export_format == "vcard":
                 menu = [
-                    (_("Sort by name (alphabetical)"), lambda: self.do_export('name', export_path, 'vcard')),
-                    (_("Sort by birthday (month/day)"), lambda: self.do_export('birthday', export_path, 'vcard')),
-                    (_("Sort by category"), lambda: self.do_export('category', export_path, 'vcard')),
-                    (_("No sorting (original order)"), lambda: self.do_export('none', export_path, 'vcard')),
+                    (_("Sort by name (alphabetical)"),
+                     lambda: self.do_export(
+                        'name',
+                        export_path,
+                        'vcard')),
+                    (_("Sort by birthday (month/day)"),
+                     lambda: self.do_export(
+                        'birthday',
+                        export_path,
+                        'vcard')),
+                    (_("Sort by category"),
+                     lambda: self.do_export(
+                        'category',
+                        export_path,
+                        'vcard')),
+                    (_("No sorting (original order)"),
+                     lambda: self.do_export(
+                        'none',
+                        export_path,
+                        'vcard')),
                 ]
             else:
                 # For other formats, export directly
@@ -1575,7 +1648,11 @@ class Calendar(Screen):
                 MessageBox.TYPE_ERROR
             )
 
-    def do_export(self, sort_method='name', export_path=None, export_format=None):
+    def do_export(
+            self,
+            sort_method='name',
+            export_path=None,
+            export_format=None):
         """Perform export with specified sort method and format"""
         try:
             # Get format if not provided
@@ -1593,13 +1670,17 @@ class Calendar(Screen):
 
                 # Set filename based on format
                 if export_format == "vcard":
-                    filename = generate_export_filename("contacts_export", add_timestamp) + ".vcf"
+                    filename = generate_export_filename(
+                        "contacts_export", add_timestamp) + ".vcf"
                 elif export_format == "ics":
-                    filename = generate_export_filename("calendar_export", add_timestamp) + ".ics"
+                    filename = generate_export_filename(
+                        "calendar_export", add_timestamp) + ".ics"
                 elif export_format == "csv":
-                    filename = generate_export_filename("contacts_export", add_timestamp) + ".csv"
+                    filename = generate_export_filename(
+                        "contacts_export", add_timestamp) + ".csv"
                 else:  # txt
-                    filename = generate_export_filename("contacts_export", add_timestamp) + ".txt"
+                    filename = generate_export_filename(
+                        "contacts_export", add_timestamp) + ".txt"
 
                 export_path = join(export_dir, filename)
 
@@ -1607,7 +1688,8 @@ class Calendar(Screen):
 
             # Export based on format
             if export_format == "vcard":
-                count = export_contacts_to_vcf(self.birthday_manager, export_path, sort_method)
+                count = export_contacts_to_vcf(
+                    self.birthday_manager, export_path, sort_method)
                 format_name = "vCard"
             elif export_format == "ics":
                 # TODO: Add ICS export function
@@ -1714,7 +1796,8 @@ class Calendar(Screen):
             try:
                 self.event_manager = EventManager(self.session)
             except Exception as e:
-                print("[Calendar] Error initializing EventManager for ICS contacts:", e)
+                print(
+                    "[Calendar] Error initializing EventManager for ICS contacts:", e)
                 self.session.open(
                     MessageBox,
                     _("Cannot initialize event system: {0}").format(str(e)),
@@ -1759,9 +1842,11 @@ class Calendar(Screen):
             try:
                 self.event_manager = EventManager(self.session)
                 if get_debug():
-                    print("[Calendar DEBUG] EventManager initialized for .ics import")
+                    print(
+                        "[Calendar DEBUG] EventManager initialized for .ics import")
             except Exception as e:
-                print("[Calendar] Error initializing EventManager for .ics import:", e)
+                print(
+                    "[Calendar] Error initializing EventManager for .ics import:", e)
                 self.session.open(
                     MessageBox,
                     _("Cannot initialize event system: {0}").format(str(e)),
@@ -1773,7 +1858,10 @@ class Calendar(Screen):
         try:
             if get_debug():
                 print("[Calendar DEBUG] Opening ICSImporter...")
-                print("[Calendar DEBUG] Passing event_manager instance type:", type(self.event_manager))
+                print(
+                    "[Calendar DEBUG] Passing event_manager instance type:",
+                    type(
+                        self.event_manager))
 
             self.session.open(
                 ICSImporter,
@@ -1809,9 +1897,12 @@ class Calendar(Screen):
             try:
                 makedirs(directory)
                 if get_debug():
-                    print("[Calendar] Created ICS directory: {0}".format(directory))
+                    print(
+                        "[Calendar] Created ICS directory: {0}".format(directory))
             except Exception as e:
-                print("[Calendar] Error creating ICS directory: {0}".format(str(e)))
+                print(
+                    "[Calendar] Error creating ICS directory: {0}".format(
+                        str(e)))
 
         try:
             # Get current values
@@ -1819,11 +1910,13 @@ class Calendar(Screen):
             contact_text = self._clean_field_text(
                 self["contact"].getText(), "Contact: "
             )
-            sign_text = self._clean_field_text(self["sign"].getText(), "Sign: ")
+            sign_text = self._clean_field_text(
+                self["sign"].getText(), "Sign: ")
             holiday_text = self._clean_field_text(
                 self["holiday"].getText(), "Holiday: "
             )
-            description_text = self._clean_field_text(self["description"].getText())
+            description_text = self._clean_field_text(
+                self["description"].getText())
             note_text = self._clean_field_text(
                 self["note"].getText(), "Note: "
             )
@@ -1859,7 +1952,14 @@ class Calendar(Screen):
                 MessageBox.TYPE_ERROR
             )
 
-    def _create_ics_content(self, date, title, categories, holiday, description, contacts):
+    def _create_ics_content(
+            self,
+            date,
+            title,
+            categories,
+            holiday,
+            description,
+            contacts):
         """Create ICS formatted content"""
 
         # Date format YYYYMMDD
@@ -1912,7 +2012,12 @@ class Calendar(Screen):
         ics_lang_dir = join(self.ICS_BASE_PATH, self.language, "day")
 
         # Create all required directories
-        for path in [self.ICS_BASE_PATH, join(self.ICS_BASE_PATH, self.language), ics_lang_dir]:
+        for path in [
+                self.ICS_BASE_PATH,
+                join(
+                    self.ICS_BASE_PATH,
+                    self.language),
+                ics_lang_dir]:
             if not exists(path):
                 makedirs(path)
                 if get_debug():
@@ -1962,12 +2067,16 @@ class Calendar(Screen):
 
                             converted_count += 1
                             if get_debug():
-                                print("[Calendar] Converted {} to ICS format".format(filename))
+                                print(
+                                    "[Calendar] Converted {} to ICS format".format(filename))
 
                 except Exception as e:
-                    print("[Calendar] Error converting {}: {}".format(source_file, str(e)))
+                    print(
+                        "[Calendar] Error converting {}: {}".format(
+                            source_file, str(e)))
             if get_debug():
-                print("[Calendar] Converted {} files to ICS format".format(converted_count))
+                print(
+                    "[Calendar] Converted {} files to ICS format".format(converted_count))
             return converted_count > 0
 
         except Exception as e:
@@ -2125,7 +2234,8 @@ class Calendar(Screen):
             )
             return
 
-        self.event_manager.cleanup_duplicate_events_with_dialog(self.session, self._paint_calendar)
+        self.event_manager.cleanup_duplicate_events_with_dialog(
+            self.session, self._paint_calendar)
 
     def cleanup_ics_callback(self, result=None):
         """Callback for ICS cleanup"""
@@ -2155,7 +2265,8 @@ class Calendar(Screen):
                         remove(filepath)
                         deleted_count += 1
                         if get_debug():
-                            print("[Calendar] Deleted old ICS file: {0}".format(filename))
+                            print(
+                                "[Calendar] Deleted old ICS file: {0}".format(filename))
 
             return deleted_count
 
@@ -2176,8 +2287,10 @@ class Calendar(Screen):
                     oldest = min(files, key=getmtime)
                     newest = max(files, key=getmtime)
 
-                    oldest_date = strftime("%Y-%m-%d", localtime(getmtime(oldest)))
-                    newest_date = strftime("%Y-%m-%d", localtime(getmtime(newest)))
+                    oldest_date = strftime(
+                        "%Y-%m-%d", localtime(getmtime(oldest)))
+                    newest_date = strftime(
+                        "%Y-%m-%d", localtime(getmtime(newest)))
 
                     stats_text = _("ICS Files Statistics:\n\n")
                     stats_text += _("Total files: {0}\n").format(len(files))
@@ -2232,8 +2345,7 @@ class Calendar(Screen):
                     self.session.open(
                         MessageBox,
                         _("Successfully converted {0} entries to ICS format").format(converted_count),
-                        MessageBox.TYPE_INFO
-                    )
+                        MessageBox.TYPE_INFO)
                 else:
                     self.session.open(
                         MessageBox,
@@ -2302,7 +2414,8 @@ class Calendar(Screen):
                     data = self._parse_legacy_content(content)
 
                     # Create ICS content
-                    ics_content = self._create_ics_from_legacy(data, filename[:-4])
+                    ics_content = self._create_ics_from_legacy(
+                        data, filename[:-4])
 
                     if ics_content:
                         # Save ICS file
@@ -2315,7 +2428,9 @@ class Calendar(Screen):
                             print("[Calendar] Converted to ICS:", filename)
 
                 except Exception as e:
-                    print("[Calendar] Error converting {}: {}".format(filename, str(e)))
+                    print(
+                        "[Calendar] Error converting {}: {}".format(
+                            filename, str(e)))
                     continue
 
             return converted
@@ -2352,7 +2467,8 @@ class Calendar(Screen):
                     data = self._parse_vcard_content(content)
 
                     # Create ICS content
-                    ics_content = self._create_ics_from_vcard(data, filename[:-4])
+                    ics_content = self._create_ics_from_vcard(
+                        data, filename[:-4])
 
                     if ics_content:
                         # Save ICS file
@@ -2362,10 +2478,13 @@ class Calendar(Screen):
 
                         converted += 1
                         if get_debug():
-                            print("[Calendar] Converted vCard to ICS:", filename)
+                            print(
+                                "[Calendar] Converted vCard to ICS:", filename)
 
                 except Exception as e:
-                    print("[Calendar] Error converting {}: {}".format(filename, str(e)))
+                    print(
+                        "[Calendar] Error converting {}: {}".format(
+                            filename, str(e)))
                     continue
 
             return converted
@@ -2426,7 +2545,13 @@ class Calendar(Screen):
         description = data.get("description", "")
         contacts = data.get("note", "")
 
-        return self._generate_ics_content(date_yyyymmdd, title, categories, holiday, description, contacts)
+        return self._generate_ics_content(
+            date_yyyymmdd,
+            title,
+            categories,
+            holiday,
+            description,
+            contacts)
 
     def _create_ics_from_vcard(self, data, date_yyyymmdd):
         """Create ICS content from vCard data"""
@@ -2437,9 +2562,22 @@ class Calendar(Screen):
         description = data.get("NOTE", data.get("DESCRIPTION", ""))
         contacts = data.get("CONTACTS", data.get("ORG", ""))
 
-        return self._generate_ics_content(date_yyyymmdd, title, categories, holiday, description, contacts)
+        return self._generate_ics_content(
+            date_yyyymmdd,
+            title,
+            categories,
+            holiday,
+            description,
+            contacts)
 
-    def _generate_ics_content(self, date_yyyymmdd, title, categories, holiday, description, contacts):
+    def _generate_ics_content(
+            self,
+            date_yyyymmdd,
+            title,
+            categories,
+            holiday,
+            description,
+            contacts):
         """Generate ICS formatted content"""
         if not title and not description and not holiday:
             return None
@@ -2523,10 +2661,13 @@ class Calendar(Screen):
 
                         converted += 1
                         if get_debug():
-                            print("[Calendar] Converted ICS to legacy:", filename)
+                            print(
+                                "[Calendar] Converted ICS to legacy:", filename)
 
                 except Exception as e:
-                    print("[Calendar] Error converting {}: {}".format(filename, str(e)))
+                    print(
+                        "[Calendar] Error converting {}: {}".format(
+                            filename, str(e)))
                     continue
 
             return converted
@@ -2574,10 +2715,13 @@ class Calendar(Screen):
 
                         converted += 1
                         if get_debug():
-                            print("[Calendar] Converted ICS to vCard:", filename)
+                            print(
+                                "[Calendar] Converted ICS to vCard:", filename)
 
                 except Exception as e:
-                    print("[Calendar] Error converting {}: {}".format(filename, str(e)))
+                    print(
+                        "[Calendar] Error converting {}: {}".format(
+                            filename, str(e)))
                     continue
 
             return converted
@@ -2765,7 +2909,8 @@ class Calendar(Screen):
                 print("[Calendar DEBUG]   Title:", title)
                 print("[Calendar DEBUG]   Categories:", categories)
                 print("[Calendar DEBUG]   Holiday:", holiday)
-                print("[Calendar DEBUG]   Description length:", len(description) if description else 0)
+                print("[Calendar DEBUG]   Description length:",
+                      len(description) if description else 0)
 
             # Skip empty entries
             if not title and not description and not holiday:
@@ -2825,7 +2970,8 @@ class Calendar(Screen):
             # Create export directory filename
             from .formatters import create_export_directory, generate_export_filename
             export_dir = create_export_directory(base_path, subdir)
-            filename = generate_export_filename("calendar_export", add_timestamp)
+            filename = generate_export_filename(
+                "calendar_export", add_timestamp)
 
             return join(export_dir, filename)
 
@@ -2891,14 +3037,16 @@ class Calendar(Screen):
             contacts_path = join(self.CONTACTS_PATH)
             if get_debug():
                 print("[Calendar] Contacts path: " + contacts_path)
-                print("[Calendar] Contacts path exists: " + str(exists(contacts_path)))
+                print("[Calendar] Contacts path exists: " +
+                      str(exists(contacts_path)))
 
             if not exists(contacts_path):
                 return 0
 
             contacts_files = listdir(contacts_path)
             if get_debug():
-                print("[Calendar] Total contact files: " + str(len(contacts_files)))
+                print("[Calendar] Total contact files: " +
+                      str(len(contacts_files)))
 
             birthday_count = 0
 
@@ -2922,15 +3070,29 @@ class Calendar(Screen):
                         name = contact_data.get('FN', '')
                         birthday = contact_data.get('BDAY', '')
                         if get_debug():
-                            print("[Calendar] Processing contact: " + name + ", BDAY: " + birthday)
+                            print(
+                                "[Calendar] Processing contact: " +
+                                name +
+                                ", BDAY: " +
+                                birthday)
 
-                        if name and birthday and len(birthday) == 10:  # YYYY-MM-DD
+                        if name and birthday and len(
+                                birthday) == 10:  # YYYY-MM-DD
                             # Create birthday event
                             bday_lines = []
                             bday_lines.append("BEGIN:VEVENT")
-                            bday_lines.append("SUMMARY:" + name + " - Birthday")
-                            bday_lines.append("DTSTART;VALUE=DATE:" + birthday.replace('-', ''))
-                            bday_lines.append("DTEND;VALUE=DATE:" + birthday.replace('-', ''))
+                            bday_lines.append(
+                                "SUMMARY:" + name + " - Birthday")
+                            bday_lines.append(
+                                "DTSTART;VALUE=DATE:" +
+                                birthday.replace(
+                                    '-',
+                                    ''))
+                            bday_lines.append(
+                                "DTEND;VALUE=DATE:" +
+                                birthday.replace(
+                                    '-',
+                                    ''))
                             bday_lines.append("RRULE:FREQ=YEARLY")
 
                             # Add contact info
@@ -2939,9 +3101,11 @@ class Calendar(Screen):
                             email = contact_data.get('EMAIL', '')
 
                             if phone:
-                                description += "Phone: " + phone.replace('|', ', ') + "\\n"
+                                description += "Phone: " + \
+                                    phone.replace('|', ', ') + "\\n"
                             if email:
-                                description += "Email: " + email.replace('|', ', ') + "\\n"
+                                description += "Email: " + \
+                                    email.replace('|', ', ') + "\\n"
 
                             if description:
                                 bday_lines.append("DESCRIPTION:" + description)
@@ -2949,7 +3113,8 @@ class Calendar(Screen):
                             # Generate UID
                             import hashlib
                             uid_base = "birthday-" + birthday + "-" + name
-                            uid_hash = hashlib.md5(uid_base.encode()).hexdigest()[:8]
+                            uid_hash = hashlib.md5(
+                                uid_base.encode()).hexdigest()[:8]
                             bday_lines.append("UID:" + uid_hash)
 
                             bday_lines.append("END:VEVENT")
@@ -2961,10 +3126,16 @@ class Calendar(Screen):
                                 print("[Calendar] Added birthday for: " + name)
 
                     except Exception as e:
-                        print("[Calendar] Error processing contact " + filename + ": " + str(e))
+                        print(
+                            "[Calendar] Error processing contact " +
+                            filename +
+                            ": " +
+                            str(e))
                         continue
             if get_debug():
-                print("[Calendar] Total birthdays added: " + str(birthday_count))
+                print(
+                    "[Calendar] Total birthdays added: " +
+                    str(birthday_count))
             return birthday_count
 
         except Exception as e:
@@ -2982,7 +3153,8 @@ class Calendar(Screen):
             ics_lines = []
             ics_lines.append("BEGIN:VCALENDAR")
             ics_lines.append("VERSION:2.0")
-            ics_lines.append("PRODID:-//Calendar Planner v{0}//EN".format(PLUGIN_VERSION))
+            ics_lines.append(
+                "PRODID:-//Calendar Planner v{0}//EN".format(PLUGIN_VERSION))
             ics_lines.append("CALSCALE:GREGORIAN")
             ics_lines.append("METHOD:PUBLISH")
 
@@ -3008,19 +3180,24 @@ class Calendar(Screen):
 
                         for event_data in events_data:
                             try:
-                                # Controlla se è un duplicato usando DuplicateChecker
-                                if DuplicateChecker.check_event_duplicate(self.event_manager, event_data)[0]:
+                                # Controlla se è un duplicato usando
+                                # DuplicateChecker
+                                if DuplicateChecker.check_event_duplicate(
+                                        self.event_manager, event_data)[0]:
                                     duplicate_count += 1
                                     continue
 
-                                event_lines = self._create_ics_event_from_json(event_data)
+                                event_lines = self._create_ics_event_from_json(
+                                    event_data)
                                 if event_lines:
                                     ics_lines.extend(event_lines)
                                     events_count += 1
                                     # Aggiungi all'evento processato
-                                    self._add_to_processed_events(processed_events, event_lines)
+                                    self._add_to_processed_events(
+                                        processed_events, event_lines)
                             except Exception as e:
-                                print("[Calendar] Error converting event: " + str(e))
+                                print(
+                                    "[Calendar] Error converting event: " + str(e))
                                 continue
                 except Exception as e:
                     print("[Calendar] Error reading events.json: " + str(e))
@@ -3028,26 +3205,40 @@ class Calendar(Screen):
             # 2. Add contact birthdays
             if get_debug():
                 print("[Calendar] Adding contact birthdays")
-            birthday_count, birthday_duplicates = self._add_contacts_to_ics_with_dedup(ics_lines, processed_events)
+            birthday_count, birthday_duplicates = self._add_contacts_to_ics_with_dedup(
+                ics_lines, processed_events)
             events_count += birthday_count
             duplicate_count += birthday_duplicates
             if get_debug():
-                print("[Calendar] Added " + str(birthday_count) + " birthdays, " + str(birthday_duplicates) + " duplicates skipped")
+                print(
+                    "[Calendar] Added " +
+                    str(birthday_count) +
+                    " birthdays, " +
+                    str(birthday_duplicates) +
+                    " duplicates skipped")
 
             # 3. Add events from imported ICS files
             if get_debug():
                 print("[Calendar] Adding imported ICS files")
-            ics_count, ics_duplicates = self._add_imported_ics_files_with_dedup(ics_lines, processed_events)
+            ics_count, ics_duplicates = self._add_imported_ics_files_with_dedup(
+                ics_lines, processed_events)
             events_count += ics_count
             duplicate_count += ics_duplicates
             if get_debug():
-                print("[Calendar] Added " + str(ics_count) + " events from ICS files, " + str(ics_duplicates) + " duplicates skipped")
+                print(
+                    "[Calendar] Added " +
+                    str(ics_count) +
+                    " events from ICS files, " +
+                    str(ics_duplicates) +
+                    " duplicates skipped")
 
             ics_lines.append("END:VCALENDAR")
 
             # Write to file
             if get_debug():
-                print("[Calendar] Writing to file, total events: " + str(events_count))
+                print(
+                    "[Calendar] Writing to file, total events: " +
+                    str(events_count))
                 print("[Calendar] Duplicates skipped: " + str(duplicate_count))
             with open(output_path, 'w') as f:
                 f.write("\n".join(ics_lines))
@@ -3091,7 +3282,8 @@ class Calendar(Screen):
 
             contacts_files = listdir(contacts_path)
             if get_debug():
-                print("[Calendar] Total contact files: " + str(len(contacts_files)))
+                print("[Calendar] Total contact files: " +
+                      str(len(contacts_files)))
 
             birthday_count = 0
             duplicate_count = 0
@@ -3116,9 +3308,11 @@ class Calendar(Screen):
                         name = contact_data.get('FN', '')
                         birthday = contact_data.get('BDAY', '')
 
-                        if name and birthday and len(birthday) == 10:  # YYYY-MM-DD
+                        if name and birthday and len(
+                                birthday) == 10:  # YYYY-MM-DD
                             # Controlla se è già stato processato
-                            event_key = "{}|{}".format(name.lower(), birthday.replace('-', ''))
+                            event_key = "{}|{}".format(
+                                name.lower(), birthday.replace('-', ''))
                             if event_key in processed_events:
                                 duplicate_count += 1
                                 continue
@@ -3126,9 +3320,18 @@ class Calendar(Screen):
                             # Create birthday event
                             bday_lines = []
                             bday_lines.append("BEGIN:VEVENT")
-                            bday_lines.append("SUMMARY:" + name + " - Birthday")
-                            bday_lines.append("DTSTART;VALUE=DATE:" + birthday.replace('-', ''))
-                            bday_lines.append("DTEND;VALUE=DATE:" + birthday.replace('-', ''))
+                            bday_lines.append(
+                                "SUMMARY:" + name + " - Birthday")
+                            bday_lines.append(
+                                "DTSTART;VALUE=DATE:" +
+                                birthday.replace(
+                                    '-',
+                                    ''))
+                            bday_lines.append(
+                                "DTEND;VALUE=DATE:" +
+                                birthday.replace(
+                                    '-',
+                                    ''))
                             bday_lines.append("RRULE:FREQ=YEARLY")
 
                             # Add contact info
@@ -3137,9 +3340,11 @@ class Calendar(Screen):
                             email = contact_data.get('EMAIL', '')
 
                             if phone:
-                                description += "Phone: " + phone.replace('|', ', ') + "\\n"
+                                description += "Phone: " + \
+                                    phone.replace('|', ', ') + "\\n"
                             if email:
-                                description += "Email: " + email.replace('|', ', ') + "\\n"
+                                description += "Email: " + \
+                                    email.replace('|', ', ') + "\\n"
 
                             if description:
                                 bday_lines.append("DESCRIPTION:" + description)
@@ -3147,7 +3352,8 @@ class Calendar(Screen):
                             # Generate UID
                             import hashlib
                             uid_base = "birthday-" + birthday + "-" + name
-                            uid_hash = hashlib.md5(uid_base.encode()).hexdigest()[:8]
+                            uid_hash = hashlib.md5(
+                                uid_base.encode()).hexdigest()[:8]
                             bday_lines.append("UID:" + uid_hash)
 
                             bday_lines.append("END:VEVENT")
@@ -3158,10 +3364,16 @@ class Calendar(Screen):
                             processed_events.add(event_key)
 
                     except Exception as e:
-                        print("[Calendar] Error processing contact " + filename + ": " + str(e))
+                        print(
+                            "[Calendar] Error processing contact " +
+                            filename +
+                            ": " +
+                            str(e))
                         continue
             if get_debug():
-                print("[Calendar] Total birthdays added: " + str(birthday_count))
+                print(
+                    "[Calendar] Total birthdays added: " +
+                    str(birthday_count))
             return birthday_count, duplicate_count
 
         except Exception as e:
@@ -3198,7 +3410,8 @@ class Calendar(Screen):
 
                     # Extract all VEVENT blocks
                     import re
-                    vevent_blocks = re.split(r'BEGIN:VEVENT\s*', content, flags=re.IGNORECASE)
+                    vevent_blocks = re.split(
+                        r'BEGIN:VEVENT\s*', content, flags=re.IGNORECASE)
 
                     for block in vevent_blocks:
                         if not block.strip() or 'END:VEVENT' not in block.upper():
@@ -3236,7 +3449,9 @@ class Calendar(Screen):
                             processed_events.add(event_key)
 
                 except Exception as e:
-                    print("[Calendar] Error processing ICS file %s: %s" % (basename(ics_file), str(e)))
+                    print(
+                        "[Calendar] Error processing ICS file %s: %s" %
+                        (basename(ics_file), str(e)))
                     continue
 
             return events_count, duplicate_count
@@ -3275,7 +3490,8 @@ class Calendar(Screen):
             day = date_parts[2]
 
             # Combine date and time
-            dtstart = year + month + day + "T" + time_str.replace(':', '') + "00"
+            dtstart = year + month + day + "T" + \
+                time_str.replace(':', '') + "00"
 
             event_lines = []
             event_lines.append("BEGIN:VEVENT")
@@ -3337,7 +3553,7 @@ class Calendar(Screen):
                     f.write("  Language: %s\n" % self.language)
                     f.write("  Path: %s\n" % path)
                     f.write("  Exists: %s\n" % exists(path))
-            except:
+            except BaseException:
                 pass
 
         return path
@@ -3345,7 +3561,8 @@ class Calendar(Screen):
     def contact_updated_callback(self, result=None):
         """Callback after contact operations"""
         if get_debug():
-            print("[Calendar DEBUG] Contact callback called with result: {0}".format(result))
+            print(
+                "[Calendar DEBUG] Contact callback called with result: {0}".format(result))
 
         self.birthday_manager.load_all_contacts()
         self._paint_calendar()
@@ -3363,7 +3580,8 @@ class Calendar(Screen):
             print("[Calendar] Creating NEW date - clearing all fields")
         self.clear_fields()
 
-        default_date = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
+        default_date = "{0}-{1:02d}-{2:02d}".format(
+            self.year, self.month, self.day)
         self["date"].setText(default_date)
 
         self.current_field = self["date"]
@@ -3382,7 +3600,8 @@ class Calendar(Screen):
             clean_desc = parts[0].rstrip()
             self["description"].setText(clean_desc)
             if get_debug():
-                print("[Calendar] Cleaned description before editing: '{0}'".format(clean_desc[:50]))
+                print("[Calendar] Cleaned description before editing: '{0}'".format(
+                    clean_desc[:50]))
 
         self.edit_fields_sequence = [
             ("date", _("Edit Date")),
@@ -3398,7 +3617,8 @@ class Calendar(Screen):
 
     def _edit_next_field(self):
         if get_debug():
-            print("[Calendar] _edit_next_field() - index: {0}".format(self.current_edit_index))
+            print(
+                "[Calendar] _edit_next_field() - index: {0}".format(self.current_edit_index))
 
         if self.current_edit_index >= len(self.edit_fields_sequence):
             if get_debug():
@@ -3408,13 +3628,17 @@ class Calendar(Screen):
         field_name, title = self.edit_fields_sequence[self.current_edit_index]
         current_text = self[field_name].getText()
         if get_debug():
-            print("[Calendar] Opening VirtualKeyBoard for: {0}".format(field_name))
-            print("[Calendar] Current text length: {0}".format(len(current_text)))
+            print(
+                "[Calendar] Opening VirtualKeyBoard for: {0}".format(field_name))
+            print(
+                "[Calendar] Current text length: {0}".format(
+                    len(current_text)))
 
         if field_name == "description":
             if get_debug():
                 print("[Calendar] === THIS IS DESCRIPTION FIELD ===")
-                print("[Calendar] Text preview: '{0}'".format(current_text[:100]))
+                print("[Calendar] Text preview: '{0}'".format(
+                    current_text[:100]))
 
         self.session.openWithCallback(
             self._save_edited_field,
@@ -3425,7 +3649,8 @@ class Calendar(Screen):
 
     def _save_edited_field(self, input_text):
         if get_debug():
-            print("[Calendar] _save_edited_field() - index: {0}".format(self.current_edit_index))
+            print(
+                "[Calendar] _save_edited_field() - index: {0}".format(self.current_edit_index))
 
         if self.current_edit_index >= len(self.edit_fields_sequence):
             return
@@ -3444,7 +3669,8 @@ class Calendar(Screen):
                     print("[Calendar] Updating field '{0}'".format(field_name))
                 self[field_name].setText(input_text)
             else:
-                print("[Calendar] Text unchanged for '{0}', skipping".format(field_name))
+                print(
+                    "[Calendar] Text unchanged for '{0}', skipping".format(field_name))
 
         self.current_edit_index += 1
 
@@ -3487,11 +3713,16 @@ class Calendar(Screen):
                 self["description"].setText("")
                 self["note"].setText("")
                 if get_debug():
-                    print("Date removed for m{0}d{1}".format(self.month, self.day))
+                    print(
+                        "Date removed for m{0}d{1}".format(
+                            self.month, self.day))
             except Exception as e:
                 print("Error removing date: {0}".format(e))
         else:
-            self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO)
+            self.session.open(
+                MessageBox,
+                _("File not found!"),
+                MessageBox.TYPE_INFO)
 
     def delete_file(self):
         """Delete the data file for the selected date"""
@@ -3521,7 +3752,10 @@ class Calendar(Screen):
             except Exception as e:
                 print("Error deleting file: {0}".format(e))
         else:
-            self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO)
+            self.session.open(
+                MessageBox,
+                _("File not found!"),
+                MessageBox.TYPE_INFO)
 
     def _paint_calendar(self):
         # Clear original states when the month changes
@@ -3551,7 +3785,10 @@ class Calendar(Screen):
         if self.month == 12:
             sdt1 = datetime.date(self.year + 1, 1, 1) - datetime.timedelta(1)
         else:
-            sdt1 = datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(1)
+            sdt1 = datetime.date(
+                self.year,
+                self.month + 1,
+                1) - datetime.timedelta(1)
 
         self.monthday = int(sdt1.day)
         self.monthname = monthname[self.month - 1]
@@ -3559,12 +3796,16 @@ class Calendar(Screen):
 
         for x in range(8):
             if x < 8:
-                self['w' + str(x)].instance.setBackgroundColor(parseColor('#333333'))
-                self['w' + str(x)].instance.setForegroundColor(parseColor('white'))
+                self['w' +
+                     str(x)].instance.setBackgroundColor(parseColor('#333333'))
+                self['w' +
+                     str(x)].instance.setForegroundColor(parseColor('white'))
 
         for x in range(6):
-            self['wn' + str(x)].instance.setBackgroundColor(parseColor('#333333'))
-            self['wn' + str(x)].instance.setForegroundColor(parseColor('white'))
+            self['wn' +
+                 str(x)].instance.setBackgroundColor(parseColor('#333333'))
+            self['wn' +
+                 str(x)].instance.setForegroundColor(parseColor('white'))
 
         # Informational texts
         self["monthname"].instance.setForegroundColor(parseColor('yellow'))
@@ -3584,7 +3825,8 @@ class Calendar(Screen):
 
         # Load holidays for the current month into cache
         if config.plugins.calendar.holidays_enabled.value:
-            current_month_holidays = self._load_month_holidays(self.year, self.month)
+            current_month_holidays = self._load_month_holidays(
+                self.year, self.month)
             if get_debug():
                 print("[Calendar] Month %d-%02d has %d holiday days" % (
                     self.year, self.month, len(current_month_holidays)))
@@ -3618,41 +3860,55 @@ class Calendar(Screen):
                         if i in current_month_holidays:
                             is_holiday = True
                             holiday_color = config.plugins.calendar.holidays_color.value
-                            self['d' + str(x)].instance.setForegroundColor(parseColor(holiday_color))
+                            self['d' +
+                                 str(x)].instance.setForegroundColor(parseColor(holiday_color))
                             if config.plugins.calendar.holidays_show_indicators.value:
                                 current_text = self['d' + str(x)].getText()
                                 self['d' + str(x)].setText(current_text + " H")
 
                             if get_debug():
-                                print("[Calendar] Coloring day %d as holiday: %s" % (
-                                    i, current_month_holidays[i]))
+                                print(
+                                    "[Calendar] Coloring day %d as holiday: %s" %
+                                    (i, current_month_holidays[i]))
 
                     # Check for events (priority 2 - only if not a holiday)
                     has_events = False
                     if not is_holiday and self.event_manager and config.plugins.calendar.events_show_indicators.value:
-                        date_str = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, i)
-                        day_events = self.event_manager.get_events_for_date(date_str)
+                        date_str = "{0}-{1:02d}-{2:02d}".format(
+                            self.year, self.month, i)
+                        day_events = self.event_manager.get_events_for_date(
+                            date_str)
 
                         if day_events:
                             has_events = True
                             event_color = config.plugins.calendar.events_color.value
-                            self['d' + str(x)].instance.setForegroundColor(parseColor(event_color))
+                            self['d' +
+                                 str(x)].instance.setForegroundColor(parseColor(event_color))
                             current_text = self['d' + str(x)].getText()
                             self['d' + str(x)].setText(current_text + " *")
 
-                    # Weekend colors (priority 3 - only if not holiday and not event)
+                    # Weekend colors (priority 3 - only if not holiday and not
+                    # event)
                     if not is_holiday and not has_events:
-                        if datetime.date(self.year, self.month, i).weekday() == 5:
-                            self['d' + str(x)].instance.setForegroundColor(parseColor('yellow'))
+                        if datetime.date(
+                                self.year, self.month, i).weekday() == 5:
+                            self['d' +
+                                 str(x)].instance.setForegroundColor(parseColor('yellow'))
                         elif datetime.date(self.year, self.month, i).weekday() == 6:
-                            self['d' + str(x)].instance.setForegroundColor(parseColor('red'))
+                            self['d' +
+                                 str(x)].instance.setForegroundColor(parseColor('red'))
                         else:
-                            self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
+                            self['d' +
+                                 str(x)].instance.setForegroundColor(parseColor('white'))
 
                     # TODAY background (highest priority - always applied)
-                    if datetime.date(self.year, self.month, i) == datetime.date.today():
+                    if datetime.date(
+                            self.year,
+                            self.month,
+                            i) == datetime.date.today():
                         self.nowday = True
-                        self['d' + str(x)].instance.setBackgroundColor(parseColor('green'))
+                        self['d' +
+                             str(x)].instance.setBackgroundColor(parseColor('green'))
 
                     i = i + 1
 
@@ -3755,8 +4011,7 @@ class Calendar(Screen):
             confirmed,
             MessageBox,
             _("Delete ALL events?\n\nThis will permanently delete all your personal events.\nThis action cannot be undone!"),
-            MessageBox.TYPE_YESNO
-        )
+            MessageBox.TYPE_YESNO)
 
     def _do_clear_all_events(self):
         """Actually delete all events"""
@@ -3790,11 +4045,9 @@ class Calendar(Screen):
                         len(self.event_manager.events)))
 
             self.session.open(
-                MessageBox,
-                _("All events have been deleted.\n\nBackup saved as:\n{0}".format(
-                    basename(backup_file))),
-                MessageBox.TYPE_INFO
-            )
+                MessageBox, _(
+                    "All events have been deleted.\n\nBackup saved as:\n{0}".format(
+                        basename(backup_file))), MessageBox.TYPE_INFO)
 
             # Repaint the calendar to remove event indicators
             self._paint_calendar()
@@ -3901,7 +4154,8 @@ class Calendar(Screen):
             self.open_virtual_keyboard_for_field(self["holiday"], _("Holiday"))
             self.current_field = self["holiday"]
         elif self.current_field == self["holiday"]:
-            self.open_virtual_keyboard_for_field(self["description"], _("Description"))
+            self.open_virtual_keyboard_for_field(
+                self["description"], _("Description"))
             self.current_field = self["description"]
         elif self.current_field == self["description"]:
             self.open_virtual_keyboard_for_field(self["note"], _("Note"))
@@ -3914,7 +4168,8 @@ class Calendar(Screen):
     def add_events_to_description(self):
         """Add events to description display"""
         try:
-            date_str = "{0}-{1:02d}-{2:02d}".format(self.year, self.month, self.day)
+            date_str = "{0}-{1:02d}-{2:02d}".format(
+                self.year, self.month, self.day)
             day_events = self.event_manager.get_events_for_date(date_str)
 
             if day_events:
@@ -3923,7 +4178,8 @@ class Calendar(Screen):
                 events_text = separator + _("SCHEDULED EVENTS:") + "\n"
 
                 for event in day_events:
-                    time_str = event.time[:5] if event.time else get_default_event_time()
+                    time_str = event.time[:5] if event.time else get_default_event_time(
+                    )
 
                     # Repeat indicators
                     repeat_symbol = ""
@@ -3941,7 +4197,9 @@ class Calendar(Screen):
                     # ADD LABELS TO DISPLAY
                     labels_display = ""
                     if event.labels:
-                        labels_display = " [" + ", ".join(event.labels[:3]) + "]"  # Show only first 3 labels
+                        # Show only first 3 labels
+                        labels_display = " [" + \
+                            ", ".join(event.labels[:3]) + "]"
 
                     events_text += "- {0} - {1}{2}{3}{4}\n".format(
                         time_str,
@@ -3999,13 +4257,16 @@ class Calendar(Screen):
                     print("[Calendar DEBUG] Created holiday directory")
             except OSError as e:
                 if e.errno != 17:  # File exists
-                    print("[Calendar] Error creating holiday directory:", str(e))
+                    print(
+                        "[Calendar] Error creating holiday directory:", str(e))
                     self.holiday_cache[cache_key] = month_holidays
                     return month_holidays
 
         # Check each day
         for day in range(1, 32):
-            holiday_file = join(holiday_dir, "%04d%02d%02d.txt" % (year, month, day))
+            holiday_file = join(
+                holiday_dir, "%04d%02d%02d.txt" %
+                (year, month, day))
 
             if exists(holiday_file):
                 try:
@@ -4039,22 +4300,36 @@ class Calendar(Screen):
                     self.year == current_time[0] and
                     self.month == current_time[1])
 
-        # First, restore the original color of the previously selected day (if any and not today)
-        if hasattr(self, 'previous_selected_day') and self.previous_selected_day:
+        # First, restore the original color of the previously selected day (if
+        # any and not today)
+        if hasattr(
+                self,
+                'previous_selected_day') and self.previous_selected_day:
             # check if the previous_selected_day was today
             was_today = (self.previous_selected_day == current_time[2] and
                          self.year == current_time[0] and
                          self.month == current_time[1])
 
-            if not was_today and hasattr(self, 'original_cell_states') and self.previous_selected_day in self.original_cell_states:
+            if not was_today and hasattr(
+                    self,
+                    'original_cell_states') and self.previous_selected_day in self.original_cell_states:
                 state = self.original_cell_states[self.previous_selected_day]
                 for x in range(42):
                     cell_text = self['d' + str(x)].getText()
                     if cell_text:
-                        clean_text = cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip()
+                        clean_text = cell_text.replace(
+                            ' H',
+                            '').replace(
+                            ' *',
+                            '').replace(
+                            'H',
+                            '').replace(
+                            '*',
+                            '').strip()
                         if clean_text.isdigit() and int(clean_text) == self.previous_selected_day:
                             # Restore original color
-                            self['d' + str(x)].instance.setForegroundColor(state['color'])
+                            self['d' +
+                                 str(x)].instance.setForegroundColor(state['color'])
 
                             # Restore original text with marker if needed
                             display_text = str(self.previous_selected_day)
@@ -4074,8 +4349,25 @@ class Calendar(Screen):
 
         for x in range(42):
             cell_text = self['d' + str(x)].getText()
-            if cell_text and cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip().isdigit():
-                cell_day = int(cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip())
+            if cell_text and cell_text.replace(
+                ' H',
+                '').replace(
+                ' *',
+                '').replace(
+                'H',
+                '').replace(
+                '*',
+                    '').strip().isdigit():
+                cell_day = int(
+                    cell_text.replace(
+                        ' H',
+                        '').replace(
+                        ' *',
+                        '').replace(
+                        'H',
+                        '').replace(
+                        '*',
+                        '').strip())
 
                 # Skip today - it keeps green background
                 # usa is_today invece di day != today
@@ -4095,21 +4387,25 @@ class Calendar(Screen):
                         # Determine original color based on configuration
                         original_color = parseColor('white')  # default
 
-                        # Check holiday color (if holidays enabled and has holiday)
+                        # Check holiday color (if holidays enabled and has
+                        # holiday)
                         if is_holiday and config.plugins.calendar.holidays_enabled.value:
-                            original_color = parseColor(config.plugins.calendar.holidays_color.value)
+                            original_color = parseColor(
+                                config.plugins.calendar.holidays_color.value)
                         # Check event color (if events enabled and has events)
                         elif has_events and config.plugins.calendar.events_enabled.value:
-                            original_color = parseColor(config.plugins.calendar.events_color.value)
+                            original_color = parseColor(
+                                config.plugins.calendar.events_color.value)
                         else:
                             # Check weekend colors
                             try:
-                                weekday = datetime.date(self.year, self.month, cell_day).weekday()
+                                weekday = datetime.date(
+                                    self.year, self.month, cell_day).weekday()
                                 if weekday == 5:  # Saturday
                                     original_color = parseColor('yellow')
                                 elif weekday == 6:  # Sunday
                                     original_color = parseColor('red')
-                            except:
+                            except BaseException:
                                 pass
 
                         self.original_cell_states[cell_day] = {
@@ -4129,7 +4425,15 @@ class Calendar(Screen):
             for x in range(42):
                 cell_text = self['d' + str(x)].getText()
                 if cell_text:
-                    clean_text = cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip()
+                    clean_text = cell_text.replace(
+                        ' H',
+                        '').replace(
+                        ' *',
+                        '').replace(
+                        'H',
+                        '').replace(
+                        '*',
+                        '').strip()
                     if clean_text.isdigit() and int(clean_text) == day:
                         # Save original state if not already saved
                         if day not in self.original_cell_states:
@@ -4139,21 +4443,26 @@ class Calendar(Screen):
                             # Determine original color based on configuration
                             original_color = parseColor('white')  # default
 
-                            # Check holiday color (if holidays enabled and has holiday)
+                            # Check holiday color (if holidays enabled and has
+                            # holiday)
                             if is_holiday and config.plugins.calendar.holidays_enabled.value:
-                                original_color = parseColor(config.plugins.calendar.holidays_color.value)
-                            # Check event color (if events enabled and has events)
+                                original_color = parseColor(
+                                    config.plugins.calendar.holidays_color.value)
+                            # Check event color (if events enabled and has
+                            # events)
                             elif has_events and config.plugins.calendar.events_enabled.value:
-                                original_color = parseColor(config.plugins.calendar.events_color.value)
+                                original_color = parseColor(
+                                    config.plugins.calendar.events_color.value)
                             else:
                                 # Check weekend colors
                                 try:
-                                    weekday = datetime.date(self.year, self.month, day).weekday()
+                                    weekday = datetime.date(
+                                        self.year, self.month, day).weekday()
                                     if weekday == 5:  # Saturday
                                         original_color = parseColor('yellow')
                                     elif weekday == 6:  # Sunday
                                         original_color = parseColor('red')
-                                except:
+                                except BaseException:
                                     pass
 
                             self.original_cell_states[day] = {
@@ -4163,10 +4472,13 @@ class Calendar(Screen):
                             }
 
                         # Apply blue background and white text
-                        self['d' + str(x)].instance.setBackgroundColor(parseColor('blue'))
-                        self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
+                        self['d' +
+                             str(x)].instance.setBackgroundColor(parseColor('blue'))
+                        self['d' +
+                             str(x)].instance.setForegroundColor(parseColor('white'))
 
-                        # Remove markers when selected (clean display) - only show number
+                        # Remove markers when selected (clean display) - only
+                        # show number
                         self['d' + str(x)].setText(str(day))
                         break
         else:
@@ -4174,17 +4486,28 @@ class Calendar(Screen):
             for x in range(42):
                 cell_text = self['d' + str(x)].getText()
                 if cell_text:
-                    clean_text = cell_text.replace(' H', '').replace(' *', '').replace('H', '').replace('*', '').strip()
+                    clean_text = cell_text.replace(
+                        ' H',
+                        '').replace(
+                        ' *',
+                        '').replace(
+                        'H',
+                        '').replace(
+                        '*',
+                        '').strip()
                     if clean_text.isdigit() and int(clean_text) == day:
                         # Today has green background, use white text
-                        self['d' + str(x)].instance.setForegroundColor(parseColor('white'))
+                        self['d' +
+                             str(x)].instance.setForegroundColor(parseColor('white'))
 
-                        # Also save original state for today if not already saved
+                        # Also save original state for today if not already
+                        # saved
                         if day not in self.original_cell_states:
                             is_holiday = ' H' in cell_text or 'H' in cell_text
                             has_events = ' *' in cell_text or '*' in cell_text
 
-                            # For today, we use white text regardless (for contrast on green)
+                            # For today, we use white text regardless (for
+                            # contrast on green)
                             original_color = parseColor('white')
 
                             self.original_cell_states[day] = {
@@ -4196,7 +4519,8 @@ class Calendar(Screen):
 
     def _nextday(self):
         try:
-            current_date = datetime.date(self.year, self.month, self.selected_day)
+            current_date = datetime.date(
+                self.year, self.month, self.selected_day)
             next_date = current_date + datetime.timedelta(days=1)
             self.year = next_date.year
             self.month = next_date.month
@@ -4217,7 +4541,8 @@ class Calendar(Screen):
 
     def _prevday(self):
         try:
-            current_date = datetime.date(self.year, self.month, self.selected_day)
+            current_date = datetime.date(
+                self.year, self.month, self.selected_day)
             prev_date = current_date - datetime.timedelta(days=1)
             self.year = prev_date.year
             self.month = prev_date.month
@@ -4231,7 +4556,14 @@ class Calendar(Screen):
                 self.selected_day = 31
             else:
                 self.month -= 1
-                last_day = (datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(days=1)).day
+                last_day = (
+                    datetime.date(
+                        self.year,
+                        self.month +
+                        1,
+                        1) -
+                    datetime.timedelta(
+                        days=1)).day
                 self.day = last_day
                 self.selected_day = last_day
 
@@ -4251,8 +4583,16 @@ class Calendar(Screen):
             # If no error is raised, the day exists in the new month
             self.day = self.selected_day
         except ValueError:
-            # If the day does not exist (e.g. February 31), use the last day of the month
-            last_day = (datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(days=1)).day
+            # If the day does not exist (e.g. February 31), use the last day of
+            # the month
+            last_day = (
+                datetime.date(
+                    self.year,
+                    self.month +
+                    1,
+                    1) -
+                datetime.timedelta(
+                    days=1)).day
             self.day = last_day
             self.selected_day = last_day
 
@@ -4272,8 +4612,16 @@ class Calendar(Screen):
             # If no error is raised, the day exists in the new month
             self.day = self.selected_day
         except ValueError:
-            # If the day does not exist (e.g. April 31), use the last day of the month
-            last_day = (datetime.date(self.year, self.month + 1, 1) - datetime.timedelta(days=1)).day
+            # If the day does not exist (e.g. April 31), use the last day of
+            # the month
+            last_day = (
+                datetime.date(
+                    self.year,
+                    self.month +
+                    1,
+                    1) -
+                datetime.timedelta(
+                    days=1)).day
             self.day = last_day
             self.selected_day = last_day
 
@@ -4287,7 +4635,8 @@ class Calendar(Screen):
                     new_time = get_default_event_time()
 
                     if get_debug():
-                        print("[Calendar] Config was SAVED, updating events if needed")
+                        print(
+                            "[Calendar] Config was SAVED, updating events if needed")
 
                     self.event_manager.load_events()
                     self.event_manager.save_events()
@@ -4300,10 +4649,13 @@ class Calendar(Screen):
                     self._paint_calendar()
 
                     if get_debug():
-                        print("[Calendar] Config saved, events updated to:", new_time)
+                        print(
+                            "[Calendar] Config saved, events updated to:",
+                            new_time)
                 else:
                     if get_debug():
-                        print("[Calendar] Config NOT saved, just refreshing display")
+                        print(
+                            "[Calendar] Config NOT saved, just refreshing display")
 
                     if hasattr(self, 'holiday_cache'):
                         self.holiday_cache = {}
@@ -4327,8 +4679,7 @@ class Calendar(Screen):
             "Developer: on base plugin from Sirius0103 Rewrite Code by Lululla\n"
             "Homepage: www.corvoboys.org\n\n"
             "Homepage: www.corvoboys.org www.linuxsat-support.com\n\n"
-            "Homepage: www.gisclub.tv\n\n"
-        ) % PLUGIN_VERSION
+            "Homepage: www.gisclub.tv\n\n") % PLUGIN_VERSION
         self.session.open(MessageBox, info_text, MessageBox.TYPE_INFO)
 
     def cancel(self):
@@ -4341,15 +4692,22 @@ class Calendar(Screen):
 class settingCalendar(Setup):
     def __init__(self, session, parent=None):
         print("[Calendar DEBUG] Opening settings...")
-        Setup.__init__(self, session, "settingCalendar", plugin="Extensions/Calendar", PluginLanguageDomain="Calendar")
+        Setup.__init__(
+            self,
+            session,
+            "settingCalendar",
+            plugin="Extensions/Calendar",
+            PluginLanguageDomain="Calendar")
         self.parent = parent
         self.was_saved = False  # Flag per tracciare se è stato salvato
 
     def keyCancel(self):
         """Cancel changes - but KEEP the plugin.cfg values"""
-        print("[settingCalendar] Cancelling changes, but keeping plugin.cfg configuration")
+        print(
+            "[settingCalendar] Cancelling changes, but keeping plugin.cfg configuration")
 
-        # Invece di chiudere normalmente, forziamo un ripristino dal file plugin.cfg
+        # Invece di chiudere normalmente, forziamo un ripristino dal file
+        # plugin.cfg
         from .config_manager import restore_from_plugin_file
         restore_from_plugin_file()
 
@@ -4387,14 +4745,24 @@ class settingCalendar(Setup):
             old_default = get_last_used_default_time()
             if old_default != new_default:
                 if get_debug():
-                    print("[settingCalendar] Event time changed from " + old_default + " to " + new_default)
+                    print(
+                        "[settingCalendar] Event time changed from " +
+                        old_default +
+                        " to " +
+                        new_default)
                 update_last_used_default_time(new_default)
 
                 # Convert events if needed
-                if self.parent and hasattr(self.parent, 'event_manager') and self.parent.event_manager:
-                    converted = self.parent.event_manager.convert_all_events_time(new_default)
+                if self.parent and hasattr(
+                        self.parent,
+                        'event_manager') and self.parent.event_manager:
+                    converted = self.parent.event_manager.convert_all_events_time(
+                        new_default)
                     if get_debug() and converted > 0:
-                        print("[settingCalendar] Converted " + str(converted) + " events")
+                        print(
+                            "[settingCalendar] Converted " +
+                            str(converted) +
+                            " events")
 
             if get_debug():
                 print("[Calendar] Configuration saved successfully")
@@ -4415,7 +4783,7 @@ class settingCalendar(Setup):
             config_obj = getattr(config.plugins.calendar, key, None)
             if config_obj:
                 return config_obj.value
-        except:
+        except BaseException:
             pass
         return None
 

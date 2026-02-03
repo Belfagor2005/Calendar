@@ -205,7 +205,8 @@ def get_export_dir():
     if _EXPORT_DIR is None:
         if (hasattr(config, 'plugins') and hasattr(config.plugins, 'calendar')
                 and hasattr(config.plugins.calendar, 'export_location')):
-            _EXPORT_DIR = create_export_directory(config.plugins.calendar.export_location.value, "Calendar_Export")
+            _EXPORT_DIR = create_export_directory(
+                config.plugins.calendar.export_location.value, "Calendar_Export")
         else:
             _EXPORT_DIR = create_export_directory("/tmp/", "Calendar_Export")
     return _EXPORT_DIR
@@ -236,8 +237,8 @@ def get_export_locations():
         # Check network mounts
         net_dir = resolveFilename(SCOPE_MEDIA, "net")
         if isdir(net_dir):
-            devices += [(join(net_dir, d), _("Network Share")) for d in listdir(net_dir)
-                        if isdir(join(net_dir, d))]
+            devices += [(join(net_dir, d), _("Network Share"))
+                        for d in listdir(net_dir) if isdir(join(net_dir, d))]
 
         # Add unique devices
         for path, desc in devices:

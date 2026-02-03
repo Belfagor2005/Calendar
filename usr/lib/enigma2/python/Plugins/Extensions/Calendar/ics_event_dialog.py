@@ -128,12 +128,20 @@ class ICSEventDialog(Screen):
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/button_channel.png" position="756,640" size="75,36" alphatest="on" zPosition="5" />
         </screen>"""
 
-    def __init__(self, session, event_manager, event_data=None, all_events=None, current_index=0):
+    def __init__(
+            self,
+            session,
+            event_manager,
+            event_data=None,
+            all_events=None,
+            current_index=0):
         Screen.__init__(self, session)
-        
+
         if all_events:
-            self.setTitle(_("Edit Event ({0}/{1})").format(current_index + 1, len(all_events)))
-            self["title_label"] = Label(_("Edit Event ({0}/{1})").format(current_index + 1, len(all_events)))
+            self.setTitle(
+                _("Edit Event ({0}/{1})").format(current_index + 1, len(all_events)))
+            self["title_label"] = Label(
+                _("Edit Event ({0}/{1})").format(current_index + 1, len(all_events)))
         else:
             self.setTitle(_("Edit ICS Event"))
             self["title_label"] = Label(_("Edit ICS Event"))
@@ -145,7 +153,10 @@ class ICSEventDialog(Screen):
         self.current_field_index = 0
         if get_debug():
             print("[ICSEventDialog] Initialization...")
-            print("[ICSEventDialog] Available widgets after Screen.__init__:", list(self.keys()))
+            print(
+                "[ICSEventDialog] Available widgets after Screen.__init__:",
+                list(
+                    self.keys()))
         self.fields = [
             ('title', _('Title'), 'text_title', 'label_title'),
             ('date', _('Date (YYYY-MM-DD)'), 'text_date', 'label_date'),
@@ -155,7 +166,8 @@ class ICSEventDialog(Screen):
             ('labels', _('Labels (comma separated)'), 'text_labels', 'label_labels'),
         ]
 
-        title_text = _("Edit Event ({0}/{1})").format(current_index + 1, len(all_events)) if all_events else _("Edit ICS Event")
+        title_text = _("Edit Event ({0}/{1})").format(current_index +
+                                                      1, len(all_events)) if all_events else _("Edit ICS Event")
         safe_title = str(title_text)
         self.setTitle(safe_title)
 
@@ -219,15 +231,18 @@ class ICSEventDialog(Screen):
         if self.current_field_index >= len(self.fields):
             return
 
-        for i, (field_key, field_label, widget_name, label_name) in enumerate(self.fields):
+        for i, (field_key, field_label, widget_name,
+                label_name) in enumerate(self.fields):
             indicator_name = 'selected_indicator_' + widget_name[5:]
 
             if i == self.current_field_index:
                 # Highlight current field
                 if hasattr(self[widget_name], 'instance'):
                     self[widget_name].instance.setBorderWidth(3)
-                    self[widget_name].instance.setBorderColor(parseColor("#00FF00"))
-                    self[widget_name].instance.setBackgroundColor(parseColor("#1A3C1A"))
+                    self[widget_name].instance.setBorderColor(
+                        parseColor("#00FF00"))
+                    self[widget_name].instance.setBackgroundColor(
+                        parseColor("#1A3C1A"))
 
                 # Show indicator
                 self[indicator_name].show()
@@ -235,8 +250,10 @@ class ICSEventDialog(Screen):
                 # Normal field
                 if hasattr(self[widget_name], 'instance'):
                     self[widget_name].instance.setBorderWidth(1)
-                    self[widget_name].instance.setBorderColor(parseColor("#404040"))
-                    self[widget_name].instance.setBackgroundColor(parseColor("#00171a1c"))
+                    self[widget_name].instance.setBorderColor(
+                        parseColor("#404040"))
+                    self[widget_name].instance.setBackgroundColor(
+                        parseColor("#00171a1c"))
 
                 # Hide indicator
                 self[indicator_name].hide()
@@ -245,7 +262,8 @@ class ICSEventDialog(Screen):
         field_number = self.current_field_index + 1
         total_fields = len(self.fields)
         field_name = self.fields[self.current_field_index][1]
-        info_text = _("Field {0}/{1}: {2}").format(field_number, total_fields, field_name)
+        info_text = _(
+            "Field {0}/{1}: {2}").format(field_number, total_fields, field_name)
         self["current_field_info"].setText(str(info_text))
 
     def edit_current_field(self):
@@ -271,12 +289,14 @@ class ICSEventDialog(Screen):
 
     def next_field(self):
         """Move to next field"""
-        self.current_field_index = (self.current_field_index + 1) % len(self.fields)
+        self.current_field_index = (
+            self.current_field_index + 1) % len(self.fields)
         self.update_field_highlight()
 
     def previous_field(self):
         """Move to previous field"""
-        self.current_field_index = (self.current_field_index - 1) % len(self.fields)
+        self.current_field_index = (
+            self.current_field_index - 1) % len(self.fields)
         self.update_field_highlight()
 
     def next_event(self):
@@ -285,10 +305,10 @@ class ICSEventDialog(Screen):
             return
 
         self._save_current_changes()
-        
+
         # Move to next event WITH WRAP-AROUND
         self.current_index = (self.current_index + 1) % len(self.all_events)
-        
+
         # Reload form with new event data
         self.reload_event_form()
 
@@ -298,10 +318,10 @@ class ICSEventDialog(Screen):
             return
 
         self._save_current_changes()
-        
+
         # Move to previous event WITH WRAP-AROUND
         self.current_index = (self.current_index - 1) % len(self.all_events)
-        
+
         # Reload form with new event data
         self.reload_event_form()
 
@@ -314,11 +334,11 @@ class ICSEventDialog(Screen):
         # Update all form fields
         for field_key, field_label, widget_name, label_name in self.fields:
             value = self.event_data.get(field_key, '')
-            
+
             # Format labels if list
             if field_key == 'labels' and isinstance(value, list):
                 value = ', '.join(value)
-                
+
             if value is None:
                 value = ""
             self[widget_name].setText(value if value else "")
@@ -327,10 +347,11 @@ class ICSEventDialog(Screen):
         if self.all_events:
             current_pos = self.current_index + 1
             total_events = len(self.all_events)
-            
-            title_text = _("Edit Event ({0}/{1})").format(current_pos, total_events)
+
+            title_text = _(
+                "Edit Event ({0}/{1})").format(current_pos, total_events)
             self.setTitle(title_text)
-            
+
             if "title_label" in self:
                 self["title_label"].setText(title_text)
 
@@ -359,12 +380,12 @@ class ICSEventDialog(Screen):
                     value = self[widget_name].getText()
                     if value:
                         self.event_data[field_key] = value
-                        
+
             if get_debug():
                 print("[ICSEventDialog] Saved changes for event: {0}".format(
                     self.event_data.get('title', 'Unknown')
                 ))
-                
+
         except Exception as e:
             print("[ICSEventDialog] Error saving changes: {0}".format(str(e)))
 
@@ -406,45 +427,48 @@ class ICSEventDialog(Screen):
                 return
 
         # Convert labels from string to list
-        if 'labels' in self.event_data and isinstance(self.event_data['labels'], str):
+        if 'labels' in self.event_data and isinstance(
+                self.event_data['labels'], str):
             labels_str = self.event_data['labels']
-            labels_list = [label.strip() for label in labels_str.split(',') if label.strip()]
+            labels_list = [label.strip()
+                           for label in labels_str.split(',') if label.strip()]
             self.event_data['labels'] = labels_list
 
         # Find and update the event in the list
         event_id = self.event_data.get('id')
         event_updated = False
-        
+
         for event in self.event_manager.events:
             if event.id == event_id:
                 # Update event properties
                 event.title = self.event_data['title']
                 event.date = self.event_data['date']
-                event.time = self.event_data.get('time', get_default_event_time())
+                event.time = self.event_data.get(
+                    'time', get_default_event_time())
                 event.description = self.event_data.get('description', '')
                 event.repeat = self.event_data.get('repeat', 'none')
 
                 if hasattr(event, 'labels'):
                     event.labels = self.event_data.get('labels', [])
-                    
+
                 event_updated = True
                 break
 
         if event_updated:
             # Save changes
             self.event_manager.save_events()
-            
+
             # Update the all_events list
             if self.all_events and self.current_index < len(self.all_events):
                 for i, ev in enumerate(self.all_events):
                     if ev.id == event_id:
                         self.all_events[i] = event
                         break
-            
+
             message = _("Event '{0}' saved successfully").format(
                 self.event_data.get('title', 'Unknown')
             )
-            
+
             self.session.openWithCallback(
                 lambda x: None,
                 MessageBox,
@@ -468,8 +492,7 @@ class ICSEventDialog(Screen):
                 self.delete_confirmed,
                 MessageBox,
                 _("Delete event '{0}'?\n\nThis cannot be undone!").format(title),
-                MessageBox.TYPE_YESNO
-            )
+                MessageBox.TYPE_YESNO)
         else:
             # Clear form
             for field_key, field_label, widget_name, label_name in self.fields:

@@ -52,8 +52,15 @@ except ImportError:
 class Event:
     """Class to represent a single event"""
 
-    def __init__(self, title="Event", description="Description", date="", event_time="",
-                 repeat="none", notify_before=5, enabled=True):
+    def __init__(
+            self,
+            title="Event",
+            description="Description",
+            date="",
+            event_time="",
+            repeat="none",
+            notify_before=5,
+            enabled=True):
         self.title = title
         self.description = description
         self.date = date  # Format: YYYY-MM-DD
@@ -110,7 +117,7 @@ class Event:
                     labels.append("evening")
                 else:
                     labels.append("night")
-            except:
+            except BaseException:
                 pass
 
         # Remove duplicates and return
@@ -154,7 +161,11 @@ class Event:
     def get_datetime(self):
         """Return datetime object of the event"""
         try:
-            return datetime.strptime("{0} {1}".format(self.date, self.time), "%Y-%m-%d %H:%M")
+            return datetime.strptime(
+                "{0} {1}".format(
+                    self.date,
+                    self.time),
+                "%Y-%m-%d %H:%M")
         except ValueError:
             return None
 
@@ -170,13 +181,20 @@ class Event:
             from_date = datetime.now()
 
         if self.repeat == "none":
-            if event_dt >= from_date or (from_date - event_dt) <= timedelta(minutes=2):
+            if event_dt >= from_date or (
+                    from_date -
+                    event_dt) <= timedelta(
+                    minutes=2):
                 return event_dt
             return None
 
         elif self.repeat == "daily":
-            test_date = datetime(from_date.year, from_date.month, from_date.day,
-                                 event_dt.hour, event_dt.minute)
+            test_date = datetime(
+                from_date.year,
+                from_date.month,
+                from_date.day,
+                event_dt.hour,
+                event_dt.minute)
             if test_date < from_date:
                 test_date += timedelta(days=1)
             return test_date
@@ -207,8 +225,12 @@ class Event:
                     test_date = datetime(from_date.year + 1, 1, day,
                                          event_dt.hour, event_dt.minute)
                 else:
-                    test_date = datetime(from_date.year, from_date.month + 1, day,
-                                         event_dt.hour, event_dt.minute)
+                    test_date = datetime(
+                        from_date.year,
+                        from_date.month + 1,
+                        day,
+                        event_dt.hour,
+                        event_dt.minute)
 
             while True:
                 try:
@@ -223,8 +245,12 @@ class Event:
 
         elif self.repeat == "yearly":
             try:
-                test_date = datetime(from_date.year, event_dt.month, event_dt.day,
-                                     event_dt.hour, event_dt.minute)
+                test_date = datetime(
+                    from_date.year,
+                    event_dt.month,
+                    event_dt.day,
+                    event_dt.hour,
+                    event_dt.minute)
             except ValueError:
                 test_date = datetime(from_date.year, event_dt.month, 28,
                                      event_dt.hour, event_dt.minute)
@@ -233,11 +259,19 @@ class Event:
 
             if test_date < from_date and diff_minutes > 60:
                 try:
-                    test_date = datetime(from_date.year + 1, event_dt.month, event_dt.day,
-                                         event_dt.hour, event_dt.minute)
+                    test_date = datetime(
+                        from_date.year + 1,
+                        event_dt.month,
+                        event_dt.day,
+                        event_dt.hour,
+                        event_dt.minute)
                 except ValueError:
-                    test_date = datetime(from_date.year + 1, event_dt.month, 28,
-                                         event_dt.hour, event_dt.minute)
+                    test_date = datetime(
+                        from_date.year + 1,
+                        event_dt.month,
+                        28,
+                        event_dt.hour,
+                        event_dt.minute)
 
             return test_date
 
@@ -258,7 +292,8 @@ class Event:
         # Calculate when notification should be shown
         notify_time = next_occurrence - timedelta(minutes=self.notify_before)
 
-        return notify_time <= current_time <= next_occurrence + timedelta(minutes=5)
+        return notify_time <= current_time <= next_occurrence + \
+            timedelta(minutes=5)
 
     def is_active(self, current_time=None):
         """Check if event is active right now"""
@@ -294,7 +329,7 @@ class EventManager:
             if not exists(events_dir):
                 try:
                     makedirs(events_dir, 0o755)
-                except:
+                except BaseException:
                     pass
 
         self.sound_dir = SOUNDS_DIR
@@ -310,14 +345,16 @@ class EventManager:
         # Timer to check events
         self.check_timer = eTimer()
         try:
-            self.check_timer_conn = self.check_timer.timeout.connect(self.check_events)
+            self.check_timer_conn = self.check_timer.timeout.connect(
+                self.check_events)
         except AttributeError:
             self.check_timer.callback.append(self.check_events)
 
         # Timer to update current time
         self.time_timer = eTimer()
         try:
-            self.time_timer_conn = self.time_timer.timeout.connect(self.update_time)
+            self.time_timer_conn = self.time_timer.timeout.connect(
+                self.update_time)
         except AttributeError:
             self.time_timer.callback.append(self.update_time)
 
@@ -325,7 +362,9 @@ class EventManager:
         try:
             self.load_events()
         except Exception as e:
-            print("[EventManager] Warning: Could not load events initially: %s" % str(e))
+            print(
+                "[EventManager] Warning: Could not load events initially: %s" %
+                str(e))
             self.events = []
 
         self.start_monitoring()
@@ -366,14 +405,28 @@ class EventManager:
             return
 
         print("\n[EventManager] === TIMER STATUS DEBUG ===")
-        print("[EventManager] Has check_timer attribute: %s" % hasattr(self, 'check_timer'))
+        print(
+            "[EventManager] Has check_timer attribute: %s" %
+            hasattr(
+                self,
+                'check_timer'))
         if hasattr(self, 'check_timer'):
             print("[EventManager] Timer type: %s" % type(self.check_timer))
-            print("[EventManager] Timer is active: %s" % self.check_timer.isActive())
-            print("[EventManager] Timer timeout: %s" % getattr(self.check_timer, 'timeout', 'N/A'))
-            print("[EventManager] Timer callback list: %s" % getattr(self.check_timer, 'callback', 'N/A'))
+            print(
+                "[EventManager] Timer is active: %s" %
+                self.check_timer.isActive())
+            print(
+                "[EventManager] Timer timeout: %s" %
+                getattr(
+                    self.check_timer,
+                    'timeout',
+                    'N/A'))
+            print("[EventManager] Timer callback list: %s" %
+                  getattr(self.check_timer, 'callback', 'N/A'))
         print("[EventManager] Total events: %d" % len(self.events))
-        print("[EventManager] Check interval: %d seconds" % get_check_interval())
+        print(
+            "[EventManager] Check interval: %d seconds" %
+            get_check_interval())
         print("[EventManager] === DEBUG END ===\n")
 
     def cleanup(self):
@@ -406,14 +459,18 @@ class EventManager:
                         self.save_notified_events()
 
                         if get_debug():
-                            print("[EventManager] Cleaned %d old notifications from cache" % cleaned_count)
+                            print(
+                                "[EventManager] Cleaned %d old notifications from cache" %
+                                cleaned_count)
 
                         return cleaned_count
 
             return 0
 
         except Exception as e:
-            print("[EventManager] Error cleaning notification cache: %s" % str(e))
+            print(
+                "[EventManager] Error cleaning notification cache: %s" %
+                str(e))
             return 0
 
     def clean_old_notifications(self, current_time):
@@ -438,13 +495,17 @@ class EventManager:
             self.notified_events.discard(event_id)
 
         if to_remove and get_debug():
-            print("[EventManager] Cleaned %d old notifications" % len(to_remove))
+            print(
+                "[EventManager] Cleaned %d old notifications" %
+                len(to_remove))
 
     def load_events(self):
         """Load events from JSON file - convert old times"""
         try:
             if get_debug():
-                print("[EventManager] Loading events from: %s" % self.events_file)
+                print(
+                    "[EventManager] Loading events from: %s" %
+                    self.events_file)
 
             if not exists(self.events_file):
                 if get_debug():
@@ -456,16 +517,22 @@ class EventManager:
             last_used = get_last_used_default_time()
 
             if get_debug():
-                print("[EventManager] Current default time: %s" % current_default)
+                print(
+                    "[EventManager] Current default time: %s" %
+                    current_default)
                 print("[EventManager] Last used default time: %s" % last_used)
-                print("[EventManager] OLD_DEFAULT_EVENT_TIME: %s" % OLD_DEFAULT_EVENT_TIME)
+                print(
+                    "[EventManager] OLD_DEFAULT_EVENT_TIME: %s" %
+                    OLD_DEFAULT_EVENT_TIME)
 
             # CHECK IF WE ALREADY CONVERTED THIS FILE
             file_hash = self._get_file_hash()
 
             if self._is_already_converted(file_hash, current_default):
                 if get_debug():
-                    print("[EventManager] Events already converted to %s" % current_default)
+                    print(
+                        "[EventManager] Events already converted to %s" %
+                        current_default)
                 # Load normally without conversion
                 with open(self.events_file, 'r') as f:
                     data = load(f)
@@ -528,19 +595,23 @@ class EventManager:
                 )
 
                 event.id = item.get('id', int(time.time() * 1000))
-                event.created = item.get('created', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+                event.created = item.get(
+                    'created', datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
                 event.labels = item.get('labels', [])
 
                 self.events.append(event)
 
             if get_debug():
-                print("[EventManager] Total events loaded: %d" % len(self.events))
+                print("[EventManager] Total events loaded: %d" %
+                      len(self.events))
                 print("[EventManager] Converted %d events" % converted_count)
 
             # Save if any conversions were made
             if need_save and converted_count > 0:
                 if get_debug():
-                    print("[EventManager] Saving %d converted events to file" % converted_count)
+                    print(
+                        "[EventManager] Saving %d converted events to file" %
+                        converted_count)
                 self.save_events()
 
                 # MARK FILE AS CONVERTED
@@ -549,7 +620,9 @@ class EventManager:
                 # Update last used default time after conversion
                 update_last_used_default_time(current_default)
                 if get_debug():
-                    print("[EventManager] Events updated to new default time: %s" % current_default)
+                    print(
+                        "[EventManager] Events updated to new default time: %s" %
+                        current_default)
 
         except Exception as e:
             print("[EventManager] Error loading events: %s" % str(e))
@@ -563,8 +636,11 @@ class EventManager:
             current_default = get_default_event_time()
 
             if get_debug():
-                print("[EventManager] Saving events, current default: %s" % current_default)
-                print("[EventManager] Number of events to save: %d" % len(self.events))
+                print(
+                    "[EventManager] Saving events, current default: %s" %
+                    current_default)
+                print("[EventManager] Number of events to save: %d" %
+                      len(self.events))
 
             data = []
             for event in self.events:
@@ -582,7 +658,9 @@ class EventManager:
                 })
 
                 if get_debug():
-                    print("[EventManager]   Event '%s' time: %s" % (event.title, event.time))
+                    print(
+                        "[EventManager]   Event '%s' time: %s" %
+                        (event.title, event.time))
 
             # Create directory if missing
             events_dir = dirname(self.events_file)
@@ -590,9 +668,13 @@ class EventManager:
                 try:
                     makedirs(events_dir, 0o755)
                     if get_debug():
-                        print("[EventManager] Created directory: %s" % events_dir)
+                        print(
+                            "[EventManager] Created directory: %s" %
+                            events_dir)
                 except Exception as e:
-                    print("[EventManager] Error creating directory: %s" % str(e))
+                    print(
+                        "[EventManager] Error creating directory: %s" %
+                        str(e))
 
             # Save to temp file first
             temp_file = self.events_file + ".tmp"
@@ -603,7 +685,9 @@ class EventManager:
                     fsync(f.fileno())
 
                 if get_debug():
-                    print("[EventManager] Written to temp file: %s" % temp_file)
+                    print(
+                        "[EventManager] Written to temp file: %s" %
+                        temp_file)
 
                 # Rename temp to final
                 if exists(self.events_file):
@@ -618,16 +702,25 @@ class EventManager:
                 try:
                     chmod(self.events_file, 0o644)
                 except Exception as e:
-                    print("[EventManager] Warning: Could not set permissions: %s" % str(e))
+                    print(
+                        "[EventManager] Warning: Could not set permissions: %s" %
+                        str(e))
                 # Verify file
                 if get_debug():
                     if exists(self.events_file):
                         file_size = getsize(self.events_file)
-                        print("[EventManager] File saved successfully, size:", file_size, "bytes")
+                        print(
+                            "[EventManager] File saved successfully, size:",
+                            file_size,
+                            "bytes")
                         with open(self.events_file, 'r') as f:
                             test_data = load(f)
                             if test_data:
-                                print("[EventManager] First event time after save:", test_data[0].get('time', 'N/A'))
+                                print(
+                                    "[EventManager] First event time after save:",
+                                    test_data[0].get(
+                                        'time',
+                                        'N/A'))
                     else:
                         print("[EventManager] ERROR: File not created!")
             except Exception as e:
@@ -658,10 +751,13 @@ class EventManager:
                 fsync(f.fileno())
 
             if get_debug():
-                print("[EventManager] Saved {} notified events".format(len(self.notified_events)))
+                print("[EventManager] Saved {} notified events".format(
+                    len(self.notified_events)))
 
         except Exception as e:
-            print("[EventManager] Error saving notified events: {}".format(str(e)))
+            print(
+                "[EventManager] Error saving notified events: {}".format(
+                    str(e)))
 
     def load_notified_events(self):
         """Load notified events cache from file"""
@@ -681,7 +777,9 @@ class EventManager:
                     print("[EventManager] No notified events cache found")
 
         except Exception as e:
-            print("[EventManager] Error loading notified events: {}".format(str(e)))
+            print(
+                "[EventManager] Error loading notified events: {}".format(
+                    str(e)))
             self.notified_events = set()
 
     def _get_file_hash(self):
@@ -694,7 +792,7 @@ class EventManager:
             with open(self.events_file, 'rb') as f:
                 content = f.read()
                 return hashlib.md5(content).hexdigest()
-        except:
+        except BaseException:
             return "error"
 
     def _is_already_converted(self, file_hash, target_time):
@@ -707,7 +805,7 @@ class EventManager:
                 conversion_data = load(f)
                 if file_hash in conversion_data:
                     return conversion_data[file_hash] == target_time
-        except:
+        except BaseException:
             pass
 
     def _mark_as_converted(self, file_hash, target_time):
@@ -718,7 +816,7 @@ class EventManager:
                 try:
                     with open(self.converted_events_file, 'r') as f:
                         conversion_data = load(f)
-                except:
+                except BaseException:
                     conversion_data = {}
 
             conversion_data[file_hash] = target_time
@@ -730,7 +828,9 @@ class EventManager:
                 dump(conversion_data, f, indent=2)
 
             if get_debug():
-                print("[EventManager] Successfully marked file as converted to: %s" % target_time)
+                print(
+                    "[EventManager] Successfully marked file as converted to: %s" %
+                    target_time)
 
         except Exception as e:
             print("[EventManager] Error marking conversion: %s" % str(e))
@@ -746,7 +846,9 @@ class EventManager:
         """Start event monitoring with debug output"""
         if get_debug():
             print("[EventManager] === START MONITORING ===")
-            print("[EventManager] check_interval from config: %d" % get_check_interval())
+            print(
+                "[EventManager] check_interval from config: %d" %
+                get_check_interval())
 
         # Stop existing timer if present
         if hasattr(self, 'check_timer') and self.check_timer:
@@ -770,14 +872,18 @@ class EventManager:
         # Start timer as PERIODIC (False = not single shot)
         interval = get_check_interval() * 1000
         if get_debug():
-            print("[EventManager] Starting PERIODIC timer with %d ms interval" % interval)
+            print(
+                "[EventManager] Starting PERIODIC timer with %d ms interval" %
+                interval)
 
         try:
             # Use False as second parameter for periodic timer
             self.check_timer.start(interval, False)
             if get_debug():
                 print("[EventManager] Timer started successfully")
-                print("[EventManager] Timer active after start: %s" % self.check_timer.isActive())
+                print(
+                    "[EventManager] Timer active after start: %s" %
+                    self.check_timer.isActive())
         except Exception as e:
             print("[EventManager] ERROR starting timer: %s" % str(e))
 
@@ -787,7 +893,9 @@ class EventManager:
     def _check_events_wrapper(self):
         """Wrapper per il timer callback"""
         if get_debug():
-            print("[EventManager] Timer callback fired at: %s" % datetime.now().strftime('%H:%M:%S'))
+            print(
+                "[EventManager] Timer callback fired at: %s" %
+                datetime.now().strftime('%H:%M:%S'))
         self.check_events()
 
     def add_event(self, event):
@@ -813,7 +921,9 @@ class EventManager:
 
                 self.save_events()
                 if get_debug():
-                    print("[EventManager] Event updated: {0}".format(event.title))
+                    print(
+                        "[EventManager] Event updated: {0}".format(
+                            event.title))
                 return True
         return False
 
@@ -913,7 +1023,9 @@ class EventManager:
             new_time = get_default_event_time()
 
         if get_debug():
-            print("[EventManager] FORCE converting all events to: %s" % new_time)
+            print(
+                "[EventManager] FORCE converting all events to: %s" %
+                new_time)
 
         converted = 0
         for event in self.events:
@@ -921,7 +1033,9 @@ class EventManager:
             event.time = new_time
             converted += 1
             if get_debug():
-                print("[EventManager]   %s: %s -> %s" % (event.title, old_time, new_time))
+                print(
+                    "[EventManager]   %s: %s -> %s" %
+                    (event.title, old_time, new_time))
 
         if converted > 0:
             self.save_events()
@@ -946,7 +1060,8 @@ class EventManager:
 
                 next_occurrence = event.get_next_occurrence(now)
                 if next_occurrence:
-                    mins_to_event = (next_occurrence - now).total_seconds() / 60
+                    mins_to_event = (
+                        next_occurrence - now).total_seconds() / 60
                     if 0 <= mins_to_event <= 10:
                         imminent_events_count += 1
 
@@ -968,8 +1083,10 @@ class EventManager:
                            now.strftime('%H:%M:%S'),
                            time_diff))
 
-                notify_time = next_occurrence - timedelta(minutes=event.notify_before)
-                notification_window_end = next_occurrence + timedelta(minutes=30)
+                notify_time = next_occurrence - \
+                    timedelta(minutes=event.notify_before)
+                notification_window_end = next_occurrence + \
+                    timedelta(minutes=30)
 
                 already_notified_today = False
                 if event.id in self.notified_events:
@@ -979,13 +1096,16 @@ class EventManager:
                         already_notified_today = True
                         print("[EventManager]   Already notified TODAY")
 
-                        time_since_event_start = (now - next_occurrence).total_seconds() / 60
+                        time_since_event_start = (
+                            now - next_occurrence).total_seconds() / 60
                         if 0 <= time_since_event_start <= 2:
                             last_notify_min = int(time_since_event_start / 2)
                             notify_key = "%s_%d" % (event.id, last_notify_min)
 
                             if notify_key not in self.notified_events:
-                                print("[EventManager]   Event still in progress (%.1f min), re-notify" % time_since_event_start)
+                                print(
+                                    "[EventManager]   Event still in progress (%.1f min), re-notify" %
+                                    time_since_event_start)
                                 already_notified_today = False
                                 self.notified_events.add(notify_key)
                     else:
@@ -993,7 +1113,9 @@ class EventManager:
 
                 if now >= next_occurrence and now <= notification_window_end:
                     if not already_notified_today:
-                        print("[EventManager] >>> NOTIFY (in-progress): %s" % event.title)
+                        print(
+                            "[EventManager] >>> NOTIFY (in-progress): %s" %
+                            event.title)
                         self.show_notification(event)
                         self.notified_events.add(event.id)
                         notifications_shown += 1
@@ -1001,14 +1123,18 @@ class EventManager:
 
                 elif notify_time <= now < next_occurrence:
                     if not already_notified_today:
-                        print("[EventManager] >>> NOTIFY (upcoming): %s" % event.title)
+                        print(
+                            "[EventManager] >>> NOTIFY (upcoming): %s" %
+                            event.title)
                         self.show_notification(event)
                         self.notified_events.add(event.id)
                         notifications_shown += 1
                         self.save_notified_events()
 
             if notifications_shown > 0:
-                print("[EventManager] Notifications shown: %d" % notifications_shown)
+                print(
+                    "[EventManager] Notifications shown: %d" %
+                    notifications_shown)
 
             if imminent_events_count > 0:
                 new_interval = 10000
@@ -1033,7 +1159,8 @@ class EventManager:
     def cleanup_past_events(self):
         """Clean up past non-recurring events"""
         if not config.plugins.calendar.events_enabled.value:
-            # No need to check self.event_manager anymore because self IS the EventManager
+            # No need to check self.event_manager anymore because self IS the
+            # EventManager
             return 0
 
         now = datetime.now()
@@ -1052,8 +1179,9 @@ class EventManager:
                 # If the event is more than 1 day past, remove it
                 if (now - event_dt) > timedelta(days=1):
                     if get_debug():
-                        print("[EventManager] Removing past event: {0} ({1})".format(
-                            event.title, event.date))
+                        print(
+                            "[EventManager] Removing past event: {0} ({1})".format(
+                                event.title, event.date))
                     removed_count += 1
                     continue
 
@@ -1065,7 +1193,8 @@ class EventManager:
             self.events = events_to_keep
             self.save_events()
             if get_debug():
-                print("[EventManager] Cleaned up {0} past events".format(removed_count))
+                print(
+                    "[EventManager] Cleaned up {0} past events".format(removed_count))
 
         return removed_count
 
@@ -1075,7 +1204,8 @@ class EventManager:
         def do_cleanup(result):
             if result:
                 cleaned = self.cleanup_duplicate_events()
-                message = _("Cleaned {0} duplicate events").format(cleaned) if cleaned > 0 else _("No duplicates found")
+                message = _("Cleaned {0} duplicate events").format(
+                    cleaned) if cleaned > 0 else _("No duplicates found")
                 session.open(MessageBox, message, MessageBox.TYPE_INFO)
                 if callback:
                     callback()
@@ -1084,8 +1214,7 @@ class EventManager:
             do_cleanup,
             MessageBox,
             _("Clean up duplicate events?\n\nThis will remove exact duplicates from your events list."),
-            MessageBox.TYPE_YESNO
-        )
+            MessageBox.TYPE_YESNO)
 
     def cleanup_duplicate_events(self):
         """Remove duplicate events from the list"""
@@ -1096,13 +1225,16 @@ class EventManager:
                 return 0
             if get_debug():
                 print("[EventManager] === STARTING DUPLICATE CLEANUP ===")
-                print("[EventManager] Total events before: %d" % len(self.events))
+                print("[EventManager] Total events before: %d" %
+                      len(self.events))
 
             # DEBUG: Print all events
             if get_debug():
                 print("\n[EventManager] DEBUG - All events:")
             for i, event in enumerate(self.events):
-                print("[%d] '%s' - %s %s" % (i, event.title, event.date, event.time))
+                print(
+                    "[%d] '%s' - %s %s" %
+                    (i, event.title, event.date, event.time))
 
             # Keep track of unique events
             unique_events = []
@@ -1119,7 +1251,9 @@ class EventManager:
                 if key in seen_keys:
                     # Duplicate found - remove it
                     if get_debug():
-                        print("[EventManager] DUPLICATE FOUND! Removing: %s" % event.title)
+                        print(
+                            "[EventManager] DUPLICATE FOUND! Removing: %s" %
+                            event.title)
                     removed_count += 1
                     continue
 
@@ -1134,8 +1268,11 @@ class EventManager:
                 self.events = unique_events
                 self.save_events()
                 if get_debug():
-                    print("\n[EventManager] Cleanup completed: removed %d duplicates" % removed_count)
-                    print("[EventManager] Total events after: %d" % len(self.events))
+                    print(
+                        "\n[EventManager] Cleanup completed: removed %d duplicates" %
+                        removed_count)
+                    print("[EventManager] Total events after: %d" %
+                          len(self.events))
             else:
                 print("\n[EventManager] No duplicates found")
             if get_debug():
@@ -1143,7 +1280,9 @@ class EventManager:
             return removed_count
 
         except Exception as e:
-            print("[EventManager] Error in cleanup_duplicate_events: %s" % str(e))
+            print(
+                "[EventManager] Error in cleanup_duplicate_events: %s" %
+                str(e))
             import traceback
             traceback.print_exc()
             return 0
@@ -1205,7 +1344,8 @@ class EventManager:
                 sound_played = sound_timer is not None
                 print("[EventManager] Sound played: %s" % sound_played)
 
-            time_str = event.time[:5] if event.time else get_default_event_time()
+            time_str = event.time[:5] if event.time else get_default_event_time(
+            )
             message_lines = [
                 "Calendar Event: " + event.title,
                 "Time: " + time_str
@@ -1251,7 +1391,9 @@ class EventManager:
 
             if get_debug():
                 if current_service:
-                    print("[EventManager] Current service:", current_service.toString())
+                    print(
+                        "[EventManager] Current service:",
+                        current_service.toString())
                 else:
                     print("[EventManager] Current service: None")
 
@@ -1275,7 +1417,10 @@ class EventManager:
                         print("[EventManager] Not a TV service, not saving backup")
 
             sound_dir = None
-            for test_dir in [PLUGIN_PATH + "sounds/", PLUGIN_PATH + "sound/", SOUNDS_DIR]:
+            for test_dir in [
+                    PLUGIN_PATH + "sounds/",
+                    PLUGIN_PATH + "sound/",
+                    SOUNDS_DIR]:
                 if exists(test_dir):
                     sound_dir = test_dir
                     break
@@ -1292,7 +1437,9 @@ class EventManager:
 
             filename_base = sound_map.get(sound_type)
             if not filename_base:
-                print("[EventManager] ERROR: Unknown sound type: %s" % sound_type)
+                print(
+                    "[EventManager] ERROR: Unknown sound type: %s" %
+                    sound_type)
                 return False
 
             sound_path = None
@@ -1325,7 +1472,7 @@ class EventManager:
 
             try:
                 self.restore_timer.timeout.connect(restore_tv_callback)
-            except:
+            except BaseException:
                 self.restore_timer.callback.append(restore_tv_callback)
 
             self.restore_timer.start(5000, True)
@@ -1336,12 +1483,14 @@ class EventManager:
             return self.restore_timer
 
         except Exception as e:
-            print("[EventManager] ERROR in play_notification_sound: %s" % str(e))
+            print(
+                "[EventManager] ERROR in play_notification_sound: %s" %
+                str(e))
             import traceback
             traceback.print_exc()
             try:
                 self.stop_notification_sound()
-            except:
+            except BaseException:
                 pass
             return None
 
@@ -1359,7 +1508,9 @@ class EventManager:
             if hasattr(self, 'tv_service_backup') and self.tv_service_backup:
                 if get_debug():
                     print("[EventManager] Attempting to restore TV service")
-                    print("[EventManager] Backup service ref:", self.tv_service_backup.toString())
+                    print(
+                        "[EventManager] Backup service ref:",
+                        self.tv_service_backup.toString())
 
                 try:
                     if self.tv_service_backup.valid():
@@ -1369,9 +1520,12 @@ class EventManager:
                         if get_debug():
                             current = self.session.nav.getCurrentlyPlayingServiceReference()
                             if current:
-                                print("[EventManager] Service after restore:", current.toString())
+                                print(
+                                    "[EventManager] Service after restore:",
+                                    current.toString())
                             else:
-                                print("[EventManager] No current service after restore")
+                                print(
+                                    "[EventManager] No current service after restore")
                     else:
                         if get_debug():
                             print("[EventManager] Backup service is not valid")
@@ -1391,7 +1545,9 @@ class EventManager:
             return True
 
         except Exception as e:
-            print("[EventManager] Error in stop_notification_sound: %s" % str(e))
+            print(
+                "[EventManager] Error in stop_notification_sound: %s" %
+                str(e))
             import traceback
             traceback.print_exc()
             return False
@@ -1414,8 +1570,14 @@ class EventManager:
 
 
 # Helper functions for Calendar integration
-def create_event_from_data(title, date, event_time=get_default_event_time(), description="",
-                           repeat="none", notify_before=5, enabled=True):
+def create_event_from_data(
+        title,
+        date,
+        event_time=get_default_event_time(),
+        description="",
+        repeat="none",
+        notify_before=5,
+        enabled=True):
     """Create new event from provided data"""
     return Event(
         title=title,

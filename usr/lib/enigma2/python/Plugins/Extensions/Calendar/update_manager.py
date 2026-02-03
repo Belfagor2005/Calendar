@@ -41,9 +41,10 @@ class UpdateManager:
                 if result is None:
                     if status_label:
                         status_label.setText(_("Update check failed"))
-                    session.open(MessageBox,
-                                 _("Could not check for updates. Check internet connection."),
-                                 MessageBox.TYPE_ERROR)
+                    session.open(
+                        MessageBox,
+                        _("Could not check for updates. Check internet connection."),
+                        MessageBox.TYPE_ERROR)
 
                 elif result:
                     if status_label:
@@ -81,7 +82,8 @@ class UpdateManager:
             elif status_label:
                 status_label.setText(_("Update cancelled"))
 
-        message = _("A new version is available!\n\nUpdate now?\n\n(Recommended to backup first)")
+        message = _(
+            "A new version is available!\n\nUpdate now?\n\n(Recommended to backup first)")
         session.openWithCallback(update_confirmed,
                                  MessageBox,
                                  message,
@@ -94,12 +96,15 @@ class UpdateManager:
             updater = PluginUpdater()
 
         def update_progress(success, message):
-            print("Update progress: success=%s, message=%s" % (success, message))
+            print(
+                "Update progress: success=%s, message=%s" %
+                (success, message))
             if success:
                 if status_label:
                     status_label.setText(_("Update successful!"))
 
-                restart_msg = _("%s\n\nRestart Enigma2 now for changes to take effect.") % message
+                restart_msg = _(
+                    "%s\n\nRestart Enigma2 now for changes to take effect.") % message
                 session.openWithCallback(
                     lambda result: UpdateManager.restart_enigma2(session, result),
                     MessageBox,

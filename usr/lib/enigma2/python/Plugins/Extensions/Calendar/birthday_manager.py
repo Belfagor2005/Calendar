@@ -48,11 +48,20 @@ class BirthdayManager:
                 try:
                     # Extract month and day for sorting
                     bday_date = datetime.strptime(bday, "%Y-%m-%d")
-                    return (bday_date.month, bday_date.day, contact.get('FN', '').lower())
-                except:
-                    return (13, 32, contact.get('FN', '').lower())  # Invalid dates at end
+                    return (
+                        bday_date.month,
+                        bday_date.day,
+                        contact.get(
+                            'FN',
+                            '').lower())
+                except BaseException:
+                    return (
+                        13, 32, contact.get(
+                            'FN', '').lower())  # Invalid dates at end
             else:
-                return (13, 32, contact.get('FN', '').lower())  # No birthday at end
+                return (
+                    13, 32, contact.get(
+                        'FN', '').lower())  # No birthday at end
 
         self.contacts.sort(key=get_birthday_sort_key)
 
@@ -119,7 +128,7 @@ class BirthdayManager:
                     bday_date = datetime.strptime(bday, "%Y-%m-%d")
                     if bday_date.month == month:
                         results.append(contact)
-                except:
+                except BaseException:
                     continue
         return results
 
@@ -150,7 +159,8 @@ class BirthdayManager:
 
             return results
         except Exception as e:
-            print("[BirthdayManager] Error getting contacts for date: {0}".format(e))
+            print(
+                "[BirthdayManager] Error getting contacts for date: {0}".format(e))
             return []
 
     def load_all_contacts(self):
@@ -170,7 +180,8 @@ class BirthdayManager:
         # SORT contacts alphabetically when loading
         self.sort_contacts_by_name()
         if get_debug():
-            print("[BirthdayManager] Loaded {0} contacts (sorted)".format(len(self.contacts)))
+            print("[BirthdayManager] Loaded {0} contacts (sorted)".format(
+                len(self.contacts)))
 
     def load_contact(self, contact_id):
         """Load single contact from file - CLEAN phone numbers"""
@@ -209,12 +220,24 @@ class BirthdayManager:
                     if key in contact:
                         if key == 'TEL' and value:
                             value = value.strip()
-                            value = value.replace(' | ', '|').replace(' |', '|').replace('| ', '|')
+                            value = value.replace(
+                                ' | ',
+                                '|').replace(
+                                ' |',
+                                '|').replace(
+                                '| ',
+                                '|')
                             value = ' '.join(value.split())
                             value = value.replace(' ', '')
                         elif key == 'EMAIL' and value:
                             value = value.strip()
-                            value = value.replace(' | ', '|').replace(' |', '|').replace('| ', '|')
+                            value = value.replace(
+                                ' | ',
+                                '|').replace(
+                                ' |',
+                                '|').replace(
+                                '| ',
+                                '|')
                             value = ' '.join(value.split())
                             value = value.replace(' ', '')
 
@@ -223,7 +246,9 @@ class BirthdayManager:
             return contact
 
         except Exception as e:
-            print("[BirthdayManager] Error loading contact {0}: {1}".format(contact_id, str(e)))
+            print(
+                "[BirthdayManager] Error loading contact {0}: {1}".format(
+                    contact_id, str(e)))
             return None
 
     def save_contact(self, contact_data):
@@ -256,12 +281,14 @@ class BirthdayManager:
 
             # Add creation date if new contact
             if 'created' not in contact_data or not contact_data['created']:
-                contact_data['created'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                contact_data['created'] = datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S")
 
             content += "CREATED: {0}\n".format(contact_data.get('created', ''))
 
             if get_debug():
-                print("[DEBUG BirthdayManager] File content:\n{0}".format(content))
+                print(
+                    "[DEBUG BirthdayManager] File content:\n{0}".format(content))
 
             # Save to file
             with open(filepath, 'w') as f:
@@ -285,7 +312,9 @@ class BirthdayManager:
                 self.load_all_contacts()
                 return True
             except Exception as e:
-                print("[BirthdayManager] Error deleting contact: {0}".format(str(e)))
+                print(
+                    "[BirthdayManager] Error deleting contact: {0}".format(
+                        str(e)))
 
         return False
 
@@ -296,7 +325,14 @@ class BirthdayManager:
 
         for contact in self.contacts:
             # Search in various fields
-            search_fields = ['FN', 'TEL', 'EMAIL', 'NOTE', 'CATEGORIES', 'ORG', 'TITLE']
+            search_fields = [
+                'FN',
+                'TEL',
+                'EMAIL',
+                'NOTE',
+                'CATEGORIES',
+                'ORG',
+                'TITLE']
 
             for field in search_fields:
                 field_value = contact.get(field, '').lower()

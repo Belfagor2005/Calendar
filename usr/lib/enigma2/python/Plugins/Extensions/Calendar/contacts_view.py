@@ -142,8 +142,13 @@ class ContactsView(Screen):
                     try:
                         bday_date = datetime.strptime(bday, "%Y-%m-%d")
                         # Sort by month and day only
-                        return (bday_date.month, bday_date.day, contact.get('FN', '').lower())
-                    except:
+                        return (
+                            bday_date.month,
+                            bday_date.day,
+                            contact.get(
+                                'FN',
+                                '').lower())
+                    except BaseException:
                         # Invalid date, put at end
                         return (13, 32, contact.get('FN', '').lower())
                 else:
@@ -151,7 +156,11 @@ class ContactsView(Screen):
                     return (13, 32, contact.get('FN', '').lower())
             return sorted(contacts_list, key=birthday_sort_key)
         elif self.sort_mode == 'category':
-            return sorted(contacts_list, key=lambda x: x.get('CATEGORIES', '').lower())
+            return sorted(
+                contacts_list,
+                key=lambda x: x.get(
+                    'CATEGORIES',
+                    '').lower())
         else:
             return contacts_list
 
@@ -174,7 +183,8 @@ class ContactsView(Screen):
         # Apply search if needed
         if self.is_searching and self.search_term.strip():
             # Use the BirthdayManager search function
-            search_results = self.birthday_manager.search_contacts(self.search_term)
+            search_results = self.birthday_manager.search_contacts(
+                self.search_term)
             base_list = search_results
         else:
             base_list = all_view_contacts
@@ -197,7 +207,7 @@ class ContactsView(Screen):
                     bday_date = datetime.strptime(bday, "%Y-%m-%d")
                     formatted_bday = bday_date.strftime("%d/%m/%Y")
                     display += " - " + formatted_bday
-                except:
+                except BaseException:
                     display += " - " + bday
             if phone:
                 # Show first phone number if multiple
@@ -450,7 +460,9 @@ class ContactsView(Screen):
             # No contact selected, ask about deleting all
             def confirm_all_callback(result):
                 if get_debug():
-                    print("[ContactsView DEBUG] confirm_all_callback result:", result)
+                    print(
+                        "[ContactsView DEBUG] confirm_all_callback result:",
+                        result)
                 if result:
                     self.delete_all_contacts()
 
@@ -465,7 +477,11 @@ class ContactsView(Screen):
         name = contact.get('FN', 'Unknown')
         contact_id = contact.get('id')
         if get_debug():
-            print("[ContactsView DEBUG] Selected contact:", name, "ID:", contact_id)
+            print(
+                "[ContactsView DEBUG] Selected contact:",
+                name,
+                "ID:",
+                contact_id)
 
         if not contact_id:
             self.session.open(
@@ -486,7 +502,9 @@ class ContactsView(Screen):
 
         def menu_callback(selected_item):
             if get_debug():
-                print("[ContactsView DEBUG] menu_callback received:", selected_item)
+                print(
+                    "[ContactsView DEBUG] menu_callback received:",
+                    selected_item)
 
             if not selected_item:
                 if get_debug():
@@ -532,7 +550,9 @@ class ContactsView(Screen):
 
         def confirm_callback(result):
             if get_debug():
-                print("[ContactsView DEBUG] delete_all confirm_callback result:", result)
+                print(
+                    "[ContactsView DEBUG] delete_all confirm_callback result:",
+                    result)
             if not result:
                 return
 
@@ -556,7 +576,10 @@ class ContactsView(Screen):
                 vcard_files = glob.glob(join(contacts_path, "*.txt"))
                 file_count = len(vcard_files)
                 if get_debug():
-                    print("[ContactsView DEBUG] Found", file_count, "contact files")
+                    print(
+                        "[ContactsView DEBUG] Found",
+                        file_count,
+                        "contact files")
 
                 if file_count == 0:
                     self.session.open(
@@ -571,13 +594,18 @@ class ContactsView(Screen):
                 for file_path in vcard_files:
                     try:
                         if get_debug():
-                            print("[ContactsView DEBUG] Deleting file:", file_path)
+                            print(
+                                "[ContactsView DEBUG] Deleting file:", file_path)
                         remove(file_path)
                         deleted_count += 1
                     except Exception as e:
-                        print("[ContactsView DEBUG] Error deleting file:", str(e))
+                        print(
+                            "[ContactsView DEBUG] Error deleting file:", str(e))
                 if get_debug():
-                    print("[ContactsView DEBUG] Deleted", deleted_count, "files")
+                    print(
+                        "[ContactsView DEBUG] Deleted",
+                        deleted_count,
+                        "files")
 
                 self.birthday_manager.load_all_contacts()
 
@@ -588,15 +616,15 @@ class ContactsView(Screen):
                 # Show confirmation and CLOSE self to force calendar refresh
                 def close_after_message(result=None):
                     if get_debug():
-                        print("[ContactsView DEBUG] Closing ContactsView after delete all")
+                        print(
+                            "[ContactsView DEBUG] Closing ContactsView after delete all")
                     self.close(True)
 
                 self.session.openWithCallback(
                     close_after_message,
                     MessageBox,
                     _("Deleted {0} contacts from database").format(deleted_count),
-                    MessageBox.TYPE_INFO
-                )
+                    MessageBox.TYPE_INFO)
 
             except Exception as e:
                 print("[ContactsView DEBUG] Error:", str(e))
@@ -624,11 +652,14 @@ class ContactsView(Screen):
         # Ask for final confirmation
         def final_confirm_callback(result):
             if get_debug():
-                print("[ContactsView DEBUG] final_confirm_callback result:", result)
+                print(
+                    "[ContactsView DEBUG] final_confirm_callback result:",
+                    result)
             if not result:
                 return
             if get_debug():
-                print("[ContactsView DEBUG] Calling birthday_manager.delete_contact...")
+                print(
+                    "[ContactsView DEBUG] Calling birthday_manager.delete_contact...")
             success = self.birthday_manager.delete_contact(contact_id)
             if get_debug():
                 print("[ContactsView DEBUG] Delete result:", success)
@@ -645,8 +676,7 @@ class ContactsView(Screen):
                     MessageBox,
                     _("Contact '{0}' deleted successfully").format(contact_name),
                     MessageBox.TYPE_INFO,
-                    timeout=2
-                )
+                    timeout=2)
             else:
                 self.session.open(
                     MessageBox,
@@ -658,8 +688,7 @@ class ContactsView(Screen):
             final_confirm_callback,
             MessageBox,
             _("Confirm delete '{0}'?\n\nThis cannot be undone!").format(contact_name),
-            MessageBox.TYPE_YESNO
-        )
+            MessageBox.TYPE_YESNO)
 
     def close(self, changes_made=False):
         """Close the screen and indicate if changes were made"""

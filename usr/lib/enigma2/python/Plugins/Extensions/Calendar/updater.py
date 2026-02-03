@@ -72,7 +72,8 @@ class PluginUpdater:
                     response.close()
 
             patterns = [
-                r"version\s*=\s*['\"](\d+\.\d+)['\"]",  # version='1.1' o version="1.1"
+                # version='1.1' o version="1.1"
+                r"version\s*=\s*['\"](\d+\.\d+)['\"]",
                 r"version\s*:\s*['\"](\d+\.\d+)['\"]",  # version: '1.1'
                 r"Version\s*=\s*['\"](\d+\.\d+)['\"]",  # Version='1.1'
             ]
@@ -81,7 +82,9 @@ class PluginUpdater:
                 match = search(pattern, content)
                 if match:
                     version = match.group(1)
-                    print("Found version %s using pattern: %s" % (version, pattern))
+                    print(
+                        "Found version %s using pattern: %s" %
+                        (version, pattern))
                     return version
 
             print("No version pattern found in installer.sh")
@@ -173,14 +176,15 @@ class PluginUpdater:
                 if self.restore_backup():
                     message = _("Update failed. Restored from backup.")
                 else:
-                    message = _("Update failed and backup restore also failed!")
+                    message = _(
+                        "Update failed and backup restore also failed!")
 
         except Exception as e:
             print("Update process error: %s" % e)
             # Try to restore backup
             try:
                 self.restore_backup()
-            except:
+            except BaseException:
                 pass
             message = _("Update error: %s") % str(e)
 

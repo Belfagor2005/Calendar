@@ -126,7 +126,14 @@ class EventDialog(Screen):
         elif action == "right":
             self.next_option()
 
-    def __init__(self, session, event_manager, date=None, event=None, all_events=None, current_index=0):
+    def __init__(
+            self,
+            session,
+            event_manager,
+            date=None,
+            event=None,
+            all_events=None,
+            current_index=0):
         Screen.__init__(self, session)
         if get_debug():
             print("[EventDialog DEBUG]")
@@ -139,7 +146,8 @@ class EventDialog(Screen):
             print("  Dialog shown:", self.shown)
 
         if all_events:
-            title_text = _("Edit Event ({0}/{1})").format(current_index + 1, len(all_events))
+            title_text = _(
+                "Edit Event ({0}/{1})").format(current_index + 1, len(all_events))
             self.setTitle(title_text)
             if "title_label" in self:
                 self["title_label"].setText(title_text)
@@ -188,7 +196,8 @@ class EventDialog(Screen):
 
         # Initialize widgets
         self["title_label"] = Label(_("Title:"))
-        self["title_value"] = Label(_("Event") if not (event and event.title) else "")  # Default
+        self["title_value"] = Label(_("Event") if not (
+            event and event.title) else "")  # Default
         self["date_label"] = Label(_("Date:"))
         self["date_value"] = Label(date or "")
         self["time_label"] = Label(_("Time:"))
@@ -200,7 +209,9 @@ class EventDialog(Screen):
         self["enabled_label"] = Label(_("Active:"))
         self["enabled_value"] = Label("Yes")
         self["description_label"] = Label(_("Description:"))
-        self["description_value"] = Label(_("Description") if not (event and event.description) else "")
+        self["description_value"] = Label(
+            _("Description") if not (
+                event and event.description) else "")
         self["current_field_info"] = Label("")
 
         self["key_red"] = Label(_("Cancel"))
@@ -284,7 +295,10 @@ class EventDialog(Screen):
         self["time_value"].setText(self.event.time)
 
         # Find repeat text
-        repeat_text = dict(self.repeat_options).get(self.event.repeat, "Do not repeat")
+        repeat_text = dict(
+            self.repeat_options).get(
+            self.event.repeat,
+            "Do not repeat")
         self["repeat_value"].setText(repeat_text)
 
         # Find notify text
@@ -298,7 +312,8 @@ class EventDialog(Screen):
         self["enabled_value"].setText("Yes" if self.event.enabled else "No")
 
         # Description – if empty, use default
-        description = self.event.description.strip() if self.event.description else _("Description")
+        description = self.event.description.strip(
+        ) if self.event.description else _("Description")
         self["description_value"].setText(description)
 
         self.enabled = self.event.enabled
@@ -390,7 +405,9 @@ class EventDialog(Screen):
 
         # Jump to today's event
         if get_debug():
-            print("  Jumping to today's event at index:", self.today_event_index)
+            print(
+                "  Jumping to today's event at index:",
+                self.today_event_index)
         self.current_index = self.today_event_index
         self.event = self.all_events[self.current_index]
 
@@ -424,7 +441,9 @@ class EventDialog(Screen):
 
         # Jump back
         if get_debug():
-            print("  Jumping back to initial event at index:", self.initial_event_index)
+            print(
+                "  Jumping back to initial event at index:",
+                self.initial_event_index)
         self.current_index = self.initial_event_index
         self.event = self.all_events[self.current_index]
 
@@ -445,17 +464,21 @@ class EventDialog(Screen):
 
     def prev_field(self):
         """Move to previous field"""
-        self.current_field_index = (self.current_field_index - 1) % len(self.fields)
+        self.current_field_index = (
+            self.current_field_index - 1) % len(self.fields)
         self.update_highlight()
         if get_debug():
-            print("[EventDialog] Moved to field: {0}".format(self.fields[self.current_field_index][0]))
+            print("[EventDialog] Moved to field: {0}".format(
+                self.fields[self.current_field_index][0]))
 
     def next_field(self):
         """Move to next field"""
-        self.current_field_index = (self.current_field_index + 1) % len(self.fields)
+        self.current_field_index = (
+            self.current_field_index + 1) % len(self.fields)
         self.update_highlight()
         if get_debug():
-            print("[EventDialog] Moved to field: {0}".format(self.fields[self.current_field_index][0]))
+            print("[EventDialog] Moved to field: {0}".format(
+                self.fields[self.current_field_index][0]))
 
     def next_event(self):
         """CH+: Move to next event in ALL events"""
@@ -498,7 +521,9 @@ class EventDialog(Screen):
         """CH-: Move to previous event WITH AUTO-SAVE"""
         if get_debug():
             print("[EventDialog] previous_event - START")
-            print("  all_events:", len(self.all_events) if self.all_events else 0)
+            print(
+                "  all_events:", len(
+                    self.all_events) if self.all_events else 0)
 
         if not self.all_events or len(self.all_events) <= 1:
             if get_debug():
@@ -519,7 +544,9 @@ class EventDialog(Screen):
         # Update form with new event data
         self.event = self.all_events[self.current_index]
         if get_debug():
-            print("  New event title:", self.event.title if self.event else "None")
+            print(
+                "  New event title:",
+                self.event.title if self.event else "None")
 
         self.load_event_data()
 
@@ -601,7 +628,8 @@ class EventDialog(Screen):
         """Update current field highlight with better visibility"""
         current_field_name = self.fields[self.current_field_index][0]
         if get_debug():
-            print("[EventDialog] Highlighting field: {0}".format(current_field_name))
+            print("[EventDialog] Highlighting field: {0}".format(
+                current_field_name))
         for i, (field_name, field_label, widget) in enumerate(self.fields):
             if i == self.current_field_index:
                 # Current field – intense highlight
@@ -610,7 +638,8 @@ class EventDialog(Screen):
 
                 # Ensure the text is visible even if it is the default
                 current_text = widget.getText()
-                if not current_text or current_text in [_("Event"), _("Description")]:
+                if not current_text or current_text in [
+                        _("Event"), _("Description")]:
                     # If it is a placeholder, use a slightly different color
                     widget.instance.setForegroundColor(parseColor("#AAAAAA"))
                 else:
@@ -723,7 +752,7 @@ class EventDialog(Screen):
 
         try:
             return int(text.split()[0])
-        except:
+        except BaseException:
             return 5
 
     def _save_current_changes(self):
@@ -797,11 +826,13 @@ class EventDialog(Screen):
 
         if self.is_edit:
             # Update existing event
-            success = self.event_manager.update_event(self.event.id, **event_data)
+            success = self.event_manager.update_event(
+                self.event.id, **event_data)
             if success:
                 self.close(True)
         else:
-            # Create new event - labels will be auto-extracted in Event.__init__
+            # Create new event - labels will be auto-extracted in
+            # Event.__init__
             new_event = create_event_from_data(**event_data)
             self.event_manager.add_event(new_event)
             self.close(True)

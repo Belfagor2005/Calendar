@@ -123,7 +123,13 @@ class BirthdayDialog(Screen):
             <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/Calendar/buttons/button_channel.png" position="756,640" size="75,36" alphatest="on" zPosition="5" />
         </screen>"""
 
-    def __init__(self, session, birthday_manager, contact_data=None, all_contacts=None, current_index=0):
+    def __init__(
+            self,
+            session,
+            birthday_manager,
+            contact_data=None,
+            all_contacts=None,
+            current_index=0):
         Screen.__init__(self, session)
 
         self.birthday_manager = birthday_manager
@@ -135,7 +141,10 @@ class BirthdayDialog(Screen):
         self.is_navigating = False
         if get_debug():
             print("[BirthdayDialog] Initialization...")
-            print("[BirthdayDialog] Available widgets after Screen.__init__:", list(self.keys()))
+            print(
+                "[BirthdayDialog] Available widgets after Screen.__init__:",
+                list(
+                    self.keys()))
 
         self.fields = [
             ('FN', _('Name'), 'text_name', 'label_name'),
@@ -191,18 +200,28 @@ class BirthdayDialog(Screen):
 
                 # Try to set borders (only if .instance exists)
                 try:
-                    if hasattr(self[widget_name], 'instance') and self[widget_name].instance is not None:
+                    if hasattr(
+                            self[widget_name],
+                            'instance') and self[widget_name].instance is not None:
                         self[widget_name].instance.setBorderWidth(1)
-                        self[widget_name].instance.setBorderColor(parseColor("#404040"))
+                        self[widget_name].instance.setBorderColor(
+                            parseColor("#404040"))
 
                         if not value:
-                            self[widget_name].instance.setForegroundColor(parseColor("#888888"))
+                            self[widget_name].instance.setForegroundColor(
+                                parseColor("#888888"))
                         else:
-                            self[widget_name].instance.setForegroundColor(parseColor("#FFFFFF"))
+                            self[widget_name].instance.setForegroundColor(
+                                parseColor("#FFFFFF"))
 
-                        self[widget_name].instance.setBackgroundColor(parseColor("#00171a1c"))
+                        self[widget_name].instance.setBackgroundColor(
+                            parseColor("#00171a1c"))
                 except Exception as e:
-                    print("[BirthdayDialog] Warning for", widget_name, ":", str(e))
+                    print(
+                        "[BirthdayDialog] Warning for",
+                        widget_name,
+                        ":",
+                        str(e))
 
         # Initialize selection indicators
         for field_key, field_label, widget_name, label_name in self.fields:
@@ -270,7 +289,8 @@ class BirthdayDialog(Screen):
         if get_debug():
             print("[BirthdayDialog] Highlighting field:", current_field_key)
 
-        for i, (field_key, field_label, widget_name, label_name) in enumerate(self.fields):
+        for i, (field_key, field_label, widget_name,
+                label_name) in enumerate(self.fields):
             # Check if widget exists
             if widget_name not in self or self[widget_name] is None:
                 continue
@@ -284,16 +304,22 @@ class BirthdayDialog(Screen):
             try:
                 if i == self.current_field_index:
                     # Current field – highlight
-                    if hasattr(self[widget_name], 'instance') and self[widget_name].instance is not None:
+                    if hasattr(
+                            self[widget_name],
+                            'instance') and self[widget_name].instance is not None:
                         self[widget_name].instance.setBorderWidth(3)
-                        self[widget_name].instance.setBorderColor(parseColor("#00FF00"))
-                        self[widget_name].instance.setBackgroundColor(parseColor("#1A3C1A"))
+                        self[widget_name].instance.setBorderColor(
+                            parseColor("#00FF00"))
+                        self[widget_name].instance.setBackgroundColor(
+                            parseColor("#1A3C1A"))
 
                         current_text = self[widget_name].getText()
                         if not current_text or current_text == field_label:
-                            self[widget_name].instance.setForegroundColor(parseColor("#AAAAAA"))
+                            self[widget_name].instance.setForegroundColor(
+                                parseColor("#AAAAAA"))
                         else:
-                            self[widget_name].instance.setForegroundColor(parseColor("#FFFFFF"))
+                            self[widget_name].instance.setForegroundColor(
+                                parseColor("#FFFFFF"))
 
                     # Show indicator
                     if indicator_name in self and self[indicator_name] is not None:
@@ -301,16 +327,22 @@ class BirthdayDialog(Screen):
 
                 else:
                     # Non-selected fields
-                    if hasattr(self[widget_name], 'instance') and self[widget_name].instance is not None:
+                    if hasattr(
+                            self[widget_name],
+                            'instance') and self[widget_name].instance is not None:
                         self[widget_name].instance.setBorderWidth(1)
-                        self[widget_name].instance.setBorderColor(parseColor("#404040"))
-                        self[widget_name].instance.setBackgroundColor(parseColor("#00171a1c"))
+                        self[widget_name].instance.setBorderColor(
+                            parseColor("#404040"))
+                        self[widget_name].instance.setBackgroundColor(
+                            parseColor("#00171a1c"))
 
                         current_text = self[widget_name].getText()
                         if not current_text or current_text == field_label:
-                            self[widget_name].instance.setForegroundColor(parseColor("#888888"))
+                            self[widget_name].instance.setForegroundColor(
+                                parseColor("#888888"))
                         else:
-                            self[widget_name].instance.setForegroundColor(parseColor("#FFFFFF"))
+                            self[widget_name].instance.setForegroundColor(
+                                parseColor("#FFFFFF"))
 
                     # Hide indicator
                     if indicator_name in self and self[indicator_name] is not None:
@@ -360,7 +392,10 @@ class BirthdayDialog(Screen):
         field_key, field_label, widget_name, label_name = self.fields[self.current_field_index]
         if widget_name not in self or self[widget_name] is None:
             if get_debug():
-                print("[BirthdayDialog] ERRORE: Widget", widget_name, "non esiste!")
+                print(
+                    "[BirthdayDialog] ERRORE: Widget",
+                    widget_name,
+                    "non esiste!")
             return
 
         current_text = self[widget_name].getText()
@@ -378,17 +413,22 @@ class BirthdayDialog(Screen):
             if new_value is not None:
                 if widget_name not in self or self[widget_name] is None:
                     if get_debug():
-                        print("[BirthdayDialog] ERRORE: Widget", widget_name, "non esiste dopo keyboard!")
+                        print(
+                            "[BirthdayDialog] ERRORE: Widget",
+                            widget_name,
+                            "non esiste dopo keyboard!")
                     return
 
                 if field_key == 'TEL' and new_value:
                     display_value = self._format_phone_display(new_value)
                     self[widget_name].setText(display_value)
-                    self.contact_data[field_key] = self._clean_phone_for_storage(new_value)
+                    self.contact_data[field_key] = self._clean_phone_for_storage(
+                        new_value)
                 elif field_key == 'EMAIL' and new_value:
                     display_value = self._format_email_display(new_value)
                     self[widget_name].setText(display_value)
-                    self.contact_data[field_key] = self._clean_email_for_storage(new_value)
+                    self.contact_data[field_key] = self._clean_email_for_storage(
+                        new_value)
                 else:
                     # Placeholder handling for other fields
                     if not new_value.strip():
@@ -410,7 +450,8 @@ class BirthdayDialog(Screen):
 
     def next_field(self):
         """Move to next field"""
-        self.current_field_index = (self.current_field_index + 1) % len(self.fields)
+        self.current_field_index = (
+            self.current_field_index + 1) % len(self.fields)
         self.update_field_highlight()
         if get_debug():
             print("[BirthdayDialog] Moved to field: {0}".format(
@@ -418,7 +459,8 @@ class BirthdayDialog(Screen):
 
     def previous_field(self):
         """Move to previous field"""
-        self.current_field_index = (self.current_field_index - 1) % len(self.fields)
+        self.current_field_index = (
+            self.current_field_index - 1) % len(self.fields)
         self.update_field_highlight()
         if get_debug():
             print("[BirthdayDialog] Moved to field: {0}".format(
@@ -482,7 +524,8 @@ class BirthdayDialog(Screen):
             if self.all_contacts:
                 current_pos = self.current_index + 1
                 total_contacts = len(self.all_contacts)
-                title_text = _("Edit Contact ({0}/{1})").format(current_pos, total_contacts)
+                title_text = _(
+                    "Edit Contact ({0}/{1})").format(current_pos, total_contacts)
             else:
                 title_text = _("Add Contact")
 
@@ -512,7 +555,8 @@ class BirthdayDialog(Screen):
         """Save current field changes before moving to another contact"""
         try:
             # Check if we have a current field
-            if self.current_field_index < 0 or self.current_field_index >= len(self.fields):
+            if self.current_field_index < 0 or self.current_field_index >= len(
+                    self.fields):
                 return
 
             # Get current field info
@@ -533,22 +577,29 @@ class BirthdayDialog(Screen):
             if field_key == 'TEL':
                 # Remove display formatting and save
                 cleaned_value = current_value.replace(' | ', '|')
-                self.contact_data[field_key] = clean_field_storage(cleaned_value)
+                self.contact_data[field_key] = clean_field_storage(
+                    cleaned_value)
                 if get_debug():
-                    print("[BirthdayDialog] Saved phone:", self.contact_data[field_key])
+                    print(
+                        "[BirthdayDialog] Saved phone:",
+                        self.contact_data[field_key])
 
             elif field_key == 'EMAIL':
                 # Remove display formatting and save
                 cleaned_value = current_value.replace(' | ', '|')
-                self.contact_data[field_key] = clean_field_storage(cleaned_value)
+                self.contact_data[field_key] = clean_field_storage(
+                    cleaned_value)
                 if get_debug():
-                    print("[BirthdayDialog] Saved email:", self.contact_data[field_key])
+                    print(
+                        "[BirthdayDialog] Saved email:",
+                        self.contact_data[field_key])
 
             else:
                 # For other fields, save as is
                 self.contact_data[field_key] = current_value
                 if get_debug():
-                    print("[BirthdayDialog] Saved", field_key, ":", current_value[:50])
+                    print("[BirthdayDialog] Saved",
+                          field_key, ":", current_value[:50])
 
         except Exception as e:
             print("[BirthdayDialog] Error in _save_current_changes:", str(e))
@@ -570,7 +621,8 @@ class BirthdayDialog(Screen):
                     if field_key in ['TEL', 'EMAIL']:
                         # Remove display formatting
                         cleaned_value = value.replace(' | ', '|')
-                        self.contact_data[field_key] = clean_field_storage(cleaned_value)
+                        self.contact_data[field_key] = clean_field_storage(
+                            cleaned_value)
                     else:
                         self.contact_data[field_key] = value
 
@@ -633,8 +685,7 @@ class BirthdayDialog(Screen):
                 self.delete_confirmed,
                 MessageBox,
                 _("Delete contact '{0}'?\n\nThis action cannot be undone!").format(name),
-                MessageBox.TYPE_YESNO
-            )
+                MessageBox.TYPE_YESNO)
         else:
             # Clear all fields
             for field_key, field_label, widget_name, label_name in self.fields:

@@ -28,7 +28,7 @@ from Components.ProgressBar import ProgressBar
 import shutil
 import threading
 
-from . import _ 
+from . import _
 from .duplicate_checker import DuplicateChecker, run_complete_cleanup
 from .event_manager import Event
 from .formatters import ICS_BASE_PATH
@@ -80,7 +80,8 @@ class ICSImporter(Screen):
             print("[ICSImporter] Start path: {0}".format(start_path))
         self.duplicate_checker = DuplicateChecker()
         matching_pattern = r".*\.(ics|ical|icalendar)$"
-        self["filelist"] = FileList(start_path, matchingPattern=matching_pattern)
+        self["filelist"] = FileList(
+            start_path, matchingPattern=matching_pattern)
         self["status"] = Label(_("Select .ics file to import"))
         self["key_red"] = Label(_("Cancel"))
         self["key_green"] = Label(_("Import"))
@@ -132,7 +133,9 @@ class ICSImporter(Screen):
                 content = f.read(1000000)  # Read first 1MB
                 event_count = content.count('BEGIN:VEVENT')
             if get_debug():
-                print("[ICSImporter] Counted {0} events in {1}".format(event_count, filepath))
+                print(
+                    "[ICSImporter] Counted {0} events in {1}".format(
+                        event_count, filepath))
             return event_count
         except Exception as e:
             print("[ICSImporter] Error counting events: {0}".format(e))
@@ -236,8 +239,7 @@ class ICSImporter(Screen):
                     self.session.open(
                         MessageBox,
                         _("File does not contain iCalendar data\n{0}").format(filename),
-                        MessageBox.TYPE_WARNING
-                    )
+                        MessageBox.TYPE_WARNING)
                     return
         except Exception as e:
             print("[ICSImporter] Error checking file: {0}".format(e))
@@ -260,11 +262,15 @@ class ICSImporter(Screen):
 
         # Confirm import
         self.session.openWithCallback(
-            lambda result: self.start_import_process(result, filepath, event_count) if result else None,
+            lambda result: self.start_import_process(
+                result,
+                filepath,
+                event_count) if result else None,
             MessageBox,
-            _("Import {0} events from:\n{1}?").format(event_count, filename),
-            MessageBox.TYPE_YESNO
-        )
+            _("Import {0} events from:\n{1}?").format(
+                event_count,
+                filename),
+            MessageBox.TYPE_YESNO)
 
     def start_import_process(self, result, filepath, event_count):
         """Start the actual import process"""
@@ -339,7 +345,10 @@ class ICSFileImporterThread(threading.Thread):
 
     def _is_event_duplicate(self, event_obj):
         """Checks for duplicate event using cache - O(1) complexity"""
-        key = "{}|{}|{}".format(event_obj.title, event_obj.date, event_obj.time)
+        key = "{}|{}|{}".format(
+            event_obj.title,
+            event_obj.date,
+            event_obj.time)
         return key.lower() in self.existing_events_cache
 
     def _is_contact_duplicate(self, contact_data):
@@ -352,9 +361,15 @@ class ICSFileImporterThread(threading.Thread):
     def _is_birthday_event(self, event_obj):
         """Determine if an ICS event is a birthday"""
         title = event_obj.title.lower() if hasattr(event_obj, 'title') else ""
-        description = event_obj.description.lower() if hasattr(event_obj, 'description') else ""
+        description = event_obj.description.lower() if hasattr(
+            event_obj, 'description') else ""
 
-        birthday_keywords = ['birthday', 'compleanno', 'geburtstag', 'anniversaire', 'cumpleaños']
+        birthday_keywords = [
+            'birthday',
+            'compleanno',
+            'geburtstag',
+            'anniversaire',
+            'cumpleaños']
 
         for keyword in birthday_keywords:
             if keyword in title or keyword in description:
@@ -363,7 +378,9 @@ class ICSFileImporterThread(threading.Thread):
         if hasattr(event_obj, 'repeat') and event_obj.repeat == 'yearly':
             return True
 
-        if hasattr(event_obj, 'time') and (not event_obj.time or event_obj.time == get_default_event_time()):
+        if hasattr(
+                event_obj, 'time') and (
+                not event_obj.time or event_obj.time == get_default_event_time()):
             return True
 
         return False
@@ -392,7 +409,10 @@ class ICSFileImporterThread(threading.Thread):
 
     def add_to_events_cache(self, event_obj):
         """Adds an event to the cache"""
-        key = "{}|{}|{}".format(event_obj.title, event_obj.date, event_obj.time)
+        key = "{}|{}|{}".format(
+            event_obj.title,
+            event_obj.date,
+            event_obj.time)
         self.existing_events_cache.add(key.lower())
 
     def add_to_contacts_cache(self, contact_data):
@@ -448,7 +468,8 @@ class ICSFileImporterThread(threading.Thread):
         """Parse .ics content and import events"""
         if get_debug():
             print("[DEBUG] Starting parse_and_import_events")
-            print("[DEBUG] Preloaded cache sizes: events={0}, contacts={1}".format(len(self.existing_events_cache), len(self.existing_contacts_cache)))
+            print("[DEBUG] Preloaded cache sizes: events={0}, contacts={1}".format(
+                len(self.existing_events_cache), len(self.existing_contacts_cache)))
 
         vevent_blocks = split(r'BEGIN:VEVENT\s*', content, flags=IGNORECASE)
 
@@ -465,7 +486,8 @@ class ICSFileImporterThread(threading.Thread):
             self.current += 1
 
             # Update progress
-            progress = float(self.current) / self.total_events if self.total_events > 0 else 0
+            progress = float(self.current) / \
+                self.total_events if self.total_events > 0 else 0
             self.callback(progress, self.current, self.total_events,
                           self.imported, self.skipped, self.errors, False)
 
@@ -477,7 +499,9 @@ class ICSFileImporterThread(threading.Thread):
                 if event_obj:
                     if get_debug():
                         print("[DEBUG] Event object created")
-                        print("[DEBUG] Event title: {0}".format(event_obj.title))
+                        print(
+                            "[DEBUG] Event title: {0}".format(
+                                event_obj.title))
                         print("[DEBUG] Event date: {0}".format(event_obj.date))
 
                     # QUICK DUPLICATE CHECK WITH CACHE
@@ -486,13 +510,16 @@ class ICSFileImporterThread(threading.Thread):
                     # 1. Check if it's a birthday/contact
                     if self._is_birthday_event(event_obj):
                         # Convert to contact format
-                        contact_data = self._convert_event_to_contact(event_obj)
+                        contact_data = self._convert_event_to_contact(
+                            event_obj)
 
                         # Cache duplicate check O(1)
                         if self._is_contact_duplicate(contact_data):
                             if get_debug():
-                                print("[DEBUG] CONTACT duplicate (cache hit), skipping: {0}".format(
-                                    contact_data.get('FN', 'Unknown')))
+                                print(
+                                    "[DEBUG] CONTACT duplicate (cache hit), skipping: {0}".format(
+                                        contact_data.get(
+                                            'FN', 'Unknown')))
                             self.skipped += 1
                             is_duplicate = True
                             continue
@@ -502,8 +529,9 @@ class ICSFileImporterThread(threading.Thread):
                         # Cache duplicate check O(1)
                         if self._is_event_duplicate(event_obj):
                             if get_debug():
-                                print("[DEBUG] EVENT duplicate (cache hit), skipping: {0}".format(
-                                    event_obj.title))
+                                print(
+                                    "[DEBUG] EVENT duplicate (cache hit), skipping: {0}".format(
+                                        event_obj.title))
                             self.skipped += 1
                             continue
 
@@ -517,16 +545,20 @@ class ICSFileImporterThread(threading.Thread):
 
                         # If it's a birthday, also update contacts cache
                         if self._is_birthday_event(event_obj):
-                            contact_data = self._convert_event_to_contact(event_obj)
+                            contact_data = self._convert_event_to_contact(
+                                event_obj)
                             self.add_to_contacts_cache(contact_data)
 
                         self.imported += 1
                         if get_debug():
-                            print("[DEBUG] Event added with ID: {0}".format(event_id))
+                            print(
+                                "[DEBUG] Event added with ID: {0}".format(event_id))
 
                     except Exception as e:
                         if get_debug():
-                            print("[DEBUG] add_event failed: {0}".format(str(e)))
+                            print(
+                                "[DEBUG] add_event failed: {0}".format(
+                                    str(e)))
 
                         # Fallback: add directly
                         self.event_manager.events.append(event_obj)
@@ -539,15 +571,17 @@ class ICSFileImporterThread(threading.Thread):
                         print("[DEBUG] Failed to parse event block")
 
             except Exception as e:
-                print("[ICSFileImporterThread] Error parsing event #{}: {}".format(
-                    self.current, str(e)))
+                print(
+                    "[ICSFileImporterThread] Error parsing event #{}: {}".format(
+                        self.current, str(e)))
                 self.errors += 1
 
         # Save all events at the end
         self.event_manager.save_events()
         if get_debug():
-            print("[DEBUG] Final save: {0} events imported, {1} skipped".format(
-                self.imported, self.skipped))
+            print(
+                "[DEBUG] Final save: {0} events imported, {1} skipped".format(
+                    self.imported, self.skipped))
 
     def parse_vevent_block(self, block):
         """Parse a single VEVENT block into event data"""
@@ -597,7 +631,11 @@ class ICSFileImporterThread(threading.Thread):
 
         # Clean up title (remove " - compleanno")
         if ' - compleanno' in title.lower():
-            title = title.replace(' - compleanno', '').replace(' - Compleanno', '')
+            title = title.replace(
+                ' - compleanno',
+                '').replace(
+                ' - Compleanno',
+                '')
 
         # Add location to description if present
         if location and location not in description:
@@ -625,7 +663,9 @@ class ICSFileImporterThread(threading.Thread):
             return event
 
         except Exception as e:
-            print("[ICSFileImporterThread] Error creating Event object: {0}".format(str(e)))
+            print(
+                "[ICSFileImporterThread] Error creating Event object: {0}".format(
+                    str(e)))
             return None
 
     def parse_ical_datetime(self, dt_string):
@@ -673,11 +713,13 @@ class ICSFileImporterThread(threading.Thread):
                 }
             else:
                 if get_debug():
-                    print("[ICSFileImporterThread] Unknown date format: {0}".format(dt_string))
+                    print(
+                        "[ICSFileImporterThread] Unknown date format: {0}".format(dt_string))
                 return None
 
         except Exception as e:
-            print("[ICSFileImporterThread] Error parsing date-time: {0} - {1}".format(dt_string, str(e)))
+            print(
+                "[ICSFileImporterThread] Error parsing date-time: {0} - {1}".format(dt_string, str(e)))
             return None
 
     def start(self):
@@ -687,7 +729,9 @@ class ICSFileImporterThread(threading.Thread):
             threading.Thread.start(self)
             return True
         except Exception as e:
-            print("[ICSFileImporterThread] Failed to start thread: {0}".format(str(e)))
+            print(
+                "[ICSFileImporterThread] Failed to start thread: {0}".format(
+                    str(e)))
             return False
 
     def safe_add_event(self, event_obj):
@@ -811,7 +855,7 @@ class ICSConverter:
                 'type': 'birthday'  # Or 'event' depending on the content
             }
 
-        except:
+        except BaseException:
             return None
 
     def create_daily_file(self, date_str, events):
@@ -904,7 +948,14 @@ class ICSImportProgressScreen(Screen):
         if get_debug():
             print("[ICSImportProgress] Starting import process")
 
-        def progress_callback(progress, current, total, imported, skipped, errors, finished):
+        def progress_callback(
+                progress,
+                current,
+                total,
+                imported,
+                skipped,
+                errors,
+                finished):
             """Callback for progress updates"""
             try:
                 self["progress"].setValue(int(progress * 100))
@@ -912,7 +963,8 @@ class ICSImportProgressScreen(Screen):
                 # Update status text
                 status_parts = []
                 if current > 0 and total > 0:
-                    status_parts.append(_("P:{0}/{1}").format(current, total))  # P:25/100
+                    status_parts.append(
+                        _("P:{0}/{1}").format(current, total))  # P:25/100
                 if imported > 0:
                     status_parts.append(_("I:{0}").format(imported))
                 if skipped > 0:
@@ -926,7 +978,8 @@ class ICSImportProgressScreen(Screen):
                 # Update details
                 details = []
                 if total > 0:
-                    details.append(_("Progress: {0}%").format(int(progress * 100)))
+                    details.append(
+                        _("Progress: {0}%").format(int(progress * 100)))
                 if imported > 0:
                     details.append(_("Imported: {0}").format(imported))
 
@@ -937,7 +990,7 @@ class ICSImportProgressScreen(Screen):
                     self["key_red"].setText(_("Close"))
                     self.import_completed(imported, skipped, errors)
             except Exception as e:
-                print("[ICSImportProgress] GUI update error: {0}".format(e))                    
+                print("[ICSImportProgress] GUI update error: {0}".format(e))
         # Create and start importer
         self.importer = ICSFileImporterThread(
             self.event_manager,
@@ -957,16 +1010,20 @@ class ICSImportProgressScreen(Screen):
     def import_completed(self, imported, skipped, errors):
         """Import completed"""
         if get_debug():
-            print("[ICSImportProgress] Import completed: imported=%d, skipped=%d, errors=%d" % (
-                imported, skipped, errors))
+            print(
+                "[ICSImportProgress] Import completed: imported=%d, skipped=%d, errors=%d" %
+                (imported, skipped, errors))
 
         # RUN DUPLICATE CLEANUP
         cleaned = 0
         try:
             # Check if birthday_manager exists
             if hasattr(self.event_manager, 'birthday_manager'):
-                cleaned = run_complete_cleanup(self.event_manager.birthday_manager)
-                print("[ICSImport] Cleaned %d duplicate contacts after import" % cleaned)
+                cleaned = run_complete_cleanup(
+                    self.event_manager.birthday_manager)
+                print(
+                    "[ICSImport] Cleaned %d duplicate contacts after import" %
+                    cleaned)
             else:
                 print("[ICSImport] No birthday_manager found for cleanup")
         except Exception as e:
@@ -1001,7 +1058,7 @@ class ICSImportProgressScreen(Screen):
             try:
                 if cleaned > 0:
                     message.append(_("Duplicates cleaned: %d") % cleaned)
-            except:
+            except BaseException:
                 pass
 
             self.session.openWithCallback(
@@ -1037,7 +1094,8 @@ class ICSImportProgressScreen(Screen):
                     # Create timer for next check
                     self.check_timer = eTimer()
                     try:
-                        self.check_timer_conn = self.check_timer.timeout.connect(check_thread)
+                        self.check_timer_conn = self.check_timer.timeout.connect(
+                            check_thread)
                     except AttributeError:
                         self.check_timer.callback.append(check_thread)
                     self.check_timer.start(500, True)
@@ -1045,7 +1103,8 @@ class ICSImportProgressScreen(Screen):
             # Start the checking timer
             self.check_timer = eTimer()
             try:
-                self.check_timer_conn = self.check_timer.timeout.connect(check_thread)
+                self.check_timer_conn = self.check_timer.timeout.connect(
+                    check_thread)
             except AttributeError:
                 self.check_timer.callback.append(check_thread)
             self.check_timer.start(500, True)

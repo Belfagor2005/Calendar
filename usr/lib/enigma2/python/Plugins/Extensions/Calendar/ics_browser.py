@@ -133,7 +133,8 @@ class ICSBrowser(Screen):
                         filename, display_size, date_str
                     ))
                     if get_debug():
-                        print("[ICSBrowser] DEBUG: Found archive file:", filename)
+                        print(
+                            "[ICSBrowser] DEBUG: Found archive file:", filename)
             except Exception as e:
                 print("[ICSBrowser] ERROR:", e)
                 continue
@@ -145,7 +146,9 @@ class ICSBrowser(Screen):
         else:
             self["status"].setText(_("No ICS files in archive"))
             if get_debug():
-                print("[ICSBrowser] WARNING: No .ics files found in:", ICS_BASE_PATH)
+                print(
+                    "[ICSBrowser] WARNING: No .ics files found in:",
+                    ICS_BASE_PATH)
 
     def view_file(self):
         """View and manage selected ICS file with multiple options"""
@@ -198,9 +201,10 @@ class ICSBrowser(Screen):
             # Show in a scrollable message
             self.session.open(
                 MessageBox,
-                _("Preview of {0}:\n\n{1}").format(file_info['filename'], preview),
-                MessageBox.TYPE_INFO
-            )
+                _("Preview of {0}:\n\n{1}").format(
+                    file_info['filename'],
+                    preview),
+                MessageBox.TYPE_INFO)
 
     def _import_ics_events(self, file_info):
         """Import events from ICS file to calendar"""
@@ -251,7 +255,8 @@ class ICSBrowser(Screen):
         birthday_count = 0
         lines = content.split('\n')
         for i, line in enumerate(lines):
-            if 'SUMMARY' in line and ('birthday' in line.lower() or 'compleanno' in line.lower()):
+            if 'SUMMARY' in line and (
+                    'birthday' in line.lower() or 'compleanno' in line.lower()):
                 birthday_count += 1
 
         # Find date range
@@ -265,7 +270,7 @@ class ICSBrowser(Screen):
                         month = int(dt_value[4:6])
                         day = int(dt_value[6:8])
                         dates.append(datetime(year, month, day))
-                except:
+                except BaseException:
                     pass
 
         # Create statistics message

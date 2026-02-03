@@ -173,7 +173,7 @@ def init_last_used_time():
                             if ':' in time_str and len(time_str) == 5:
                                 LAST_CONFIGURED_TIME = time_str
                                 return time_str
-    except:
+    except BaseException:
         pass
     LAST_CONFIGURED_TIME = OLD_DEFAULT_EVENT_TIME
     return OLD_DEFAULT_EVENT_TIME
@@ -210,7 +210,9 @@ def update_last_used_default_time(new_time):
             with open(settings_file, 'r') as f:
                 for line in f:
                     if line.strip().startswith('# Calendar_last_used_default_time='):
-                        lines.append('# Calendar_last_used_default_time=%s\n' % new_time)
+                        lines.append(
+                            '# Calendar_last_used_default_time=%s\n' %
+                            new_time)
                         found = True
                     else:
                         lines.append(line)
@@ -223,7 +225,9 @@ def update_last_used_default_time(new_time):
         with open(settings_file, 'w') as f:
             f.writelines(lines)
 
-        print("[ConfigManager] Updated last used default time to: %s" % new_time)
+        print(
+            "[ConfigManager] Updated last used default time to: %s" %
+            new_time)
         return True
 
     except Exception as e:
@@ -265,9 +269,12 @@ def init_calendar_config():
                     setattr(config.plugins.calendar, key, config_obj)
                     created += 1
                     if get_debug():
-                        print("[ConfigManager] Created %s = %s" % (key, kwargs.get('default', '')))
+                        print("[ConfigManager] Created %s = %s" %
+                              (key, kwargs.get('default', '')))
                 except Exception as e:
-                    print("[ConfigManager] Error creating %s: %s" % (key, str(e)))
+                    print(
+                        "[ConfigManager] Error creating %s: %s" %
+                        (key, str(e)))
 
         print("[ConfigManager] Created %d config items" % created)
         return True
@@ -290,7 +297,7 @@ def validate_event_time(time_str):
         hour = int(parts[0])
         minute = int(parts[1])
         return 0 <= hour <= 23 and 0 <= minute <= 59
-    except:
+    except BaseException:
         return False
 
 
@@ -326,7 +333,8 @@ def init_export_config():
 
         # Add timestamp
         if not hasattr(config.plugins.calendar, 'export_add_timestamp'):
-            config.plugins.calendar.export_add_timestamp = ConfigYesNo(default=True)
+            config.plugins.calendar.export_add_timestamp = ConfigYesNo(
+                default=True)
 
         # Export format
         if not hasattr(config.plugins.calendar, 'export_format'):
@@ -364,7 +372,7 @@ def save_all_config():
             try:
                 if hasattr(config.plugins.calendar, key):
                     getattr(config.plugins.calendar, key).save()
-            except:
+            except BaseException:
                 pass
 
         # Save to plugin file
@@ -378,8 +386,9 @@ def save_all_config():
             for key in CONFIG_MAP:
                 try:
                     if hasattr(config.plugins.calendar, key):
-                        plugin_config[key] = getattr(config.plugins.calendar, key).value
-                except:
+                        plugin_config[key] = getattr(
+                            config.plugins.calendar, key).value
+                except BaseException:
                     pass
 
             # Add special values
@@ -393,7 +402,9 @@ def save_all_config():
             with open(PLUGIN_CONFIG_FILE, 'w') as f:
                 json.dump(plugin_config, f, indent=4, sort_keys=True)
 
-            print("[Calendar] Saved %d values to plugin file" % len(plugin_config))
+            print(
+                "[Calendar] Saved %d values to plugin file" %
+                len(plugin_config))
 
         except Exception as e:
             print("[Calendar] Error saving plugin config:", str(e))
@@ -441,7 +452,7 @@ def get_default_notify_minutes():
                 hasattr(config.plugins, 'calendar') and
                 hasattr(config.plugins.calendar, 'default_notify_minutes')):
             return config.plugins.calendar.default_notify_minutes.value
-    except:
+    except BaseException:
         pass
     return 5
 
@@ -453,7 +464,7 @@ def get_autostart_status():
                 hasattr(config.plugins, 'calendar') and
                 hasattr(config.plugins.calendar, 'autostart_enabled')):
             return config.plugins.calendar.autostart_enabled.value
-    except:
+    except BaseException:
         pass
     return True
 
@@ -465,7 +476,7 @@ def get_debug():
                 hasattr(config.plugins, 'calendar') and
                 hasattr(config.plugins.calendar, 'debug_enabled')):
             return config.plugins.calendar.debug_enabled.value
-    except:
+    except BaseException:
         pass
     return False
 
@@ -477,7 +488,7 @@ def get_export_format():
                 hasattr(config.plugins, 'calendar') and
                 hasattr(config.plugins.calendar, 'export_format')):
             return config.plugins.calendar.export_format.value
-    except:
+    except BaseException:
         pass
     return "vcard"
 
@@ -489,7 +500,7 @@ def get_check_interval():
                 hasattr(config.plugins, 'calendar') and
                 hasattr(config.plugins.calendar, 'check_interval')):
             return config.plugins.calendar.check_interval.value
-    except:
+    except BaseException:
         pass
     return 60
 
@@ -516,7 +527,7 @@ def get_auto_refresh_interval():
                 hasattr(config.plugins, 'calendar') and
                 hasattr(config.plugins.calendar, 'auto_refresh_interval')):
             return config.plugins.calendar.auto_refresh_interval.value
-    except:
+    except BaseException:
         pass
     return 0
 
@@ -528,7 +539,7 @@ def get_upcoming_days():
                 hasattr(config.plugins, 'calendar') and
                 hasattr(config.plugins.calendar, 'upcoming_days')):
             return config.plugins.calendar.upcoming_days.value
-    except:
+    except BaseException:
         pass
     return 7
 
@@ -540,7 +551,7 @@ def get_max_events_per_day():
                 hasattr(config.plugins, 'calendar') and
                 hasattr(config.plugins.calendar, 'max_events_per_day')):
             return config.plugins.calendar.max_events_per_day.value
-    except:
+    except BaseException:
         pass
     return 10
 
@@ -577,13 +588,21 @@ def init_all_config():
                         if hasattr(config_obj, 'value'):
                             config_obj.value = value
                             applied += 1
-                            print("[ConfigManager]   Set %s.value = %s" % (key, value))
+                            print(
+                                "[ConfigManager]   Set %s.value = %s" %
+                                (key, value))
                         else:
-                            print("[ConfigManager]   ERROR: %s has no .value attribute" % key)
+                            print(
+                                "[ConfigManager]   ERROR: %s has no .value attribute" %
+                                key)
                     else:
-                        print("[ConfigManager]   WARNING: %s not in config.plugins.calendar" % key)
+                        print(
+                            "[ConfigManager]   WARNING: %s not in config.plugins.calendar" %
+                            key)
                 except Exception as e:
-                    print("[ConfigManager]   ERROR setting %s: %s" % (key, str(e)))
+                    print(
+                        "[ConfigManager]   ERROR setting %s: %s" %
+                        (key, str(e)))
 
             print("[ConfigManager] Successfully applied %d values" % applied)
         else:
@@ -613,7 +632,9 @@ def load_plugin_config():
     try:
         with open(PLUGIN_CONFIG_FILE, 'r') as f:
             config_data = json.load(f)
-        print("[Calendar] Config loaded from plugin file: " + PLUGIN_CONFIG_FILE)
+        print(
+            "[Calendar] Config loaded from plugin file: " +
+            PLUGIN_CONFIG_FILE)
         return config_data
     except Exception as e:
         print("[Calendar] Error loading plugin config: " + str(e))
@@ -634,7 +655,7 @@ def apply_plugin_config():
                 if hasattr(config_obj, 'value'):
                     config_obj.value = value
                     applied += 1
-        except:
+        except BaseException:
             pass
 
     print("[Calendar] Applied %d config values from plugin file" % applied)
@@ -654,7 +675,9 @@ def restore_from_plugin_file():
         with open(PLUGIN_CONFIG_FILE, 'r') as f:
             plugin_config = json.load(f)
 
-        print("[ConfigManager] Loaded %d values from plugin file" % len(plugin_config))
+        print(
+            "[ConfigManager] Loaded %d values from plugin file" %
+            len(plugin_config))
 
         # Apply values to Enigma2 configuration
         applied = 0
@@ -668,8 +691,10 @@ def restore_from_plugin_file():
                     if hasattr(config_obj, 'value'):
                         config_obj.value = value
                         applied += 1
-                        print("[ConfigManager]   Restored %s = %s" % (key, value))
-            except:
+                        print(
+                            "[ConfigManager]   Restored %s = %s" %
+                            (key, value))
+            except BaseException:
                 pass
 
         # Save Enigma2 configuration
@@ -715,7 +740,7 @@ def save_current_config_to_plugin_file():
                         attr = getattr(config.plugins.calendar, attr_name)
                         if hasattr(attr, 'value'):
                             plugin_config[attr_name] = attr.value
-                    except:
+                    except BaseException:
                         pass
 
         # Add last_used_default_time

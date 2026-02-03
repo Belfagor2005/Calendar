@@ -59,7 +59,14 @@ class EventsView(Screen):
             <widget name="key_blue" position="595,545" size="150,25" font="Regular;20" halign="center" valign="center" />
         </screen>"""
 
-    def __init__(self, session, event_manager, date=None, event=None, all_events=None, current_index=0):
+    def __init__(
+            self,
+            session,
+            event_manager,
+            date=None,
+            event=None,
+            all_events=None,
+            current_index=0):
         Screen.__init__(self, session)
         self.event_manager = event_manager
         self.event = event
@@ -110,7 +117,8 @@ class EventsView(Screen):
                 self.date.day
             )
             self["date_label"].setText("Events for {0}".format(date_str))
-            self.current_events = self.event_manager.get_events_for_date(date_str)
+            self.current_events = self.event_manager.get_events_for_date(
+                date_str)
         else:
             self["date_label"].setText("Upcoming events (7 days)")
             upcoming = self.event_manager.get_upcoming_events(7)
@@ -148,9 +156,12 @@ class EventsView(Screen):
                     self.date.month,
                     self.date.day
                 )
-                self["date_label"].setText("Events for {0} ({1})".format(date_str, pos_text))
+                self["date_label"].setText(
+                    "Events for {0} ({1})".format(
+                        date_str, pos_text))
             else:
-                self["date_label"].setText("Upcoming events (7 days) - {0}".format(pos_text))
+                self["date_label"].setText(
+                    "Upcoming events (7 days) - {0}".format(pos_text))
 
         if 0 <= index < total_events:
             event = self.current_events[index]
@@ -160,7 +171,9 @@ class EventsView(Screen):
                 details.append(event.description[:100])
 
             if event.notify_before > 0:
-                details.append("Notify: {0} min before".format(event.notify_before))
+                details.append(
+                    "Notify: {0} min before".format(
+                        event.notify_before))
 
             if event.repeat != "none":
                 repeat_text = {
