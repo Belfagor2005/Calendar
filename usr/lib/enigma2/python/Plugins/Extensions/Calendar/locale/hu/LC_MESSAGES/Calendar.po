@@ -40,12 +40,6 @@ msgstr ""
 msgid "--- SYSTEM ---"
 msgstr ""
 
-msgid "..."
-msgstr "…"
-
-msgid ".............."
-msgstr ".............."
-
 msgid "Active"
 msgstr "Aktív"
 
@@ -1180,6 +1174,12 @@ msgstr ""
 
 msgid "vCard import feature not available: {0}"
 msgstr ""
+
+#~ msgid "..."
+#~ msgstr "…"
+
+#~ msgid ".............."
+#~ msgstr ".............."
 
 #, python-format
 #~ msgid ""

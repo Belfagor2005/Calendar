@@ -5,6 +5,7 @@
 
 
 
+
 msgid "(Search: '{0}')"
 msgstr ""
 
@@ -27,12 +28,6 @@ msgid "--- PERSONAL DATA ---"
 msgstr ""
 
 msgid "--- SYSTEM ---"
-msgstr ""
-
-msgid "..."
-msgstr ""
-
-msgid ".............."
 msgstr ""
 
 msgid "Active"

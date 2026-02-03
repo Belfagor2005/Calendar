@@ -36,12 +36,6 @@ msgstr "--- ΠΡΟΣΩΠΙΚΑ ΔΕΔΟΜΕΝΑ ---"
 msgid "--- SYSTEM ---"
 msgstr "--- ΣΥΣΤΗΜΑ ---"
 
-msgid "..."
-msgstr "..."
-
-msgid ".............."
-msgstr ".............."
-
 msgid "Active"
 msgstr "Ενεργό"
 
@@ -1169,3 +1163,9 @@ msgstr "Μορφή vCard (τυπική)"
 
 msgid "vCard import feature not available: {0}"
 msgstr "Η δυνατότητα εισαγωγής vCard δεν είναι διαθέσιμη: {0}"
+
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgid ".............."
+#~ msgstr ".............."

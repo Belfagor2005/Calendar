@@ -40,12 +40,6 @@ msgstr ""
 msgid "--- SYSTEM ---"
 msgstr ""
 
-msgid "..."
-msgstr ""
-
-msgid ".............."
-msgstr ""
-
 msgid "Active"
 msgstr ""
 

@@ -39,12 +39,6 @@ msgstr "--- DATI PERSONALI ---"
 msgid "--- SYSTEM ---"
 msgstr "--- SISTEMA ---"
 
-msgid "..."
-msgstr ""
-
-msgid ".............."
-msgstr ""
-
 msgid "Active"
 msgstr "Attivo"
 

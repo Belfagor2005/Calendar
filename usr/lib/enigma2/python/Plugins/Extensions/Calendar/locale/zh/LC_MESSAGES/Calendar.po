@@ -38,12 +38,6 @@ msgstr "个人资料"
 msgid "--- SYSTEM ---"
 msgstr "---系统---"
 
-msgid "..."
-msgstr "..."
-
-msgid ".............."
-msgstr ".............."
-
 msgid "Active"
 msgstr "激活"
 
@@ -1171,6 +1165,12 @@ msgstr "vCard格式（标准）"
 
 msgid "vCard import feature not available: {0}"
 msgstr "vCard导入功能不可用:{0}"
+
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgid ".............."
+#~ msgstr ".............."
 
 #~ msgid ""
 #~ "Calendar\n"
