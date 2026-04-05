@@ -1,5 +1,4 @@
 name: Create Tag and Release on Version Change
-
 on:
   push:
     paths:
