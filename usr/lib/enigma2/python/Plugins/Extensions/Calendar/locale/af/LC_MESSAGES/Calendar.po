@@ -10,853 +10,853 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "(Search: '{0}')"
-msgstr ""
+msgstr "(Soek: '{0}')"
 
 msgid "(truncated)"
-msgstr ""
+msgstr "(afgekap)"
 
 msgid "--- CONTACTS ---"
-msgstr ""
+msgstr "--- KONTAKTE ---"
 
 msgid "--- DATABASE ---"
-msgstr ""
+msgstr "--- DATABASIS ---"
 
 msgid "--- EVENTS ---"
-msgstr ""
+msgstr "--- GEBEURE ---"
 
 msgid "--- HOLIDAYS ---"
-msgstr ""
+msgstr "--- VAKANSIE ---"
 
 msgid "--- PERSONAL DATA ---"
-msgstr ""
+msgstr "--- PERSOONLIKE DATA ---"
 
 msgid "--- SYSTEM ---"
-msgstr ""
+msgstr "--- STELSEL ---"
 
 msgid "Active"
-msgstr ""
+msgstr "Aktief"
 
 msgid "Active:"
-msgstr ""
+msgstr "Aktief:"
 
 msgid "Add"
-msgstr ""
+msgstr "Voeg by"
 
 msgid "Add Contact"
-msgstr ""
+msgstr "Voeg kontak by"
 
 msgid "Add Event"
-msgstr ""
+msgstr "Voeg gebeurtenis by"
 
 msgid "Add date and time to exported filenames"
-msgstr ""
+msgstr "Voeg datum en tyd by uitgevoer lêername"
 
 msgid "Add timestamp to filename"
-msgstr ""
+msgstr "Voeg tydstempel by lêernaam"
 
 msgid "Alert sound"
-msgstr ""
+msgstr "Waarskuwingsklank"
 
 msgid "Already on today's event"
-msgstr ""
+msgstr "Reeds op vandag se geleentheid"
 
 msgid "April"
 msgstr ""
 
 msgid "August"
-msgstr ""
+msgstr "Augustus"
 
 msgid "Automatically clean old notified events"
-msgstr ""
+msgstr "Maak ou kennisgewings outomaties skoon"
 
 msgid "Autostart delay"
-msgstr ""
+msgstr "Outobegin vertraging"
 
 msgid "Back"
-msgstr ""
+msgstr "Terug"
 
 msgid "Birthday (YYYY-MM-DD)"
-msgstr ""
+msgstr "Verjaarsdag (JJJJ-MM-DD)"
 
 msgid "Birthdays: {0}"
-msgstr ""
+msgstr "Verjaarsdae: {0}"
 
 msgid "Blue"
-msgstr ""
+msgstr "Blou"
 
 msgid "Browse ICS Files"
-msgstr ""
+msgstr "Blaai deur ICS-lêers"
 
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
-msgstr ""
+msgstr "KONTAKTE MET VERJAARSDAE VANDAG:"
 
 msgid "CSV format"
-msgstr ""
+msgstr "CSV-formaat"
 
 msgid "Calendar"
-msgstr ""
+msgstr "Kalender"
 
 msgid "Calendar Planner"
-msgstr ""
+msgstr "Kalenderbeplanner"
 
 msgid "Calendar Planner | Ready"
-msgstr ""
+msgstr "Kalenderbeplanner | Gereed"
 
 msgid "Calendar Settings"
-msgstr ""
+msgstr "Kalenderinstellings"
 
 msgid "Calendar with events and notifications"
-msgstr ""
+msgstr "Kalender met gebeure en kennisgewings"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Kanselleer"
 
 msgid "Cancelling..."
-msgstr ""
+msgstr "Kanselleer tans …"
 
 msgid "Cannot delete: Contact has no ID"
-msgstr ""
+msgstr "Kan nie uitvee nie: Kontak het geen ID nie"
 
 msgid "Cannot initialize event system: {0}"
-msgstr ""
+msgstr "Kan nie gebeurtenisstelsel inisialiseer nie: {0}"
 
 msgid "Categories (comma separated)"
-msgstr ""
+msgstr "Kategorieë (kommageskei)"
 
 msgid "Check for Updates"
-msgstr ""
+msgstr "Kyk vir opdaterings"
 
 msgid "Checking for updates..."
-msgstr ""
+msgstr "Kyk tans vir opdaterings..."
 
 msgid "Choose between legacy text files or standard vCard format"
-msgstr ""
+msgstr "Kies tussen verouderde tekslêers of standaard vCard-formaat"
 
 msgid "Choose where to save exported files"
-msgstr ""
+msgstr "Kies waar om uitgevoerde lêers te stoor"
 
 msgid "Clean after days"
-msgstr ""
+msgstr "Maak skoon na dae"
 
 msgid "Clean old notifications"
-msgstr ""
+msgstr "Maak ou kennisgewings skoon"
 
 msgid "Cleaned {0} duplicate events"
-msgstr ""
+msgstr "{0} duplikaatgebeurtenisse skoongemaak"
 
 msgid "Cleaned {0} old ICS files"
-msgstr ""
+msgstr "Het {0} ou ICS-lêers skoongemaak"
 
 msgid "Cleanup Old Files"
-msgstr ""
+msgstr "Maak ou lêers skoon"
 
 msgid "Cleanup duplicate events"
-msgstr ""
+msgstr "Maak duplikaatgebeure skoon"
 
 msgid "Cleanup past events"
-msgstr ""
+msgstr "Maak vorige gebeure skoon"
 
 msgid "Clear ALL holiday entries from all date files?"
-msgstr ""
+msgstr "Vee ALLE vakansie-inskrywings uit alle datumlêers uit?"
 
 msgid "Clear All"
-msgstr ""
+msgstr "Vee alles uit"
 
 msgid "Clear Holiday Database"
-msgstr ""
+msgstr "Vee vakansiedatabasis uit"
 
 msgid "Close"
-msgstr ""
+msgstr "Maak toe"
 
 msgid "Color days with holidays"
-msgstr ""
+msgstr "Kleur dae met vakansies"
 
 msgid "Color for days with events"
-msgstr ""
+msgstr "Kleur vir dae met gebeurtenisse"
 
 msgid "Color for holiday days"
-msgstr ""
+msgstr "Kleur vir vakansiedae"
 
 msgid "Completed"
-msgstr ""
+msgstr "Voltooi"
 
 msgid "Contact"
-msgstr ""
+msgstr "Kontak"
 
 msgid "Contact '{0}' deleted successfully"
-msgstr ""
+msgstr "Kontak '{0}' is suksesvol uitgevee"
 
 msgid "Contact:"
-msgstr ""
+msgstr "Kontak:"
 
 msgid "Contacts directory not found"
-msgstr ""
+msgstr "Kontakgids nie gevind nie"
 
 msgid "Contacts imported from ICS file!"
-msgstr ""
+msgstr "Kontakte ingevoer vanaf ICS-lêer!"
 
 msgid "Contacts: 0"
-msgstr ""
+msgstr "Kontakte: 0"
 
 msgid "Contacts: {0}/{1}"
-msgstr ""
+msgstr "Kontakte: {0}/{1}"
 
 msgid "Conversion error: {0}"
-msgstr ""
+msgstr "Omskakelingsfout: {0}"
 
 msgid "Convert all existing data to vCard format?"
-msgstr ""
+msgstr "Skakel alle bestaande data om na vCard-formaat?"
 
 msgid "Convert to ICS format"
-msgstr ""
+msgstr "Skakel om na ICS-formaat"
 
 msgid "Convert to legacy format"
-msgstr ""
+msgstr "Skakel oor na verouderde formaat"
 
 msgid "Convert to vCard format"
-msgstr ""
+msgstr "Skakel oor na vCard-formaat"
 
 msgid "Converted {0} events to {1}"
-msgstr ""
+msgstr "Omgeskakel {0} gebeurtenisse na {1}"
 
 msgid "Could not check for updates. Check internet connection."
-msgstr ""
+msgstr "Kon nie kyk vir opdaterings nie. Gaan internetverbinding na."
 
 msgid "Could not check for updates: %s"
-msgstr ""
+msgstr "Kon nie kyk vir opdaterings nie: %s"
 
 msgid "Could not read file"
-msgstr ""
+msgstr "Kon nie lêer lees nie"
 
 msgid "Cyan"
-msgstr ""
+msgstr "Siaan"
 
 msgid "Database converted to vCard format"
-msgstr ""
+msgstr "Databasis omgeskakel na vCard-formaat"
 
 msgid "Database format"
-msgstr ""
+msgstr "Databasis formaat"
 
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 msgid "Date (YYYY-MM-DD)"
-msgstr ""
+msgstr "Datum (JJJJ-MM-DD)"
 
 msgid "Date range: {0} to {1}"
-msgstr ""
+msgstr "Datumreeks: {0} tot {1}"
 
 msgid "Date:"
-msgstr ""
+msgstr "Datum:"
 
 msgid "Day +"
-msgstr ""
+msgstr "Dag +"
 
 msgid "Day -"
-msgstr ""
+msgstr "Dag -"
 
 msgid "Days to keep notifications in cache"
-msgstr ""
+msgstr "Dae om kennisgewings in die kas te hou"
 
 msgid "December"
-msgstr ""
+msgstr "Desember"
 
 msgid "Default event time"
-msgstr ""
+msgstr "Verstek geleentheid tyd"
 
 msgid "Default format for exported files"
-msgstr ""
+msgstr "Verstekformaat vir uitgevoer lêers"
 
 msgid "Default minutes before event to show notification"
-msgstr ""
+msgstr "Verstek minute voor gebeurtenis om kennisgewing te wys"
 
 msgid "Default notification minutes"
-msgstr ""
+msgstr "Verstek kennisgewing minute"
 
 msgid "Default time for new events (HH:MM format)"
-msgstr ""
+msgstr "Verstektyd vir nuwe gebeurtenisse (UU:MM-formaat)"
 
 msgid "Delete"
-msgstr ""
+msgstr "Vee uit"
 
 msgid "Delete ALL ICS events"
-msgstr ""
+msgstr "Vee ALLE ICS-geleenthede uit"
 
 msgid "Delete ALL contacts"
-msgstr ""
+msgstr "Vee ALLE kontakte uit"
 
 msgid "Delete ALL events"
-msgstr ""
+msgstr "Vee ALLE gebeurtenisse uit"
 
 msgid "Delete File"
-msgstr ""
+msgstr "Vee lêer uit"
 
 msgid "Delete ICS files older than 30 days?"
-msgstr ""
+msgstr "Vee ICS-lêers ouer as 30 dae uit?"
 
 msgid "Delete file"
-msgstr ""
+msgstr "Vee lêer uit"
 
 msgid "Delete {0}?"
-msgstr ""
+msgstr "Vee {0} uit?"
 
 msgid "Delete: {0}"
-msgstr ""
+msgstr "Vee uit: {0}"
 
 msgid "Deleted {0} ICS events"
-msgstr ""
+msgstr "Het {0} ICS-geleenthede uitgevee"
 
 msgid "Deleted {0} contacts from database"
-msgstr ""
+msgstr "Het {0} kontakte uit databasis uitgevee"
 
 msgid "Description"
-msgstr ""
+msgstr "Beskrywing"
 
 msgid "Description:"
-msgstr ""
+msgstr "Beskrywing:"
 
 msgid "Directory: {0}"
-msgstr ""
+msgstr "Gids: {0}"
 
 msgid "Disk"
-msgstr ""
+msgstr "Skyf"
 
 msgid "Duplicates cleaned: %d"
-msgstr ""
+msgstr "Duplikate skoongemaak: %d"
 
 msgid "E:{0}"
 msgstr ""
 
 msgid "Edit"
-msgstr ""
+msgstr "Wysig"
 
 msgid "Edit Contact"
-msgstr ""
+msgstr "Wysig kontak"
 
 msgid "Edit Contact ({0}/{1})"
-msgstr ""
+msgstr "Wysig kontak ({0}/{1})"
 
 msgid "Edit Date"
-msgstr ""
+msgstr "Wysig datum"
 
 msgid "Edit Description"
-msgstr ""
+msgstr "Wysig beskrywing"
 
 msgid "Edit Event"
-msgstr ""
+msgstr "Wysig gebeurtenis"
 
 msgid "Edit Event ({0}/{1})"
-msgstr ""
+msgstr "Wysig gebeurtenis ({0}/{1})"
 
 msgid "Edit Event ({0}/{1}) - Today"
-msgstr ""
+msgstr "Wysig gebeurtenis ({0}/{1}) - Vandag"
 
 msgid "Edit Holiday"
-msgstr ""
+msgstr "Wysig Vakansie"
 
 msgid "Edit ICS Event"
-msgstr ""
+msgstr "Wysig ICS Event"
 
 msgid "Edit Note"
-msgstr ""
+msgstr "Wysig Nota"
 
 msgid "Edit Sign"
-msgstr ""
+msgstr "Wysig teken"
 
 msgid "Edit: {0}"
-msgstr ""
+msgstr "Wysig: {0}"
 
 msgid "Email"
-msgstr ""
+msgstr "E-pos"
 
 msgid "Enable autostart"
-msgstr ""
+msgstr "Aktiveer outobegin"
 
 msgid "Enable debug mode"
-msgstr ""
+msgstr "Aktiveer ontfoutmodus"
 
 msgid "Enable event management with date/time"
-msgstr ""
+msgstr "Aktiveer gebeurtenisbestuur met datum/tyd"
 
 msgid "Enable event system"
-msgstr ""
+msgstr "Aktiveer gebeurtenisstelsel"
 
 msgid "Enable holiday coloring"
-msgstr ""
+msgstr "Aktiveer vakansiekleur"
 
 msgid "Enable notifications"
-msgstr ""
+msgstr "Aktiveer kennisgewings"
 
 msgid "Enter"
-msgstr ""
+msgstr "Voer in"
 
 msgid "Error deleting contact"
-msgstr ""
+msgstr "Kon nie kontak uitvee nie"
 
 msgid "Error deleting contact '{0}'"
-msgstr ""
+msgstr "Kon nie kontak '{0}' uitvee'"
 
 msgid "Error deleting database: {0}"
-msgstr ""
+msgstr "Kon nie databasis uitvee nie: {0}"
 
 msgid "Error getting ICS statistics"
-msgstr ""
+msgstr "Kon nie ICS-statistieke kry nie"
 
 msgid "Error opening ICS browser: %s"
-msgstr ""
+msgstr "Kon nie ICS-blaaier oopmaak nie: %s"
 
 msgid "Error opening ICS importer: {0}"
-msgstr ""
+msgstr "Kon nie ICS-invoerder oopmaak nie: {0}"
 
 msgid "Error opening event dialog"
-msgstr ""
+msgstr "Kon nie gebeurtenisdialoog oopmaak nie"
 
 msgid "Error saving ICS data"
-msgstr ""
+msgstr "Kon nie ICS-data stoor nie"
 
 msgid "Error saving contact"
-msgstr ""
+msgstr "Kon nie kontak stoor nie"
 
 msgid "Error saving data"
-msgstr ""
+msgstr "Kon nie data stoor nie"
 
 msgid "Error saving event"
-msgstr ""
+msgstr "Kon nie geleentheid stoor nie"
 
 msgid "Error: {0}"
-msgstr ""
+msgstr "Fout: {0}"
 
 msgid "Errors: %d"
-msgstr ""
+msgstr "Foute: %d"
 
 msgid "Errors: {0}"
-msgstr ""
+msgstr "Foute: {0}"
 
 msgid "Event"
-msgstr ""
+msgstr "Gebeurtenis"
 
 msgid "Event '{0}' deleted successfully"
-msgstr ""
+msgstr "Gebeurtenis '{0}' is suksesvol uitgevee"
 
 msgid "Event '{0}' saved successfully"
-msgstr ""
+msgstr "Gebeurtenis '{0}' is suksesvol gestoor"
 
 msgid "Event check interval"
-msgstr ""
+msgstr "Gebeurteniskontrole-interval"
 
 msgid "Event color"
-msgstr ""
+msgstr "Gebeurtenis kleur"
 
 msgid "Event manager not available"
-msgstr ""
+msgstr "Gebeurtenisbestuurder nie beskikbaar nie"
 
 msgid "Event manager not initialized"
-msgstr ""
+msgstr "Gebeurtenisbestuurder nie geïnisialiseer nie"
 
 msgid "Event system is disabled. Enable it in settings first."
-msgstr ""
+msgstr "Gebeurtenisstelsel is gedeaktiveer. Aktiveer dit eers in instellings."
 
 msgid "Event system is disabled. Enable it in settings."
-msgstr ""
+msgstr "Gebeurtenisstelsel is gedeaktiveer. Aktiveer dit in instellings."
 
 msgid "Event system is not enabled"
-msgstr ""
+msgstr "Gebeurtenisstelsel is nie geaktiveer nie"
 
 msgid "Events found: {0}"
-msgstr ""
+msgstr "Gebeurtenisse gevind: {0}"
 
 msgid "Events imported successfully"
-msgstr ""
+msgstr "Gebeurtenisse is suksesvol ingevoer"
 
 msgid "Export All to ICS File"
-msgstr ""
+msgstr "Voer alles uit na ICS-lêer"
 
 msgid "Export error: {0}"
-msgstr ""
+msgstr "Uitvoerfout: {0}"
 
 msgid "Export failed or no contacts to export"
-msgstr ""
+msgstr "Uitvoer het misluk of geen kontakte om uit te voer nie"
 
 msgid "Export format"
-msgstr ""
+msgstr "Uitvoer formaat"
 
 msgid "Export location"
-msgstr ""
+msgstr "Voer ligging uit"
 
 msgid "Export subdirectory"
-msgstr ""
+msgstr "Voer subgids uit"
 
 msgid "Export vCard File"
-msgstr ""
+msgstr "Voer vCard-lêer uit"
 
 msgid "Exporting contacts..."
-msgstr ""
+msgstr "Voer tans kontakte uit …"
 
 msgid "Failed to create backup. Update cancelled."
-msgstr ""
+msgstr "Kon nie rugsteun skep nie. Opdatering is gekanselleer."
 
 msgid "Failed to start import"
-msgstr ""
+msgstr "Kon nie invoer begin nie"
 
 msgid "February"
-msgstr ""
+msgstr "Februarie"
 
 msgid "Field {0}/{1}: {2}"
-msgstr ""
+msgstr "Veld {0}/{1}: {2}"
 
 msgid "File deleted"
-msgstr ""
+msgstr "Lêer is uitgevee"
 
 msgid "File not found!"
-msgstr ""
+msgstr "Lêer nie gevind nie!"
 
 msgid "File re-imported successfully"
-msgstr ""
+msgstr "Lêer is suksesvol heringevoer"
 
 msgid "File re-imported. Found {0} potential duplicates."
-msgstr ""
+msgstr "Lêer is weer ingevoer. {0} potensiële duplikate gevind."
 
 msgid "File: {0}"
-msgstr ""
+msgstr "Lêer: {0}"
 
 msgid "Files is Empty..."
-msgstr ""
+msgstr "Lêers is leeg..."
 
 msgid "Found {0} ICS files"
-msgstr ""
+msgstr "Het {0} ICS-lêers gevind"
 
 msgid "Fri"
-msgstr ""
+msgstr "Vr"
 
 msgid "Green"
-msgstr ""
+msgstr "Groen"
 
 msgid "Hard Disk"
-msgstr ""
+msgstr "Hardeskyf"
 
 msgid "Hard Disk (/media/hdd)"
-msgstr ""
+msgstr "Hardeskyf (/media/hdd)"
 
 msgid "Holiday"
-msgstr ""
+msgstr "Vakansie"
 
 msgid "Holiday color"
-msgstr ""
+msgstr "Vakansie kleur"
 
 msgid "Holiday:"
-msgstr ""
+msgstr "Vakansie:"
 
 msgid "Holidays imported"
-msgstr ""
+msgstr "Vakansies ingevoer"
 
 msgid "I:{0}"
-msgstr ""
+msgstr "Ek:{0}"
 
 msgid "ICS Events: 0"
-msgstr ""
+msgstr "ICS-geleenthede: 0"
 
 msgid "ICS Events: {0}/{1}"
-msgstr ""
+msgstr "ICS-geleenthede: {0}/{1}"
 
 msgid "ICS format"
-msgstr ""
+msgstr "ICS-formaat"
 
 msgid "ICS format (google calendar)"
-msgstr ""
+msgstr "ICS-formaat (google kalender)"
 
 msgid "ICS import feature not yet available: {0}"
-msgstr ""
+msgstr "ICS-invoerfunksie nog nie beskikbaar nie: {0}"
 
 msgid "Import"
-msgstr ""
+msgstr "Invoer"
 
 msgid "Import All"
-msgstr ""
+msgstr "Voer alles in"
 
 msgid "Import Google Calendar (.ics)"
-msgstr ""
+msgstr "Voer Google Kalender in (.ics) in"
 
 msgid "Import Holidays"
-msgstr ""
+msgstr "Voer vakansiedae in"
 
 msgid "Import ICS Contacts Google Calendar (.ics)"
-msgstr ""
+msgstr "Voer ICS Kontakte Google Kalender in (.ics) in"
 
 msgid "Import completed"
-msgstr ""
+msgstr "Invoer voltooi"
 
 msgid "Import completed - Sorting contacts..."
-msgstr ""
+msgstr "Invoer voltooi - Sorteer tans kontakte..."
 
 msgid "Import completed!"
-msgstr ""
+msgstr "Invoer voltooi!"
 
 msgid "Import completed. Ready."
-msgstr ""
+msgstr "Invoer voltooi. Gereed."
 
 msgid "Import error: {0}"
-msgstr ""
+msgstr "Invoerfout: {0}"
 
 msgid "Import events to calendar"
-msgstr ""
+msgstr "Voer gebeurtenisse na kalender in"
 
 msgid "Import vCard File"
-msgstr ""
+msgstr "Voer vCard-lêer in"
 
 msgid "Imported ICS Files"
-msgstr ""
+msgstr "Ingevoerde ICS-lêers"
 
 msgid "Imported: %d"
-msgstr ""
+msgstr "Ingevoer: %d"
 
 msgid "Imported: {0}"
-msgstr ""
+msgstr "Ingevoer: {0}"
 
 msgid "Imported: {0} contacts"
-msgstr ""
+msgstr "Ingevoer: {0} kontakte"
 
 msgid "Importing iCalendar File"
-msgstr ""
+msgstr "Voer tans iCalendar-lêer in"
 
 msgid "Importing vCard File"
-msgstr ""
+msgstr "Voer tans vCard-lêer in"
 
 msgid "Initializing..."
-msgstr ""
+msgstr "Inisialiseer tans …"
 
 msgid "Invalid birthday format. Use YYYY-MM-DD"
-msgstr ""
+msgstr "Ongeldige verjaarsdagformaat. Gebruik JJJJ-MM-DD"
 
 msgid "Invalid date format. Use YYYY-MM-DD"
-msgstr ""
+msgstr "Ongeldige datumformaat. Gebruik JJJJ-MM-DD"
 
 msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
-msgstr ""
+msgstr "Ongeldige tydformaat! Gebruik HH:MM (00:00 tot 23:59)"
 
 msgid "Invalid time format. Use HH:MM"
-msgstr ""
+msgstr "Ongeldige tydformaat. Gebruik HH:MM"
 
 msgid "January"
-msgstr ""
+msgstr "Januarie"
 
 msgid "July"
-msgstr ""
+msgstr "Julie"
 
 msgid "June"
-msgstr ""
+msgstr "Junie"
 
 msgid "Labels (comma separated)"
-msgstr ""
+msgstr "Etikette (komma-geskei)"
 
 msgid "Legacy format (text files)"
-msgstr ""
+msgstr "Ouderwetse formaat (tekslêers)"
 
 msgid "Manage Contacts"
-msgstr ""
+msgstr "Bestuur kontakte"
 
 msgid "Manage Event"
-msgstr ""
+msgstr "Bestuur gebeurtenis"
 
 msgid "Manage ICS Events"
-msgstr ""
+msgstr "Bestuur ICS-geleenthede"
 
 msgid "Manage ICS Files"
-msgstr ""
+msgstr "Bestuur ICS-lêers"
 
 msgid "March"
-msgstr ""
+msgstr "Maart"
 
 msgid "May"
-msgstr ""
+msgstr "Mei"
 
 msgid "Modified: {0}"
-msgstr ""
+msgstr "Gewysig: {0}"
 
 msgid "Mon"
-msgstr ""
+msgstr "Ma"
 
 msgid "Month +"
-msgstr ""
+msgstr "Maand +"
 
 msgid "Month -"
-msgstr ""
+msgstr "Maand -"
 
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 msgid "Name is required"
-msgstr ""
+msgstr "Naam word vereis"
 
 msgid "Network Share"
-msgstr ""
+msgstr "Netwerk deel"
 
 msgid "New Date"
-msgstr ""
+msgstr "Nuwe Datum"
 
 msgid "Newest file: {0}"
-msgstr ""
+msgstr "Nuutste lêer: {0}"
 
 msgid "Next Field"
-msgstr ""
+msgstr "Volgende veld"
 
 msgid "No ICS directory found"
-msgstr ""
+msgstr "Geen ICS-gids gevind nie"
 
 msgid "No ICS events found"
-msgstr ""
+msgstr "Geen ICS-geleenthede gevind nie"
 
 msgid "No ICS files found"
-msgstr ""
+msgstr "Geen ICS-lêers gevind nie"
 
 msgid "No ICS files in archive"
-msgstr ""
+msgstr "Geen ICS-lêers in argief nie"
 
 msgid "No TV service currently playing"
-msgstr ""
+msgstr "Geen TV-diens speel tans nie"
 
 msgid "No contact files found"
-msgstr ""
+msgstr "Geen kontaklêers gevind nie"
 
 msgid "No contact selected"
-msgstr ""
+msgstr "Geen kontak gekies nie"
 
 msgid "No contacts found in database"
-msgstr ""
+msgstr "Geen kontakte in databasis gevind nie"
 
 msgid "No data found to convert"
-msgstr ""
+msgstr "Geen data gevind om om te skakel nie"
 
 msgid "No data to export"
-msgstr ""
+msgstr "Geen data om uit te voer nie"
 
 msgid "No duplicates found"
-msgstr ""
+msgstr "Geen duplikate gevind nie"
 
 msgid "No event selected"
-msgstr ""
+msgstr "Geen geleentheid gekies nie"
 
 msgid "No events database found"
-msgstr ""
+msgstr "Geen gebeurtenisdatabasis gevind nie"
 
 msgid "No events for today"
-msgstr ""
+msgstr "Geen gebeure vir vandag nie"
 
 msgid "No events to convert"
-msgstr ""
+msgstr "Geen gebeurtenisse om te omskep nie"
 
 msgid "No file in database..."
-msgstr ""
+msgstr "Geen lêer in databasis nie..."
 
 msgid "No file selected"
-msgstr ""
+msgstr "Geen lêer gekies nie"
 
 msgid "No past events to remove"
-msgstr ""
+msgstr "Geen vorige gebeurtenisse om te verwyder nie"
 
 msgid "No sorting (original order)"
-msgstr ""
+msgstr "Geen sortering (oorspronklike volgorde)"
 
 msgid "No sound"
-msgstr ""
+msgstr "Geen klank nie"
 
 msgid "Note"
-msgstr ""
+msgstr "Let wel"
 
 msgid "Note:"
-msgstr ""
+msgstr "Let wel:"
 
 msgid "Notes"
-msgstr ""
+msgstr "Notas"
 
 msgid "Notification sound type"
-msgstr ""
+msgstr "Kennisgewing klank tipe"
 
 msgid "Notification tone"
-msgstr ""
+msgstr "Kennisgewingstoon"
 
 msgid "Notify"
-msgstr ""
+msgstr "Stel in kennis"
 
 msgid "Notify:"
-msgstr ""
+msgstr "Stel in kennis:"
 
 msgid "November"
 msgstr ""
 
 msgid "October"
-msgstr ""
+msgstr "Oktober"
 
-msgid "Oldest file: {0}\n"
-msgstr ""
+msgid "Oldest file: {0}\\\\\\\\n"
+msgstr "Oudste lêer: {0}\\\\\\\\\\\\\\\\n"
 
 msgid "Orange"
-msgstr ""
+msgstr "Oranje"
 
 msgid "P:{0}/{1}"
 msgstr ""
 
 msgid "Phone"
-msgstr ""
+msgstr "Telefoon"
 
 msgid "Play a sound when event notification appears"
-msgstr ""
+msgstr "Speel 'n klank wanneer gebeurteniskennisgewing verskyn"
 
 msgid "Play sound with notifications"
-msgstr ""
+msgstr "Speel klank met kennisgewings"
 
 msgid "Please restart Enigma2 manually."
-msgstr ""
+msgstr "Herbegin asseblief Enigma2 handmatig."
 
 msgid "Plugin Directory"
-msgstr ""
+msgstr "Inpropgids"
 
 msgid "Plugin is up to date"
-msgstr ""
+msgstr "Inprop is op datum"
 
 msgid "Press GREEN to import"
-msgstr ""
+msgstr "Druk GROEN om in te voer"
 
 msgid "Press TEXT to search"
-msgstr ""
+msgstr "Druk TEXT om te soek"
 
 msgid "Preview file content"
-msgstr ""
+msgstr "Voorskou lêerinhoud"
 
 msgid "Progress: {0}%"
-msgstr ""
+msgstr "Vordering: {0}%"
 
 msgid "Re-import"
-msgstr ""
+msgstr "Herinvoer"
 
 msgid "Red"
-msgstr ""
+msgstr "Rooi"
 
 msgid "Refresh"
-msgstr ""
+msgstr "Verfris"
 
 msgid "Refreshed"
-msgstr ""
+msgstr "Verfris"
 
 msgid "Remove"
-msgstr ""
+msgstr "Verwyder"
 
 msgid "Remove Date"
-msgstr ""
+msgstr "Verwyder datum"
 
 msgid "Removed {0} past events"
-msgstr ""
+msgstr "Het {0} vorige gebeurtenisse verwyder"
 
 msgid "Repeat"
-msgstr ""
+msgstr "Herhaal"
 
 msgid "Repeat (none/daily/weekly/monthly/yearly)"
-msgstr ""
+msgstr "Herhaal (geen/daagliks/weekliks/maandeliks/jaarliks)"
 
 msgid "Repeat:"
-msgstr ""
+msgstr "Herhaal:"
 
 msgid "Repeat: {0}"
-msgstr ""
+msgstr "Herhaal: {0}"
 
 msgid "Root Home (/home/root)"
 msgstr ""
@@ -865,211 +865,211 @@ msgid "S:{0}"
 msgstr ""
 
 msgid "SCHEDULED EVENTS:"
-msgstr ""
+msgstr "GESKEDULEERDE GEBEURE:"
 
 msgid "Sat"
 msgstr ""
 
 msgid "Save"
-msgstr ""
+msgstr "Stoor"
 
 msgid "Search contacts"
-msgstr ""
+msgstr "Soek kontakte"
 
 msgid "Search events"
-msgstr ""
+msgstr "Soek gebeure"
 
 msgid "Search:"
-msgstr ""
+msgstr "Soek:"
 
 msgid "Seconds between event checks (advanced)"
-msgstr ""
+msgstr "Sekondes tussen gebeurteniskontroles (gevorderd)"
 
 msgid "Seconds to wait after boot before starting notifications"
-msgstr ""
+msgstr "Sekondes om te wag na selflaai voordat kennisgewings begin word"
 
 msgid "Select .ics file to import"
-msgstr ""
+msgstr "Kies .ics-lêer om in te voer"
 
 msgid "Select a file, not a folder"
-msgstr ""
+msgstr "Kies 'n lêer, nie 'n vouer nie"
 
 msgid "Select vCard file to import"
-msgstr ""
+msgstr "Kies vCard-lêer om in te voer"
 
 msgid "Selected: {0}"
-msgstr ""
+msgstr "Gekies: {0}"
 
 msgid "September"
 msgstr ""
 
 msgid "Short beep"
-msgstr ""
+msgstr "Kort piep"
 
 msgid "Show 'H' marker on holiday days"
-msgstr ""
+msgstr "Wys 'H'-merker op vakansiedae"
 
 msgid "Show Statistics"
-msgstr ""
+msgstr "Wys statistieke"
 
 msgid "Show Today's Holidays"
-msgstr ""
+msgstr "Wys vandag se vakansiedae"
 
 msgid "Show Upcoming Holidays"
-msgstr ""
+msgstr "Wys Komende Vakansies"
 
 msgid "Show debug messages in console/log"
-msgstr ""
+msgstr "Wys ontfoutingsboodskappe in konsole/logboek"
 
 msgid "Show event indicators"
-msgstr ""
+msgstr "Wys gebeurtenis-aanwysers"
 
 msgid "Show event statistics"
-msgstr ""
+msgstr "Wys gebeurtenisstatistieke"
 
 msgid "Show holiday indicators"
-msgstr ""
+msgstr "Wys vakansie-aanwysers"
 
 msgid "Show markers on days with events"
-msgstr ""
+msgstr "Wys merkers op dae met gebeurtenisse"
 
 msgid "Show notifications for upcoming events"
-msgstr ""
+msgstr "Wys kennisgewings vir komende geleenthede"
 
 msgid "Sign"
-msgstr ""
+msgstr "Teken"
 
 msgid "Sign:"
-msgstr ""
+msgstr "Teken:"
 
 msgid "Size: {0:.1f} KB"
-msgstr ""
+msgstr "Grootte: {0:.1f} KB"
 
 msgid "Size: {0:.1f} MB"
-msgstr ""
+msgstr "Grootte: {0:.1f} MB"
 
 msgid "Skipped: %d"
-msgstr ""
+msgstr "Oorgeslaan: %d"
 
 msgid "Skipped: {0}"
-msgstr ""
+msgstr "Oorgeslaan: {0}"
 
 msgid "Skipped: {0} (duplicates)"
-msgstr ""
+msgstr "Oorgeslaan: {0} (duplikate)"
 
 msgid "Sort"
-msgstr ""
+msgstr "Sorteer"
 
 msgid "Sort by birthday (month/day)"
-msgstr ""
+msgstr "Sorteer volgens verjaarsdag (maand/dag)"
 
 msgid "Sort by category"
-msgstr ""
+msgstr "Sorteer volgens kategorie"
 
 msgid "Sort by name (alphabetical)"
-msgstr ""
+msgstr "Sorteer volgens naam (alfabeties)"
 
 msgid "Sorted by birthday"
-msgstr ""
+msgstr "Gesorteer volgens verjaarsdag"
 
 msgid "Sorted by category"
-msgstr ""
+msgstr "Gesorteer volgens kategorie"
 
 msgid "Sorted by date"
-msgstr ""
+msgstr "Gesorteer volgens datum"
 
 msgid "Sorted by name"
-msgstr ""
+msgstr "Gesorteer volgens naam"
 
 msgid "Sorted by title"
-msgstr ""
+msgstr "Gesorteer volgens titel"
 
 msgid "Sorted by: Birthday"
-msgstr ""
+msgstr "Gesorteer volgens: Verjaarsdag"
 
 msgid "Sorted by: Category"
-msgstr ""
+msgstr "Gesorteer volgens: Kategorie"
 
 msgid "Sorted by: Date"
-msgstr ""
+msgstr "Gesorteer volgens: Datum"
 
 msgid "Sorted by: Name"
-msgstr ""
+msgstr "Gesorteer volgens: Naam"
 
 msgid "Sorted by: Title"
-msgstr ""
+msgstr "Gesorteer volgens: Titel"
 
 msgid "Start event notifications in background (recommended)"
-msgstr ""
+msgstr "Begin gebeurteniskennisgewings in agtergrond (aanbeveel)"
 
 msgid "Subdirectory name for exports (created automatically)"
-msgstr ""
+msgstr "Subgidsnaam vir uitvoere (outomaties geskep)"
 
 msgid "Successfully converted {0} entries to ICS format"
-msgstr ""
+msgstr "{0}-inskrywings is suksesvol na ICS-formaat omgeskakel"
 
 msgid "Sun"
-msgstr ""
+msgstr "Son"
 
 msgid "Tags: {0}"
-msgstr ""
+msgstr "Merkers: {0}"
 
 msgid "Temporary Storage (/tmp)"
-msgstr ""
+msgstr "Tydelike berging (/tmp)"
 
 msgid "Test error: %s"
-msgstr ""
+msgstr "Toetsfout: %s"
 
 msgid "Text format"
-msgstr ""
+msgstr "Teksformaat"
 
 msgid "Thu"
-msgstr ""
+msgstr "Do"
 
 msgid "Time"
-msgstr ""
+msgstr "Tyd"
 
 msgid "Time (HH:MM)"
-msgstr ""
+msgstr "Tyd (UU:MM)"
 
 msgid "Time:"
-msgstr ""
+msgstr "Tyd:"
 
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 msgid "Title and date are required!"
-msgstr ""
+msgstr "Titel en datum word vereis!"
 
 msgid "Title is required"
-msgstr ""
+msgstr "Titel word vereis"
 
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 msgid "Today"
-msgstr ""
+msgstr "Vandag"
 
 msgid "Total events: {0}"
-msgstr ""
+msgstr "Totale gebeurtenisse: {0}"
 
-msgid "Total files: {0}\n"
-msgstr ""
+msgid "Total files: {0}\\\\\\\\n"
+msgstr "Totale lêers: {0}\\\\\\\\\\\\\\\\n"
 
-msgid "Total size: {0:.1f} KB\n"
-msgstr ""
+msgid "Total size: {0:.1f} KB\\\\\\\\n"
+msgstr "Totale grootte: {0:.1f} KB\\\\\\\\\\\\\\\\n"
 
 msgid "Total: %d"
-msgstr ""
+msgstr "Totaal: %d"
 
 msgid "Total: {0}"
-msgstr ""
+msgstr "Totaal: {0}"
 
 msgid "Tue"
-msgstr ""
+msgstr "Di"
 
 msgid "Type of sound to play with notifications"
-msgstr ""
+msgstr "Tipe klank om met kennisgewings te speel"
 
 msgid "U:{0}"
 msgstr ""
@@ -1081,82 +1081,82 @@ msgid "USB Drive (/media/usb)"
 msgstr ""
 
 msgid "Unable to play test sound"
-msgstr ""
+msgstr "Kan nie toetsklank speel nie"
 
 msgid "Update available!"
-msgstr ""
+msgstr "Opdatering beskikbaar!"
 
 msgid "Update cancelled"
-msgstr ""
+msgstr "Opdatering gekanselleer"
 
 msgid "Update check error"
-msgstr ""
+msgstr "Opdateerkontrolefout"
 
 msgid "Update check failed"
-msgstr ""
+msgstr "Kon nie bywerkkontrole nie"
 
 msgid "Update completed successfully!"
-msgstr ""
+msgstr "Opdatering suksesvol voltooi!"
 
 msgid "Update error: %s"
-msgstr ""
+msgstr "Opdateringsfout: %s"
 
 msgid "Update failed"
-msgstr ""
+msgstr "Kon nie opdateer nie"
 
 msgid "Update failed and backup restore also failed!"
-msgstr ""
+msgstr "Opdatering het misluk en rugsteunherstel het ook misluk!"
 
 msgid "Update failed. Restored from backup."
-msgstr ""
+msgstr "Kon nie opdateer nie. Teruggestel vanaf rugsteun."
 
 msgid "Update successful!"
-msgstr ""
+msgstr "Opdatering suksesvol!"
 
 msgid "Updated: {0}"
-msgstr ""
+msgstr "Opgedateer: {0}"
 
 msgid "Updating plugin... Please wait"
-msgstr ""
+msgstr "Dateer tans inprop op... Wag asseblief"
 
 msgid "Using legacy database format"
-msgstr ""
+msgstr "Gebruik verouderde databasisformaat"
 
 msgid "View"
-msgstr ""
+msgstr "Uitsig"
 
 msgid "Waiting for thread to stop..."
-msgstr ""
+msgstr "Wag tans vir draad om te stop..."
 
 msgid "Wed"
-msgstr ""
+msgstr "Wo"
 
 msgid "White"
-msgstr ""
+msgstr "Wit"
 
 msgid "Yellow"
-msgstr ""
+msgstr "Geel"
 
 msgid "You have the latest version of Calendar."
-msgstr ""
+msgstr "Jy het die nuutste weergawe van Kalender."
 
 msgid "not sorted"
-msgstr ""
+msgstr "nie gesorteer nie"
 
 msgid "sorted by birthday"
-msgstr ""
+msgstr "gesorteer volgens verjaarsdag"
 
 msgid "sorted by category"
-msgstr ""
+msgstr "volgens kategorie gesorteer"
 
 msgid "sorted by name"
-msgstr ""
+msgstr "volgens naam gesorteer"
 
 msgid "vCard format"
-msgstr ""
+msgstr "vCard-formaat"
 
 msgid "vCard format (standard)"
-msgstr ""
+msgstr "vCard-formaat (standaard)"
 
 msgid "vCard import feature not available: {0}"
-msgstr ""
+msgstr "vCard-invoerkenmerk nie beskikbaar nie: {0}"

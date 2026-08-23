@@ -789,8 +789,8 @@ msgstr "Νοέμβριος"
 msgid "October"
 msgstr "Οκτώβριος"
 
-msgid "Oldest file: {0}\n"
-msgstr "Παλαιότερο αρχείο: {0}\n"
+msgid "Oldest file: {0}\\\\\\\\n"
+msgstr "Παλαιότερο αρχείο: {0}\\\\\\\\n"
 
 msgid "Orange"
 msgstr "Πορτοκαλί"
@@ -1056,11 +1056,11 @@ msgstr "Σήμερα"
 msgid "Total events: {0}"
 msgstr "Συνολικά συμβάντα: {0}"
 
-msgid "Total files: {0}\n"
-msgstr "Σύνολο αρχείων: {0}\n"
+msgid "Total files: {0}\\\\\\\\n"
+msgstr "Σύνολο αρχείων: {0}\\\\\\\\n"
 
-msgid "Total size: {0:.1f} KB\n"
-msgstr "Συνολικό μέγεθος: {0:.1f} KB\n"
+msgid "Total size: {0:.1f} KB\\\\\\\\n"
+msgstr "Συνολικό μέγεθος: {0:.1f} KB\\\\\\\\n"
 
 msgid "Total: %d"
 msgstr "Σύνολο: %d"

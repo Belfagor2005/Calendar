@@ -10,1153 +10,1153 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "(Search: '{0}')"
-msgstr ""
+msgstr "(ፈልግ፡ '{0}')"
 
 msgid "(truncated)"
-msgstr ""
+msgstr "(የተቆረጠ)"
 
 msgid "--- CONTACTS ---"
-msgstr ""
+msgstr "--- እውቂያዎች ---"
 
 msgid "--- DATABASE ---"
-msgstr ""
+msgstr "--- ዳታባሴ ---"
 
 msgid "--- EVENTS ---"
-msgstr ""
+msgstr "--- ክስተቶች ---"
 
 msgid "--- HOLIDAYS ---"
-msgstr ""
+msgstr "--- በዓላት ---"
 
 msgid "--- PERSONAL DATA ---"
-msgstr ""
+msgstr "--- የግል መረጃ ---"
 
 msgid "--- SYSTEM ---"
-msgstr ""
+msgstr "--- ስርዓት ---"
 
 msgid "Active"
-msgstr ""
+msgstr "ንቁ"
 
 msgid "Active:"
-msgstr ""
+msgstr "ንቁ፡"
 
 msgid "Add"
-msgstr ""
+msgstr "አክል"
 
 msgid "Add Contact"
-msgstr ""
+msgstr "እውቂያ ያክሉ"
 
 msgid "Add Event"
-msgstr ""
+msgstr "ክስተት አክል"
 
 msgid "Add date and time to exported filenames"
-msgstr ""
+msgstr "ወደ ውጭ የተላኩ የፋይል ስሞች ቀን እና ሰዓት ያክሉ"
 
 msgid "Add timestamp to filename"
-msgstr ""
+msgstr "የጊዜ ማህተም ወደ የፋይል ስም ያክሉ"
 
 msgid "Alert sound"
-msgstr ""
+msgstr "የማንቂያ ድምጽ"
 
 msgid "Already on today's event"
-msgstr ""
+msgstr "አስቀድሞ በዛሬው ዝግጅት ላይ"
 
 msgid "April"
-msgstr ""
+msgstr "ሚያዚያ"
 
 msgid "August"
-msgstr ""
+msgstr "ነሐሴ"
 
 msgid "Automatically clean old notified events"
-msgstr ""
+msgstr "የድሮ ማሳወቂያ ክስተቶችን በራስ-ሰር ያጽዱ"
 
 msgid "Autostart delay"
-msgstr ""
+msgstr "ራስ-ሰር መዘግየት"
 
 msgid "Back"
-msgstr ""
+msgstr "ተመለስ"
 
 msgid "Birthday (YYYY-MM-DD)"
-msgstr ""
+msgstr "ልደት (ዓዓዓዓ-ወወ-ቀን)"
 
 msgid "Birthdays: {0}"
-msgstr ""
+msgstr "የልደት ቀኖች፡ _CSH_0__"
 
 msgid "Blue"
-msgstr ""
+msgstr "ሰማያዊ"
 
 msgid "Browse ICS Files"
-msgstr ""
+msgstr "ICS ፋይሎችን ያስሱ"
 
 msgid "CONTACTS WITH BIRTHDAYS TODAY:"
-msgstr ""
+msgstr "ዛሬ ከልደት ቀናት ጋር እውቅያዎች፡-"
 
 msgid "CSV format"
-msgstr ""
+msgstr "የCSV ቅርጸት"
 
 msgid "Calendar"
-msgstr ""
+msgstr "የቀን መቁጠሪያ"
 
 msgid "Calendar Planner"
-msgstr ""
+msgstr "የቀን መቁጠሪያ እቅድ አውጪ"
 
 msgid "Calendar Planner | Ready"
-msgstr ""
+msgstr "የቀን መቁጠሪያ እቅድ አውጪ | ዝግጁ"
 
 msgid "Calendar Settings"
-msgstr ""
+msgstr "የቀን መቁጠሪያ ቅንብሮች"
 
 msgid "Calendar with events and notifications"
-msgstr ""
+msgstr "የቀን መቁጠሪያ ከክስተቶች እና ማሳወቂያዎች ጋር"
 
 msgid "Cancel"
-msgstr ""
+msgstr "ሰርዝ"
 
 msgid "Cancelling..."
-msgstr ""
+msgstr "በመሰረዝ ላይ..."
 
 msgid "Cannot delete: Contact has no ID"
-msgstr ""
+msgstr "መሰረዝ አይቻልም፡ እውቂያ ምንም መታወቂያ የለውም"
 
 msgid "Cannot initialize event system: {0}"
-msgstr ""
+msgstr "የክስተቱን ስርዓት ማስጀመር አልተቻለም፡ {0}"
 
 msgid "Categories (comma separated)"
-msgstr ""
+msgstr "ምድቦች (በነጠላ ሰረዝ ተለያይተዋል)"
 
 msgid "Check for Updates"
-msgstr ""
+msgstr "ዝማኔዎችን ይመልከቱ"
 
 msgid "Checking for updates..."
-msgstr ""
+msgstr "ዝማኔዎችን በመፈተሽ ላይ..."
 
 msgid "Choose between legacy text files or standard vCard format"
-msgstr ""
+msgstr "በቆዩ የጽሑፍ ፋይሎች ወይም በመደበኛ የvCard ቅርጸት መካከል ይምረጡ"
 
 msgid "Choose where to save exported files"
-msgstr ""
+msgstr "ወደ ውጭ የሚላኩ ፋይሎችን የት እንደሚቀመጡ ይምረጡ"
 
 msgid "Clean after days"
-msgstr ""
+msgstr "ከቀናት በኋላ አጽዳ"
 
 msgid "Clean old notifications"
-msgstr ""
+msgstr "የድሮ ማሳወቂያዎችን አጽዳ"
 
 msgid "Cleaned {0} duplicate events"
-msgstr ""
+msgstr "የጸዱ {0} የተባዙ ክስተቶች"
 
 msgid "Cleaned {0} old ICS files"
-msgstr ""
+msgstr "{0} የቆዩ ICS ፋይሎችን አጽድተዋል።"
 
 msgid "Cleanup Old Files"
-msgstr ""
+msgstr "የድሮ ፋይሎችን አጽዳ"
 
 msgid "Cleanup duplicate events"
-msgstr ""
+msgstr "የተባዙ ክስተቶችን አጽዳ"
 
 msgid "Cleanup past events"
-msgstr ""
+msgstr "ያለፉ ክስተቶችን ማፅዳት"
 
 msgid "Clear ALL holiday entries from all date files?"
-msgstr ""
+msgstr "ሁሉንም የበዓላት ግቤቶች ከሁሉም የቀን ፋይሎች ይጽዱ?"
 
 msgid "Clear All"
-msgstr ""
+msgstr "ሁሉንም አጽዳ"
 
 msgid "Clear Holiday Database"
-msgstr ""
+msgstr "የበዓል ዳታቤዝ አጽዳ"
 
 msgid "Close"
-msgstr ""
+msgstr "ገጠመ"
 
 msgid "Color days with holidays"
-msgstr ""
+msgstr "የቀለም ቀናት ከበዓላት ጋር"
 
 msgid "Color for days with events"
-msgstr ""
+msgstr "ከክስተቶች ጋር ለቀናት ቀለም"
 
 msgid "Color for holiday days"
-msgstr ""
+msgstr "ለበዓል ቀናት ቀለም"
 
 msgid "Completed"
-msgstr ""
+msgstr "ተጠናቀቀ"
 
 msgid "Contact"
-msgstr ""
+msgstr "ተገናኝ"
 
 msgid "Contact '{0}' deleted successfully"
-msgstr ""
+msgstr "እውቂያ '{0}' በተሳካ ሁኔታ ተሰርዟል።"
 
 msgid "Contact:"
-msgstr ""
+msgstr "ያነጋግሩ፡"
 
 msgid "Contacts directory not found"
-msgstr ""
+msgstr "የእውቂያዎች ማውጫ አልተገኘም።"
 
 msgid "Contacts imported from ICS file!"
-msgstr ""
+msgstr "ከአይሲኤስ ፋይል የመጡ እውቂያዎች!"
 
 msgid "Contacts: 0"
-msgstr ""
+msgstr "እውቂያዎች: 0"
 
 msgid "Contacts: {0}/{1}"
-msgstr ""
+msgstr "እውቂያዎች፡ {0}/{1}"
 
 msgid "Conversion error: {0}"
-msgstr ""
+msgstr "የልወጣ ስህተት፡ _CSH_0__"
 
 msgid "Convert all existing data to vCard format?"
-msgstr ""
+msgstr "ሁሉንም ነባር መረጃዎች ወደ vCard ቅርጸት ይቀይሩ?"
 
 msgid "Convert to ICS format"
-msgstr ""
+msgstr "ወደ ICS ቅርጸት ቀይር"
 
 msgid "Convert to legacy format"
-msgstr ""
+msgstr "ወደ የቆየ ቅርጸት ቀይር"
 
 msgid "Convert to vCard format"
-msgstr ""
+msgstr "ወደ vCard ቅርጸት ቀይር"
 
 msgid "Converted {0} events to {1}"
-msgstr ""
+msgstr "{0} ክስተቶችን ወደ {1} ለውጠዋል"
 
 msgid "Could not check for updates. Check internet connection."
-msgstr ""
+msgstr "ዝማኔዎችን መፈለግ አልተቻለም። የበይነመረብ ግንኙነትን ያረጋግጡ።"
 
 msgid "Could not check for updates: %s"
-msgstr ""
+msgstr "ዝማኔዎችን መፈለግ አልተቻለም፡%s"
 
 msgid "Could not read file"
-msgstr ""
+msgstr "ፋይል ማንበብ አልተቻለም"
 
 msgid "Cyan"
-msgstr ""
+msgstr "ሲያን"
 
 msgid "Database converted to vCard format"
-msgstr ""
+msgstr "የውሂብ ጎታ ወደ vCard ቅርጸት ተቀይሯል።"
 
 msgid "Database format"
-msgstr ""
+msgstr "የውሂብ ጎታ ቅርጸት"
 
 msgid "Date"
-msgstr ""
+msgstr "ቀን"
 
 msgid "Date (YYYY-MM-DD)"
-msgstr ""
+msgstr "ቀን (ዓዓዓ-ወወ-ቀን)"
 
 msgid "Date range: {0} to {1}"
-msgstr ""
+msgstr "የቀን ክልል፡ _CSH_0__ እስከ {1}"
 
 msgid "Date:"
-msgstr ""
+msgstr "ቀን፡-"
 
 msgid "Day +"
-msgstr ""
+msgstr "ቀን +"
 
 msgid "Day -"
-msgstr ""
+msgstr "ቀን -"
 
 msgid "Days to keep notifications in cache"
-msgstr ""
+msgstr "ማሳወቂያዎችን በመሸጎጫ ውስጥ ለማቆየት ቀናት"
 
 msgid "December"
-msgstr ""
+msgstr "ታህሳስ"
 
 msgid "Default event time"
-msgstr ""
+msgstr "ነባሪ የክስተት ጊዜ"
 
 msgid "Default format for exported files"
-msgstr ""
+msgstr "ወደ ውጭ ለሚላኩ ፋይሎች ነባሪ ቅርጸት"
 
 msgid "Default minutes before event to show notification"
-msgstr ""
+msgstr "ማሳወቂያን ለማሳየት ከክስተቱ በፊት ነባሪ ደቂቃዎች"
 
 msgid "Default notification minutes"
-msgstr ""
+msgstr "ነባሪ የማሳወቂያ ደቂቃዎች"
 
 msgid "Default time for new events (HH:MM format)"
-msgstr ""
+msgstr "ለአዲስ ክስተቶች ነባሪ ጊዜ (HH:MM ቅርጸት)"
 
 msgid "Delete"
-msgstr ""
+msgstr "ሰርዝ"
 
 msgid "Delete ALL ICS events"
-msgstr ""
+msgstr "ሁሉንም የICS ክስተቶች ሰርዝ"
 
 msgid "Delete ALL contacts"
-msgstr ""
+msgstr "ሁሉንም እውቂያዎች ሰርዝ"
 
 msgid "Delete ALL events"
-msgstr ""
+msgstr "ሁሉንም ክስተቶች ሰርዝ"
 
 msgid "Delete File"
-msgstr ""
+msgstr "ፋይል ሰርዝ"
 
 msgid "Delete ICS files older than 30 days?"
-msgstr ""
+msgstr "ከ30 ቀናት በላይ የቆዩ የICS ፋይሎች ይሰረዙ?"
 
 msgid "Delete file"
-msgstr ""
+msgstr "ፋይል ሰርዝ"
 
 msgid "Delete {0}?"
-msgstr ""
+msgstr "{0} ይሰረዝ?"
 
 msgid "Delete: {0}"
-msgstr ""
+msgstr "ሰርዝ፡ {0}"
 
 msgid "Deleted {0} ICS events"
-msgstr ""
+msgstr "የተሰረዙ {0} ICS ክስተቶች"
 
 msgid "Deleted {0} contacts from database"
-msgstr ""
+msgstr "ከውሂብ ጎታ {0} እውቂያዎች ተሰርዘዋል"
 
 msgid "Description"
-msgstr ""
+msgstr "መግለጫ"
 
 msgid "Description:"
-msgstr ""
+msgstr "መግለጫ፡-"
 
 msgid "Directory: {0}"
-msgstr ""
+msgstr "ማውጫ፡ {0}"
 
 msgid "Disk"
-msgstr ""
+msgstr "ዲስክ"
 
 msgid "Duplicates cleaned: %d"
-msgstr ""
+msgstr "ብዜቶች ጸድተዋል፡ %d"
 
 msgid "E:{0}"
-msgstr ""
+msgstr "ኢ፡{0}"
 
 msgid "Edit"
-msgstr ""
+msgstr "አርትዕ"
 
 msgid "Edit Contact"
-msgstr ""
+msgstr "እውቂያን ያርትዑ"
 
 msgid "Edit Contact ({0}/{1})"
-msgstr ""
+msgstr "እውቂያን አርትዕ ({0}/{1})"
 
 msgid "Edit Date"
-msgstr ""
+msgstr "ቀን አርትዕ"
 
 msgid "Edit Description"
-msgstr ""
+msgstr "መግለጫ አርትዕ"
 
 msgid "Edit Event"
-msgstr ""
+msgstr "ክስተት አርትዕ"
 
 msgid "Edit Event ({0}/{1})"
-msgstr ""
+msgstr "ክስተት አርትዕ ({0}/{1})"
 
 msgid "Edit Event ({0}/{1}) - Today"
-msgstr ""
+msgstr "ክስተት አርትዕ ({0}/{1}) - ዛሬ"
 
 msgid "Edit Holiday"
-msgstr ""
+msgstr "የበዓል ቀንን ያርትዑ"
 
 msgid "Edit ICS Event"
-msgstr ""
+msgstr "የICS ክስተትን ያርትዑ"
 
 msgid "Edit Note"
-msgstr ""
+msgstr "ማስታወሻ አርትዕ"
 
 msgid "Edit Sign"
-msgstr ""
+msgstr "ምልክት አርትዕ"
 
 msgid "Edit: {0}"
-msgstr ""
+msgstr "አርትዕ፡ {0}"
 
 msgid "Email"
-msgstr ""
+msgstr "ኢሜይል"
 
 msgid "Enable autostart"
-msgstr ""
+msgstr "ራስ-ጀምርን አንቃ"
 
 msgid "Enable debug mode"
-msgstr ""
+msgstr "የማረም ሁነታን አንቃ"
 
 msgid "Enable event management with date/time"
-msgstr ""
+msgstr "የክስተት አስተዳደርን ከቀን/ሰዓት ጋር አንቃ"
 
 msgid "Enable event system"
-msgstr ""
+msgstr "የክስተት ስርዓትን አንቃ"
 
 msgid "Enable holiday coloring"
-msgstr ""
+msgstr "የበዓል ቀለምን አንቃ"
 
 msgid "Enable notifications"
-msgstr ""
+msgstr "ማሳወቂያዎችን አንቃ"
 
 msgid "Enter"
-msgstr ""
+msgstr "አስገባ"
 
 msgid "Error deleting contact"
-msgstr ""
+msgstr "እውቂያን መሰረዝ ላይ ስህተት"
 
 msgid "Error deleting contact '{0}'"
-msgstr ""
+msgstr "እውቂያን መሰረዝ ላይ ስህተት '{0}'"
 
 msgid "Error deleting database: {0}"
-msgstr ""
+msgstr "የውሂብ ጎታ መሰረዝ ላይ ስህተት፡ {0}"
 
 msgid "Error getting ICS statistics"
-msgstr ""
+msgstr "የICS ስታቲስቲክስን ማግኘት ላይ ስህተት"
 
 msgid "Error opening ICS browser: %s"
-msgstr ""
+msgstr "ICS አሳሽ መክፈት ላይ ስህተት፡%s"
 
 msgid "Error opening ICS importer: {0}"
-msgstr ""
+msgstr "ICS አስመጪን መክፈት ላይ ስህተት፡{0}"
 
 msgid "Error opening event dialog"
-msgstr ""
+msgstr "የክስተት ንግግር መክፈት ላይ ስህተት"
 
 msgid "Error saving ICS data"
-msgstr ""
+msgstr "የICS ውሂብ በማስቀመጥ ላይ ስህተት"
 
 msgid "Error saving contact"
-msgstr ""
+msgstr "እውቂያ ማስቀመጥ ላይ ስህተት"
 
 msgid "Error saving data"
-msgstr ""
+msgstr "ውሂብ በማስቀመጥ ላይ ስህተት"
 
 msgid "Error saving event"
-msgstr ""
+msgstr "ክስተት ማስቀመጥ ላይ ስህተት"
 
 msgid "Error: {0}"
-msgstr ""
+msgstr "ስህተት፡ _CSH_0__"
 
 msgid "Errors: %d"
-msgstr ""
+msgstr "ስህተቶች፡ %d"
 
 msgid "Errors: {0}"
-msgstr ""
+msgstr "ስህተቶች፡ {0}"
 
 msgid "Event"
-msgstr ""
+msgstr "ክስተት"
 
 msgid "Event '{0}' deleted successfully"
-msgstr ""
+msgstr "ክስተት '{0}' በተሳካ ሁኔታ ተሰርዟል።"
 
 msgid "Event '{0}' saved successfully"
-msgstr ""
+msgstr "ክስተት '{0}' በተሳካ ሁኔታ ተቀምጧል"
 
 msgid "Event check interval"
-msgstr ""
+msgstr "የክስተት ፍተሻ ክፍተት"
 
 msgid "Event color"
-msgstr ""
+msgstr "የክስተት ቀለም"
 
 msgid "Event manager not available"
-msgstr ""
+msgstr "የክስተት አስተዳዳሪ አይገኝም"
 
 msgid "Event manager not initialized"
-msgstr ""
+msgstr "የክስተት አስተዳዳሪ አልተጀመረም።"
 
 msgid "Event system is disabled. Enable it in settings first."
-msgstr ""
+msgstr "የክስተት ስርዓት ተሰናክሏል። መጀመሪያ በቅንብሮች ውስጥ አንቃው።"
 
 msgid "Event system is disabled. Enable it in settings."
-msgstr ""
+msgstr "የክስተት ስርዓት ተሰናክሏል። በቅንብሮች ውስጥ አንቃው።"
 
 msgid "Event system is not enabled"
-msgstr ""
+msgstr "የክስተት ስርዓት አልነቃም።"
 
 msgid "Events found: {0}"
-msgstr ""
+msgstr "የተገኙ ክስተቶች፡ _CSH_0__"
 
 msgid "Events imported successfully"
-msgstr ""
+msgstr "ክስተቶች በተሳካ ሁኔታ ወደ ሀገር ውስጥ ገብተዋል።"
 
 msgid "Export All to ICS File"
-msgstr ""
+msgstr "ሁሉንም ወደ ICS ፋይል ላክ"
 
 msgid "Export error: {0}"
-msgstr ""
+msgstr "ወደ ውጭ የመላክ ስህተት፡ _CSH_0__"
 
 msgid "Export failed or no contacts to export"
-msgstr ""
+msgstr "ወደ ውጭ መላክ አልተሳካም ወይም ወደ ውጭ የሚላክ ምንም ዕውቂያ የለም።"
 
 msgid "Export format"
-msgstr ""
+msgstr "ወደ ውጭ ላክ ቅርጸት"
 
 msgid "Export location"
-msgstr ""
+msgstr "አካባቢ ወደ ውጭ ላክ"
 
 msgid "Export subdirectory"
-msgstr ""
+msgstr "ንዑስ ማውጫ ወደ ውጪ ላክ"
 
 msgid "Export vCard File"
-msgstr ""
+msgstr "vCard ፋይል ወደ ውጪ ላክ"
 
 msgid "Exporting contacts..."
-msgstr ""
+msgstr "እውቂያዎችን ወደ ውጭ በመላክ ላይ..."
 
 msgid "Failed to create backup. Update cancelled."
-msgstr ""
+msgstr "ምትኬን መፍጠር አልተሳካም። ዝማኔ ተሰርዟል።"
 
 msgid "Failed to start import"
-msgstr ""
+msgstr "ማስመጣት መጀመር አልተሳካም።"
 
 msgid "February"
-msgstr ""
+msgstr "የካቲት"
 
 msgid "Field {0}/{1}: {2}"
-msgstr ""
+msgstr "መስክ {0}/{1}: {2}"
 
 msgid "File deleted"
-msgstr ""
+msgstr "ፋይል ተሰርዟል።"
 
 msgid "File not found!"
-msgstr ""
+msgstr "ፋይል አልተገኘም!"
 
 msgid "File re-imported successfully"
-msgstr ""
+msgstr "ፋይሉ በተሳካ ሁኔታ ተመልሶ መጥቷል።"
 
 msgid "File re-imported. Found {0} potential duplicates."
-msgstr ""
+msgstr "ፋይል እንደገና መጥቷል። {0} ሊሆኑ የሚችሉ ብዜቶች ተገኝተዋል።"
 
 msgid "File: {0}"
-msgstr ""
+msgstr "ፋይል፡ {0}"
 
 msgid "Files is Empty..."
-msgstr ""
+msgstr "ፋይሎች ባዶ ናቸው..."
 
 msgid "Found {0} ICS files"
-msgstr ""
+msgstr "{0} ICS ፋይሎች ተገኝተዋል"
 
 msgid "Fri"
-msgstr ""
+msgstr "ዓርብ"
 
 msgid "Green"
-msgstr ""
+msgstr "አረንጓዴ"
 
 msgid "Hard Disk"
-msgstr ""
+msgstr "ሃርድ ዲስክ"
 
 msgid "Hard Disk (/media/hdd)"
-msgstr ""
+msgstr "ሃርድ ዲስክ (/ሚዲያ/ኤችዲዲ)"
 
 msgid "Holiday"
-msgstr ""
+msgstr "በዓል"
 
 msgid "Holiday color"
-msgstr ""
+msgstr "የበዓል ቀለም"
 
 msgid "Holiday:"
-msgstr ""
+msgstr "በዓል፡"
 
 msgid "Holidays imported"
-msgstr ""
+msgstr "በዓላት ከውጭ ገብተዋል።"
 
 msgid "I:{0}"
-msgstr ""
+msgstr "እኔ:{0}"
 
 msgid "ICS Events: 0"
-msgstr ""
+msgstr "የICS ክስተቶች፡ 0"
 
 msgid "ICS Events: {0}/{1}"
-msgstr ""
+msgstr "የICS ክስተቶች፡ {0}/{1}"
 
 msgid "ICS format"
-msgstr ""
+msgstr "አይሲኤስ ቅርጸት"
 
 msgid "ICS format (google calendar)"
-msgstr ""
+msgstr "አይሲኤስ ቅርጸት (ጉግል ካላንደር)"
 
 msgid "ICS import feature not yet available: {0}"
-msgstr ""
+msgstr "የICS የማስመጣት ባህሪ እስካሁን የለም፡ {0}"
 
 msgid "Import"
-msgstr ""
+msgstr "አስመጣ"
 
 msgid "Import All"
-msgstr ""
+msgstr "ሁሉንም አስመጣ"
 
 msgid "Import Google Calendar (.ics)"
-msgstr ""
+msgstr "Google Calendar (.ics) አስመጣ"
 
 msgid "Import Holidays"
-msgstr ""
+msgstr "በዓላትን አስመጣ"
 
 msgid "Import ICS Contacts Google Calendar (.ics)"
-msgstr ""
+msgstr "የICS እውቂያዎችን ጎግል ካሌንደር (.ics) አስመጣ"
 
 msgid "Import completed"
-msgstr ""
+msgstr "ማስመጣት ተጠናቅቋል"
 
 msgid "Import completed - Sorting contacts..."
-msgstr ""
+msgstr "ማስመጣት ተጠናቅቋል - እውቂያዎችን በመደርደር ላይ..."
 
 msgid "Import completed!"
-msgstr ""
+msgstr "ማስመጣት ተጠናቅቋል!"
 
 msgid "Import completed. Ready."
-msgstr ""
+msgstr "ማስመጣት ተጠናቅቋል። ዝግጁ።"
 
 msgid "Import error: {0}"
-msgstr ""
+msgstr "የማስመጣት ስህተት፡ _CSH_0__"
 
 msgid "Import events to calendar"
-msgstr ""
+msgstr "ክስተቶችን ወደ ቀን መቁጠሪያ አስመጣ"
 
 msgid "Import vCard File"
-msgstr ""
+msgstr "vCard ፋይል አስመጣ"
 
 msgid "Imported ICS Files"
-msgstr ""
+msgstr "ከውጭ የመጡ ICS ፋይሎች"
 
 msgid "Imported: %d"
-msgstr ""
+msgstr "ከውጭ የመጣ፡ %d"
 
 msgid "Imported: {0}"
-msgstr ""
+msgstr "የመጣው፡ {0}"
 
 msgid "Imported: {0} contacts"
-msgstr ""
+msgstr "መጥተዋል፡ {0} እውቂያዎች"
 
 msgid "Importing iCalendar File"
-msgstr ""
+msgstr "iCalendar ፋይልን በማስመጣት ላይ"
 
 msgid "Importing vCard File"
-msgstr ""
+msgstr "vCard ፋይል በማስመጣት ላይ"
 
 msgid "Initializing..."
-msgstr ""
+msgstr "በማስጀመር ላይ..."
 
 msgid "Invalid birthday format. Use YYYY-MM-DD"
-msgstr ""
+msgstr "ልክ ያልሆነ የልደት ቅርጸት። ዓዓዓ-ወወ-ቀን ተጠቀም"
 
 msgid "Invalid date format. Use YYYY-MM-DD"
-msgstr ""
+msgstr "ልክ ያልሆነ የቀን ቅርጸት። ዓዓዓ-ወወ-ቀን ተጠቀም"
 
 msgid "Invalid time format! Use HH:MM (00:00 to 23:59)"
-msgstr ""
+msgstr "ልክ ያልሆነ የጊዜ ቅርጸት! HH:MM (00:00 እስከ 23:59) ተጠቀም"
 
 msgid "Invalid time format. Use HH:MM"
-msgstr ""
+msgstr "ልክ ያልሆነ የጊዜ ቅርጸት። HH:MM ይጠቀሙ"
 
 msgid "January"
-msgstr ""
+msgstr "ጥር"
 
 msgid "July"
-msgstr ""
+msgstr "ሀምሌ"
 
 msgid "June"
-msgstr ""
+msgstr "ሰኔ"
 
 msgid "Labels (comma separated)"
-msgstr ""
+msgstr "መለያዎች (በነጠላ ሰረዝ ተለያይተዋል)"
 
 msgid "Legacy format (text files)"
-msgstr ""
+msgstr "የቆየ ቅርጸት (የጽሑፍ ፋይሎች)"
 
 msgid "Manage Contacts"
-msgstr ""
+msgstr "እውቂያዎችን ያስተዳድሩ"
 
 msgid "Manage Event"
-msgstr ""
+msgstr "ክስተት አስተዳድር"
 
 msgid "Manage ICS Events"
-msgstr ""
+msgstr "የICS ክስተቶችን አስተዳድር"
 
 msgid "Manage ICS Files"
-msgstr ""
+msgstr "ICS ፋይሎችን አስተዳድር"
 
 msgid "March"
-msgstr ""
+msgstr "መጋቢት"
 
 msgid "May"
-msgstr ""
+msgstr "ግንቦት"
 
 msgid "Modified: {0}"
-msgstr ""
+msgstr "የተሻሻለው፡ {0}"
 
 msgid "Mon"
-msgstr ""
+msgstr "ሰኞ"
 
 msgid "Month +"
-msgstr ""
+msgstr "ወር +"
 
 msgid "Month -"
-msgstr ""
+msgstr "ወር -"
 
 msgid "Name"
-msgstr ""
+msgstr "ስም"
 
 msgid "Name is required"
-msgstr ""
+msgstr "ስም ያስፈልጋል"
 
 msgid "Network Share"
-msgstr ""
+msgstr "የአውታረ መረብ አጋራ"
 
 msgid "New Date"
-msgstr ""
+msgstr "አዲስ ቀን"
 
 msgid "Newest file: {0}"
-msgstr ""
+msgstr "አዲሱ ፋይል፡ _CSH_0__"
 
 msgid "Next Field"
-msgstr ""
+msgstr "ቀጣይ መስክ"
 
 msgid "No ICS directory found"
-msgstr ""
+msgstr "ምንም ICS ማውጫ አልተገኘም።"
 
 msgid "No ICS events found"
-msgstr ""
+msgstr "ምንም የICS ክስተቶች አልተገኙም።"
 
 msgid "No ICS files found"
-msgstr ""
+msgstr "ምንም ICS ፋይሎች አልተገኙም።"
 
 msgid "No ICS files in archive"
-msgstr ""
+msgstr "በማህደር ውስጥ ምንም የICS ፋይሎች የሉም"
 
 msgid "No TV service currently playing"
-msgstr ""
+msgstr "በአሁኑ ጊዜ ምንም የቲቪ አገልግሎት የለም።"
 
 msgid "No contact files found"
-msgstr ""
+msgstr "ምንም የእውቂያ ፋይሎች አልተገኙም።"
 
 msgid "No contact selected"
-msgstr ""
+msgstr "ምንም ዕውቂያ አልተመረጠም።"
 
 msgid "No contacts found in database"
-msgstr ""
+msgstr "በውሂብ ጎታ ውስጥ ምንም እውቂያዎች አልተገኙም።"
 
 msgid "No data found to convert"
-msgstr ""
+msgstr "ለመለወጥ ምንም ውሂብ አልተገኘም።"
 
 msgid "No data to export"
-msgstr ""
+msgstr "ወደ ውጭ የሚላክ ምንም ውሂብ የለም።"
 
 msgid "No duplicates found"
-msgstr ""
+msgstr "ምንም ብዜቶች አልተገኙም።"
 
 msgid "No event selected"
-msgstr ""
+msgstr "ምንም ክስተት አልተመረጠም።"
 
 msgid "No events database found"
-msgstr ""
+msgstr "ምንም የክስተቶች ዳታቤዝ አልተገኘም።"
 
 msgid "No events for today"
-msgstr ""
+msgstr "ለዛሬ ምንም ክስተቶች የሉም"
 
 msgid "No events to convert"
-msgstr ""
+msgstr "ምንም የሚለወጡ ክስተቶች የሉም"
 
 msgid "No file in database..."
-msgstr ""
+msgstr "በመረጃ ቋት ውስጥ ምንም ፋይል የለም..."
 
 msgid "No file selected"
-msgstr ""
+msgstr "ምንም ፋይል አልተመረጠም።"
 
 msgid "No past events to remove"
-msgstr ""
+msgstr "ምንም የሚወገዱ ያለፉ ክስተቶች የሉም"
 
 msgid "No sorting (original order)"
-msgstr ""
+msgstr "ምንም መደርደር የለም (የመጀመሪያ ቅደም ተከተል)"
 
 msgid "No sound"
-msgstr ""
+msgstr "ድምፅ የለም።"
 
 msgid "Note"
-msgstr ""
+msgstr "ማስታወሻ"
 
 msgid "Note:"
-msgstr ""
+msgstr "ማስታወሻ፡-"
 
 msgid "Notes"
-msgstr ""
+msgstr "ማስታወሻዎች"
 
 msgid "Notification sound type"
-msgstr ""
+msgstr "የማሳወቂያ የድምጽ አይነት"
 
 msgid "Notification tone"
-msgstr ""
+msgstr "የማሳወቂያ ቅላጼ"
 
 msgid "Notify"
-msgstr ""
+msgstr "አሳውቅ"
 
 msgid "Notify:"
-msgstr ""
+msgstr "አሳውቅ፡"
 
 msgid "November"
-msgstr ""
+msgstr "ህዳር"
 
 msgid "October"
-msgstr ""
+msgstr "ጥቅምት"
 
-msgid "Oldest file: {0}\n"
-msgstr ""
+msgid "Oldest file: {0}\\\\\\\\n"
+msgstr "በጣም የቆየ ፋይል፡ {0}\\\\\\\\\\\\n"
 
 msgid "Orange"
-msgstr ""
+msgstr "ብርቱካናማ"
 
 msgid "P:{0}/{1}"
 msgstr ""
 
 msgid "Phone"
-msgstr ""
+msgstr "ስልክ"
 
 msgid "Play a sound when event notification appears"
-msgstr ""
+msgstr "የክስተት ማሳወቂያ ሲመጣ ድምጽ ያጫውቱ"
 
 msgid "Play sound with notifications"
-msgstr ""
+msgstr "በማሳወቂያዎች ድምጽን ያጫውቱ"
 
 msgid "Please restart Enigma2 manually."
-msgstr ""
+msgstr "እባክዎ Enigma2 ን እራስዎ እንደገና ያስጀምሩ።"
 
 msgid "Plugin Directory"
-msgstr ""
+msgstr "ተሰኪ ማውጫ"
 
 msgid "Plugin is up to date"
-msgstr ""
+msgstr "ተሰኪ የተዘመነ ነው።"
 
 msgid "Press GREEN to import"
-msgstr ""
+msgstr "ለማስመጣት GREENን ይጫኑ"
 
 msgid "Press TEXT to search"
-msgstr ""
+msgstr "ለመፈለግ TEXTን ይጫኑ"
 
 msgid "Preview file content"
-msgstr ""
+msgstr "የፋይል ይዘትን አስቀድመው ይመልከቱ"
 
 msgid "Progress: {0}%"
-msgstr ""
+msgstr "ሂደት፡ {0}%"
 
 msgid "Re-import"
-msgstr ""
+msgstr "እንደገና አስመጣ"
 
 msgid "Red"
-msgstr ""
+msgstr "ቀይ"
 
 msgid "Refresh"
-msgstr ""
+msgstr "አድስ"
 
 msgid "Refreshed"
-msgstr ""
+msgstr "ታድሷል"
 
 msgid "Remove"
-msgstr ""
+msgstr "አስወግድ"
 
 msgid "Remove Date"
-msgstr ""
+msgstr "ቀን አስወግድ"
 
 msgid "Removed {0} past events"
-msgstr ""
+msgstr "ያለፉ {0} ተወግደዋል"
 
 msgid "Repeat"
-msgstr ""
+msgstr "ይድገሙ"
 
 msgid "Repeat (none/daily/weekly/monthly/yearly)"
-msgstr ""
+msgstr "መድገም (ምንም/በየቀኑ/ሳምንት/ወርሃዊ/ዓመት)"
 
 msgid "Repeat:"
-msgstr ""
+msgstr "ድገም፡"
 
 msgid "Repeat: {0}"
-msgstr ""
+msgstr "ድገም: {0}"
 
 msgid "Root Home (/home/root)"
-msgstr ""
+msgstr "ሥር መነሻ (/ቤት/ሥር)"
 
 msgid "S:{0}"
-msgstr ""
+msgstr "ሰ:{0}"
 
 msgid "SCHEDULED EVENTS:"
-msgstr ""
+msgstr "የታቀዱ ክስተቶች፡-"
 
 msgid "Sat"
-msgstr ""
+msgstr "ሳት"
 
 msgid "Save"
-msgstr ""
+msgstr "አስቀምጥ"
 
 msgid "Search contacts"
-msgstr ""
+msgstr "እውቂያዎችን ፈልግ"
 
 msgid "Search events"
-msgstr ""
+msgstr "ክስተቶችን ፈልግ"
 
 msgid "Search:"
-msgstr ""
+msgstr "ፈልግ፡"
 
 msgid "Seconds between event checks (advanced)"
-msgstr ""
+msgstr "በክስተት ፍተሻዎች መካከል ሰከንዶች (የላቀ)"
 
 msgid "Seconds to wait after boot before starting notifications"
-msgstr ""
+msgstr "ማሳወቂያዎችን ከመጀመርዎ በፊት ከተነሳ በኋላ ለመጠበቅ ሰከንዶች"
 
 msgid "Select .ics file to import"
-msgstr ""
+msgstr "ለማስመጣት የ.ics ፋይልን ይምረጡ"
 
 msgid "Select a file, not a folder"
-msgstr ""
+msgstr "ማህደር ሳይሆን ፋይል ምረጥ"
 
 msgid "Select vCard file to import"
-msgstr ""
+msgstr "ለማስመጣት vCard ፋይልን ይምረጡ"
 
 msgid "Selected: {0}"
-msgstr ""
+msgstr "የተመረጠ፡ _CSH_0__"
 
 msgid "September"
-msgstr ""
+msgstr "መስከረም"
 
 msgid "Short beep"
-msgstr ""
+msgstr "አጭር ድምፅ"
 
 msgid "Show 'H' marker on holiday days"
-msgstr ""
+msgstr "በበዓል ቀናት 'H' ምልክት ማድረጊያን አሳይ"
 
 msgid "Show Statistics"
-msgstr ""
+msgstr "ስታቲስቲክስን አሳይ"
 
 msgid "Show Today's Holidays"
-msgstr ""
+msgstr "የዛሬ በዓላትን አሳይ"
 
 msgid "Show Upcoming Holidays"
-msgstr ""
+msgstr "መጪ በዓላትን አሳይ"
 
 msgid "Show debug messages in console/log"
-msgstr ""
+msgstr "የማረም መልዕክቶችን በኮንሶል/ሎግ አሳይ"
 
 msgid "Show event indicators"
-msgstr ""
+msgstr "የክስተት አመልካቾችን አሳይ"
 
 msgid "Show event statistics"
-msgstr ""
+msgstr "የክስተት ስታቲስቲክስን አሳይ"
 
 msgid "Show holiday indicators"
-msgstr ""
+msgstr "የበዓል አመልካቾችን አሳይ"
 
 msgid "Show markers on days with events"
-msgstr ""
+msgstr "በክስተቶች ቀናት ምልክቶችን አሳይ"
 
 msgid "Show notifications for upcoming events"
-msgstr ""
+msgstr "ለመጪ ክስተቶች ማሳወቂያዎችን አሳይ"
 
 msgid "Sign"
-msgstr ""
+msgstr "ይፈርሙ"
 
 msgid "Sign:"
-msgstr ""
+msgstr "ይፈርሙ፡"
 
 msgid "Size: {0:.1f} KB"
-msgstr ""
+msgstr "መጠን፡ {0:.1f} ኪባ"
 
 msgid "Size: {0:.1f} MB"
-msgstr ""
+msgstr "መጠን፡ {0:.1f} ሜባ"
 
 msgid "Skipped: %d"
-msgstr ""
+msgstr "የተዘለለ፡ %d"
 
 msgid "Skipped: {0}"
-msgstr ""
+msgstr "ተዘሏል፡ {0}"
 
 msgid "Skipped: {0} (duplicates)"
-msgstr ""
+msgstr "ተዘሏል፡ {0} (የተባዙ)"
 
 msgid "Sort"
-msgstr ""
+msgstr "ደርድር"
 
 msgid "Sort by birthday (month/day)"
-msgstr ""
+msgstr "በልደት ደርድር (ወር/ቀን)"
 
 msgid "Sort by category"
-msgstr ""
+msgstr "በምድብ ደርድር"
 
 msgid "Sort by name (alphabetical)"
-msgstr ""
+msgstr "በስም ደርድር (ፊደል)"
 
 msgid "Sorted by birthday"
-msgstr ""
+msgstr "በልደት የተደረደረ"
 
 msgid "Sorted by category"
-msgstr ""
+msgstr "በምድብ የተደረደሩ"
 
 msgid "Sorted by date"
-msgstr ""
+msgstr "በቀን የተደረደሩ"
 
 msgid "Sorted by name"
-msgstr ""
+msgstr "በስም የተደረደሩ"
 
 msgid "Sorted by title"
-msgstr ""
+msgstr "በርዕስ የተደረደሩ"
 
 msgid "Sorted by: Birthday"
-msgstr ""
+msgstr "የተደረደሩት፡ የልደት ቀን"
 
 msgid "Sorted by: Category"
-msgstr ""
+msgstr "የተደረደሩት: ምድብ"
 
 msgid "Sorted by: Date"
-msgstr ""
+msgstr "የተደረደሩት፡ ቀን"
 
 msgid "Sorted by: Name"
-msgstr ""
+msgstr "በ ስም ተደርድሯል።"
 
 msgid "Sorted by: Title"
-msgstr ""
+msgstr "የተደረደሩት፡ ርእስ"
 
 msgid "Start event notifications in background (recommended)"
-msgstr ""
+msgstr "የክስተት ማሳወቂያዎችን ከበስተጀርባ ይጀምሩ (የሚመከር)"
 
 msgid "Subdirectory name for exports (created automatically)"
-msgstr ""
+msgstr "ወደ ውጭ የሚላኩ ንዑስ ማውጫ ስም (በራስ ሰር የተፈጠረ)"
 
 msgid "Successfully converted {0} entries to ICS format"
-msgstr ""
+msgstr "በተሳካ ሁኔታ የ_CSH_0__ ግቤቶችን ወደ አይሲኤስ ቅርጸት ተቀይሯል።"
 
 msgid "Sun"
-msgstr ""
+msgstr "ፀሐይ"
 
 msgid "Tags: {0}"
-msgstr ""
+msgstr "መለያዎች፡ {0}"
 
 msgid "Temporary Storage (/tmp)"
-msgstr ""
+msgstr "ጊዜያዊ ማከማቻ (/tmp)"
 
 msgid "Test error: %s"
-msgstr ""
+msgstr "የሙከራ ስህተት፡ %s"
 
 msgid "Text format"
-msgstr ""
+msgstr "የጽሑፍ ቅርጸት"
 
 msgid "Thu"
-msgstr ""
+msgstr "ቱ"
 
 msgid "Time"
-msgstr ""
+msgstr "ጊዜ"
 
 msgid "Time (HH:MM)"
-msgstr ""
+msgstr "ጊዜ (HH:MM)"
 
 msgid "Time:"
-msgstr ""
+msgstr "ጊዜ፡-"
 
 msgid "Title"
-msgstr ""
+msgstr "ርዕስ"
 
 msgid "Title and date are required!"
-msgstr ""
+msgstr "ርዕስ እና ቀን ያስፈልጋል!"
 
 msgid "Title is required"
-msgstr ""
+msgstr "ርዕስ ያስፈልጋል"
 
 msgid "Title:"
-msgstr ""
+msgstr "ርዕስ፡-"
 
 msgid "Today"
-msgstr ""
+msgstr "ዛሬ"
 
 msgid "Total events: {0}"
-msgstr ""
+msgstr "ጠቅላላ ክስተቶች፡ _CSH_0__"
 
-msgid "Total files: {0}\n"
-msgstr ""
+msgid "Total files: {0}\\\\\\\\n"
+msgstr "ጠቅላላ ፋይሎች፡{0}\\\\\\\\\\\\n"
 
-msgid "Total size: {0:.1f} KB\n"
-msgstr ""
+msgid "Total size: {0:.1f} KB\\\\\\\\n"
+msgstr "ጠቅላላ መጠን፡ {0:.1f} ኪባ \\\\\\\\\\\\\\\\n"
 
 msgid "Total: %d"
-msgstr ""
+msgstr "ጠቅላላ፡ %d"
 
 msgid "Total: {0}"
-msgstr ""
+msgstr "ጠቅላላ፡ {0}"
 
 msgid "Tue"
-msgstr ""
+msgstr "ማክሰኞ"
 
 msgid "Type of sound to play with notifications"
-msgstr ""
+msgstr "ከማሳወቂያዎች ጋር የሚጫወት የድምጽ አይነት"
 
 msgid "U:{0}"
 msgstr ""
 
 msgid "USB Drive"
-msgstr ""
+msgstr "የዩኤስቢ ድራይቭ"
 
 msgid "USB Drive (/media/usb)"
-msgstr ""
+msgstr "የዩኤስቢ ድራይቭ (/ሚዲያ/ዩኤስቢ)"
 
 msgid "Unable to play test sound"
-msgstr ""
+msgstr "የሙከራ ድምጽ ማጫወት አልተቻለም"
 
 msgid "Update available!"
-msgstr ""
+msgstr "ማዘመን አለ!"
 
 msgid "Update cancelled"
-msgstr ""
+msgstr "ዝማኔ ተሰርዟል።"
 
 msgid "Update check error"
-msgstr ""
+msgstr "የፍተሻ ስህተትን አዘምን"
 
 msgid "Update check failed"
-msgstr ""
+msgstr "የዝማኔ ፍተሻ አልተሳካም።"
 
 msgid "Update completed successfully!"
-msgstr ""
+msgstr "ዝማኔ በተሳካ ሁኔታ ተጠናቅቋል!"
 
 msgid "Update error: %s"
-msgstr ""
+msgstr "የዝማኔ ስህተት፡ %s"
 
 msgid "Update failed"
-msgstr ""
+msgstr "ማዘመን አልተሳካም።"
 
 msgid "Update failed and backup restore also failed!"
-msgstr ""
+msgstr "ማዘመን አልተሳካም እና ምትኬን ወደነበረበት መመለስ እንዲሁ አልተሳካም!"
 
 msgid "Update failed. Restored from backup."
-msgstr ""
+msgstr "ማዘመን አልተሳካም። ከመጠባበቂያው ወደነበረበት ተመልሷል።"
 
 msgid "Update successful!"
-msgstr ""
+msgstr "ማዘመን ተሳክቷል!"
 
 msgid "Updated: {0}"
-msgstr ""
+msgstr "ተዘምኗል፡ {0}"
 
 msgid "Updating plugin... Please wait"
-msgstr ""
+msgstr "ተሰኪን በማዘመን ላይ... እባክዎ ይጠብቁ"
 
 msgid "Using legacy database format"
-msgstr ""
+msgstr "የቆየ የውሂብ ጎታ ቅርጸት በመጠቀም"
 
 msgid "View"
-msgstr ""
+msgstr "ይመልከቱ"
 
 msgid "Waiting for thread to stop..."
-msgstr ""
+msgstr "ክር እስኪቆም ድረስ በመጠበቅ ላይ..."
 
 msgid "Wed"
-msgstr ""
+msgstr "ረቡዕ"
 
 msgid "White"
-msgstr ""
+msgstr "ነጭ"
 
 msgid "Yellow"
-msgstr ""
+msgstr "ቢጫ"
 
 msgid "You have the latest version of Calendar."
-msgstr ""
+msgstr "የቅርብ ጊዜው የቀን መቁጠሪያ ስሪት አለህ።"
 
 msgid "not sorted"
-msgstr ""
+msgstr "አልተደረደረም።"
 
 msgid "sorted by birthday"
-msgstr ""
+msgstr "በልደት ቀን የተደረደሩ"
 
 msgid "sorted by category"
-msgstr ""
+msgstr "በምድብ የተደረደሩ"
 
 msgid "sorted by name"
-msgstr ""
+msgstr "በስም የተደረደሩ"
 
 msgid "vCard format"
-msgstr ""
+msgstr "vCard ቅርጸት"
 
 msgid "vCard format (standard)"
-msgstr ""
+msgstr "vCard ቅርጸት (መደበኛ)"
 
 msgid "vCard import feature not available: {0}"
-msgstr ""
+msgstr "vCard የማስመጣት ባህሪ የለም፡ {0}"

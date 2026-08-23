@@ -791,8 +791,8 @@ msgstr "十一月"
 msgid "October"
 msgstr "十月"
 
-msgid "Oldest file: {0}\n"
-msgstr "最新文件:{0}\n"
+msgid "Oldest file: {0}\\\\\\\\n"
+msgstr "最新文件:{0}\\\\\\\\n"
 
 msgid "Orange"
 msgstr "橙色"
@@ -1058,11 +1058,11 @@ msgstr "今天"
 msgid "Total events: {0}"
 msgstr "总计活动: {0}"
 
-msgid "Total files: {0}\n"
-msgstr "所有文件: {0}\n"
+msgid "Total files: {0}\\\\\\\\n"
+msgstr "所有文件: {0}\\\\\\\\n"
 
-msgid "Total size: {0:.1f} KB\n"
-msgstr "总大小: {0: .1f} KB\n"
+msgid "Total size: {0:.1f} KB\\\\\\\\n"
+msgstr "总大小: {0: .1f} KB\\\\\\\\n"
 
 msgid "Total: %d"
 msgstr "总计: %d"
